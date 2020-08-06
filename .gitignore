@@ -9,3 +9,5 @@ tmpoutput
 *.njsproj
 *.user
 *.orig
+
+*.DS_Store
