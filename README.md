@@ -13,6 +13,14 @@ pipeline:
     ansible:
         input: clicommon/identity
         output-artifact: some-file-generated-by-ansible
+    ansible/emitter:
+        input: ansible
+        scope: scope-ansible/emitter
+scope-ansible/emitter:
+    input-artifact: some-file-generated-by-ansible
+    output-uri-expr: $key
+output-artifact: some-file-generated-by-ansible
+
 modelerfour:
     additional-checks: false
 ```
