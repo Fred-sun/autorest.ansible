@@ -10,10 +10,9 @@ use-extension:
 pipeline-model: v3
 
 pipeline:
-    ansible/generate:
-        plugin: ansible
+    ansible:
         input: clicommon/identity
-        output-artifact: some-file-generated-by-hello-world
+        output-artifact: some-file-generated-by-ansible
 modelerfour:
     additional-checks: false
 ```
