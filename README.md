@@ -12,10 +12,8 @@ output-folder: $(az-output-folder)
 debug-output-folder: $(az-output-folder)/_az_debug
 
 use-extension:
-  "@autorest/python": "5.0.0-preview.7"
-  "@autorest/clicommon": "0.4.9"
-  #"@autorest/python": "latest"
-  
+  "@autorest/clicommon": "0.4.10"
+
 cli:
     reason: 'make sure cli flag exists to load config in cli.md'
     naming:
@@ -31,8 +29,6 @@ cli:
 
 require:
   - ./readme.python.md
-  - ./readme.cli.md
-  - $(this-folder)/readme.az.common.md
 
 pipeline-model: v3
 
@@ -47,32 +43,17 @@ modelerfour:
 #recursive-payload-flattening: true
 
 pipeline:
-    python/m2r:
+    ansible/generate:
+        plugin: ansible
         input: clicommon/identity
-    az/merger:
-        input: python/namer
-        #output-artifact: source-file-merger
-    az/aznamer:
-        input: az/merger
-        #output-artifact: source-file-aznamer
-    az/modifiers:
-        input: az/aznamer
-        #output-artifact: source-file-modifiers
-    az/azgenerator:
-        input: az/modifiers
-        output-artifact: source-file-extension
-    az/emitter:
-        input:
-            #- az/clicommon
-            #- az/merger
-            #- az/aznamer
-            #- az/modifiers
-            - az/azgenerator
-        scope: scope-az
-
-scope-az:
+        output-artifact: source-file-cli
+    trenton/emitter:
+        input: generate
+        scope: scope-here
+scope-here:
     is-object: false
     output-artifact:
+        #- source-file-az-hider
         #- source-file-pynamer
         #- source-file-aznamer
         #- source-file-modifiers
