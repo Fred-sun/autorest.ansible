@@ -27,7 +27,8 @@ export async function main() {
         }
         const inputFileUris = await autoRestApi.ListInputs();
         Info("input file:" + inputFileUris);
-
+        const inputFiles: string[] = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
+        autoRestApi.WriteFile("concat.txt", inputFiles.join("\n---\n"));
     });
     extension.Run();
 }
