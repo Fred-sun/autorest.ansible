@@ -12,7 +12,7 @@ output-folder: $(az-output-folder)
 debug-output-folder: $(az-output-folder)/_az_debug
 
 use-extension:
-  "@autorest/clicommon": "0.4.10"
+  "@autorest/clicommon": "0.4.12"
 
 cli:
     reason: 'make sure cli flag exists to load config in cli.md'
