@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ArtifactType, FileCallback, LogCallback } from "../index"
-import { Example } from "../Common/Example";
+import { ArtifactType, FileCallback, LogCallback } from "../../index"
+// import { Example } from "../Common/Example";
 
 import { MapModuleGroup } from "../Common/ModuleMap";
 import { CodeModel } from "../Common/CodeModel";

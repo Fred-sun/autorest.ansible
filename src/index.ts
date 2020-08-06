@@ -3,7 +3,11 @@ import { AutoRestExtension, Channel, Host } from "@azure-tools/autorest-extensio
 
 export type LogCallback = (message: string) => void;
 export type FileCallback = (path: string, rows: string[]) => void;
-
+export  enum ArtifactType {
+    ArtifactTypeAnsibleSdk,
+    ArtifactTypeAnsibleRest,
+    ArtifactTypeAnsibleCollection
+}
 
 
 export async function main() {
@@ -28,7 +32,13 @@ export async function main() {
         const inputFileUris = await autoRestApi.ListInputs();
         Info("input file:" + inputFileUris);
         const inputFiles: string[] = await Promise.all(inputFileUris.filter(uri =>uri.endsWith("no-tags.yaml")).map(uri => autoRestApi.ReadFile(uri)));
-        autoRestApi.WriteFile("concat.txt", inputFiles.join("\n---\n"));
+        for (let iff of inputFiles){
+            const jsyaml = require('js-yaml');
+            let climodel = jsyaml.safeLoad(iff);
+            for (let m of climodel.operationGroups){
+                Info("moduleName: "+m["$key"]);
+            }
+        }
     });
     extension.Run();
 }
