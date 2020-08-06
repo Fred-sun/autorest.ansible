@@ -19,7 +19,7 @@ pipeline:
 scope-ansible/emitter:
     input-artifact: some-file-generated-by-ansible
     output-uri-expr: $key
-output-artifact: some-file-generated-by-ansible
+    output-artifact: some-file-generated-by-ansible
 
 modelerfour:
     additional-checks: false
