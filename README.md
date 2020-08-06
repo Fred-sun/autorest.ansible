@@ -13,15 +13,7 @@ pipeline:
     ansible/generate:
         plugin: ansible
         input: clicommon/identity
-        output-artifact: source-file-cli
-    ansible/emitter:
-        input: generate
-        scope: scope-here
-
-scope-here:
-    is-object: false
-    output-artifact:
-        - source-file-cli
+        output-artifact: some-file-generated-by-hello-world
 modelerfour:
     additional-checks: false
 ```
