@@ -14,33 +14,12 @@ debug-output-folder: $(az-output-folder)/_az_debug
 use-extension:
   "@autorest/clicommon": "0.4.12"
 
-cli:
-    reason: 'make sure cli flag exists to load config in cli.md'
-    naming:
-        default:
-            parameter: 'snake'
-            property: 'snake'
-            operation: 'snake'
-            operationGroup:  'pascal'
-            choice:  'pascal'
-            choiceValue:  'snake'
-            constant:  'snake'
-            type:  'pascal'
-
-require:
-  - ./readme.python.md
 
 pipeline-model: v3
 
 modelerfour:
-    lenient-model-deduplication: true
-    group-parameters: true
-    flatten-models: true
-    flatten-payloads: true
+    additional-checks: false
 
-
-#payload-flattening-threshold: 4
-#recursive-payload-flattening: true
 
 pipeline:
     ansible/generate:
