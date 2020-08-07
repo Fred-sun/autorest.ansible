@@ -32,6 +32,7 @@ export async function main() {
         const inputFileUris = await autoRestApi.ListInputs();
         Info("input file:" + inputFileUris);
         const inputFiles: string[] = await Promise.all(inputFileUris.filter(uri =>uri.endsWith("no-tags.yaml")).map(uri => autoRestApi.ReadFile(uri)));
+        autoRestApi.WriteFile("code-model-v4-no-tags.yaml", inputFiles.join('\r\n'));
         for (let iff of inputFiles){
             const jsyaml = require('js-yaml');
             let climodel = jsyaml.safeLoad(iff);
