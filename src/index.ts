@@ -48,7 +48,8 @@ export async function main() {
                     Info("      method: "+method.requests[0].protocol.http.method);
                     Info("      path:" + method.requests[0].protocol.http.path);
                     for (var p of method.parameters){
-                        Info("              parameters:" + yaml.dump(p));
+                        Info("============parameters==============")
+                        Info("" + yaml.dump(p));
                     }
                 }
             }
