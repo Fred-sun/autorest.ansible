@@ -1,5 +1,6 @@
 import { AutoRestExtension, Channel, Host } from "@azure-tools/autorest-extension-base";
 import {CodeModelGroup} from "./plugins/Common/CodeModelGroup";
+import * as yaml from "node-yaml";
 
 
 export type LogCallback = (message: string) => void;
@@ -50,7 +51,7 @@ export async function main() {
                     Info("      method: "+method.requests[0].protocol.http.method);
                     Info("      path:" + method.requests[0].protocol.http.path);
                     for (var p of method.parameters){
-                        Info("              parameters:" + p);
+                        Info("              parameters:" + yaml.dump(p));
                     }
                 }
             }
