@@ -6,3 +6,7 @@ export class CodeModel {
     }
     public ModuleName: string = null;
 }
+
+export class codeModelGroup {
+    public models: CodeModel[] = [];
+}
