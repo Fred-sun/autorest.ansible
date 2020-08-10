@@ -56,7 +56,7 @@ export async function main() {
                 }
             }
         }
-        WriteFile("test.txt", infoStr);
+        WriteFile("./test.txt", infoStr);
     });
     extension.Run();
 }
