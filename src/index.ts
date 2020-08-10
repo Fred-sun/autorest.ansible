@@ -16,7 +16,7 @@ export async function main() {
     const extension = new AutoRestExtension();
     extension.Add("ansible", async autoRestApi => {
         let log = await autoRestApi.GetValue("log");
-        var infoStr: string[];
+        var infoStr: string[] = [];
         function Info(s: string)
         {
             if (log)
