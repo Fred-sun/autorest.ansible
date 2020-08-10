@@ -16,7 +16,7 @@ export async function main() {
     const extension = new AutoRestExtension();
     extension.Add("ansible", async autoRestApi => {
         let log = await autoRestApi.GetValue("log");
-        var infoStr = "";
+        var infoStr: string[];
         function Info(s: string)
         {
             if (log)
@@ -25,7 +25,7 @@ export async function main() {
                     Channel: Channel.Information,
                     Text: s
                 });
-                infoStr = infoStr + s + "\n";
+                infoStr.push(s);
             }
         }
 
@@ -56,6 +56,7 @@ export async function main() {
                 }
             }
         }
+        WriteFile("../../tmp", infoStr);
     });
     extension.Run();
 }
