@@ -1,8 +1,17 @@
+import {Dictionary} from "@azure-tools/linq";
+
+export enum ModuleOptionKind{
+    MODULE_OPTION_PATH,
+    MODULE_OPTION_BODY,
+    MODULE_OPTION_PLACEHOLDER,
+    MODULE_OPTION_HEADER,
+    MODULE_OPTION_QUERY,
+    MODULE_OPTION_RESPONSE
+}
+
 
 export class ModuleMap {
-    constructor() {
 
-    }
     public ModuleName: string = null;
     public NameSwagger: string = null;
     public Methods: ModuleMethod[] = null;
@@ -13,13 +22,26 @@ export class ModuleMethod {
     public Name: string = null;
     public NameSwagger: string = null;
     public Options: ModuleOption[] = [];
-    public RequiredOptions: ModuleOption[] = [];
+    public RequiredOptions: string[] = [];
     public ResponseOptions: ModuleOption[] = [];
     public Url: string = "";
     public HttpMethod: string = "";
+    public ApiVersion: string = "";
 }
 
 export class ModuleOption {
+    constructor(name: string, type:string="", required:boolean=false) {
+        this.NameSwagger = name;
+        this.Name = this.NameSwagger;
+        this.Type = type;
+        this.Required = required;
+        this.SubOptions = [];
+        this.IsList = false;
+        this.DefaultValue = null;
+        this.NoLog = false;
+        this.IncludeInDocumentation = true;
+        this.IncludeInArgSpec = true;
+    }
     public NameSwagger: string = null;
     public Name: string = null;
 
@@ -43,6 +65,16 @@ export class ModuleOption {
     public IncludeInArgSpec: boolean = false;
     public NoLog: boolean = false;
     public SubOptions: ModuleOption[] = null;
+    public NameAnsible: string = null;
+    public ExampleValue: string = null;
+    public Hidden: boolean;
+    public DispositionSdk: string = null;
+    public EnumValues: Dictionary<any>[];
+    public Comparison: string = null;
+    public Updatable: boolean;
+    public DispositionRest: string = null;
+    public NamePythonSdk: string = null;
+    public Kind:ModuleOptionKind;
 }
 export class MapModuleGroup {
     public Modules: ModuleMap[] = [];

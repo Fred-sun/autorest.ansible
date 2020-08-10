@@ -7,11 +7,11 @@ import { CodeModel } from "../Common/CodeModel"
 import {
     ModuleTopLevelOptionsVariables,
     AppendModuleHeader,
-    AppendModuleDocumentation,
-    AppendModuleExamples,
+    // AppendModuleDocumentation,
+    // AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
-    AppendModuleReturnDoc,
+    // AppendModuleReturnDoc,
     ModuleGenerateApiCall,
     AppendInfoModuleLogic
 } from "./AnsibleModuleCommon"
@@ -20,9 +20,9 @@ export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    AppendModuleDocumentation(output, model, true, false);
-    AppendModuleExamples(output, model, false);
-    AppendModuleReturnDoc(output, model, true);
+    // AppendModuleDocumentation(output, model, true, false);
+    // AppendModuleExamples(output, model, false);
+    // AppendModuleReturnDoc(output, model, true);
 
     output.push("");
     output.push("import time");

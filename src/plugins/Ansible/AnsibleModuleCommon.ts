@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { CodeModel } from "../Common/CodeModel"
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind } from "../Common/ModuleMap"
-import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
+import { MapModuleGroup, ModuleOption, ModuleMethod, ModuleOptionKind } from "../Common/ModuleMap"
+// import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Indent, ToSnakeCase } from "../Common/Helpers";
 import * as yaml from "node-yaml";
 
@@ -29,96 +29,96 @@ export function AppendModuleHeader(output: string[])
     output.push("");
 }
 
-export function AppendModuleDocumentation(output: string[], model: CodeModel, isInfoModule: boolean, isCollection: boolean)
-{
-    output.push("DOCUMENTATION = '''");
-    output.push("---");
-
-    var doc: any = {};
-    let moduleName = model.ModuleName;
-
-    if (isCollection)
-    {
-        if (!isInfoModule)
-        {
-            moduleName = model.ModuleName.split("_").pop();
-        }
-        else
-        {
-            moduleName = model.ModuleName.split("_info")[0].split("_").pop() + "_info";
-        }
-    }
-    doc['module'] = moduleName;
-    doc['version_added'] = '2.9';
-
-    if (isInfoModule)
-    {
-        doc['short_description'] = "Get " + model.ObjectName + " info.";
-        doc['description'] = [ "Get info of " + model.ObjectName + "."];
-    }
-    else
-    {
-        doc['short_description'] = "Manage Azure " + model.ObjectName + " instance.";
-        doc['description'] = [ "Create, update and delete instance of Azure " + model.ObjectName + "."];
-    }
-    doc['options'] = ModuleHelp(model, isInfoModule);
-    if (!isInfoModule)
-    {
-        doc['options']['state'] = {}
-        doc['options']['state']['description'] = ["Assert the state of the " + model.ObjectName + ".", "Use C(present) to create or update an " + model.ObjectName + " and C(absent) to delete it."]
-        doc['options']['state']['default'] = 'present';
-        doc['options']['state']['choices'] = ['absent', 'present'];
-    }
-    doc['extends_documentation_fragment'] = ['azure'];
-    if (model.SupportsTags() && !isInfoModule)
-    {
-        doc['extends_documentation_fragment'].push('azure_tags');
-    }
-    doc['author'] = ['Zim Kalinowski (@zikalino)'];
-
-    yaml.dump(doc).split('\r').forEach(element => {
-        output.push(element);
-    });
-
-    output.push("'''");
-    output.push("");
-}
-
-export function AppendModuleExamples(output: string[], model: CodeModel, isCollection: boolean)
-{
-    output.push("EXAMPLES = '''");
-
-    let pp = new ExamplePostProcessor(model.Module);
-    let examples = model.ModuleExamples;
-    let processedExamples: any[] = []
-
-    for (let exampleIdx in examples)
-    {
-        let example = examples[exampleIdx];
-        processedExamples.push(pp.ProcessExample(example, isCollection ? ExampleType.AnsibleCollection : ExampleType.Ansible, false));
-    }
-
-    yaml.dump(processedExamples).split(/\r?\n/).forEach(element => {
-        output.push(element);
-    });
-
-    output.push("'''");
-    output.push("");
-}
-
-export function AppendModuleReturnDoc(output: string[], model: CodeModel, isInfoModule: boolean)
-{
-    output.push("RETURN = '''");
-
-    let doc: any = isInfoModule ? ModuleInfoReturnResponseFields(model) : ModuleReturnResponseFields(model);
-
-    yaml.dump(doc).split(/\r?\n/).forEach(element => {
-        output.push(element);
-    });
-
-    output.push("'''");
-   
-}
+// export function AppendModuleDocumentation(output: string[], model: CodeModel, isInfoModule: boolean, isCollection: boolean)
+// {
+//     output.push("DOCUMENTATION = '''");
+//     output.push("---");
+//
+//     var doc: any = {};
+//     let moduleName = model.ModuleName;
+//
+//     if (isCollection)
+//     {
+//         if (!isInfoModule)
+//         {
+//             moduleName = model.ModuleName.split("_").pop();
+//         }
+//         else
+//         {
+//             moduleName = model.ModuleName.split("_info")[0].split("_").pop() + "_info";
+//         }
+//     }
+//     doc['module'] = moduleName;
+//     doc['version_added'] = '2.9';
+//
+//     if (isInfoModule)
+//     {
+//         doc['short_description'] = "Get " + model.ObjectName + " info.";
+//         doc['description'] = [ "Get info of " + model.ObjectName + "."];
+//     }
+//     else
+//     {
+//         doc['short_description'] = "Manage Azure " + model.ObjectName + " instance.";
+//         doc['description'] = [ "Create, update and delete instance of Azure " + model.ObjectName + "."];
+//     }
+//     doc['options'] = ModuleHelp(model, isInfoModule);
+//     if (!isInfoModule)
+//     {
+//         doc['options']['state'] = {}
+//         doc['options']['state']['description'] = ["Assert the state of the " + model.ObjectName + ".", "Use C(present) to create or update an " + model.ObjectName + " and C(absent) to delete it."]
+//         doc['options']['state']['default'] = 'present';
+//         doc['options']['state']['choices'] = ['absent', 'present'];
+//     }
+//     doc['extends_documentation_fragment'] = ['azure'];
+//     if (model.SupportsTags() && !isInfoModule)
+//     {
+//         doc['extends_documentation_fragment'].push('azure_tags');
+//     }
+//     doc['author'] = ['Zim Kalinowski (@zikalino)'];
+//
+//     yaml.dump(doc).split('\r').forEach(element => {
+//         output.push(element);
+//     });
+//
+//     output.push("'''");
+//     output.push("");
+// }
+//
+// export function AppendModuleExamples(output: string[], model: CodeModel, isCollection: boolean)
+// {
+//     output.push("EXAMPLES = '''");
+//
+//     let pp = new ExamplePostProcessor(model.Module);
+//     let examples = model.ModuleExamples;
+//     let processedExamples: any[] = []
+//
+//     for (let exampleIdx in examples)
+//     {
+//         let example = examples[exampleIdx];
+//         processedExamples.push(pp.ProcessExample(example, isCollection ? ExampleType.AnsibleCollection : ExampleType.Ansible, false));
+//     }
+//
+//     yaml.dump(processedExamples).split(/\r?\n/).forEach(element => {
+//         output.push(element);
+//     });
+//
+//     output.push("'''");
+//     output.push("");
+// }
+//
+// export function AppendModuleReturnDoc(output: string[], model: CodeModel, isInfoModule: boolean)
+// {
+//     output.push("RETURN = '''");
+//
+//     let doc: any = isInfoModule ? ModuleInfoReturnResponseFields(model) : ModuleReturnResponseFields(model);
+//
+//     yaml.dump(doc).split(/\r?\n/).forEach(element => {
+//         output.push(element);
+//     });
+//
+//     output.push("'''");
+//
+// }
 
 export function AppendModuleArgSpec(output: string[], model: CodeModel, mainModule: boolean, useSdk: boolean)
 {

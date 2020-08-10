@@ -7,24 +7,23 @@ import { ArtifactType, FileCallback, LogCallback } from "../../index"
 // import { Example } from "../Common/Example";
 
 import { MapModuleGroup } from "../Common/ModuleMap";
-import { CodeModel } from "../Common/CodeModel";
+import { CodeModel} from "../Common/CodeModel";
 
 import { GenerateModuleRest } from "./AnsibleModuleRest";
 import { GenerateModuleRestInfo } from "./AnsibleModuleRestInfo";
 import { GenerateModuleSdk } from "./AnsibleModuleSdk";
 import { GenerateModuleSdkInfo } from "./AnsibleModuleSdkInfo";
+import {CodeModelGroup} from "../Common/CodeModelGroup";
 
 export function GenerateAnsible(artifactType: ArtifactType,
-                                map: MapModuleGroup,
+                                modelGroup: CodeModelGroup,
                                 fileCb: FileCallback,
                                 logCb: LogCallback)
 {
     let path: string = "lib/ansible/modules/cloud/azure/";
 
     let index = 0;
-    while (index < map.Modules.length)
-    {
-        let model = new CodeModel(map, index);
+    for(let model of modelGroup.models){
         try
         {
             if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk)

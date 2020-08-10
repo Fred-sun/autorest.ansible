@@ -8,11 +8,11 @@ import {
     ModuleTopLevelOptionsVariables,
     GetFixUrlStatements,
     AppendModuleHeader,
-    AppendModuleDocumentation,
-    AppendModuleExamples,
+    // AppendModuleDocumentation,
+    // AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
-    AppendModuleReturnDoc,
+    // AppendModuleReturnDoc,
     AppendInfoModuleLogic
 } from "./AnsibleModuleCommon"
 
@@ -20,9 +20,9 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    AppendModuleDocumentation(output, model, true, collection);
-    AppendModuleExamples(output, model, collection);
-    AppendModuleReturnDoc(output, model, true);
+    // AppendModuleDocumentation(output, model, true, collection);
+    // AppendModuleExamples(output, model, collection);
+    // AppendModuleReturnDoc(output, model, true);
 
     output.push("");
     output.push("import time");
@@ -34,7 +34,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     
     output.push("");
     output.push("");
-    output.push("class " + model.ModuleClassName + "(AzureRMModuleBase):");
+    output.push("class " + model.ModuleClassName + "Info(AzureRMModuleBase):");
     output.push("    def __init__(self):");
 
     AppendModuleArgSpec(output, model, false, false);
