@@ -39,10 +39,10 @@ export async function main() {
             const jsyaml = require('js-yaml');
             let climodel = jsyaml.safeLoad(iff);
             for (let m of climodel.operationGroups){
-                Info("moduleName: "+m["$key"]);
+                Info("============== moduleName: "+m["$key"]+" =================");
                 for (let method of m.operations){
-                    Info("  method: "+method.requests[0].protocol.http.method);
-                    Info("  path:" + method.requests[0].protocol.http.path);
+                    Info("      method: "+method.requests[0].protocol.http.method);
+                    Info("      path:" + method.requests[0].protocol.http.path);
                 }
             }
         }
