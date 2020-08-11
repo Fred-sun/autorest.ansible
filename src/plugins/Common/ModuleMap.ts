@@ -75,6 +75,9 @@ export class ModuleOption {
     public DispositionRest: string = null;
     public NamePythonSdk: string = null;
     public Kind:ModuleOptionKind;
+    public SwaggerPath: string[]= [];
+    public Computed: boolean;
+
 }
 export class MapModuleGroup {
     public Modules: ModuleMap[] = [];

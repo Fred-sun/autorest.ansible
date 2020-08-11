@@ -265,3 +265,24 @@ export function parseResourceId(mpath: string): Map<string, string> {
     }
     return ret;
 }
+
+export function TrimPackageName(value: string, packageName: string): string {
+    // check if the package name straddles a casing boundary, if it
+    // does then don't trim the name.  e.g. if value == "SubscriptionState"
+    // and packageName == "subscriptions" it would be incorrect to remove
+    // the package name from the value.
+
+    let straddle: boolean = value.length > packageName.length && (value[packageName.length].toLowerCase() === value[packageName.length]);
+
+    var originalLen = value.length;
+
+    if (!straddle && (value.length > packageName.length))
+    {
+        if (value.toLowerCase().startsWith(packageName.toLowerCase()))
+        {
+            value = value.substr(packageName.length);
+        }
+    }
+
+    return value;
+}

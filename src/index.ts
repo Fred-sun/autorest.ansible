@@ -28,7 +28,13 @@ export async function main() {
             }
             infoStr.push(s);
         }
-
+        function Debug(s: string)
+        {
+                autoRestApi.Message({
+                    Channel: Channel.Debug,
+                    Text: s
+                });
+        }
         function WriteFile(path: string, rows: string[])
         {
             autoRestApi.WriteFile(path, rows.join('\r\n'));
@@ -46,6 +52,9 @@ export async function main() {
                 Info("============== moduleName: "+m["$key"]+" =================");
                 let idx1 = 1;
                 for (let method of m.operations){
+                    if(idx1 == 1)
+                        Debug(yaml.dump(method));
+
                     Info("============== method: "+idx1+"  =================");
                     Info("      method: "+method.requests[0].protocol.http.method);
                     Info("      path:" + method.requests[0].protocol.http.path);
@@ -59,7 +68,7 @@ export async function main() {
                 }
             }
         }
-        WriteFile("./test.txt", infoStr);
+        // WriteFile("./test.txt", infoStr);
     });
     extension.Run();
 }

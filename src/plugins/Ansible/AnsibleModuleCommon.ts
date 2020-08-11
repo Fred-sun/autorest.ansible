@@ -292,8 +292,8 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
     {
         var option: ModuleOption = options[i];
 
-        if (option.Hidden)
-            continue;
+        // if (option.Hidden)
+        //     continue;
 
         if (!option.IncludeInArgSpec)
             continue;
@@ -303,8 +303,8 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
             continue;
 
         // for info modules, only options included in path should be included
-        if (!mainModule && option.DispositionSdk != "*")
-            continue;
+        // if (!mainModule && option.DispositionSdk != "*")
+        //     continue;
 
         let defaultOrRequired: boolean = (option.DefaultValue != null) || option.Required;
         let choices: boolean = (option.EnumValues != null) && option.EnumValues.length > 0;
