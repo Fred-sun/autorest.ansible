@@ -53,7 +53,7 @@ export async function main() {
                 let idx1 = 1;
                 for (let method of m.operations){
                     if(idx1 == 1)
-                        Debug(yaml.dump(method));
+                        Debug(""+yaml.dump(method));
 
                     Info("============== method: "+idx1+"  =================");
                     Info("      method: "+method.requests[0].protocol.http.method);
