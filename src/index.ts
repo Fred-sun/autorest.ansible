@@ -50,22 +50,22 @@ export async function main() {
             // modelGroup.init();
             for (let m of climodel.operationGroups){
                 Info("============== moduleName: "+m["$key"]+" =================");
-                Info(""+yaml.dump(m));
-                // let idx1 = 1;
-                // for (let method of m.operations){
-                //     Info("============== method: "+idx1+"  =================");
-                //     Info("      method: "+method.requests[0].protocol.http.method);
-                //     Info("      name: "+method.language.default.name);
-                //     Info("      path:" + method.requests[0].protocol.http.path);
-                //
-                //     idx1++;
-                //     let idx2 = 1;
-                //     for (var p of method.parameters){
-                //         Info("============parameter: "+idx2 + "==============")
-                //         Info("" + yaml.dump(p));
-                //         idx2++;
-                //     }
-                // }
+
+                let idx1 = 1;
+                for (let method of m.operations){
+                    Info("============== method: "+idx1+"  =================");
+                    Info("      method: "+method.requests[0].protocol.http.method);
+                    Info("      name: "+method.language.default.name);
+                    Info("      path:" + method.requests[0].protocol.http.path);
+                    Info("      version:" + method.apiVersions[0].version)
+                    idx1++;
+                    let idx2 = 1;
+                    for (var p of method.parameters){
+                        Info("============parameter: "+idx2 + "==============")
+                        Info("" + yaml.dump(p));
+                        idx2++;
+                    }
+                }
             }
         }
         WriteFile("./test2.txt", infoStr);
