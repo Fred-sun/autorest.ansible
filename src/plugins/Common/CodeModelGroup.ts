@@ -266,7 +266,7 @@ export class CodeModelGroup {
 
 
 
-        option.SetSchemaName(ToSnakeCase(name));
+        // option.SetSchemaName(ToSnakeCase(name));
         // this.ClassifyOptionSchemaType(p.schema, option);
         //
         // option.ExpandFunc = this.GetOptionExpandFunc(option.Type);
