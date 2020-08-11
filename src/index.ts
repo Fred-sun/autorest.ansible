@@ -46,29 +46,29 @@ export async function main() {
         for (let iff of inputFiles){
             const jsyaml = require('js-yaml');
             let climodel = jsyaml.safeLoad(iff);
-            // let modelGroup = new CodeModelGroup(climodel, Info);
-            // modelGroup.init();
-            for (let m of climodel.operationGroups){
-                Info("============== moduleName: "+m["$key"]+" =================");
-                Info("      version:" + m.apiVersions[0].version)
-                let idx1 = 1;
-                for (let method of m.operations){
-                    Info("============== method: "+idx1+"  =================");
-                    Info("      method: "+method.requests[0].protocol.http.method);
-                    Info("      name: "+method.language.default.name);
-                    Info("      path:" + method.requests[0].protocol.http.path);
-                    Info("      version:" + method.apiVersions[0].version)
-                    idx1++;
-                    let idx2 = 1;
-                    for (var p of method.parameters){
-                        Info("============parameter: "+idx2 + "==============")
-                        Info("" + yaml.dump(p));
-                        idx2++;
-                    }
-                }
-            }
+            let modelGroup = new CodeModelGroup(climodel, Info);
+            modelGroup.init();
+            // for (let m of climodel.operationGroups){
+            //     Info("============== moduleName: "+m["$key"]+" =================");
+            //
+            //     let idx1 = 1;
+            //     for (let method of m.operations){
+            //         Info("============== method: "+idx1+"  =================");
+            //         Info("      method: "+method.requests[0].protocol.http.method);
+            //         Info("      name: "+method.language.default.name);
+            //         Info("      path:" + method.requests[0].protocol.http.path);
+            //         Info("      version:" + method.apiVersions[0].version)
+            //         idx1++;
+            //         let idx2 = 1;
+            //         for (var p of method.parameters){
+            //             Info("============parameter: "+idx2 + "==============")
+            //             Info("" + yaml.dump(p));
+            //             idx2++;
+            //         }
+            //     }
+            // }
         }
-        WriteFile("./test2.txt", infoStr);
+        // WriteFile("./test2.txt", infoStr);
     });
     extension.Run();
 }

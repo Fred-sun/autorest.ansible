@@ -23,6 +23,7 @@ export class CodeModelGroup {
                 this.AddMethod(method, codeModel);
 
             }
+            codeModel.ModuleApiVersion = m.operations[0].apiVersions[0].version;
         }
     }
 
