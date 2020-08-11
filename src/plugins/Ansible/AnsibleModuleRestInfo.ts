@@ -94,7 +94,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
             output.push("                    '/" + broken[i] + "'");
         }
         output[output.length - 1] += ")";
-        let fixurl = GetFixUrlStatements(model);
+        let fixurl = GetFixUrlStatements(m);
         fixurl.forEach(element => {
             output.push("        " + element);
         });

@@ -21,6 +21,7 @@ export class CodeModelGroup {
             codeModel.BasicURL = this.GetBasicCRUDUrl(m.operations);
             for (let method of m.operations){
                 this.AddMethod(method, codeModel);
+
             }
         }
     }
@@ -175,6 +176,7 @@ export class CodeModelGroup {
         // }
 
         codeModel.ModuleMethods.push(moduleMethod);
+        codeModel.ModuleOptions.concat(moduleMethod.Options);
     }
 
     private LoadModuleOption(p: any, isResponse:boolean = false): ModuleOption {

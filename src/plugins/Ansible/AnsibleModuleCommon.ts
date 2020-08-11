@@ -545,10 +545,35 @@ export function ModuleGenerateApiCall(output: string[], indent: string, model: C
     return output;
 }
 
-export function GetFixUrlStatements(model: CodeModel): string[]
+// export function GetFixUrlStatements(model: CodeModel): string[]
+// {
+//     let ss: string[] = [];
+//     let url = model.ModuleUrl;
+//
+//     let parts: string[] = url.split('{{');
+//
+//     for (let part of parts)
+//     {
+//         if (! part.startsWith('/'))
+//         {
+//             let last: boolean = (part == parts[parts.length - 1]);
+//             part = part.split('}}')[0];
+//             let variable = part.trim();
+//             if (last && variable.endsWith("_name"))
+//             {
+//                 variable = "name";
+//             }
+//             ss.push("self.url = self.url.replace('{{" + part + "}}', self." + variable + ")");
+//         }
+//     }
+//
+//     return ss;
+// }
+
+export function GetFixUrlStatements(method: ModuleMethod): string[]
 {
     let ss: string[] = [];
-    let url = model.ModuleUrl;
+    let url = method.Url;
 
     let parts: string[] = url.split('{{');
 
@@ -569,6 +594,7 @@ export function GetFixUrlStatements(model: CodeModel): string[]
 
     return ss;
 }
+
 
 function ModuleReturnResponseFields(model: CodeModel): any
 {
