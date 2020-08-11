@@ -4,6 +4,7 @@ input file:code-model-v4.yaml,code-model-v4-no-tags.yaml
       method: get
       name: List
       path:/providers/Microsoft.Compute/operations
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -78,6 +79,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -247,6 +249,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -416,6 +419,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -585,6 +589,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -754,6 +759,7 @@ protocol:
       method: get
       name: ListBySubscription
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/availabilitySets
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -898,6 +904,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -1039,6 +1046,7 @@ protocol:
       method: get
       name: ListAvailableSizes
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -1209,6 +1217,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -1378,6 +1387,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -1547,6 +1557,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -1716,6 +1727,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -1916,6 +1928,7 @@ protocol:
       method: get
       name: ListBySubscription
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/proximityPlacementGroups
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -2029,6 +2042,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -2171,6 +2185,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -2340,6 +2355,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -2509,6 +2525,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -2678,6 +2695,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -2892,6 +2910,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -3033,6 +3052,7 @@ protocol:
       method: get
       name: ListBySubscription
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/hostGroups
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -3147,6 +3167,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -3344,6 +3365,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -3541,6 +3563,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -3738,6 +3761,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -3974,6 +3998,7 @@ protocol:
       method: get
       name: ListByHostGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -4144,6 +4169,7 @@ protocol:
       method: get
       name: ListBySubscription
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/sshPublicKeys
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -4257,6 +4283,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -4398,6 +4425,7 @@ protocol:
       method: put
       name: Create
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -4567,6 +4595,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -4736,6 +4765,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -4905,6 +4935,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -5074,6 +5105,7 @@ protocol:
       method: post
       name: GenerateKeyPair
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}/generateKeyPair
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -5244,6 +5276,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -5469,6 +5502,7 @@ protocol:
       method: get
       name: ListTypes
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -5638,6 +5672,7 @@ protocol:
       method: get
       name: ListVersions
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -5918,6 +5953,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -6119,6 +6155,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -6316,6 +6353,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -6513,6 +6551,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -6737,6 +6776,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -6934,6 +6974,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -7187,6 +7228,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -7494,6 +7536,7 @@ protocol:
       method: get
       name: ListOffers
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -7663,6 +7706,7 @@ protocol:
       method: get
       name: ListPublishers
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -7804,6 +7848,7 @@ protocol:
       method: get
       name: ListSkus
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -8002,6 +8047,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -8145,6 +8191,7 @@ protocol:
       method: get
       name: ListByLocation
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -8291,6 +8338,7 @@ protocol:
       method: post
       name: Capture
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/capture
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -8460,6 +8508,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -8629,6 +8678,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -8798,6 +8848,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -8967,6 +9018,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -9175,6 +9227,7 @@ protocol:
       method: get
       name: InstanceView
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/instanceView
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -9344,6 +9397,7 @@ protocol:
       method: post
       name: ConvertToManagedDisks
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/convertToManagedDisks
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -9513,6 +9567,7 @@ protocol:
       method: post
       name: Deallocate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/deallocate
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -9682,6 +9737,7 @@ protocol:
       method: post
       name: Generalize
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/generalize
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -9851,6 +9907,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -9992,6 +10049,7 @@ protocol:
       method: get
       name: ListAll
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -10136,6 +10194,7 @@ protocol:
       method: get
       name: ListAvailableSizes
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/vmSizes
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -10305,6 +10364,7 @@ protocol:
       method: post
       name: PowerOff
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/powerOff
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -10505,6 +10565,7 @@ protocol:
       method: post
       name: Reapply
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/reapply
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -10674,6 +10735,7 @@ protocol:
       method: post
       name: Restart
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/restart
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -10843,6 +10905,7 @@ protocol:
       method: post
       name: Start
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/start
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -11012,6 +11075,7 @@ protocol:
       method: post
       name: Redeploy
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/redeploy
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -11181,6 +11245,7 @@ protocol:
       method: post
       name: Reimage
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/reimage
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -11350,6 +11415,7 @@ protocol:
       method: post
       name: RetrieveBootDiagnosticsData
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/retrieveBootDiagnosticsData
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -11553,6 +11619,7 @@ protocol:
       method: post
       name: PerformMaintenance
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/performMaintenance
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -11722,6 +11789,7 @@ protocol:
       method: post
       name: SimulateEviction
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/simulateEviction
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -11891,6 +11959,7 @@ protocol:
       method: post
       name: AssessPatches
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/assessPatches
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -12060,6 +12129,7 @@ protocol:
       method: post
       name: RunCommand
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommand
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -12230,6 +12300,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -12373,6 +12444,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -12542,6 +12614,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -12711,6 +12784,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -12880,6 +12954,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -13076,6 +13151,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -13217,6 +13293,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -13331,6 +13408,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -13500,6 +13578,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -13669,6 +13748,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -13838,6 +13918,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -14007,6 +14088,7 @@ protocol:
       method: post
       name: Deallocate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/deallocate
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -14176,6 +14258,7 @@ protocol:
       method: post
       name: DeleteInstances
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/delete
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -14345,6 +14428,7 @@ protocol:
       method: get
       name: GetInstanceView
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/instanceView
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -14514,6 +14598,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -14655,6 +14740,7 @@ protocol:
       method: get
       name: ListAll
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -14768,6 +14854,7 @@ protocol:
       method: get
       name: ListSkus
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/skus
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -14937,6 +15024,7 @@ protocol:
       method: get
       name: GetOsUpgradeHistory
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osUpgradeHistory
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -15106,6 +15194,7 @@ protocol:
       method: post
       name: PowerOff
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/poweroff
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -15306,6 +15395,7 @@ protocol:
       method: post
       name: Restart
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/restart
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -15475,6 +15565,7 @@ protocol:
       method: post
       name: Start
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/start
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -15644,6 +15735,7 @@ protocol:
       method: post
       name: Redeploy
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/redeploy
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -15813,6 +15905,7 @@ protocol:
       method: post
       name: PerformMaintenance
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/performMaintenance
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -15982,6 +16075,7 @@ protocol:
       method: post
       name: UpdateInstances
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/manualupgrade
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -16151,6 +16245,7 @@ protocol:
       method: post
       name: Reimage
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/reimage
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -16320,6 +16415,7 @@ protocol:
       method: post
       name: ReimageAll
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/reimageall
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -16489,6 +16585,7 @@ protocol:
       method: post
       name: ForceRecoveryServiceFabricPlatformUpdateDomainWalk
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/forceRecoveryServiceFabricPlatformUpdateDomainWalk
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -16687,6 +16784,7 @@ protocol:
       method: post
       name: ConvertToSinglePlacementGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/convertToSinglePlacementGroup
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -16856,6 +16954,7 @@ protocol:
       method: post
       name: SetOrchestrationServiceState
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/setOrchestrationServiceState
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -17026,6 +17125,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -17227,6 +17327,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -17424,6 +17525,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -17621,6 +17723,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -17845,6 +17948,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -18015,6 +18119,7 @@ protocol:
       method: post
       name: Cancel
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/cancel
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -18184,6 +18289,7 @@ protocol:
       method: post
       name: StartOsUpgrade
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osRollingUpgrade
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -18353,6 +18459,7 @@ protocol:
       method: post
       name: StartExtensionUpgrade
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensionRollingUpgrade
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -18522,6 +18629,7 @@ protocol:
       method: get
       name: GetLatest
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/latest
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -18692,6 +18800,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -18917,6 +19026,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -19142,6 +19252,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -19367,6 +19478,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -19619,6 +19731,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -19844,6 +19957,7 @@ protocol:
       method: post
       name: Reimage
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/reimage
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -20041,6 +20155,7 @@ protocol:
       method: post
       name: ReimageAll
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/reimageall
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -20238,6 +20353,7 @@ protocol:
       method: post
       name: Deallocate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/deallocate
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -20435,6 +20551,7 @@ protocol:
       method: put
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -20636,6 +20753,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -20833,6 +20951,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -21069,6 +21188,7 @@ protocol:
       method: get
       name: GetInstanceView
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/instanceView
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -21266,6 +21386,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -21532,6 +21653,7 @@ protocol:
       method: post
       name: PowerOff
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/poweroff
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -21760,6 +21882,7 @@ protocol:
       method: post
       name: Restart
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/restart
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -21957,6 +22080,7 @@ protocol:
       method: post
       name: Start
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/start
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -22154,6 +22278,7 @@ protocol:
       method: post
       name: Redeploy
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/redeploy
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -22351,6 +22476,7 @@ protocol:
       method: post
       name: RetrieveBootDiagnosticsData
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/retrieveBootDiagnosticsData
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -22582,6 +22708,7 @@ protocol:
       method: post
       name: PerformMaintenance
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/performMaintenance
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -22779,6 +22906,7 @@ protocol:
       method: post
       name: SimulateEviction
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/simulateEviction
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -22976,6 +23104,7 @@ protocol:
       method: post
       name: RunCommand
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/runCommand
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -23174,6 +23303,7 @@ protocol:
       method: post
       name: ExportRequestRateByInterval
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getRequestRateByInterval
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -23316,6 +23446,7 @@ protocol:
       method: post
       name: ExportThrottledRequests
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getThrottledRequests
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -23459,6 +23590,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -23601,6 +23733,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands/{commandId}
+      version:2020-06-01
 ============parameter: 1==============
 schema:
   type: string
@@ -23772,6 +23905,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus
+      version:2019-04-01
 ============parameter: 1==============
 schema:
   type: string
@@ -23917,6 +24051,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -24093,6 +24228,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -24269,6 +24405,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -24445,6 +24582,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -24621,6 +24759,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -24763,6 +24902,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -24876,6 +25016,7 @@ protocol:
       method: post
       name: GrantAccess
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/beginGetAccess
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -25052,6 +25193,7 @@ protocol:
       method: post
       name: RevokeAccess
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/endGetAccess
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -25229,6 +25371,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -25405,6 +25548,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -25581,6 +25725,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -25757,6 +25902,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -25933,6 +26079,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -26075,6 +26222,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -26188,6 +26336,7 @@ protocol:
       method: post
       name: GrantAccess
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -26364,6 +26513,7 @@ protocol:
       method: post
       name: RevokeAccess
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -26541,6 +26691,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -26719,6 +26870,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -26897,6 +27049,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -27075,6 +27228,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -27253,6 +27407,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -27395,6 +27550,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -27509,6 +27665,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -27687,6 +27844,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -27865,6 +28023,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -28043,6 +28202,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -28221,6 +28381,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -28363,6 +28524,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -28476,6 +28638,7 @@ protocol:
       method: get
       name: GetPrivateLinkResources
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateLinkResources
+      version:2020-05-01
 ============parameter: 1==============
 schema:
   type: string
@@ -28655,6 +28818,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -28831,6 +28995,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -29007,6 +29172,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -29177,6 +29343,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -29347,6 +29514,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -29489,6 +29657,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -29603,6 +29772,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -29811,6 +29981,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -30019,6 +30190,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -30221,6 +30393,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -30423,6 +30596,7 @@ protocol:
       method: get
       name: ListByGallery
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -30598,6 +30772,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -30840,6 +31015,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -31082,6 +31258,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -31368,6 +31545,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -31602,6 +31780,7 @@ protocol:
       method: get
       name: ListByGalleryImage
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -31809,6 +31988,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -32017,6 +32197,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -32225,6 +32406,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -32427,6 +32609,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -32629,6 +32812,7 @@ protocol:
       method: get
       name: ListByGallery
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -32804,6 +32988,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -33046,6 +33231,7 @@ protocol:
       method: patch
       name: Update
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -33288,6 +33474,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -33574,6 +33761,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -33808,6 +33996,7 @@ protocol:
       method: get
       name: ListByGalleryApplication
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions
+      version:2019-12-01
 ============parameter: 1==============
 schema:
   type: string
@@ -34015,6 +34204,7 @@ protocol:
       method: get
       name: List
       path:/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices
+      version:2017-01-31
 ============parameter: 1==============
 schema:
   type: string
@@ -34128,6 +34318,7 @@ protocol:
       method: put
       name: CreateOrUpdate
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}
+      version:2017-01-31
 ============parameter: 1==============
 schema:
   type: string
@@ -34301,6 +34492,7 @@ protocol:
       method: get
       name: Get
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}
+      version:2017-01-31
 ============parameter: 1==============
 schema:
   type: string
@@ -34474,6 +34666,7 @@ protocol:
       method: delete
       name: Delete
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}
+      version:2017-01-31
 ============parameter: 1==============
 schema:
   type: string
@@ -34647,6 +34840,7 @@ protocol:
       method: get
       name: ListByResourceGroup
       path:/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices
+      version:2017-01-31
 ============parameter: 1==============
 schema:
   type: string
