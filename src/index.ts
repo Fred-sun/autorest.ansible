@@ -1,6 +1,7 @@
 import { AutoRestExtension, Channel, Host } from "@azure-tools/autorest-extension-base";
 import {CodeModelGroup} from "./plugins/Common/CodeModelGroup";
 import * as yaml from "node-yaml";
+import {GenerateAnsible} from "./plugins/Ansible/Generator";
 
 
 export type LogCallback = (message: string) => void;
@@ -48,6 +49,7 @@ export async function main() {
             let climodel = jsyaml.safeLoad(iff);
             let modelGroup = new CodeModelGroup(climodel, Info);
             modelGroup.init();
+            GenerateAnsible(ArtifactType.ArtifactTypeAnsibleRest, modelGroup, WriteFile, Info);
             // for (let m of climodel.operationGroups){
             //     Info("============== moduleName: "+m["$key"]+" =================");
             //

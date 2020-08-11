@@ -24,7 +24,9 @@ export class CodeModelGroup {
 
             }
             codeModel.ModuleApiVersion = m.operations[0].apiVersions[0].version;
+            this.models.push(codeModel);
         }
+
     }
 
     private GetBasicCRUDUrl(methods: any[]): string {
