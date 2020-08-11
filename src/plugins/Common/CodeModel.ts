@@ -88,6 +88,10 @@ export class CodeModel {
     }
 
     public GetMethodOptions(methodName:string, bo:boolean):ModuleOption[]{
+        for (let method of this.ModuleMethods){
+            if (methodName == method.Name)
+                return method.Options;
+        }
         return null;
     }
     public GetModuleClassName(){
