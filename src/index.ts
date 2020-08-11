@@ -50,7 +50,7 @@ export async function main() {
             // modelGroup.init();
             for (let m of climodel.operationGroups){
                 Info("============== moduleName: "+m["$key"]+" =================");
-
+                Info("      version:" + m.apiVersions[0].version)
                 let idx1 = 1;
                 for (let method of m.operations){
                     Info("============== method: "+idx1+"  =================");
