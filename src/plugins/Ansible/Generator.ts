@@ -49,12 +49,12 @@ export function GenerateAnsible(artifactType: ArtifactType,
             //   fileCb(path + model.ModuleName + ".py", GenerateModuleSdkInfo(model));
             // }
 
-            // if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
-            // {
-            //
-            //     fileCb(path + model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
-            // }
-            //
+            if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
+            {
+                if (model.ModuleName == "Galleries")
+                    fileCb(path + model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
+            }
+
             // if (artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
             // {
             //   fileCb(path + model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", GenerateModuleRestInfo(model, true));
