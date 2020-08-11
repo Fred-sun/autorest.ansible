@@ -52,7 +52,7 @@ export function GenerateAnsible(artifactType: ArtifactType,
             if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
             {
                 if (model.ModuleName == "Galleries")
-                    fileCb(path + model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
+                    fileCb( model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
             }
 
             // if (artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
