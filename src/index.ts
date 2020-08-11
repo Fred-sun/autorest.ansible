@@ -52,23 +52,23 @@ export async function main() {
                 Info("============== moduleName: "+m["$key"]+" =================");
                 let idx1 = 1;
                 for (let method of m.operations){
-
+                    Info("============== method: "+idx1+"  =================");
                     Debug(""+yaml.dump(method));
 
-                    Info("============== method: "+idx1+"  =================");
-                    Info("      method: "+method.requests[0].protocol.http.method);
-                    Info("      path:" + method.requests[0].protocol.http.path);
+
+                    // Info("      method: "+method.requests[0].protocol.http.method);
+                    // Info("      path:" + method.requests[0].protocol.http.path);
                     idx1++;
-                    let idx2 = 1;
-                    for (var p of method.parameters){
-                        Info("============parameter: "+idx2 + "==============")
-                        Info("" + yaml.dump(p));
-                        idx2++;
-                    }
+                    // let idx2 = 1;
+                    // for (var p of method.parameters){
+                    //     Info("============parameter: "+idx2 + "==============")
+                    //     Info("" + yaml.dump(p));
+                    //     idx2++;
+                    // }
                 }
             }
         }
-        // WriteFile("./test.txt", infoStr);
+        WriteFile("./test2.txt", infoStr);
     });
     extension.Run();
 }
