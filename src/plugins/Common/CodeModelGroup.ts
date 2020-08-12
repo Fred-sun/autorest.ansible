@@ -25,8 +25,8 @@ export class CodeModelGroup {
             for (let method of m.operations){
                 if( method.requests[0].protocol.http.method == "get")
                     this.AddMethod(method, infoCodeModel);
-                else
-                    this.AddMethod(method, mainCodeModel);
+                // else
+                //     this.AddMethod(method, mainCodeModel);
             }
             this.models.push(mainCodeModel);
             this.models.push(infoCodeModel);
@@ -57,11 +57,11 @@ export class CodeModelGroup {
 
     private AddMethod(method:any, codeModel:CodeModel)
     {
-
         var moduleMethod = new ModuleMethod();
         let name = method.language.default.name;
         moduleMethod.Name = name;
         moduleMethod.NameSwagger = name;
+        this._log("==============add method:" +name+"=================" );
         if (method.requests[0].protocol != undefined && method.requests[0].protocol.http != undefined) {
             moduleMethod.Url = (method.requests[0].protocol.http.path != undefined) ? method.requests[0].protocol.http.path : "";
             moduleMethod.HttpMethod = (method.requests[0].protocol.http.method != undefined) ? method.requests[0].protocol.http.method : "";
@@ -73,26 +73,25 @@ export class CodeModelGroup {
         for (var p of method.parameters)
         {
             let option: ModuleOption = this.LoadModuleOption(p);
-
             if (option != undefined) {
-                // this._log("add option:" + option.NameSwagger + " for method:" + moduleMethod.Name);
+                this._log("     add option:" + option.NameAnsible + " for method:" + moduleMethod.Name);
                 if (option.Kind === ModuleOptionKind.MODULE_OPTION_PATH)
                 {
-                    let splittedId: string[] = moduleMethod.Url.split("/{" + option.NameSwagger + '}');
-
-                    if (splittedId.length == 2)
-                    {
-                        option.IdPortion = splittedId[0].split('/').pop();
-                    }
-                    else
-                    {
-                        this._log("ERROR: COULDN'T EXTRACT ID PORTION");
-                        splittedId.forEach(element => {
-                            this._log(" ... part: " + element);
-                        });
-                        this._log(" ... {" + option.NameSwagger + "}");
-                        this._log(" ... " + moduleMethod.Url);
-                    }
+                    // let splittedId: string[] = moduleMethod.Url.split("/{" + option.NameSwagger + '}');
+                    //
+                    // if (splittedId.length == 2)
+                    // {
+                    //     option.IdPortion = splittedId[0].split('/').pop();
+                    // }
+                    // else
+                    // {
+                    //     this._log("ERROR: COULDN'T EXTRACT ID PORTION");
+                    //     splittedId.forEach(element => {
+                    //         this._log(" ... part: " + element);
+                    //     });
+                    //     this._log(" ... {" + option.NameSwagger + "}");
+                    //     this._log(" ... " + moduleMethod.Url);
+                    // }
 
                     // /* ajust path option schema name. */
                     // let name = option.NameSwagger;
@@ -199,7 +198,7 @@ export class CodeModelGroup {
 
     private LoadOption(p: any, isResponse:boolean = false, filterFunction: (name: string) => (boolean), parent: ModuleOption = null): ModuleOption {
         let name = p.language.default.name;
-        this._log("load option:" + name);
+        // this._log("load option:" + name);
         if (filterFunction(name)) return undefined;
         let serializedName = p.language.default.serializedName;
         let extensions:any = p.extensions;
