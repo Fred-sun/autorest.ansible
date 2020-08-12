@@ -3,6 +3,7 @@ import {CodeModel, SwaggerModelType} from "./CodeModel";
 import {ModuleMethod, ModuleOption, ModuleOptionKind} from "./ModuleMap";
 import {ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
 import {pascalCase} from "@azure-tools/codegen";
+import {Info} from "@azure-tools/codemodel";
 
 export class CodeModelGroup {
     private _swagger: any = null;
@@ -27,6 +28,9 @@ export class CodeModelGroup {
                     this.AddMethod(method, infoCodeModel);
                 // else
                 //     this.AddMethod(method, mainCodeModel);
+            }
+            for (let option of infoCodeModel.ModuleOptions){
+                this._log("      option:" + option.Name);
             }
             this.models.push(mainCodeModel);
             this.models.push(infoCodeModel);
@@ -61,7 +65,7 @@ export class CodeModelGroup {
         let name = method.language.default.name;
         moduleMethod.Name = name;
         moduleMethod.NameSwagger = name;
-        this._log("     method" + name );
+        // this._log("     method" + name );
         if (method.requests[0].protocol != undefined && method.requests[0].protocol.http != undefined) {
             moduleMethod.Url = (method.requests[0].protocol.http.path != undefined) ? method.requests[0].protocol.http.path : "";
             moduleMethod.HttpMethod = (method.requests[0].protocol.http.method != undefined) ? method.requests[0].protocol.http.method : "";
@@ -74,7 +78,7 @@ export class CodeModelGroup {
         {
             let option: ModuleOption = this.LoadModuleOption(p);
             if (option != undefined) {
-                this._log("             add option:" + option.NameAnsible );
+                // this._log("             add option:" + option.NameAnsible );
                 if (option.Kind === ModuleOptionKind.MODULE_OPTION_PATH)
                 {
                     // let splittedId: string[] = moduleMethod.Url.split("/{" + option.NameSwagger + '}');
