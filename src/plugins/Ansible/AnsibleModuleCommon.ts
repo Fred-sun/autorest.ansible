@@ -307,7 +307,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
         // if (!mainModule && option.DispositionSdk != "*")
         //     continue;
 
-        let defaultOrRequired: boolean = (option.DefaultValue != null) || option.Required;
+        let required: boolean =  option.Required;
         let choices: boolean = (option.EnumValues != null) && option.EnumValues.length > 0;
 
         // add coma before previous option
@@ -393,7 +393,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
             }
         }
 
-        if (defaultOrRequired)
+        if (required)
         {
             argSpec.push(argSpec.pop() + ",");
             if (option.DefaultValue != null)

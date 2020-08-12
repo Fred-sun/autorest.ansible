@@ -234,6 +234,7 @@ export class CodeModelGroup {
 
         option.Required = required;
         option.Documentation = description;
+        option.type = type;
         if (parent !== null) {
             option.SwaggerPath = option.SwaggerPath.concat(parent.SwaggerPath);
         }
