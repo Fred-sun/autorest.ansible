@@ -21,7 +21,7 @@ export class CodeModelGroup {
             let infoCodeModel = new CodeModel(m["$key"], true);
             infoCodeModel.BasicURL = this.GetBasicCRUDUrl(m.operations);
             infoCodeModel.ModuleApiVersion = m.operations[0].apiVersions[0].version;
-
+            this._log("===============Module:"+infoCodeModel.ModuleName+"=====================");
             for (let method of m.operations){
                 if( method.requests[0].protocol.http.method == "get")
                     this.AddMethod(method, infoCodeModel);
@@ -61,7 +61,7 @@ export class CodeModelGroup {
         let name = method.language.default.name;
         moduleMethod.Name = name;
         moduleMethod.NameSwagger = name;
-        this._log("==============add method:" +name+"=================" );
+        this._log("     method" + name );
         if (method.requests[0].protocol != undefined && method.requests[0].protocol.http != undefined) {
             moduleMethod.Url = (method.requests[0].protocol.http.path != undefined) ? method.requests[0].protocol.http.path : "";
             moduleMethod.HttpMethod = (method.requests[0].protocol.http.method != undefined) ? method.requests[0].protocol.http.method : "";
@@ -74,7 +74,7 @@ export class CodeModelGroup {
         {
             let option: ModuleOption = this.LoadModuleOption(p);
             if (option != undefined) {
-                this._log("     add option:" + option.NameAnsible + " for method:" + moduleMethod.Name);
+                this._log("             add option:" + option.NameAnsible );
                 if (option.Kind === ModuleOptionKind.MODULE_OPTION_PATH)
                 {
                     // let splittedId: string[] = moduleMethod.Url.split("/{" + option.NameSwagger + '}');
