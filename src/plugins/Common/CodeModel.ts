@@ -114,6 +114,14 @@ export class CodeModel {
         else
             return "azure_rm_"+this.ObjectName.toLowerCase();
     }
+
+    public ModuleOptionExist(name: string):boolean{
+        for (let option of this.ModuleOptions){
+            if (option.Name == name)
+                return true;
+        }
+        return false;
+    }
 }
 
 

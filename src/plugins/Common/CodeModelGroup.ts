@@ -27,21 +27,25 @@ export class CodeModelGroup {
                 if( method.requests[0].protocol.http.method == "get"){
                     this.AddMethod(method, infoCodeModel);
                 }
-
-                // else
-                //     this.AddMethod(method, mainCodeModel);
+                else
+                    this.AddMethod(method, mainCodeModel);
             }
-            for (let method of infoCodeModel.ModuleMethods){
-                for (let option of method.Options)
-                    infoCodeModel.ModuleOptions.push(option);
-            }
+            this.AddModelModuleoptions(infoCodeModel);
+            this.AddModelModuleoptions(mainCodeModel);
             for (let option of infoCodeModel.ModuleOptions)
                 this._log("     Moduleoption: " + option.Name)
             this.models.push(mainCodeModel);
             this.models.push(infoCodeModel);
         }
     }
-
+    private AddModelModuleoptions(model:CodeModel){
+        for (let method of model.ModuleMethods){
+            for (let option of model.ModuleOptions){
+                if (!model.ModuleOptionExist(option.Name))
+                    model.ModuleOptions.push(option);
+            }
+        }
+    }
     private GetBasicCRUDUrl(methods: any[]): string {
         let baseUrl: string = "";
 
