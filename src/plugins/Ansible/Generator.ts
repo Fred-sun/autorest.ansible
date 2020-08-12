@@ -26,6 +26,24 @@ export function GenerateAnsible(artifactType: ArtifactType,
     for(let model of modelGroup.models){
         try
         {
+            logCb(model.ModuleName);
+            if (model.IsInfoModule){
+                if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk)
+                {
+                    fileCb(path + model.ModuleName + ".py", GenerateModuleSdkInfo(model));
+                }
+
+                if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
+                {
+
+                    fileCb( model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
+                }
+
+                if (artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
+                {
+                    fileCb(path + model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", GenerateModuleRestInfo(model, true));
+                }
+            }
             // if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk)
             // {
             //   fileCb(path + model.ModuleName + ".py", GenerateModuleSdk(model));
@@ -40,25 +58,11 @@ export function GenerateAnsible(artifactType: ArtifactType,
             // {
             //   fileCb(path + model.ModuleName.split('_').pop() + ".py", GenerateModuleRest(model, true));
             // }
-            //
-            // let mn = model.ModuleName.split("azure_rm_")[1];
 
-            logCb(model.ModuleName);
-            // if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk)
-            // {
-            //   fileCb(path + model.ModuleName + ".py", GenerateModuleSdkInfo(model));
-            // }
 
-            if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
-            {
-                if (model.ModuleName == "Galleries")
-                    fileCb( model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
-            }
 
-            // if (artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
-            // {
-            //   fileCb(path + model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", GenerateModuleRestInfo(model, true));
-            // }
+
+
         }
         catch (e)
         {
