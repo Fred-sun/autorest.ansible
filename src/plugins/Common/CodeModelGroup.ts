@@ -45,6 +45,23 @@ export class CodeModelGroup {
                     model.ModuleOptions.push(option);
             }
         }
+        for (let modelOption of model.ModuleOptions){
+            modelOption.Required = true;
+            for (let method of model.ModuleMethods){
+                let contains = false;
+                for (let methodOption of method.Options){
+                    if (methodOption.Name == modelOption.Name){
+                        contains = true;
+                        break
+                    }
+
+                }
+                if (!contains) {
+                    modelOption.Required = false;
+                    break;
+                }
+            }
+        }
     }
     private GetBasicCRUDUrl(methods: any[]): string {
         let baseUrl: string = "";
@@ -235,6 +252,7 @@ export class CodeModelGroup {
         option.Required = required;
         option.Documentation = description;
         option.type = type;
+        this._log(type);
         if (parent !== null) {
             option.SwaggerPath = option.SwaggerPath.concat(parent.SwaggerPath);
         }
