@@ -25,6 +25,17 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMResourceSkuInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            apiversion=dict(
+                type='',
+                required=true
+            ),
+            subscription_id=dict(
+                type='',
+                required=true
+            ),
+            filter=dict(
+                type=''
+            )
         )
 
 

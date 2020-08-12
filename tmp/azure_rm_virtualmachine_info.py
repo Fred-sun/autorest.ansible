@@ -25,6 +25,32 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMVirtualMachineInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            location=dict(
+                type='',
+                required=true
+            ),
+            apiversion=dict(
+                type='',
+                required=true
+            ),
+            subscription_id=dict(
+                type='',
+                required=true
+            ),
+            resource_group_name=dict(
+                type='',
+                required=true
+            ),
+            vm_name=dict(
+                type='',
+                required=true
+            ),
+            expand=dict(
+                type=''
+            ),
+            status_only=dict(
+                type=''
+            )
         )
 
 

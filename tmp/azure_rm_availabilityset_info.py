@@ -25,6 +25,25 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            resource_group_name=dict(
+                type='',
+                required=true
+            ),
+            availability_set_name=dict(
+                type='',
+                required=true
+            ),
+            apiversion=dict(
+                type='',
+                required=true
+            ),
+            subscription_id=dict(
+                type='',
+                required=true
+            ),
+            expand=dict(
+                type=''
+            )
         )
 
 

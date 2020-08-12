@@ -25,6 +25,26 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMGalleryApplicationInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            subscription_id=dict(
+                type='',
+                required=true
+            ),
+            resource_group_name=dict(
+                type='',
+                required=true
+            ),
+            gallery_name=dict(
+                type='',
+                required=true
+            ),
+            gallery_application_name=dict(
+                type='',
+                required=true
+            ),
+            apiversion=dict(
+                type='',
+                required=true
+            )
         )
 
 

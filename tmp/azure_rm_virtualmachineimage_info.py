@@ -25,6 +25,43 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            location=dict(
+                type='',
+                required=true
+            ),
+            publisher_name=dict(
+                type='',
+                required=true
+            ),
+            offer=dict(
+                type='',
+                required=true
+            ),
+            skus=dict(
+                type='',
+                required=true
+            ),
+            version=dict(
+                type='',
+                required=true
+            ),
+            apiversion=dict(
+                type='',
+                required=true
+            ),
+            subscription_id=dict(
+                type='',
+                required=true
+            ),
+            expand=dict(
+                type=''
+            ),
+            top=dict(
+                type=''
+            ),
+            orderby=dict(
+                type=''
+            )
         )
 
 

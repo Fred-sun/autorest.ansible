@@ -25,6 +25,22 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            apiversion=dict(
+                type='',
+                required=true
+            ),
+            subscription_id=dict(
+                type='',
+                required=true
+            ),
+            resource_group_name=dict(
+                type='',
+                required=true
+            ),
+            ssh_public_key_name=dict(
+                type='',
+                required=true
+            )
         )
 
 

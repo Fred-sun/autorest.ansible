@@ -25,6 +25,22 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            location=dict(
+                type='',
+                required=true
+            ),
+            apiversion=dict(
+                type='',
+                required=true
+            ),
+            subscription_id=dict(
+                type='',
+                required=true
+            ),
+            command_id=dict(
+                type='',
+                required=true
+            )
         )
 
 
