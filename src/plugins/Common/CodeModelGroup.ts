@@ -40,7 +40,7 @@ export class CodeModelGroup {
     }
     private AddModelModuleoptions(model:CodeModel){
         for (let method of model.ModuleMethods){
-            for (let option of model.ModuleOptions){
+            for (let option of method.Options){
                 if (!model.ModuleOptionExist(option.Name))
                     model.ModuleOptions.push(option);
             }
