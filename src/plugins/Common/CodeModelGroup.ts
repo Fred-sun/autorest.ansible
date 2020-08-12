@@ -29,9 +29,7 @@ export class CodeModelGroup {
                 // else
                 //     this.AddMethod(method, mainCodeModel);
             }
-            for (let option of infoCodeModel.ModuleOptions){
-                this._log("      option:" + option.Name);
-            }
+
             this.models.push(mainCodeModel);
             this.models.push(infoCodeModel);
         }
@@ -187,6 +185,9 @@ export class CodeModelGroup {
         // }
 
         codeModel.ModuleMethods.push(moduleMethod);
+        for (let option of moduleMethod.Options){
+            this._log("      option:" + option.Name);
+        }
         codeModel.ModuleOptions.concat(moduleMethod.Options);
     }
 
