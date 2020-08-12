@@ -286,3 +286,7 @@ export function TrimPackageName(value: string, packageName: string): string {
 
     return value;
 }
+
+export function Indent(line: string):string {
+    return null;
+}

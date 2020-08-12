@@ -1,5 +1,6 @@
 import {MapModuleGroup, ModuleMethod, ModuleOption} from "./ModuleMap";
 import {LogCallback} from "../../index";
+import {ToSnakeCase} from "../../utils/helper";
 
 export enum SwaggerModelType {
     SWAGGER_MODEL_ANY = "any",
@@ -25,8 +26,14 @@ export enum SwaggerModelType {
 
 
 export class CodeModel {
-    constructor() {
+    constructor(swaggerName:string, isInfoModule:boolean) {
+        this.SwaggerName = swaggerName;
+        this.IsInfoModule = isInfoModule;
+        this.ObjectName = this.GetObjectName();
+        this.ModuleClassName = this.GetModuleClassName();
+        this.ModuleName = this.GetModuleName();
     }
+    public SwaggerName: string = null;
     public ModuleName: string = null;
     public PythonNamespace: string = null;
     public PythonMgmtClient: string = null;
@@ -46,7 +53,7 @@ export class CodeModel {
     public ModuleUrl: string = null;
     public ObjectNamePythonized: string = null;
     public ModuleResponseFields: ModuleOption[] = [];
-
+    public IsInfoModule: boolean = false;
     public HasCreateOrUpdate(): boolean{
         return true;
     }
@@ -54,14 +61,14 @@ export class CodeModel {
     public HasResourceGroup(): boolean{
         return true;
     }
-    public ModuleObjectName(): string
+    public GetObjectName(): string
     {
         // XXX - handle following rules
         // Nat --> NAT
         // I P --> IP
         // Sql --> SQL
 
-        let name: string = this.ModuleName;
+        let name: string = this.SwaggerName;
 
         if (name.endsWith("ies"))
         {
@@ -95,7 +102,14 @@ export class CodeModel {
         return null;
     }
     public GetModuleClassName(){
-        return "AzureRM" + this.ObjectName;
+        if (this.IsInfoModule)
+            return "AzureRM" + this.ObjectName +"Info";
+        else
+            return "AzureRM" + this.ObjectName;
+    }
+
+    public GetModuleName(){
+        return ToSnakeCase(this.ModuleClassName);
     }
 }
 

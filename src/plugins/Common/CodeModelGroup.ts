@@ -12,19 +12,24 @@ export class CodeModelGroup {
         this._swagger = swagger;
         this._log = log;
     }
-    public init(){
+    public Init(){
         for (let m of this._swagger.operationGroups){
-            let codeModel = new CodeModel();
-            codeModel.ModuleName = m["$key"];
-            codeModel.ObjectName = codeModel.ModuleObjectName();
-            codeModel.ModuleClassName = codeModel.GetModuleClassName();
-            codeModel.BasicURL = this.GetBasicCRUDUrl(m.operations);
-            for (let method of m.operations){
-                this.AddMethod(method, codeModel);
+            let mainCodeModel = new CodeModel(m["$key"], false);
+            mainCodeModel.BasicURL = this.GetBasicCRUDUrl(m.operations);
+            mainCodeModel.ModuleApiVersion = m.operations[0].apiVersions[0].version;
 
+            let infoCodeModel = new CodeModel(m["$key"], true);
+            infoCodeModel.BasicURL = this.GetBasicCRUDUrl(m.operations);
+            infoCodeModel.ModuleApiVersion = m.operations[0].apiVersions[0].version;
+
+            for (let method of m.operations){
+                if( method.requests[0].protocol.http.method == "get")
+                    this.AddMethod(method, infoCodeModel);
+                else
+                    this.AddMethod(method, mainCodeModel);
             }
-            codeModel.ModuleApiVersion = m.operations[0].apiVersions[0].version;
-            this.models.push(codeModel);
+            this.models.push(mainCodeModel);
+            this.models.push(infoCodeModel);
         }
 
     }

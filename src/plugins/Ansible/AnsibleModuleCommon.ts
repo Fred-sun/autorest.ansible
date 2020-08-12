@@ -6,7 +6,8 @@
 import { CodeModel } from "../Common/CodeModel"
 import { MapModuleGroup, ModuleOption, ModuleMethod, ModuleOptionKind } from "../Common/ModuleMap"
 // import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
-import { Indent, ToSnakeCase } from "../Common/Helpers";
+import { Indent, ToSnakeCase } from "../../utils/helper";
+
 import * as yaml from "node-yaml";
 
 

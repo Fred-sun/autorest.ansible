@@ -15,7 +15,7 @@ import {
     AppendModuleReturnDoc,
     ModuleGenerateApiCall
 } from "./AnsibleModuleCommon"
-import { Indent } from "../Common/Helpers";
+import { Indent } from "../../utils/helper";
 
 export function GenerateModuleSdk(model: CodeModel) : string[] {
     

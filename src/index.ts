@@ -48,7 +48,7 @@ export async function main() {
             const jsyaml = require('js-yaml');
             let climodel = jsyaml.safeLoad(iff);
             let modelGroup = new CodeModelGroup(climodel, Debug);
-            modelGroup.init();
+            modelGroup.Init();
             GenerateAnsible(ArtifactType.ArtifactTypeAnsibleRest, modelGroup, WriteFile, Info);
             // for (let m of climodel.operationGroups){
             //     Info("============== moduleName: "+m["$key"]+" =================");

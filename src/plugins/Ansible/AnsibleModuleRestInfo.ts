@@ -34,7 +34,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     
     output.push("");
     output.push("");
-    output.push("class " + model.ModuleClassName + "Info(AzureRMModuleBase):");
+    output.push("class " + model.ModuleClassName + "(AzureRMModuleBase):");
     output.push("    def __init__(self):");
 
     AppendModuleArgSpec(output, model, false, false);
