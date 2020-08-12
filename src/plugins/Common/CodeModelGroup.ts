@@ -24,12 +24,20 @@ export class CodeModelGroup {
             infoCodeModel.ModuleApiVersion = m.operations[0].apiVersions[0].version;
             this._log("===============Module:"+infoCodeModel.ModuleName+"=====================");
             for (let method of m.operations){
-                if( method.requests[0].protocol.http.method == "get")
+                if( method.requests[0].protocol.http.method == "get"){
                     this.AddMethod(method, infoCodeModel);
+                }
+
                 // else
                 //     this.AddMethod(method, mainCodeModel);
             }
-
+            for (let method of infoCodeModel.ModuleMethods){
+                for (let option of method.Options)
+                    this._log("     option:" + option.Name);
+                infoCodeModel.ModuleOptions.concat(method.Options);
+            }
+            for (let option of infoCodeModel.ModuleOptions)
+                this._log("     Moduleoption: " + option.Name)
             this.models.push(mainCodeModel);
             this.models.push(infoCodeModel);
         }
@@ -185,10 +193,6 @@ export class CodeModelGroup {
         // }
 
         codeModel.ModuleMethods.push(moduleMethod);
-        for (let option of moduleMethod.Options){
-            this._log("      option:" + option.Name);
-        }
-        codeModel.ModuleOptions.concat(moduleMethod.Options);
     }
 
     private LoadModuleOption(p: any, isResponse:boolean = false): ModuleOption {
