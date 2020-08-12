@@ -26,12 +26,10 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             availability_set_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',

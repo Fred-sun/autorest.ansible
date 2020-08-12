@@ -30,12 +30,10 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
                 required=true
             ),
             vm_scale_set_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             instance_id=dict(
-                type='',
-                required=true
+                type=''
             ),
             expand=dict(
                 type=''
@@ -49,8 +47,7 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
                 required=true
             ),
             virtual_machine_scale_set_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             filter=dict(
                 type=''

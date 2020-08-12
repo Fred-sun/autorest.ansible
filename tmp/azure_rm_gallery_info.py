@@ -30,12 +30,10 @@ class AzureRMGalleryInfo(AzureRMModuleBase):
                 required=true
             ),
             resource_group_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             gallery_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',

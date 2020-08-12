@@ -26,8 +26,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             location=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',
@@ -38,12 +37,10 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
                 required=true
             ),
             resource_group_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             vm_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             expand=dict(
                 type=''

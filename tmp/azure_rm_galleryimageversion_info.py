@@ -42,8 +42,7 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
                 required=true
             ),
             gallery_image_version_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             expand=dict(
                 type=''

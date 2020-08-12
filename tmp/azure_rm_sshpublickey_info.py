@@ -34,12 +34,10 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
                 required=true
             ),
             resource_group_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             ssh_public_key_name=dict(
-                type='',
-                required=true
+                type=''
             )
         )
 

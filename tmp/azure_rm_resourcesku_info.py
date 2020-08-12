@@ -34,7 +34,8 @@ class AzureRMResourceSkuInfo(AzureRMModuleBase):
                 required=true
             ),
             filter=dict(
-                type=''
+                type='',
+                required=true
             )
         )
 

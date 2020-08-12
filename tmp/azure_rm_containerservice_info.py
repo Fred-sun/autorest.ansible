@@ -34,12 +34,10 @@ class AzureRMContainerServiceInfo(AzureRMModuleBase):
                 required=true
             ),
             resource_group_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             container_service_name=dict(
-                type='',
-                required=true
+                type=''
             )
         )
 

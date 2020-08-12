@@ -38,8 +38,7 @@ class AzureRMGalleryApplicationInfo(AzureRMModuleBase):
                 required=true
             ),
             gallery_application_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',

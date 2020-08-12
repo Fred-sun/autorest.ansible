@@ -30,12 +30,10 @@ class AzureRMSnapshotInfo(AzureRMModuleBase):
                 required=true
             ),
             resource_group_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             snapshot_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',

@@ -34,8 +34,7 @@ class AzureRMVirtualMachineScaleSetExtensionInfo(AzureRMModuleBase):
                 required=true
             ),
             vmss_extension_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             expand=dict(
                 type=''

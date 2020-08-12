@@ -38,8 +38,7 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
                 required=true
             ),
             command_id=dict(
-                type='',
-                required=true
+                type=''
             )
         )
 

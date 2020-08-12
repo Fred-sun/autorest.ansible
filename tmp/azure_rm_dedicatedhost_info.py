@@ -34,8 +34,7 @@ class AzureRMDedicatedHostInfo(AzureRMModuleBase):
                 required=true
             ),
             host_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             expand=dict(
                 type=''

@@ -38,8 +38,7 @@ class AzureRMGalleryImageInfo(AzureRMModuleBase):
                 required=true
             ),
             gallery_image_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',

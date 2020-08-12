@@ -38,11 +38,11 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
                 required=true
             ),
             vm_extension_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             expand=dict(
-                type=''
+                type='',
+                required=true
             ),
             apiversion=dict(
                 type='',

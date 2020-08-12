@@ -30,20 +30,16 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
                 required=true
             ),
             publisher_name=dict(
-                type='',
-                required=true
+                type=''
             ),
             offer=dict(
-                type='',
-                required=true
+                type=''
             ),
             skus=dict(
-                type='',
-                required=true
+                type=''
             ),
             version=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',

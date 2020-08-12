@@ -34,12 +34,10 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
                 required=true
             ),
             type=dict(
-                type='',
-                required=true
+                type=''
             ),
             version=dict(
-                type='',
-                required=true
+                type=''
             ),
             apiversion=dict(
                 type='',
