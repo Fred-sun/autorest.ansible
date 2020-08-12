@@ -33,15 +33,13 @@ export class CodeModelGroup {
             }
             for (let method of infoCodeModel.ModuleMethods){
                 for (let option of method.Options)
-                    this._log("     option:" + option.Name);
-                infoCodeModel.ModuleOptions.concat(method.Options);
+                    infoCodeModel.ModuleOptions.push(option);
             }
             for (let option of infoCodeModel.ModuleOptions)
                 this._log("     Moduleoption: " + option.Name)
             this.models.push(mainCodeModel);
             this.models.push(infoCodeModel);
         }
-
     }
 
     private GetBasicCRUDUrl(methods: any[]): string {
