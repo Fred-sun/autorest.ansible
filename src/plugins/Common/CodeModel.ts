@@ -109,7 +109,10 @@ export class CodeModel {
     }
 
     public GetModuleName(){
-        return ToSnakeCase(this.ModuleClassName);
+        if (this.IsInfoModule)
+            return "azure_rm_"+this.ObjectName+"_info";
+        else
+            return "azure_rm_"+this.ObjectName;
     }
 }
 
