@@ -252,7 +252,7 @@ export class CodeModelGroup {
         option.Required = required;
         option.Documentation = description;
         option.type = type;
-        this._log(type);
+        this._log(option.type);
         if (parent !== null) {
             option.SwaggerPath = option.SwaggerPath.concat(parent.SwaggerPath);
         }
@@ -323,7 +323,7 @@ export class CodeModelGroup {
 
     private IsAnsibleIgnoredOption(name: string) : boolean
     {
-        let ignoreOptions = new Set([]);
+        let ignoreOptions = new Set(['Apiversion']);
         return name.indexOf('$') != -1 ||name.indexOf('-') != -1 || ignoreOptions.has(name);
     }
 
