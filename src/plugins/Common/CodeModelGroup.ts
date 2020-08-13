@@ -241,6 +241,7 @@ export class CodeModelGroup {
         }
 
         option = new ModuleOption(name);
+        option.DispositionSdk = "*";
         option.NameAnsible = ToSnakeCase(name);
         // if (targetschema !== undefined && targetschema.discriminator !== undefined) {
         //     option = new TFDiscriminatorBaseOption(name);
@@ -322,7 +323,7 @@ export class CodeModelGroup {
 
     private IsAnsibleIgnoredOption(name: string) : boolean
     {
-        let ignoreOptions = new Set(['Apiversion']);
+        let ignoreOptions = new Set(['Apiversion','SubscriptionId']);
         return name.indexOf('$') != -1 ||name.indexOf('-') != -1 || ignoreOptions.has(name);
     }
 
