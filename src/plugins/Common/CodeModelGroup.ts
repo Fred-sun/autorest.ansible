@@ -323,7 +323,7 @@ export class CodeModelGroup {
 
     private IsAnsibleIgnoredOption(name: string) : boolean
     {
-        let ignoreOptions = new Set(['Apiversion','SubscriptionId']);
+        let ignoreOptions = new Set(['Apiversion','SubscriptionId', 'ApiVersion']);
         return name.indexOf('$') != -1 ||name.indexOf('-') != -1 || ignoreOptions.has(name);
     }
 
