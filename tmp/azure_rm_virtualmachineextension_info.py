@@ -84,16 +84,7 @@ class AzureRMVirtualMachineExtensionInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachines' +
-                    '/{vmName}' +
-                    '/extensions' +
-                    '/{vmExtensionName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -115,15 +106,7 @@ class AzureRMVirtualMachineExtensionInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachines' +
-                    '/{vmName}' +
-                    '/extensions')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions
 
         try:
             response = self.mgmt_client.query(self.url,

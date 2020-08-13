@@ -74,15 +74,7 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/diskAccesses' +
-                    '/{diskAccessName}' +
-                    '/privateLinkResources')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateLinkResources
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -104,14 +96,7 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/diskAccesses' +
-                    '/{diskAccessName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -133,13 +118,7 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/diskAccesses')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -161,11 +140,7 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/diskAccesses')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses
 
         try:
             response = self.mgmt_client.query(self.url,

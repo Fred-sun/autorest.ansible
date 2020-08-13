@@ -63,11 +63,7 @@ class AzureRMResourceSkuInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/skus')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus
 
         try:
             response = self.mgmt_client.query(self.url,

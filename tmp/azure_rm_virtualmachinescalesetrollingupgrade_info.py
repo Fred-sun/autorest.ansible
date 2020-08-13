@@ -69,16 +69,7 @@ class AzureRMVirtualMachineScaleSetRollingUpgradeInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachineScaleSets' +
-                    '/{vmScaleSetName}' +
-                    '/rollingUpgrades' +
-                    '/latest')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/latest
 
         try:
             response = self.mgmt_client.query(self.url,

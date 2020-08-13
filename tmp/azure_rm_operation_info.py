@@ -58,9 +58,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/providers' +
-                    '/Microsoft.Compute' +
-                    '/operations')
+        self.url= /providers/Microsoft.Compute/operations
 
         try:
             response = self.mgmt_client.query(self.url,

@@ -71,14 +71,7 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/sshPublicKeys' +
-                    '/{sshPublicKeyName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -100,13 +93,7 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/sshPublicKeys')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -128,11 +115,7 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/sshPublicKeys')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/sshPublicKeys
 
         try:
             response = self.mgmt_client.query(self.url,

@@ -71,14 +71,7 @@ class AzureRMDiskEncryptionSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/diskEncryptionSets' +
-                    '/{diskEncryptionSetName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -100,13 +93,7 @@ class AzureRMDiskEncryptionSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/diskEncryptionSets')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -128,11 +115,7 @@ class AzureRMDiskEncryptionSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/diskEncryptionSets')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets
 
         try:
             response = self.mgmt_client.query(self.url,

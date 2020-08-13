@@ -76,14 +76,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/proximityPlacementGroups' +
-                    '/{proximityPlacementGroupName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -105,13 +98,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/proximityPlacementGroups')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -133,11 +120,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/proximityPlacementGroups')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/proximityPlacementGroups
 
         try:
             response = self.mgmt_client.query(self.url,

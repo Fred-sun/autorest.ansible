@@ -71,14 +71,7 @@ class AzureRMGalleryInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/galleries' +
-                    '/{galleryName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -100,13 +93,7 @@ class AzureRMGalleryInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/galleries')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -128,11 +115,7 @@ class AzureRMGalleryInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/galleries')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries
 
         try:
             response = self.mgmt_client.query(self.url,

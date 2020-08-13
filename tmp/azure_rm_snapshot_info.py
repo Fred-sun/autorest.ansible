@@ -71,14 +71,7 @@ class AzureRMSnapshotInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/snapshots' +
-                    '/{snapshotName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -100,13 +93,7 @@ class AzureRMSnapshotInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/snapshots')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -128,11 +115,7 @@ class AzureRMSnapshotInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/snapshots')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots
 
         try:
             response = self.mgmt_client.query(self.url,

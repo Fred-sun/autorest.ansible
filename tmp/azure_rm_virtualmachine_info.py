@@ -92,15 +92,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachines' +
-                    '/{vmName}' +
-                    '/instanceView')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/instanceView
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -122,15 +114,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachines' +
-                    '/{vmName}' +
-                    '/vmSizes')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/vmSizes
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -152,14 +136,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachines' +
-                    '/{vmName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -181,13 +158,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachines')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -209,13 +180,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/locations' +
-                    '/{location}' +
-                    '/virtualMachines')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -237,11 +202,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/virtualMachines')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines
 
         try:
             response = self.mgmt_client.query(self.url,

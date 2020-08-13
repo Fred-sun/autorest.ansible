@@ -78,15 +78,7 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/availabilitySets' +
-                    '/{availabilitySetName}' +
-                    '/vmSizes')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -108,14 +100,7 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/availabilitySets' +
-                    '/{availabilitySetName}')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -137,13 +122,7 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/resourceGroups' +
-                    '/{resourceGroupName}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/availabilitySets')
+        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -165,11 +144,7 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/availabilitySets')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/availabilitySets
 
         try:
             response = self.mgmt_client.query(self.url,

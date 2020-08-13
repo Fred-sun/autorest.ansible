@@ -112,22 +112,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/locations' +
-                    '/{location}' +
-                    '/publishers' +
-                    '/{publisherName}' +
-                    '/artifacttypes' +
-                    '/vmimage' +
-                    '/offers' +
-                    '/{offer}' +
-                    '/skus' +
-                    '/{skus}' +
-                    '/versions' +
-                    '/{version}')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -149,21 +134,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/locations' +
-                    '/{location}' +
-                    '/publishers' +
-                    '/{publisherName}' +
-                    '/artifacttypes' +
-                    '/vmimage' +
-                    '/offers' +
-                    '/{offer}' +
-                    '/skus' +
-                    '/{skus}' +
-                    '/versions')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -185,19 +156,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/locations' +
-                    '/{location}' +
-                    '/publishers' +
-                    '/{publisherName}' +
-                    '/artifacttypes' +
-                    '/vmimage' +
-                    '/offers' +
-                    '/{offer}' +
-                    '/skus')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -219,17 +178,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/locations' +
-                    '/{location}' +
-                    '/publishers' +
-                    '/{publisherName}' +
-                    '/artifacttypes' +
-                    '/vmimage' +
-                    '/offers')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -251,13 +200,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url = ('/subscriptions' +
-                    '/{subscriptionId}' +
-                    '/providers' +
-                    '/Microsoft.Compute' +
-                    '/locations' +
-                    '/{location}' +
-                    '/publishers')
+        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers
 
         try:
             response = self.mgmt_client.query(self.url,
