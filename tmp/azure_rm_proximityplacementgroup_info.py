@@ -77,6 +77,8 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{proximityPlacementGroupName}', self.proximity_placement_group_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -99,6 +101,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
 
         try:
             response = self.mgmt_client.query(self.url,

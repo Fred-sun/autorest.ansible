@@ -90,6 +90,10 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{galleryName}', self.gallery_name)
+        self.url = self.url.replace('{galleryApplicationName}', self.gallery_application_name)
+        self.url = self.url.replace('{galleryApplicationVersionName}', self.gallery_application_version_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -112,6 +116,9 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{galleryName}', self.gallery_name)
+        self.url = self.url.replace('{galleryApplicationName}', self.gallery_application_name)
 
         try:
             response = self.mgmt_client.query(self.url,

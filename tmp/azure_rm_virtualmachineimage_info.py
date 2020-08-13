@@ -113,6 +113,11 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}'
+        self.url = self.url.replace('{location}', self.location)
+        self.url = self.url.replace('{publisherName}', self.publisher_name)
+        self.url = self.url.replace('{offer}', self.offer)
+        self.url = self.url.replace('{skus}', self.skus)
+        self.url = self.url.replace('{version}', self.version)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -135,6 +140,10 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions'
+        self.url = self.url.replace('{location}', self.location)
+        self.url = self.url.replace('{publisherName}', self.publisher_name)
+        self.url = self.url.replace('{offer}', self.offer)
+        self.url = self.url.replace('{skus}', self.skus)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -157,6 +166,9 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus'
+        self.url = self.url.replace('{location}', self.location)
+        self.url = self.url.replace('{publisherName}', self.publisher_name)
+        self.url = self.url.replace('{offer}', self.offer)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -179,6 +191,8 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers'
+        self.url = self.url.replace('{location}', self.location)
+        self.url = self.url.replace('{publisherName}', self.publisher_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -201,6 +215,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers'
+        self.url = self.url.replace('{location}', self.location)
 
         try:
             response = self.mgmt_client.query(self.url,

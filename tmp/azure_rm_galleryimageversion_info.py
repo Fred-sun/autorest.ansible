@@ -90,6 +90,10 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{galleryName}', self.gallery_name)
+        self.url = self.url.replace('{galleryImageName}', self.gallery_image_name)
+        self.url = self.url.replace('{galleryImageVersionName}', self.gallery_image_version_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -112,6 +116,9 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{galleryName}', self.gallery_name)
+        self.url = self.url.replace('{galleryImageName}', self.gallery_image_name)
 
         try:
             response = self.mgmt_client.query(self.url,

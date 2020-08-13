@@ -75,6 +75,8 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateLinkResources'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{diskAccessName}', self.disk_access_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -97,6 +99,8 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{diskAccessName}', self.disk_access_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -119,6 +123,7 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
 
         try:
             response = self.mgmt_client.query(self.url,

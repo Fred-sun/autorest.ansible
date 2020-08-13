@@ -577,6 +577,9 @@ export function GetFixUrlStatements(method: ModuleMethod): string[]
     let url = method.Url;
     let reg = /{([^{}]*)}/g
     let result;
+    // for (let option of method.Options){
+    //     console.log("option name: "+option.NameSwagger.toLowerCase());
+    // }
     while ((result = reg.exec(url)) != null){
         for (let option of method.Options){
             if (option.NameSwagger.toLowerCase() === result[1].toLowerCase()){

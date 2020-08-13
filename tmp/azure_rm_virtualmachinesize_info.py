@@ -64,6 +64,7 @@ class AzureRMVirtualMachineSizeInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes'
+        self.url = self.url.replace('{location}', self.location)
 
         try:
             response = self.mgmt_client.query(self.url,

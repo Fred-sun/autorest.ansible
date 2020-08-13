@@ -92,6 +92,10 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{vmScaleSetName}', self.vm_scale_set_name)
+        self.url = self.url.replace('{instanceId}', self.instance_id)
+        self.url = self.url.replace('{vmExtensionName}', self.vm_extension_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -114,6 +118,9 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{vmScaleSetName}', self.vm_scale_set_name)
+        self.url = self.url.replace('{instanceId}', self.instance_id)
 
         try:
             response = self.mgmt_client.query(self.url,

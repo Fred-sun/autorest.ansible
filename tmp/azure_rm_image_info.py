@@ -77,6 +77,8 @@ class AzureRMImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{imageName}', self.image_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -99,6 +101,7 @@ class AzureRMImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
 
         try:
             response = self.mgmt_client.query(self.url,

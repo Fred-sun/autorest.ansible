@@ -102,6 +102,10 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}'
+        self.url = self.url.replace('{location}', self.location)
+        self.url = self.url.replace('{publisherName}', self.publisher_name)
+        self.url = self.url.replace('{type}', self.type)
+        self.url = self.url.replace('{version}', self.version)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -124,6 +128,9 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions'
+        self.url = self.url.replace('{location}', self.location)
+        self.url = self.url.replace('{publisherName}', self.publisher_name)
+        self.url = self.url.replace('{type}', self.type)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -146,6 +153,8 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types'
+        self.url = self.url.replace('{location}', self.location)
+        self.url = self.url.replace('{publisherName}', self.publisher_name)
 
         try:
             response = self.mgmt_client.query(self.url,

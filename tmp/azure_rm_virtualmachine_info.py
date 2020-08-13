@@ -93,6 +93,8 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/instanceView'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{vmName}', self.vm_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -115,6 +117,8 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/vmSizes'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{vmName}', self.vm_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -137,6 +141,8 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{vmName}', self.vm_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -159,6 +165,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -181,6 +188,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines'
+        self.url = self.url.replace('{location}', self.location)
 
         try:
             response = self.mgmt_client.query(self.url,

@@ -83,6 +83,9 @@ class AzureRMDedicatedHostInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{hostGroupName}', self.host_group_name)
+        self.url = self.url.replace('{hostName}', self.host_name)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -105,6 +108,8 @@ class AzureRMDedicatedHostInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts'
+        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
+        self.url = self.url.replace('{hostGroupName}', self.host_group_name)
 
         try:
             response = self.mgmt_client.query(self.url,

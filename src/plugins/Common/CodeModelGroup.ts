@@ -134,9 +134,6 @@ export class CodeModelGroup {
                     //     }
                     //
                     // }
-                    option.NameSwagger = Uncapitalize(name);
-                    option.SwaggerPath[0] = option.NameSwagger;
-
                     // option.SetSchemaName(ToSnakeCase(name));
                 }
                 moduleMethod.Options.push(option);
@@ -241,6 +238,7 @@ export class CodeModelGroup {
         }
 
         option = new ModuleOption(name);
+
         option.DispositionSdk = "*";
         option.NameAnsible = ToSnakeCase(name);
         // if (targetschema !== undefined && targetschema.discriminator !== undefined) {
