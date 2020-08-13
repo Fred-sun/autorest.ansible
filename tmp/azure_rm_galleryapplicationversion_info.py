@@ -78,11 +78,11 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
             self.gallery_application_name is not None and
             self.gallery_application_version_name is not None and
             self.expand is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['galleryapplicationversions'] = self.format_item(self.get())
         elif (self.resource_group is not None and
               self.gallery_name is not None and
               self.gallery_application_name is not None):
-            self.results['null'] = self.format_item(self.listbygalleryapplication())
+            self.results['galleryapplicationversions'] = self.format_item(self.listbygalleryapplication())
         return self.results
 
     def get(self):

@@ -62,7 +62,7 @@ class AzureRMVirtualMachineScaleSetRollingUpgradeInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.vm_scale_set_name is not None):
-            self.results['null'] = self.format_item(self.getlatest())
+            self.results['virtualmachinescalesetrollingupgrades'] = self.format_item(self.getlatest())
         return self.results
 
     def getlatest(self):

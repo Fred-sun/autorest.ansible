@@ -61,9 +61,9 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
 
         if (self.location is not None and
             self.command_id is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['virtualmachineruncommands'] = self.format_item(self.get())
         elif (self.location is not None):
-            self.results['null'] = self.format_item(self.list())
+            self.results['virtualmachineruncommands'] = self.format_item(self.list())
         return self.results
 
     def get(self):

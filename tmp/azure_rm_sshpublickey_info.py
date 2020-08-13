@@ -60,11 +60,11 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.ssh_public_key_name is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['sshpublickeys'] = self.format_item(self.get())
         elif (self.resource_group is not None):
-            self.results['null'] = self.format_item(self.listbyresourcegroup())
+            self.results['sshpublickeys'] = self.format_item(self.listbyresourcegroup())
         else:
-            self.results['null'] = [self.format_item(self.listbysubscription())]
+            self.results['sshpublickeys'] = [self.format_item(self.listbysubscription())]
         return self.results
 
     def get(self):

@@ -72,20 +72,20 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.vm_name is not None):
-            self.results['null'] = self.format_item(self.instanceview())
+            self.results['virtualmachines'] = self.format_item(self.instanceview())
         elif (self.resource_group is not None and
               self.vm_name is not None):
-            self.results['null'] = self.format_item(self.listavailablesizes())
+            self.results['virtualmachines'] = self.format_item(self.listavailablesizes())
         elif (self.resource_group is not None and
               self.vm_name is not None and
               self.expand is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['virtualmachines'] = self.format_item(self.get())
         elif (self.resource_group is not None):
-            self.results['null'] = self.format_item(self.list())
+            self.results['virtualmachines'] = self.format_item(self.list())
         elif (self.location is not None):
-            self.results['null'] = self.format_item(self.listbylocation())
+            self.results['virtualmachines'] = self.format_item(self.listbylocation())
         elif (self.status_only is not None):
-            self.results['null'] = self.format_item(self.listall())
+            self.results['virtualmachines'] = self.format_item(self.listall())
         return self.results
 
     def instanceview(self):

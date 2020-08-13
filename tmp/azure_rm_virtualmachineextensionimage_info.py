@@ -84,17 +84,17 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
             self.publisher_name is not None and
             self.type is not None and
             self.version is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['virtualmachineextensionimages'] = self.format_item(self.get())
         elif (self.location is not None and
               self.publisher_name is not None and
               self.type is not None and
               self.filter is not None and
               self.top is not None and
               self.orderby is not None):
-            self.results['null'] = self.format_item(self.listversions())
+            self.results['virtualmachineextensionimages'] = self.format_item(self.listversions())
         elif (self.location is not None and
               self.publisher_name is not None):
-            self.results['null'] = self.format_item(self.listtypes())
+            self.results['virtualmachineextensionimages'] = self.format_item(self.listtypes())
         return self.results
 
     def get(self):

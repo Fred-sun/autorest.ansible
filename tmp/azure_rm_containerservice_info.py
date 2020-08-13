@@ -60,11 +60,11 @@ class AzureRMContainerServiceInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.container_service_name is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['containerservices'] = self.format_item(self.get())
         elif (self.resource_group is not None):
-            self.results['null'] = self.format_item(self.listbyresourcegroup())
+            self.results['containerservices'] = self.format_item(self.listbyresourcegroup())
         else:
-            self.results['null'] = [self.format_item(self.list())]
+            self.results['containerservices'] = [self.format_item(self.list())]
         return self.results
 
     def get(self):

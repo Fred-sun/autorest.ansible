@@ -86,18 +86,18 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
         if (self.resource_group is not None and
             self.vm_scale_set_name is not None and
             self.instance_id is not None):
-            self.results['null'] = self.format_item(self.getinstanceview())
+            self.results['virtualmachinescalesetvms'] = self.format_item(self.getinstanceview())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None and
               self.instance_id is not None and
               self.expand is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['virtualmachinescalesetvms'] = self.format_item(self.get())
         elif (self.resource_group is not None and
               self.virtual_machine_scale_set_name is not None and
               self.filter is not None and
               self.select is not None and
               self.expand is not None):
-            self.results['null'] = self.format_item(self.list())
+            self.results['virtualmachinescalesetvms'] = self.format_item(self.list())
         return self.results
 
     def getinstanceview(self):

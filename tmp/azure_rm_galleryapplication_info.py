@@ -67,10 +67,10 @@ class AzureRMGalleryApplicationInfo(AzureRMModuleBase):
         if (self.resource_group is not None and
             self.gallery_name is not None and
             self.gallery_application_name is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['galleryapplications'] = self.format_item(self.get())
         elif (self.resource_group is not None and
               self.gallery_name is not None):
-            self.results['null'] = self.format_item(self.listbygallery())
+            self.results['galleryapplications'] = self.format_item(self.listbygallery())
         return self.results
 
     def get(self):

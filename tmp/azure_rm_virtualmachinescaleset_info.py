@@ -60,20 +60,20 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.vm_scale_set_name is not None):
-            self.results['null'] = self.format_item(self.getosupgradehistory())
+            self.results['virtualmachinescalesets'] = self.format_item(self.getosupgradehistory())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None):
-            self.results['null'] = self.format_item(self.getinstanceview())
+            self.results['virtualmachinescalesets'] = self.format_item(self.getinstanceview())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None):
-            self.results['null'] = self.format_item(self.listskus())
+            self.results['virtualmachinescalesets'] = self.format_item(self.listskus())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['virtualmachinescalesets'] = self.format_item(self.get())
         elif (self.resource_group is not None):
-            self.results['null'] = self.format_item(self.list())
+            self.results['virtualmachinescalesets'] = self.format_item(self.list())
         else:
-            self.results['null'] = [self.format_item(self.listall())]
+            self.results['virtualmachinescalesets'] = [self.format_item(self.listall())]
         return self.results
 
     def getosupgradehistory(self):

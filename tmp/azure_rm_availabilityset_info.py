@@ -64,14 +64,14 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.availability_set_name is not None):
-            self.results['null'] = self.format_item(self.listavailablesizes())
+            self.results['availabilitysets'] = self.format_item(self.listavailablesizes())
         elif (self.resource_group is not None and
               self.availability_set_name is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['availabilitysets'] = self.format_item(self.get())
         elif (self.resource_group is not None):
-            self.results['null'] = self.format_item(self.list())
+            self.results['availabilitysets'] = self.format_item(self.list())
         elif (self.expand is not None):
-            self.results['null'] = self.format_item(self.listbysubscription())
+            self.results['availabilitysets'] = self.format_item(self.listbysubscription())
         return self.results
 
     def listavailablesizes(self):

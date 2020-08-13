@@ -56,7 +56,7 @@ class AzureRMResourceSkuInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.filter is not None):
-            self.results['null'] = self.format_item(self.list())
+            self.results['resourceskus'] = self.format_item(self.list())
         return self.results
 
     def list(self):

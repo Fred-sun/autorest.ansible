@@ -88,7 +88,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
             self.offer is not None and
             self.skus is not None and
             self.version is not None):
-            self.results['null'] = self.format_item(self.get())
+            self.results['virtualmachineimages'] = self.format_item(self.get())
         elif (self.location is not None and
               self.publisher_name is not None and
               self.offer is not None and
@@ -96,16 +96,16 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
               self.expand is not None and
               self.top is not None and
               self.orderby is not None):
-            self.results['null'] = self.format_item(self.list())
+            self.results['virtualmachineimages'] = self.format_item(self.list())
         elif (self.location is not None and
               self.publisher_name is not None and
               self.offer is not None):
-            self.results['null'] = self.format_item(self.listskus())
+            self.results['virtualmachineimages'] = self.format_item(self.listskus())
         elif (self.location is not None and
               self.publisher_name is not None):
-            self.results['null'] = self.format_item(self.listoffers())
+            self.results['virtualmachineimages'] = self.format_item(self.listoffers())
         elif (self.location is not None):
-            self.results['null'] = self.format_item(self.listpublishers())
+            self.results['virtualmachineimages'] = self.format_item(self.listpublishers())
         return self.results
 
     def get(self):

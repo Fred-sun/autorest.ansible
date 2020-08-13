@@ -51,7 +51,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         else:
-            self.results['null'] = [self.format_item(self.list())]
+            self.results['operations'] = [self.format_item(self.list())]
         return self.results
 
     def list(self):
