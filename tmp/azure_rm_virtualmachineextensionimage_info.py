@@ -102,6 +102,7 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{location}', self.location)
         self.url = self.url.replace('{publisherName}', self.publisher_name)
         self.url = self.url.replace('{type}', self.type)
@@ -116,7 +117,7 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
@@ -128,6 +129,7 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{location}', self.location)
         self.url = self.url.replace('{publisherName}', self.publisher_name)
         self.url = self.url.replace('{type}', self.type)
@@ -141,7 +143,7 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
@@ -153,6 +155,7 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{location}', self.location)
         self.url = self.url.replace('{publisherName}', self.publisher_name)
 
@@ -165,14 +168,14 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return results
 
-    def format_item(item):
+    def format_item(self, item):
         return item
 
 

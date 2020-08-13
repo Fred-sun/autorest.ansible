@@ -52,7 +52,7 @@ class AzureRMLogAnalyticInfo(AzureRMModuleBase):
 
         return self.results
 
-    def format_item(item):
+    def format_item(self, item):
         return item
 
 

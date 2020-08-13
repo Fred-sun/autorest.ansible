@@ -152,7 +152,6 @@ export function AppendInfoModuleLogic(output: string[], model: CodeModel)
             for (let idx: number = 0; idx < ps.length; idx++)
             {
                 let optionName: string = ps[idx].NameAnsible;
-                if (optionName == "resource_group_name") { optionName = "resource_group";  }
                 output.push("        " + ifPadding + "self." + optionName + " is not None" + ((idx != ps.length - 1) ? " and" : "):"))
                 ifPadding = ' '.repeat(ifPadding.length);
             }
@@ -581,12 +580,7 @@ export function GetFixUrlStatements(method: ModuleMethod): string[]
     //     console.log("option name: "+option.NameSwagger.toLowerCase());
     // }
     while ((result = reg.exec(url)) != null){
-        for (let option of method.Options){
-            if (option.NameSwagger.toLowerCase() === result[1].toLowerCase()){
-                ss.push("self.url = self.url.replace('{" + result[1] + "}', self." + option.NameAnsible + ")");
-                break;
-            }
-        }
+            ss.push("self.url = self.url.replace('{" + result[1] + "}', self." + ToSnakeCase(result[1]) + ")");
     }
 
     // let parts: string[] = url.split('{{');

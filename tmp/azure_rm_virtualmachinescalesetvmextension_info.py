@@ -74,13 +74,13 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        if (self.resource_group is not None and
+        if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None and
             self.instance_id is not None and
             self.vm_extension_name is not None and
             self.expand is not None):
             self.results['virtualmachinescalesetvmextensions'] = self.format_item(self.get())
-        elif (self.resource_group is not None and
+        elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None and
               self.instance_id is not None and
               self.expand is not None):
@@ -92,6 +92,7 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
         self.url = self.url.replace('{vmScaleSetName}', self.vm_scale_set_name)
         self.url = self.url.replace('{instanceId}', self.instance_id)
@@ -106,7 +107,7 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
@@ -118,6 +119,7 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
         self.url = self.url.replace('{vmScaleSetName}', self.vm_scale_set_name)
         self.url = self.url.replace('{instanceId}', self.instance_id)
@@ -131,14 +133,14 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return results
 
-    def format_item(item):
+    def format_item(self, item):
         return item
 
 

@@ -62,11 +62,11 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        if (self.resource_group is not None and
+        if (self.resource_group_name is not None and
             self.proximity_placement_group_name is not None and
             self.include_colocation_status is not None):
             self.results['proximityplacementgroups'] = self.format_item(self.get())
-        elif (self.resource_group is not None):
+        elif (self.resource_group_name is not None):
             self.results['proximityplacementgroups'] = self.format_item(self.listbyresourcegroup())
         else:
             self.results['proximityplacementgroups'] = [self.format_item(self.listbysubscription())]
@@ -77,6 +77,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
         self.url = self.url.replace('{proximityPlacementGroupName}', self.proximity_placement_group_name)
 
@@ -89,7 +90,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
@@ -101,6 +102,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
 
         try:
@@ -112,7 +114,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
@@ -124,6 +126,7 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/proximityPlacementGroups'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -134,14 +137,14 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return results
 
-    def format_item(item):
+    def format_item(self, item):
         return item
 
 

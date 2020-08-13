@@ -128,7 +128,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
         output.push("        return results");
         output.push("");
     }
-    output.push("    def format_item(item):");
+    output.push("    def format_item(self, item):");
     output.push("        return item");
     output.push("");
     output.push("");

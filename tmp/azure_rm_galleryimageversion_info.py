@@ -73,13 +73,13 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        if (self.resource_group is not None and
+        if (self.resource_group_name is not None and
             self.gallery_name is not None and
             self.gallery_image_name is not None and
             self.gallery_image_version_name is not None and
             self.expand is not None):
             self.results['galleryimageversions'] = self.format_item(self.get())
-        elif (self.resource_group is not None and
+        elif (self.resource_group_name is not None and
               self.gallery_name is not None and
               self.gallery_image_name is not None):
             self.results['galleryimageversions'] = self.format_item(self.listbygalleryimage())
@@ -90,6 +90,7 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
         self.url = self.url.replace('{galleryName}', self.gallery_name)
         self.url = self.url.replace('{galleryImageName}', self.gallery_image_name)
@@ -104,7 +105,7 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
@@ -116,6 +117,7 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
         self.url = self.url.replace('{galleryName}', self.gallery_name)
         self.url = self.url.replace('{galleryImageName}', self.gallery_image_name)
@@ -129,14 +131,14 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return results
 
-    def format_item(item):
+    def format_item(self, item):
         return item
 
 

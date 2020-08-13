@@ -64,6 +64,7 @@ class AzureRMVirtualMachineSizeInfo(AzureRMModuleBase):
         results = {}
         # prepare url
         self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes'
+        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
         self.url = self.url.replace('{location}', self.location)
 
         try:
@@ -75,14 +76,14 @@ class AzureRMVirtualMachineSizeInfo(AzureRMModuleBase):
                                               self.status_code,
                                               600,
                                               30)
-            results['temp_item'] = json.loads(response.text)
+            results = json.loads(response.text)
             # self.log('Response : {0}'.format(response))
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return results
 
-    def format_item(item):
+    def format_item(self, item):
         return item
 
 
