@@ -575,23 +575,34 @@ export function GetFixUrlStatements(method: ModuleMethod): string[]
 {
     let ss: string[] = [];
     let url = method.Url;
-
-    let parts: string[] = url.split('{{');
-
-    for (let part of parts)
-    {
-        if (! part.startsWith('/'))
-        {
-            let last: boolean = (part == parts[parts.length - 1]);
-            part = part.split('}}')[0];
-            let variable = part.trim();
-            if (last && variable.endsWith("_name"))
-            {
-                variable = "name";
+    let reg = /{*.}/
+    let result;
+    while ((result = reg.exec(url)) != null){
+        for (let option of method.Options){
+            if (option.NameSwagger == result[0]){
+                ss.push("self.url = self.url.replace('{{" + result[0] + "}}', self." + option.NameAnsible + ")");
+                break;
             }
-            ss.push("self.url = self.url.replace('{{" + part + "}}', self." + variable + ")");
         }
+
     }
+
+    // let parts: string[] = url.split('{{');
+    //
+    // for (let part of parts)
+    // {
+    //     if (! part.startsWith('/'))
+    //     {
+    //         let last: boolean = (part == parts[parts.length - 1]);
+    //         part = part.split('}}')[0];
+    //         let variable = part.trim();
+    //         if (last && variable.endsWith("_name"))
+    //         {
+    //             variable = "name";
+    //         }
+    //         ss.push("self.url = self.url.replace('{{" + part + "}}', self." + variable + ")");
+    //     }
+    // }
 
     return ss;
 }

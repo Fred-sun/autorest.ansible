@@ -86,14 +86,15 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
         output.push("        results = {}");
 
         output.push("        # prepare url");
-        var broken = m.Url.split('/');
-        output.push("        self.url = ('/" + broken[1] + "'");
-        for (var i = 2; i < broken.length; i++)
-        {
-            output[output.length - 1] += " +";
-            output.push("                    '/" + broken[i] + "'");
-        }
-        output[output.length - 1] += ")";
+        // var broken = m.Url.split('/');
+        // output.push("        self.url = ('/" + broken[1] + "'");
+        // for (var i = 2; i < broken.length; i++)
+        // {
+        //     output[output.length - 1] += " +";
+        //     output.push("                    '/" + broken[i] + "'");
+        // }
+        // output[output.length - 1] += ")";
+        output.push("        self.url= " +m.Url)
         let fixurl = GetFixUrlStatements(m);
         fixurl.forEach(element => {
             output.push("        " + element);
