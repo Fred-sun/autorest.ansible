@@ -110,7 +110,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
         output.push("                                              self.status_code,");
         output.push("                                              600,");
         output.push("                                              30)");
-        output.push("            results['temp_item'] = json.loads(response.text)");
+        output.push("            results = json.loads(response.text)");
         output.push("            # self.log('Response : {0}'.format(response))");
         output.push("        except CloudError as e:");
         output.push("            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')");
