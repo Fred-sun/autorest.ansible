@@ -32,13 +32,11 @@ class AzureRMVirtualMachineScaleSetRollingUpgradeInfo(AzureRMModuleBase):
             vm_scale_set_name=dict(
                 type='str',
                 required=true
-            ),
-            subscription_id=dict(
-                type='str',
-                required=true
             )
         )
 
+        self.resource_group_name = None
+        self.vm_scale_set_name = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -63,8 +61,7 @@ class AzureRMVirtualMachineScaleSetRollingUpgradeInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group is not None and
-            self.vm_scale_set_name is not None and
-            self.subscription_id is not None):
+            self.vm_scale_set_name is not None):
             self.results['null'] = self.format_item(self.getlatest())
         return self.results
 

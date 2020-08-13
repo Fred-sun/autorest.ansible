@@ -29,15 +29,13 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
                 type='str',
                 required=true
             ),
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             command_id=dict(
                 type='str'
             )
         )
 
+        self.location = None
+        self.command_id = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -62,11 +60,9 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.location is not None and
-            self.command_id is not None and
-            self.subscription_id is not None):
+            self.command_id is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.location is not None and
-              self.subscription_id is not None):
+        elif (self.location is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results
 

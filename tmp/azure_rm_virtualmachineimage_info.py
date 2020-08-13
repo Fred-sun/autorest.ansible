@@ -41,10 +41,6 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
             version=dict(
                 type='str'
             ),
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             expand=dict(
                 type='str'
             ),
@@ -56,6 +52,14 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
             )
         )
 
+        self.location = None
+        self.publisher_name = None
+        self.offer = None
+        self.skus = None
+        self.version = None
+        self.expand = None
+        self.top = None
+        self.orderby = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -83,8 +87,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
             self.publisher_name is not None and
             self.offer is not None and
             self.skus is not None and
-            self.version is not None and
-            self.subscription_id is not None):
+            self.version is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.location is not None and
               self.publisher_name is not None and
@@ -92,20 +95,16 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
               self.skus is not None and
               self.expand is not None and
               self.top is not None and
-              self.orderby is not None and
-              self.subscription_id is not None):
+              self.orderby is not None):
             self.results['null'] = self.format_item(self.list())
         elif (self.location is not None and
               self.publisher_name is not None and
-              self.offer is not None and
-              self.subscription_id is not None):
+              self.offer is not None):
             self.results['null'] = self.format_item(self.listskus())
         elif (self.location is not None and
-              self.publisher_name is not None and
-              self.subscription_id is not None):
+              self.publisher_name is not None):
             self.results['null'] = self.format_item(self.listoffers())
-        elif (self.location is not None and
-              self.subscription_id is not None):
+        elif (self.location is not None):
             self.results['null'] = self.format_item(self.listpublishers())
         return self.results
 

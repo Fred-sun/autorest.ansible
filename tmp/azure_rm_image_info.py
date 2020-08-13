@@ -33,13 +33,12 @@ class AzureRMImageInfo(AzureRMModuleBase):
             ),
             expand=dict(
                 type='str'
-            ),
-            subscription_id=dict(
-                type='str',
-                required=true
             )
         )
 
+        self.resource_group_name = None
+        self.image_name = None
+        self.expand = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -65,14 +64,12 @@ class AzureRMImageInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.image_name is not None and
-            self.expand is not None and
-            self.subscription_id is not None):
+            self.expand is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.resource_group is not None and
-              self.subscription_id is not None):
+        elif (self.resource_group is not None):
             self.results['null'] = self.format_item(self.listbyresourcegroup())
-        elif (self.subscription_id is not None):
-            self.results['null'] = self.format_item(self.list())
+        else:
+            self.results['null'] = [self.format_item(self.list())]
         return self.results
 
     def get(self):

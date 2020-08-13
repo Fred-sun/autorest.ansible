@@ -28,10 +28,6 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
             location=dict(
                 type='str'
             ),
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             resource_group_name=dict(
                 type='str'
             ),
@@ -46,6 +42,11 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
             )
         )
 
+        self.location = None
+        self.resource_group_name = None
+        self.vm_name = None
+        self.expand = None
+        self.status_only = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -70,26 +71,20 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group is not None and
-            self.vm_name is not None and
-            self.subscription_id is not None):
+            self.vm_name is not None):
             self.results['null'] = self.format_item(self.instanceview())
         elif (self.resource_group is not None and
-              self.vm_name is not None and
-              self.subscription_id is not None):
+              self.vm_name is not None):
             self.results['null'] = self.format_item(self.listavailablesizes())
         elif (self.resource_group is not None and
               self.vm_name is not None and
-              self.expand is not None and
-              self.subscription_id is not None):
+              self.expand is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.resource_group is not None and
-              self.subscription_id is not None):
+        elif (self.resource_group is not None):
             self.results['null'] = self.format_item(self.list())
-        elif (self.location is not None and
-              self.subscription_id is not None):
+        elif (self.location is not None):
             self.results['null'] = self.format_item(self.listbylocation())
-        elif (self.subscription_id is not None and
-              self.status_only is not None):
+        elif (self.status_only is not None):
             self.results['null'] = self.format_item(self.listall())
         return self.results
 
