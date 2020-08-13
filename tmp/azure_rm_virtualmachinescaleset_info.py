@@ -80,7 +80,7 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osUpgradeHistory
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osUpgradeHistory'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -102,7 +102,7 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/instanceView
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/instanceView'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -124,7 +124,7 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/skus
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/skus'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -146,7 +146,7 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -168,7 +168,7 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -190,7 +190,7 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets
+        self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets'
 
         try:
             response = self.mgmt_client.query(self.url,

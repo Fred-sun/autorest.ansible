@@ -63,7 +63,7 @@ class AzureRMUsageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages
+        self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages'
 
         try:
             response = self.mgmt_client.query(self.url,

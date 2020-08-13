@@ -70,7 +70,7 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands/{commandId}
+        self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands/{commandId}'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -92,7 +92,7 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands
+        self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands'
 
         try:
             response = self.mgmt_client.query(self.url,

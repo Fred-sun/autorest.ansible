@@ -71,7 +71,7 @@ class AzureRMDiskInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -93,7 +93,7 @@ class AzureRMDiskInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -115,7 +115,7 @@ class AzureRMDiskInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks
+        self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks'
 
         try:
             response = self.mgmt_client.query(self.url,

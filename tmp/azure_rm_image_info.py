@@ -76,7 +76,7 @@ class AzureRMImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -98,7 +98,7 @@ class AzureRMImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -120,7 +120,7 @@ class AzureRMImageInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.Compute/images
+        self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images'
 
         try:
             response = self.mgmt_client.query(self.url,

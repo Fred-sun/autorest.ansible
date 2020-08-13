@@ -71,7 +71,7 @@ class AzureRMContainerServiceInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -93,7 +93,7 @@ class AzureRMContainerServiceInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices
+        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices'
 
         try:
             response = self.mgmt_client.query(self.url,
@@ -115,7 +115,7 @@ class AzureRMContainerServiceInfo(AzureRMModuleBase):
         response = None
         results = {}
         # prepare url
-        self.url= /subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices
+        self.url= '/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices'
 
         try:
             response = self.mgmt_client.query(self.url,
