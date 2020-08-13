@@ -26,11 +26,11 @@ class AzureRMResourceSkuInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             filter=dict(
-                type='string',
+                type='str',
                 required=true
             )
         )

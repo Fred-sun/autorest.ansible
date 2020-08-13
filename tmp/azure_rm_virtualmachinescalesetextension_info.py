@@ -26,21 +26,21 @@ class AzureRMVirtualMachineScaleSetExtensionInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             vm_scale_set_name=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             vmss_extension_name=dict(
-                type='string'
+                type='str'
             ),
             expand=dict(
-                type='string'
+                type='str'
             ),
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             )
         )

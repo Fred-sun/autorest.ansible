@@ -26,16 +26,16 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='string'
+                type='str'
             ),
             proximity_placement_group_name=dict(
-                type='string'
+                type='str'
             ),
             include_colocation_status=dict(
-                type='string'
+                type='str'
             ),
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             )
         )

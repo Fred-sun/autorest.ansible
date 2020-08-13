@@ -26,16 +26,16 @@ class AzureRMImageInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='string'
+                type='str'
             ),
             image_name=dict(
-                type='string'
+                type='str'
             ),
             expand=dict(
-                type='string'
+                type='str'
             ),
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             )
         )

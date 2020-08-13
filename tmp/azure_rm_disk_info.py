@@ -26,14 +26,14 @@ class AzureRMDiskInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             resource_group_name=dict(
-                type='string'
+                type='str'
             ),
             disk_name=dict(
-                type='string'
+                type='str'
             )
         )
 

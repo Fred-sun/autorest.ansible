@@ -26,19 +26,19 @@ class AzureRMGalleryImageInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             resource_group_name=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             gallery_name=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             gallery_image_name=dict(
-                type='string'
+                type='str'
             )
         )
 

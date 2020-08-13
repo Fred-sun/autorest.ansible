@@ -26,11 +26,11 @@ class AzureRMVirtualMachineSizeInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             location=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             )
         )

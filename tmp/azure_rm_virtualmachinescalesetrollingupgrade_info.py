@@ -26,15 +26,15 @@ class AzureRMVirtualMachineScaleSetRollingUpgradeInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             vm_scale_set_name=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             )
         )

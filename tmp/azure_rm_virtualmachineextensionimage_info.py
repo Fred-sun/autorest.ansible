@@ -26,31 +26,31 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             location=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             publisher_name=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             type=dict(
-                type='string'
+                type='str'
             ),
             version=dict(
-                type='string'
+                type='str'
             ),
             subscription_id=dict(
-                type='string',
+                type='str',
                 required=true
             ),
             filter=dict(
-                type='string'
+                type='str'
             ),
             top=dict(
                 type='integer'
             ),
             orderby=dict(
-                type='string'
+                type='str'
             )
         )
 
