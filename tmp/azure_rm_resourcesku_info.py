@@ -83,7 +83,7 @@ class AzureRMResourceSkuInfo(AzureRMModuleBase):
         return results
 
     def format_item(self, item):
-        return item
+        return item['value']
 
 
 def main():
