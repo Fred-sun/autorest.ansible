@@ -43,13 +43,14 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
             expand=dict(
                 type='str',
                 required=true
-            ),
-            subscription_id=dict(
-                type='str',
-                required=true
             )
         )
 
+        self.resource_group_name = None
+        self.vm_scale_set_name = None
+        self.instance_id = None
+        self.vm_extension_name = None
+        self.expand = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -77,14 +78,12 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
             self.vm_scale_set_name is not None and
             self.instance_id is not None and
             self.vm_extension_name is not None and
-            self.expand is not None and
-            self.subscription_id is not None):
+            self.expand is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None and
               self.instance_id is not None and
-              self.expand is not None and
-              self.subscription_id is not None):
+              self.expand is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results
 

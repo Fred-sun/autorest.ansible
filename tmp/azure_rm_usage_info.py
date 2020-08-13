@@ -28,13 +28,10 @@ class AzureRMUsageInfo(AzureRMModuleBase):
             location=dict(
                 type='str',
                 required=true
-            ),
-            subscription_id=dict(
-                type='str',
-                required=true
             )
         )
 
+        self.location = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -58,8 +55,7 @@ class AzureRMUsageInfo(AzureRMModuleBase):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        if (self.location is not None and
-            self.subscription_id is not None):
+        if (self.location is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results
 

@@ -31,15 +31,14 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
             availability_set_name=dict(
                 type='str'
             ),
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             expand=dict(
                 type='str'
             )
         )
 
+        self.resource_group_name = None
+        self.availability_set_name = None
+        self.expand = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -64,18 +63,14 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group is not None and
-            self.availability_set_name is not None and
-            self.subscription_id is not None):
+            self.availability_set_name is not None):
             self.results['null'] = self.format_item(self.listavailablesizes())
         elif (self.resource_group is not None and
-              self.availability_set_name is not None and
-              self.subscription_id is not None):
+              self.availability_set_name is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.resource_group is not None and
-              self.subscription_id is not None):
+        elif (self.resource_group is not None):
             self.results['null'] = self.format_item(self.list())
-        elif (self.subscription_id is not None and
-              self.expand is not None):
+        elif (self.expand is not None):
             self.results['null'] = self.format_item(self.listbysubscription())
         return self.results
 

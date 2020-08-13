@@ -25,10 +25,6 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             resource_group_name=dict(
                 type='str'
             ),
@@ -37,6 +33,8 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
             )
         )
 
+        self.resource_group_name = None
+        self.ssh_public_key_name = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -61,14 +59,12 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group is not None and
-            self.ssh_public_key_name is not None and
-            self.subscription_id is not None):
+            self.ssh_public_key_name is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.resource_group is not None and
-              self.subscription_id is not None):
+        elif (self.resource_group is not None):
             self.results['null'] = self.format_item(self.listbyresourcegroup())
-        elif (self.subscription_id is not None):
-            self.results['null'] = self.format_item(self.listbysubscription())
+        else:
+            self.results['null'] = [self.format_item(self.listbysubscription())]
         return self.results
 
     def get(self):

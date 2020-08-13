@@ -38,10 +38,6 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
             expand=dict(
                 type='constant'
             ),
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             virtual_machine_scale_set_name=dict(
                 type='str'
             ),
@@ -56,6 +52,14 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
             )
         )
 
+        self.resource_group_name = None
+        self.vm_scale_set_name = None
+        self.instance_id = None
+        self.expand = None
+        self.virtual_machine_scale_set_name = None
+        self.filter = None
+        self.select = None
+        self.expand = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -81,21 +85,18 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.vm_scale_set_name is not None and
-            self.instance_id is not None and
-            self.subscription_id is not None):
+            self.instance_id is not None):
             self.results['null'] = self.format_item(self.getinstanceview())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None and
               self.instance_id is not None and
-              self.expand is not None and
-              self.subscription_id is not None):
+              self.expand is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.resource_group is not None and
               self.virtual_machine_scale_set_name is not None and
               self.filter is not None and
               self.select is not None and
-              self.expand is not None and
-              self.subscription_id is not None):
+              self.expand is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results
 

@@ -25,10 +25,6 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMDiskInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             resource_group_name=dict(
                 type='str'
             ),
@@ -37,6 +33,8 @@ class AzureRMDiskInfo(AzureRMModuleBase):
             )
         )
 
+        self.resource_group_name = None
+        self.disk_name = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -60,15 +58,13 @@ class AzureRMDiskInfo(AzureRMModuleBase):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        if (self.subscription_id is not None and
-            self.resource_group is not None and
+        if (self.resource_group is not None and
             self.disk_name is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.subscription_id is not None and
-              self.resource_group is not None):
+        elif (self.resource_group is not None):
             self.results['null'] = self.format_item(self.listbyresourcegroup())
-        elif (self.subscription_id is not None):
-            self.results['null'] = self.format_item(self.list())
+        else:
+            self.results['null'] = [self.format_item(self.list())]
         return self.results
 
     def get(self):

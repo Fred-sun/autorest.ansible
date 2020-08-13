@@ -25,10 +25,6 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             resource_group_name=dict(
                 type='str',
                 required=true
@@ -49,6 +45,11 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
             )
         )
 
+        self.resource_group_name = None
+        self.gallery_name = None
+        self.gallery_image_name = None
+        self.gallery_image_version_name = None
+        self.expand = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -72,15 +73,13 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        if (self.subscription_id is not None and
-            self.resource_group is not None and
+        if (self.resource_group is not None and
             self.gallery_name is not None and
             self.gallery_image_name is not None and
             self.gallery_image_version_name is not None and
             self.expand is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.subscription_id is not None and
-              self.resource_group is not None and
+        elif (self.resource_group is not None and
               self.gallery_name is not None and
               self.gallery_image_name is not None):
             self.results['null'] = self.format_item(self.listbygalleryimage())

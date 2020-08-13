@@ -39,10 +39,6 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
             version=dict(
                 type='str'
             ),
-            subscription_id=dict(
-                type='str',
-                required=true
-            ),
             filter=dict(
                 type='str'
             ),
@@ -54,6 +50,13 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
             )
         )
 
+        self.location = None
+        self.publisher_name = None
+        self.type = None
+        self.version = None
+        self.filter = None
+        self.top = None
+        self.orderby = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -80,20 +83,17 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         if (self.location is not None and
             self.publisher_name is not None and
             self.type is not None and
-            self.version is not None and
-            self.subscription_id is not None):
+            self.version is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.location is not None and
               self.publisher_name is not None and
               self.type is not None and
               self.filter is not None and
               self.top is not None and
-              self.orderby is not None and
-              self.subscription_id is not None):
+              self.orderby is not None):
             self.results['null'] = self.format_item(self.listversions())
         elif (self.location is not None and
-              self.publisher_name is not None and
-              self.subscription_id is not None):
+              self.publisher_name is not None):
             self.results['null'] = self.format_item(self.listtypes())
         return self.results
 

@@ -33,13 +33,12 @@ class AzureRMDedicatedHostGroupInfo(AzureRMModuleBase):
             ),
             expand=dict(
                 type='constant'
-            ),
-            subscription_id=dict(
-                type='str',
-                required=true
             )
         )
 
+        self.resource_group_name = None
+        self.host_group_name = None
+        self.expand = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -65,14 +64,12 @@ class AzureRMDedicatedHostGroupInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.host_group_name is not None and
-            self.expand is not None and
-            self.subscription_id is not None):
+            self.expand is not None):
             self.results['null'] = self.format_item(self.get())
-        elif (self.resource_group is not None and
-              self.subscription_id is not None):
+        elif (self.resource_group is not None):
             self.results['null'] = self.format_item(self.listbyresourcegroup())
-        elif (self.subscription_id is not None):
-            self.results['null'] = self.format_item(self.listbysubscription())
+        else:
+            self.results['null'] = [self.format_item(self.listbysubscription())]
         return self.results
 
     def get(self):
