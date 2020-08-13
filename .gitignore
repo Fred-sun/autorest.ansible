@@ -11,3 +11,4 @@ tmpoutput
 *.orig
 
 *.DS_Store
+./test.ts

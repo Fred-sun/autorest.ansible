@@ -575,12 +575,12 @@ export function GetFixUrlStatements(method: ModuleMethod): string[]
 {
     let ss: string[] = [];
     let url = method.Url;
-    let reg = /{*.}/
+    let reg = /{([^{}]*)}/g
     let result;
     while ((result = reg.exec(url)) != null){
         for (let option of method.Options){
-            if (option.NameSwagger == result[0]){
-                ss.push("self.url = self.url.replace('{{" + result[0] + "}}', self." + option.NameAnsible + ")");
+            if (option.NameSwagger == result[1]){
+                ss.push("self.url = self.url.replace('{" + result[1] + "}', self." + option.NameAnsible + ")");
                 break;
             }
         }
