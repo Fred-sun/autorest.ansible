@@ -26,35 +26,31 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             location=dict(
-                type='',
+                type='string',
                 required=true
             ),
             publisher_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             type=dict(
-                type=''
+                type='string'
             ),
             version=dict(
-                type=''
-            ),
-            apiversion=dict(
-                type='',
-                required=true
+                type='string'
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             ),
             filter=dict(
-                type=''
+                type='string'
             ),
             top=dict(
-                type=''
+                type='integer'
             ),
             orderby=dict(
-                type=''
+                type='string'
             )
         )
 
@@ -85,7 +81,6 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
             self.publisher_name is not None and
             self.type is not None and
             self.version is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.location is not None and
@@ -94,12 +89,10 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
               self.filter is not None and
               self.top is not None and
               self.orderby is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.listversions())
         elif (self.location is not None and
               self.publisher_name is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.listtypes())
         return self.results

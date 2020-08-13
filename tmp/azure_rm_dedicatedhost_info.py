@@ -26,25 +26,21 @@ class AzureRMDedicatedHostInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             host_group_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             host_name=dict(
-                type=''
+                type='string'
             ),
             expand=dict(
-                type=''
-            ),
-            apiversion=dict(
-                type='',
-                required=true
+                type='constant'
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             )
         )
@@ -76,12 +72,10 @@ class AzureRMDedicatedHostInfo(AzureRMModuleBase):
             self.host_group_name is not None and
             self.host_name is not None and
             self.expand is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.resource_group is not None and
               self.host_group_name is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.listbyhostgroup())
         return self.results

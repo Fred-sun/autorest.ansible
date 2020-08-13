@@ -26,27 +26,23 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             location=dict(
-                type=''
-            ),
-            apiversion=dict(
-                type='',
-                required=true
+                type='string'
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             ),
             resource_group_name=dict(
-                type=''
+                type='string'
             ),
             vm_name=dict(
-                type=''
+                type='string'
             ),
             expand=dict(
-                type=''
+                type='constant'
             ),
             status_only=dict(
-                type=''
+                type='string'
             )
         )
 
@@ -75,30 +71,24 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
 
         if (self.resource_group is not None and
             self.vm_name is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.instanceview())
         elif (self.resource_group is not None and
               self.vm_name is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.listavailablesizes())
         elif (self.resource_group is not None and
               self.vm_name is not None and
               self.expand is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.resource_group is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.list())
         elif (self.location is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.listbylocation())
-        elif (self.apiversion is not None and
-              self.subscription_id is not None and
+        elif (self.subscription_id is not None and
               self.status_only is not None):
             self.results['null'] = self.format_item(self.listall())
         return self.results

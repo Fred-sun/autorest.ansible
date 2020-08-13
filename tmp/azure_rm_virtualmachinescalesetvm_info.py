@@ -26,37 +26,33 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             vm_scale_set_name=dict(
-                type=''
+                type='string'
             ),
             instance_id=dict(
-                type=''
+                type='string'
             ),
             expand=dict(
-                type=''
-            ),
-            apiversion=dict(
-                type='',
-                required=true
+                type='constant'
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             ),
             virtual_machine_scale_set_name=dict(
-                type=''
+                type='string'
             ),
             filter=dict(
-                type=''
+                type='string'
             ),
             select=dict(
-                type=''
+                type='string'
             ),
             expand=dict(
-                type=''
+                type='string'
             )
         )
 
@@ -86,14 +82,12 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
         if (self.resource_group is not None and
             self.vm_scale_set_name is not None and
             self.instance_id is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.getinstanceview())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None and
               self.instance_id is not None and
               self.expand is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.resource_group is not None and
@@ -101,7 +95,6 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
               self.filter is not None and
               self.select is not None and
               self.expand is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results

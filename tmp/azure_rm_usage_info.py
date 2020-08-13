@@ -26,15 +26,11 @@ class AzureRMUsageInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             location=dict(
-                type='',
-                required=true
-            ),
-            apiversion=dict(
-                type='',
+                type='string',
                 required=true
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             )
         )
@@ -63,7 +59,6 @@ class AzureRMUsageInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.location is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results

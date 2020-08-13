@@ -25,10 +25,6 @@ from msrestazure.azure_exceptions import CloudError
 class AzureRMOperationInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
-            apiversion=dict(
-                type='',
-                required=true
-            )
         )
 
 
@@ -54,8 +50,8 @@ class AzureRMOperationInfo(AzureRMModuleBase):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        if (self.apiversion is not None):
-            self.results['null'] = self.format_item(self.list())
+        else:
+            self.results['null'] = [self.format_item(self.list())]
         return self.results
 
     def list(self):

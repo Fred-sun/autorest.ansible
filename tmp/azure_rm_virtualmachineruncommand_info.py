@@ -26,19 +26,15 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             location=dict(
-                type='',
-                required=true
-            ),
-            apiversion=dict(
-                type='',
+                type='string',
                 required=true
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             ),
             command_id=dict(
-                type=''
+                type='string'
             )
         )
 
@@ -67,11 +63,9 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
 
         if (self.location is not None and
             self.command_id is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.location is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results

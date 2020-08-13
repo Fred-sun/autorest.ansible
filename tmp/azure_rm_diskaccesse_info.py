@@ -26,18 +26,14 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             ),
             resource_group_name=dict(
-                type=''
+                type='string'
             ),
             disk_access_name=dict(
-                type=''
-            ),
-            apiversion=dict(
-                type='',
-                required=true
+                type='string'
             )
         )
 
@@ -66,20 +62,16 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
 
         if (self.subscription_id is not None and
             self.resource_group is not None and
-            self.disk_access_name is not None and
-            self.apiversion is not None):
+            self.disk_access_name is not None):
             self.results['null'] = self.format_item(self.getprivatelinkresources())
         elif (self.subscription_id is not None and
               self.resource_group is not None and
-              self.disk_access_name is not None and
-              self.apiversion is not None):
+              self.disk_access_name is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.subscription_id is not None and
-              self.resource_group is not None and
-              self.apiversion is not None):
+              self.resource_group is not None):
             self.results['null'] = self.format_item(self.listbyresourcegroup())
-        elif (self.subscription_id is not None and
-              self.apiversion is not None):
+        elif (self.subscription_id is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results
 

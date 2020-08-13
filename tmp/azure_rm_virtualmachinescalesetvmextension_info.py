@@ -26,30 +26,26 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             vm_scale_set_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             instance_id=dict(
-                type='',
+                type='string',
                 required=true
             ),
             vm_extension_name=dict(
-                type=''
+                type='string'
             ),
             expand=dict(
-                type='',
-                required=true
-            ),
-            apiversion=dict(
-                type='',
+                type='string',
                 required=true
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             )
         )
@@ -82,14 +78,12 @@ class AzureRMVirtualMachineScaleSetVMExtensionInfo(AzureRMModuleBase):
             self.instance_id is not None and
             self.vm_extension_name is not None and
             self.expand is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.resource_group is not None and
               self.vm_scale_set_name is not None and
               self.instance_id is not None and
               self.expand is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.list())
         return self.results

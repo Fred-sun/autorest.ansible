@@ -26,20 +26,16 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type=''
+                type='string'
             ),
             proximity_placement_group_name=dict(
-                type=''
+                type='string'
             ),
             include_colocation_status=dict(
-                type=''
-            ),
-            apiversion=dict(
-                type='',
-                required=true
+                type='string'
             ),
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             )
         )
@@ -70,15 +66,12 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
         if (self.resource_group is not None and
             self.proximity_placement_group_name is not None and
             self.include_colocation_status is not None and
-            self.apiversion is not None and
             self.subscription_id is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.resource_group is not None and
-              self.apiversion is not None and
               self.subscription_id is not None):
             self.results['null'] = self.format_item(self.listbyresourcegroup())
-        elif (self.apiversion is not None and
-              self.subscription_id is not None):
+        elif (self.subscription_id is not None):
             self.results['null'] = self.format_item(self.listbysubscription())
         return self.results
 

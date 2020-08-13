@@ -26,30 +26,26 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
             subscription_id=dict(
-                type='',
+                type='string',
                 required=true
             ),
             resource_group_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             gallery_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             gallery_application_name=dict(
-                type='',
+                type='string',
                 required=true
             ),
             gallery_application_version_name=dict(
-                type=''
+                type='string'
             ),
             expand=dict(
-                type=''
-            ),
-            apiversion=dict(
-                type='',
-                required=true
+                type='choice'
             )
         )
 
@@ -81,14 +77,12 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
             self.gallery_name is not None and
             self.gallery_application_name is not None and
             self.gallery_application_version_name is not None and
-            self.expand is not None and
-            self.apiversion is not None):
+            self.expand is not None):
             self.results['null'] = self.format_item(self.get())
         elif (self.subscription_id is not None and
               self.resource_group is not None and
               self.gallery_name is not None and
-              self.gallery_application_name is not None and
-              self.apiversion is not None):
+              self.gallery_application_name is not None):
             self.results['null'] = self.format_item(self.listbygalleryapplication())
         return self.results
 
