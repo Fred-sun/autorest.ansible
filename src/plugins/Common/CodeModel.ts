@@ -32,6 +32,7 @@ export class CodeModel {
         this.ObjectName = this.GetObjectName();
         this.ModuleClassName = this.GetModuleClassName();
         this.ModuleName = this.GetModuleName();
+        this.ModuleOperationName = swaggerName.toLowerCase();
     }
     public SwaggerName: string = null;
     public ModuleName: string = null;
