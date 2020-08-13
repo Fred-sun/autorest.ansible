@@ -1,7 +1,7 @@
 import {LogCallback} from "../../index";
 import {CodeModel, SwaggerModelType} from "./CodeModel";
 import {ModuleMethod, ModuleOption, ModuleOptionKind} from "./ModuleMap";
-import {ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
+import {ParseType, ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
 import {pascalCase} from "@azure-tools/codegen";
 import {Info} from "@azure-tools/codemodel";
 
@@ -251,7 +251,7 @@ export class CodeModelGroup {
 
         option.Required = required;
         option.Documentation = description;
-        option.Type = type;
+        option.Type = ParseType(type);
         if (parent !== null) {
             option.SwaggerPath = option.SwaggerPath.concat(parent.SwaggerPath);
         }
