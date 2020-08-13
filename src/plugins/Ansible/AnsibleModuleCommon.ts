@@ -579,8 +579,6 @@ export function GetFixUrlStatements(method: ModuleMethod): string[]
     let result;
     while ((result = reg.exec(url)) != null){
         for (let option of method.Options){
-            console.log(option.NameSwagger.toLowerCase());
-            console.log(result[1].toLowerCase());
             if (option.NameSwagger.toLowerCase() === result[1].toLowerCase()){
                 ss.push("self.url = self.url.replace('{" + result[1] + "}', self." + option.NameAnsible + ")");
                 break;
