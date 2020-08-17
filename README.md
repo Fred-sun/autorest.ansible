@@ -9,6 +9,12 @@ use-extension:
 
 pipeline-model: v3
 
+modelerfour:
+    lenient-model-deduplication: true
+    group-parameters: true
+    flatten-models: true
+    flatten-payloads: true
+
 pipeline:
     ansible:
         input: clicommon/identity
@@ -21,6 +27,5 @@ scope-ansible/emitter:
     output-uri-expr: $key
     output-artifact: some-file-generated-by-ansible
 
-modelerfour:
-    additional-checks: false
+
 ```
