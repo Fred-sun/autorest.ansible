@@ -4,7 +4,7 @@ See documentation [here](doc/00-overview.md)
 
 ``` yaml
 use-extension:
-  "@autorest/clicommon": "0.4.12"
+  "@autorest/clicommon": "0.4.13"
 
 
 pipeline-model: v3
