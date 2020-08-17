@@ -14,7 +14,6 @@ use-extension:
 
 require:
   - ./readme.python.md
-  - ./readme.cli.md
   - $(this-folder)/readme.ansible.common.md
 
 pipeline-model: v3
