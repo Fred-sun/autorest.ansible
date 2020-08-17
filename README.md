@@ -25,7 +25,7 @@ pipeline:
         input: python/namer
         output-artifact: source-file-hider
     python/codegen:
-        input: az/hider
+        input: hider
     ansible:
         input: python/namer
         output-artifact: some-file-generated-by-ansible
