@@ -21,16 +21,26 @@ pipeline-model: v3
 pipeline:
     python/m2r:
         input: clicommon/identity
+    hider:
+        input: python/namer
+        output-artifact: source-file-hider
+    python/codegen:
+        input: az/hider
     ansible:
         input: python/namer
         output-artifact: some-file-generated-by-ansible
     ansible/emitter:
-        input: ansible
+        input:
+            - hider
+            - ansible
         scope: scope-ansible/emitter
+
 scope-ansible/emitter:
-    input-artifact: some-file-generated-by-ansible
-    output-uri-expr: $key
-    output-artifact: some-file-generated-by-ansible
+    is-object: false
+    output-artifact:
+        - source-file-hider
+        - some-file-generated-by-ansible
+    output-folder: $(az-output-folder)
 
 modelerfour:
     lenient-model-deduplication: true

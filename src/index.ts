@@ -2,7 +2,7 @@ import { AutoRestExtension, Channel, Host } from "@azure-tools/autorest-extensio
 import {CodeModelGroup} from "./plugins/Common/CodeModelGroup";
 import * as yaml from "node-yaml";
 import {GenerateAnsible} from "./plugins/Ansible/Generator";
-
+import { processRequest as hider } from './plugins/hider';
 
 export type LogCallback = (message: string) => void;
 export type FileCallback = (path: string, rows: string[]) => void;
@@ -15,6 +15,7 @@ export  enum ArtifactType {
 
 export async function main() {
     const extension = new AutoRestExtension();
+    extension.Add('hider', hider);
     extension.Add("ansible", async autoRestApi => {
         let log = await autoRestApi.GetValue("log");
 
