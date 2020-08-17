@@ -39,11 +39,13 @@ export async function main() {
         function WriteFile(path: string, rows: string[])
         {
             autoRestApi.WriteFile(path, rows.join('\r\n'));
+            Info("321");
         }
         const inputFileUris = await autoRestApi.ListInputs();
         Info("input file:" + inputFileUris);
         const inputFiles: string[] = await Promise.all(inputFileUris.filter(uri =>uri.endsWith("no-tags.yaml")).map(uri => autoRestApi.ReadFile(uri)));
         WriteFile("model4.yaml", inputFiles);
+        Info("123");
         // for (let iff of inputFiles){
         //     const jsyaml = require('js-yaml');
         //     let climodel = jsyaml.safeLoad(iff);
