@@ -4,26 +4,27 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { CodeModel } from "../Common/CodeModel"
-import { Indent } from "../Common/Helpers";
+// import { Indent } from "../Common/Helpers";
 import {
     ModuleTopLevelOptionsVariables,
     GetFixUrlStatements,
     AppendModuleHeader,
-    AppendModuleDocumentation,
-    AppendModuleExamples,
+    // AppendModuleDocumentation,
+    // AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
-    AppendModuleReturnDoc
+    // AppendModuleReturnDoc
 } from "./AnsibleModuleCommon"
+import {Indent} from "../../utils/helper";
 
 export function GenerateModuleRest(model: CodeModel, collection: boolean) : string[] {
     
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    AppendModuleDocumentation(output, model, false, collection);
-    AppendModuleExamples(output, model, collection);
-    AppendModuleReturnDoc(output, model, false);
+    // AppendModuleDocumentation(output, model, false, collection);
+    // AppendModuleExamples(output, model, collection);
+    // AppendModuleReturnDoc(output, model, false);
 
     output.push("");
     output.push("import time");
@@ -46,15 +47,16 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("class " + model.ModuleClassName + "(AzureRMModuleBaseExt):");
     output.push("    def __init__(self):");
 
+    console.log("0");
     AppendModuleArgSpec(output, model, true, false);
 
     output.push("");
-
+    console.log("1");
     let vars = ModuleTopLevelOptionsVariables(model.ModuleOptions);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }
-
+    console.log("2");
     output.push("");
     output.push("        self.results = dict(changed=False)");
     output.push("        self.mgmt_client = None");
@@ -112,16 +114,18 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
         }
     }
 
-    var broken = model.ModuleUrl.split('/');
-    output.push("        self.url = ('/" + broken[1] + "'");
-    for (var i = 2; i < broken.length; i++)
-    {
-        output[output.length - 1] += " +";
-        output.push("                    '/" + broken[i] + "'");
-    }
-    output[output.length - 1] += ")";
-
-    let fixurl = GetFixUrlStatements(model);
+    // var broken = model.ModuleUrl.split('/');
+    // output.push("        self.url = ('/" + broken[1] + "'");
+    // for (var i = 2; i < broken.length; i++)
+    // {
+    //     output[output.length - 1] += " +";
+    //     output.push("                    '/" + broken[i] + "'");
+    // }
+    // output[output.length - 1] += ")";
+    output.push("        self.url= '" +model.BasicURL + "'")
+    console.log("3");
+    let fixurl = GetFixUrlStatements(model.BasicURL);
+    console.log("4");
     fixurl.forEach(element => {
         output.push("        " + element);
     });
@@ -226,7 +230,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     //}
     output.push("");
     output.push("    def create_update_resource(self):");
-    output.push("        # self.log('Creating / Updating the " + model.ObjectName + " instance {0}'.format(self." + model.ModuleResourceName + "))");
+    // output.push("        # self.log('Creating / Updating the " + model.ObjectName + " instance {0}'.format(self." + model.ModuleResourceName + "))");
     output.push("");
     output.push("        try:");
     if (model.HasCreateOrUpdate())
@@ -275,7 +279,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("        return response");
     output.push("");
     output.push("    def delete_resource(self):");
-    output.push("        # self.log('Deleting the " + model.ObjectName + " instance {0}'.format(self." + model.ModuleResourceName + "))");
+    //output.push("        # self.log('Deleting the " + model.ObjectName + " instance {0}'.format(self." + model.ModuleResourceName + "))");
     output.push("        try:");
 
     output.push("            response = self.mgmt_client.query(self.url,");
@@ -294,7 +298,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("        return True");
     output.push("");
     output.push("    def get_resource(self):");
-    output.push("        # self.log('Checking if the " + model.ObjectName + " instance {0} is present'.format(self." + model.ModuleResourceName + "))");
+    //output.push("        # self.log('Checking if the " + model.ObjectName + " instance {0} is present'.format(self." + model.ModuleResourceName + "))");
     output.push("        found = False");
     output.push("        try:");
 

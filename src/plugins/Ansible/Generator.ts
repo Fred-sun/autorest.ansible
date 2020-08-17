@@ -23,45 +23,52 @@ export function GenerateAnsible(artifactType: ArtifactType,
     let path: string = "lib/ansible/modules/cloud/azure/";
 
     let index = 0;
+    console.log(modelGroup.models.length);
     for(let model of modelGroup.models){
         try
         {
-            logCb(model.ModuleName);
-            if (model.IsInfoModule){
+            // logCb(model.ModuleName);
+
+            // if (model.IsInfoModule){
+            //     if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk)
+            //     {
+            //         fileCb(model.ModuleName + ".py", GenerateModuleSdkInfo(model));
+            //     }
+            //
+            //     if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
+            //     {
+            //
+            //         fileCb( model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
+            //     }
+            //
+            //     if (artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
+            //     {
+            //         fileCb(model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", GenerateModuleRestInfo(model, true));
+            //     }
+            // }
+
+            if (!model.IsInfoModule){
                 if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk)
                 {
-                    fileCb(path + model.ModuleName + ".py", GenerateModuleSdkInfo(model));
+                    fileCb(model.ModuleName + ".py", GenerateModuleSdk(model));
                 }
 
                 if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
                 {
+                    if (model.ModuleName != "azure_rm_gallery")
+                        continue;
+                    console.log(index + "======  "+model.ModuleName);
+                    let rows = GenerateModuleRest(model, false);
+                    console.log(index + "---------"+model.ModuleName);
+                    fileCb(model.ModuleName + ".py", rows);
 
-                    fileCb( model.ModuleName + ".py", GenerateModuleRestInfo(model, false));
                 }
 
                 if (artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
                 {
-                    fileCb(path + model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", GenerateModuleRestInfo(model, true));
+                    fileCb(model.ModuleName.split('_').pop() + ".py", GenerateModuleRest(model, true));
                 }
             }
-            // if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk)
-            // {
-            //   fileCb(path + model.ModuleName + ".py", GenerateModuleSdk(model));
-            // }
-            //
-            // if (artifactType == ArtifactType.ArtifactTypeAnsibleRest)
-            // {
-            //   fileCb(path + model.ModuleName + ".py", GenerateModuleRest(model, false));
-            // }
-            //
-            // if (artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
-            // {
-            //   fileCb(path + model.ModuleName.split('_').pop() + ".py", GenerateModuleRest(model, true));
-            // }
-
-
-
-
 
         }
         catch (e)

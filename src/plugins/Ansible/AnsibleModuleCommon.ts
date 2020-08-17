@@ -330,22 +330,24 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
             argSpec.push(argSpec.pop() + ",");
             argSpec.push(prefix + "    no_log=True");
         }
-
+        console.log(option.NameAnsible + "1");
         if (mainModule)
         {
+            console.log(option.Comparison);
             if (option.Comparison != "")
             {
                 argSpec.push(argSpec.pop() + ",");
                 argSpec.push(prefix + "    comparison='" + option.Comparison + "'");
             }
-
+            console.log(option.Updatable);
             if (!option.Updatable)
             {
                 argSpec.push(argSpec.pop() + ",");
                 argSpec.push(prefix + "    updatable=" + (option.Updatable ? "True" : "False"));
             }
-
+            console.log(useSdk);
             let disposition = useSdk ? option.DispositionSdk : option.DispositionRest;
+            console.log(useSdk);
             // adjust disposition here if necessary
             if (useSdk)
             {
@@ -369,7 +371,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
                 argSpec.push(prefix + "    disposition='" + disposition + "'");
             }
         }
-
+        console.log(option.NameAnsible + "2");
         if (choices)
         {
             argSpec.push(argSpec.pop() + ",");
@@ -437,6 +439,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
 
         if (haveSuboptions(option))
         {
+            console.log(option.NameAnsible + "3");
             argSpec.push(argSpec.pop() + ",");
             argSpec.push(prefix + "    options=dict(");
 
@@ -570,10 +573,10 @@ export function ModuleGenerateApiCall(output: string[], indent: string, model: C
 //     return ss;
 // }
 
-export function GetFixUrlStatements(method: ModuleMethod): string[]
+export function GetFixUrlStatements(baseUrl: string): string[]
 {
     let ss: string[] = [];
-    let url = method.Url;
+    let url = baseUrl;
     let reg = /{([^{}]*)}/g
     let result;
     // for (let option of method.Options){

@@ -43,33 +43,33 @@ export async function main() {
         const inputFileUris = await autoRestApi.ListInputs();
         Info("input file:" + inputFileUris);
         const inputFiles: string[] = await Promise.all(inputFileUris.filter(uri =>uri.endsWith("no-tags.yaml")).map(uri => autoRestApi.ReadFile(uri)));
-
-        for (let iff of inputFiles){
-            const jsyaml = require('js-yaml');
-            let climodel = jsyaml.safeLoad(iff);
-            let modelGroup = new CodeModelGroup(climodel, Debug);
-            modelGroup.Init();
-            GenerateAnsible(ArtifactType.ArtifactTypeAnsibleRest, modelGroup, WriteFile, Info);
-            // for (let m of climodel.operationGroups){
-            //     Info("============== moduleName: "+m["$key"]+" =================");
-            //
-            //     let idx1 = 1;
-            //     for (let method of m.operations){
-            //         Info("============== method: "+idx1+"  =================");
-            //         Info("      method: "+method.requests[0].protocol.http.method);
-            //         Info("      name: "+method.language.default.name);
-            //         Info("      path:" + method.requests[0].protocol.http.path);
-            //         Info("      version:" + method.apiVersions[0].version)
-            //         idx1++;
-            //         let idx2 = 1;
-            //         for (var p of method.parameters){
-            //             Info("============parameter: "+idx2 + "==============")
-            //             Info("" + yaml.dump(p));
-            //             idx2++;
-            //         }
-            //     }
-            // }
-        }
+        WriteFile("model4.yaml", inputFiles);
+        // for (let iff of inputFiles){
+        //     const jsyaml = require('js-yaml');
+        //     let climodel = jsyaml.safeLoad(iff);
+        //     let modelGroup = new CodeModelGroup(climodel, Debug);
+        //     modelGroup.Init();
+        //     GenerateAnsible(ArtifactType.ArtifactTypeAnsibleRest, modelGroup, WriteFile, Info);
+        //     // for (let m of climodel.operationGroups){
+        //     //     Info("============== moduleName: "+m["$key"]+" =================");
+        //     //
+        //     //     let idx1 = 1;
+        //     //     for (let method of m.operations){
+        //     //         Info("============== method: "+idx1+"  =================");
+        //     //         Info("      method: "+method.requests[0].protocol.http.method);
+        //     //         Info("      name: "+method.language.default.name);
+        //     //         Info("      path:" + method.requests[0].protocol.http.path);
+        //     //         Info("      version:" + method.apiVersions[0].version)
+        //     //         idx1++;
+        //     //         let idx2 = 1;
+        //     //         for (var p of method.parameters){
+        //     //             Info("============parameter: "+idx2 + "==============")
+        //     //             Info("" + yaml.dump(p));
+        //     //             idx2++;
+        //     //         }
+        //     //     }
+        //     // }
+        // }
 
     });
     extension.Run();

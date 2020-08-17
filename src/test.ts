@@ -29,7 +29,6 @@ export async function main() {
                 return console.error(err);
             }
         })
-        console.log("write " + path+ " successfully");
     }
     let fs = require("fs");
     const inputFileUri = "./model4.yaml";

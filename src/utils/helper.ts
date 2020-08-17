@@ -288,8 +288,12 @@ export function TrimPackageName(value: string, packageName: string): string {
     return value;
 }
 
-export function Indent(line: string):string {
-    return null;
+export function Indent(str: string):string {
+    let result = "";
+    for (let i = 0 ; i < str.length; i++){
+        result = result + " ";
+    }
+    return result;
 }
 
 export function ParseType(type: string) {
