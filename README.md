@@ -3,6 +3,11 @@
 See documentation [here](doc/00-overview.md)
 
 ``` yaml
+
+python:
+    reason: 'make sure python flag exists to load config in python.md'
+azure-arm: true
+
 use-extension:
   "@autorest/python": "5.1.0-preview.4"
   "@autorest/clicommon": "0.4.13"
