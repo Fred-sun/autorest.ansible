@@ -1,4 +1,3 @@
-import {LogCallback} from "../../index";
 
 import {ParseType, ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
 import {pascalCase} from "@azure-tools/codegen";
@@ -9,23 +8,24 @@ import {ModuleOption, ModuleOptionKind} from "./ModuleOption";
 import {Session} from "@azure-tools/autorest-extension-base";
 
 export class AnsibleCodeModel {
-    private _swagger: any = null;
-    public modules: Module[] = [];
-    private _log: LogCallback;
-    constructor(protected session: Session<CodeModel>) {
+    private model: any = null;
+    public Modules: Module[] = [];
 
+    constructor(model: CodeModel) {
+        this.model = model;
+        this.Init();
     }
-    public Init(){
-        for (let m of this._swagger.operationGroups){
-            let mainModule = new Module(m["$key"], false);
-            mainModule.BasicURL = this.GetBasicCRUDUrl(m.operations);
-            mainModule.ModuleApiVersion = m.operations[0].apiVersions[0].version;
+    private Init(){
+        for (let module of this.model.operationGroups){
+            let mainModule = new Module(module["$key"], false);
+            mainModule.BasicURL = this.GetBasicCRUDUrl(module.operations);
+            mainModule.ModuleApiVersion = module.operations[0].apiVersions[0].version;
 
-            let infoModule = new Module(m["$key"], true);
-            infoModule.BasicURL = this.GetBasicCRUDUrl(m.operations);
-            infoModule.ModuleApiVersion = m.operations[0].apiVersions[0].version;
-            this._log("===============Module:"+infoModule.ModuleName+"=====================");
-            for (let method of m.operations){
+            let infoModule = new Module(module["$key"], true);
+            infoModule.BasicURL = this.GetBasicCRUDUrl(module.operations);
+            infoModule.ModuleApiVersion = module.operations[0].apiVersions[0].version;
+
+            for (let method of module.operations){
                 if( method.requests[0].protocol.http.method == "get"){
                     this.AddMethod(method, infoModule);
                 }
@@ -34,10 +34,9 @@ export class AnsibleCodeModel {
             }
             this.AddModelModuleoptions(infoModule);
             this.AddModelModuleoptions(mainModule);
-            for (let option of infoModule.ModuleOptions)
-                this._log("     Moduleoption: " + option.Name)
-            this.modules.push(mainModule);
-            this.modules.push(infoModule);
+
+            this.Modules.push(mainModule);
+            this.Modules.push(infoModule);
         }
     }
     private AddModelModuleoptions(module:Module){
@@ -151,6 +150,8 @@ export class AnsibleCodeModel {
         if (method.requests[0].parameters !== undefined) {
             for (var p of method.requests[0].parameters) {
                 let option: ModuleOption = this.LoadModuleOption(p);
+                if (option == undefined)
+                    continue;
                 moduleMethod.Options.push(option);
                 if (option.Required)
                 {
@@ -225,7 +226,6 @@ export class AnsibleCodeModel {
 
     private LoadOption(p: any, isResponse:boolean = false, filterFunction: (name: string) => (boolean), parent: ModuleOption = null): ModuleOption {
         let name = p.language.default.name;
-        // this._log("load option:" + name);
         if (filterFunction(name)) return undefined;
         let serializedName = p.language.default.serializedName;
         let extensions:any = p.extensions;
@@ -323,8 +323,8 @@ export class AnsibleCodeModel {
 
     private IsAnsibleIgnoredOption(name: string) : boolean
     {
-        let ignoreOptions = new Set(['Apiversion','SubscriptionId', 'ApiVersion']);
-        return name.indexOf('$') != -1 ||name.indexOf('-') != -1 || ignoreOptions.has(name);
+        let ignoreOptions = new Set(['Apiversion','SubscriptionId', 'ApiVersion','subscriptionId']);
+        return name.indexOf('$') != -1 ||name.indexOf('_') != -1 || ignoreOptions.has(name);
     }
 
     // private needTrimPackageName(option: ModuleOption, url: string, module: AnsibleCodeModel): boolean {

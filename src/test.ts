@@ -1,5 +1,6 @@
-import { AutoRestExtension, Channel, Host } from "@azure-tools/autorest-extension-base";
-import * as yaml from "node-yaml";
+import {AnsibleCodeModel} from "./plugins/Common/AnsibleCodeModel";
+import {GenerateAll} from "./plugins/Ansible/AnsibleGenerator";
+import {EOL} from "os";
 
 
 export type LogCallback = (message: string) => void;
@@ -35,28 +36,34 @@ export async function main() {
     const input : string = fs.readFileSync(inputFileUri);
 
     const jsyaml = require('js-yaml');
-    let climodel = jsyaml.safeLoad(input);
+    let model = jsyaml.safeLoad(input);
 
-    for (let m of climodel.operationGroups){
-        Info("============== moduleName: "+m["$key"]+" =================");
-
-        let idx1 = 1;
-        for (let method of m.operations){
-            Info("============== method: "+idx1+"  =================");
-            Info("      method: "+method.requests[0].protocol.http.method);
-            Info("      name: "+method.language.default.name);
-            Info("      path:" + method.requests[0].protocol.http.path);
-            Info("      version:" + method.apiVersions[0].version)
-            idx1++;
-            let idx2 = 1;
-            for (var p of method.parameters){
-                Info("============parameter: "+idx2 + "==============")
-                Info("" + yaml.dump(p));
-                idx2++;
-            }
-        }
+    let codeModel = new AnsibleCodeModel(model);
+    let files = [];
+    files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleRest);
+    for (let f in files) {
+        WriteFile(f, files[f]);
     }
-    WriteFile("test.txt",ss);
+    // for (let m of climodel.operationGroups){
+    //     Info("============== moduleName: "+m["$key"]+" =================");
+    //
+    //     let idx1 = 1;
+    //     for (let method of m.operations){
+    //         Info("============== method: "+idx1+"  =================");
+    //         Info("      method: "+method.requests[0].protocol.http.method);
+    //         Info("      name: "+method.language.default.name);
+    //         Info("      path:" + method.requests[0].protocol.http.path);
+    //         Info("      version:" + method.apiVersions[0].version)
+    //         idx1++;
+    //         let idx2 = 1;
+    //         for (var p of method.parameters){
+    //             Info("============parameter: "+idx2 + "==============")
+    //             Info("" + yaml.dump(p));
+    //             idx2++;
+    //         }
+    //     }
+    // }
+    // WriteFile("test.txt",ss);
 
 }
 

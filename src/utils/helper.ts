@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import * as fs from 'fs';
 import { isNullOrUndefined } from 'util';
-import {SwaggerModelType} from "../plugins/Common/AnsibleCodeModel";
+
 
 export function changeCamelToDash(str: string) {
     str = str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
@@ -296,16 +296,39 @@ export function Indent(str: string):string {
     return result;
 }
 
+export enum SwaggerOptionType {
+    SWAGGER_MODEL_ANY = "any",
+    SWAGGER_MODEL_OBJECT = "object",
+    SWAGGER_MODEL_ARRAY = "array",
+    SWAGGER_MODEL_ENUM = "choice",
+    SWAGGER_MODEL_CONSTENT = "constant",
+    SWAGGER_MODEL_DICTIONARY = "dictionary",
+    SWAGGER_MODEL_DATETIEM = "date-time",
+    SWAGGER_MODEL_DURATION = "duration",
+    SWAGGER_MODEL_UUID = "uuid",
+    SWAGGER_MODEL_BYTE_ARRAY = "byte-array",
+    /*number type */
+    SWAGGER_MODEL_INTEGER = "integer",
+    SWAGGER_MODEL_INTEGER_32 = "integer32",
+    SWAGGER_MODEL_INTEGER_64 = "integer64",
+    SWAGGER_MODEL_FLOAT = "float",
+    SWAGGER_MODEL_DOUBLE = "double",
+    SWAGGER_MODEL_STRING = "string",
+    SWAGGER_MODEL_BOOLEAN = "boolean",
+    SWAGGER_MODEL_NUMBER = "number"
+}
+
+
 export function ParseType(type: string) {
-    if (type == SwaggerModelType.SWAGGER_MODEL_STRING)
+    if (type == SwaggerOptionType.SWAGGER_MODEL_STRING)
         return 'str';
-    if (type == SwaggerModelType.SWAGGER_MODEL_ARRAY)
+    if (type == SwaggerOptionType.SWAGGER_MODEL_ARRAY)
         return 'list';
-    if (type == SwaggerModelType.SWAGGER_MODEL_BOOLEAN)
+    if (type == SwaggerOptionType.SWAGGER_MODEL_BOOLEAN)
         return 'bool';
-    if (type == SwaggerModelType.SWAGGER_MODEL_DATETIEM )
+    if (type == SwaggerOptionType.SWAGGER_MODEL_DATETIEM )
         return 'str';
-    if (type == SwaggerModelType.SWAGGER_MODEL_INTEGER_32 || type == SwaggerModelType.SWAGGER_MODEL_INTEGER_64)
+    if (type == SwaggerOptionType.SWAGGER_MODEL_INTEGER_32 || type == SwaggerOptionType.SWAGGER_MODEL_INTEGER_64)
         return 'int';
     return type;
 }

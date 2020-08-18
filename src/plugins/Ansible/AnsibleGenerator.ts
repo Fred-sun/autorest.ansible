@@ -1,29 +1,37 @@
 import {AnsibleCodeModel} from "../Common/AnsibleCodeModel";
-import {ArtifactType} from "../../test";
+
 import {GenerateModuleRestInfo} from "./AnsibleModuleRestInfo";
 import {GenerateModuleSdk} from "./AnsibleModuleSdk";
 import {GenerateModuleSdkInfo} from "./AnsibleModuleSdkInfo";
 import {GenerateModuleRest} from "./AnsibleModuleRest";
 
 
+export  enum ArtifactType {
+    ArtifactTypeAnsibleSdk,
+    ArtifactTypeAnsibleRest,
+    ArtifactTypeAnsibleCollection
+}
+
+
 export function GenerateAll(model:AnsibleCodeModel, type:ArtifactType) {
-    let modules = model.modules;
+    let modules = model.Modules;
     let files = [];
     let path = "";
     for (let module of modules){
         if (module.IsInfoModule){
-            if (type == ArtifactType.ArtifactTypeAnsibleRest){
-                files[path+module.ModuleName+".py"] = GenerateModuleRestInfo(model, false);
-            }
-            if (type == ArtifactType.ArtifactTypeAnsibleSdk){
-                files[path+module.ModuleName+".py"] = GenerateModuleSdkInfo(model);
-            }
+            // if (type == ArtifactType.ArtifactTypeAnsibleRest){
+            //     files[path+module.ModuleName+".py"] = GenerateModuleRestInfo(module, false);
+            // }
+            // if (type == ArtifactType.ArtifactTypeAnsibleSdk){
+            //     files[path+module.ModuleName+".py"] = GenerateModuleSdkInfo(module);
+            // }
         }else {
+            console.log(module.ModuleName);
             if (type == ArtifactType.ArtifactTypeAnsibleRest){
-                files[path+module.ModuleName+".py"] = GenerateModuleRest(model, false);
+                files[path+module.ModuleName+".py"] = GenerateModuleRest(module, false);
             }
             if (type == ArtifactType.ArtifactTypeAnsibleSdk){
-                files[path+module.ModuleName+".py"] = GenerateModuleSdk(model);
+                files[path+module.ModuleName+".py"] = GenerateModuleSdk(module);
             }
         }
     }

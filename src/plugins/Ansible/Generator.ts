@@ -19,13 +19,14 @@ import {CodeModel, codeModelSchema} from "@azure-tools/codemodel";
 import {EOL} from "os";
 import {GenerateAll} from "./AnsibleGenerator";
 import {serialize} from "@azure-tools/codegen";
+import {ArtifactType} from "../../test";
 
 // export function GenerateAnsible(artifactType: ArtifactType,
 //                                 modelGroup: CodeModelGroup,
 //                                 fileCb: FileCallback,
 //                                 logCb: LogCallback)
 // {
-//     let path: string = "lib/ansible/modules/cloud/azure/";
+//     let path: string = "lib/ansible/Modules/cloud/azure/";
 //
 //     let index = 0;
 //     console.log(modelGroup.models.length);
@@ -83,11 +84,7 @@ import {serialize} from "@azure-tools/codegen";
 //         index++;
 //     }
 // }
-export  enum ArtifactType {
-    ArtifactTypeAnsibleSdk,
-    ArtifactTypeAnsibleRest,
-    ArtifactTypeAnsibleCollection
-}
+
 
 
 export async function processRequest(host: Host) {
@@ -95,7 +92,7 @@ export async function processRequest(host: Host) {
 
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
-        // host.WriteFile("model4.yaml",serialize(session.model));
+        host.WriteFile("model4.yaml",serialize(session.model));
         // let str : string[] = [];
         // let codeModel = session.model;
         // for (let module of codeModel.operationGroups){
@@ -117,11 +114,11 @@ export async function processRequest(host: Host) {
         //     }
         // }
         // host.WriteFile("test.txt", str.join(EOL));
-        let model = new AnsibleCodeModel(session);
-        let files: any = await GenerateAll(model, ArtifactType.ArtifactTypeAnsibleRest);
-        for (let f in files) {
-            host.WriteFile(f, files[f].join(EOL));
-        }
+        // let model = new AnsibleCodeModel(session.model);
+        // let files: any = await GenerateAll(model, ArtifactType.ArtifactTypeAnsibleRest);
+        // for (let f in files) {
+        //     host.WriteFile(f, files[f].join(EOL));
+        // }
     } catch (E) {
         if (debug) {
             console.error(`${__filename} - FAILURE  ${JSON.stringify(E)} ${E.stack}`);

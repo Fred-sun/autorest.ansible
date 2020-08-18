@@ -305,7 +305,7 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
         if (option.NameAnsible == "tags")
             continue;
 
-        // for info modules, only options included in path should be included
+        // for info Modules, only options included in path should be included
         // if (!mainModule && option.DispositionSdk != "*")
         //     continue;
 
@@ -333,24 +333,24 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
             argSpec.push(argSpec.pop() + ",");
             argSpec.push(prefix + "    no_log=True");
         }
-        console.log(option.NameAnsible + "1");
+
         if (mainModule)
         {
-            console.log(option.Comparison);
+
             if (option.Comparison != "")
             {
                 argSpec.push(argSpec.pop() + ",");
                 argSpec.push(prefix + "    comparison='" + option.Comparison + "'");
             }
-            console.log(option.Updatable);
+
             if (!option.Updatable)
             {
                 argSpec.push(argSpec.pop() + ",");
                 argSpec.push(prefix + "    updatable=" + (option.Updatable ? "True" : "False"));
             }
-            console.log(useSdk);
+
             let disposition = useSdk ? option.DispositionSdk : option.DispositionRest;
-            console.log(useSdk);
+
             // adjust disposition here if necessary
             if (useSdk)
             {
@@ -374,7 +374,7 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
                 argSpec.push(prefix + "    disposition='" + disposition + "'");
             }
         }
-        console.log(option.NameAnsible + "2");
+
         if (choices)
         {
             argSpec.push(argSpec.pop() + ",");
@@ -442,7 +442,7 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
 
         if (haveSuboptions(option))
         {
-            console.log(option.NameAnsible + "3");
+
             argSpec.push(argSpec.pop() + ",");
             argSpec.push(prefix + "    options=dict(");
 
@@ -582,9 +582,6 @@ export function GetFixUrlStatements(baseUrl: string): string[]
     let url = baseUrl;
     let reg = /{([^{}]*)}/g
     let result;
-    // for (let option of method.Options){
-    //     console.log("option name: "+option.NameSwagger.toLowerCase());
-    // }
     while ((result = reg.exec(url)) != null){
             ss.push("self.url = self.url.replace('{" + result[1] + "}', self." + ToSnakeCase(result[1]) + ")");
     }
