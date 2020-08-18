@@ -1,7 +1,5 @@
 import { AutoRestExtension, Channel, Host } from "@azure-tools/autorest-extension-base";
-import {CodeModelGroup} from "./plugins/Common/CodeModelGroup";
 import * as yaml from "node-yaml";
-import {GenerateAnsible} from "./plugins/Ansible/Generator";
 
 
 export type LogCallback = (message: string) => void;
@@ -15,10 +13,10 @@ export  enum ArtifactType {
 
 export async function main() {
 
-    let ss : string[];
+    let ss : string[] = [];
     function Info(s: string)
     {
-
+        ss.push(s);
     }
 
     function WriteFile(path: string, rows: string[])
@@ -38,30 +36,27 @@ export async function main() {
 
     const jsyaml = require('js-yaml');
     let climodel = jsyaml.safeLoad(input);
-    let modelGroup = new CodeModelGroup(climodel, Info);
-    modelGroup.Init();
-    GenerateAnsible(ArtifactType.ArtifactTypeAnsibleRest, modelGroup, WriteFile, Info);
+
     for (let m of climodel.operationGroups){
         Info("============== moduleName: "+m["$key"]+" =================");
 
         let idx1 = 1;
         for (let method of m.operations){
             Info("============== method: "+idx1+"  =================");
-            // Info("      method: "+method.requests[0].protocol.http.method);
-            // Info("      name: "+method.language.default.name);
-            // Info("      path:" + method.requests[0].protocol.http.path);
-            // Info("      version:" + method.apiVersions[0].version)
-            // idx1++;
-            // let idx2 = 1;
-            // for (var p of method.parameters){
-            //     Info("============parameter: "+idx2 + "==============")
-            //     Info("" + yaml.dump(p));
-            //     idx2++;
-            // }
+            Info("      method: "+method.requests[0].protocol.http.method);
+            Info("      name: "+method.language.default.name);
+            Info("      path:" + method.requests[0].protocol.http.path);
+            Info("      version:" + method.apiVersions[0].version)
+            idx1++;
+            let idx2 = 1;
+            for (var p of method.parameters){
+                Info("============parameter: "+idx2 + "==============")
+                Info("" + yaml.dump(p));
+                idx2++;
+            }
         }
     }
-
-
+    WriteFile("test.txt",ss);
 
 }
 

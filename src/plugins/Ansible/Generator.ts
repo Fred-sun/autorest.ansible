@@ -96,32 +96,32 @@ export async function processRequest(host: Host) {
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
         // host.WriteFile("model4.yaml",serialize(session.model));
-        let str : string[] = [];
-        let codeModel = session.model;
-        for (let module of codeModel.operationGroups){
-            str.push("============== moduleName: "+module["$key"]+" =================");
-            let idx1 = 1;
-            for (let method of module.operations){
-                str.push("============== method: "+idx1+"  =================");
-                str.push("      method: "+method.requests[0].protocol.http.method);
-                str.push("      name: "+method.language.default.name);
-                str.push("      path:" + method.requests[0].protocol.http.path);
-                str.push("      version:" + method.apiVersions[0].version)
-                idx1++;
-                let idx2 = 1;
-                for (var p of method.parameters){
-                    str.push("============parameter: "+idx2 + "==============")
-                    str.push("" + yaml.dump(p));
-                    idx2++;
-                }
-            }
-        }
-        host.WriteFile("test.txt", str.join(EOL));
-        // let model = new AnsibleCodeModel(session);
-        // let files: any = await GenerateAll(model, ArtifactType.ArtifactTypeAnsibleRest);
-        // for (let f in files) {
-        //     host.WriteFile(f, files[f].join(EOL));
+        // let str : string[] = [];
+        // let codeModel = session.model;
+        // for (let module of codeModel.operationGroups){
+        //     str.push("============== moduleName: "+module["$key"]+" =================");
+        //     let idx1 = 1;
+        //     for (let method of module.operations){
+        //         str.push("============== method: "+idx1+"  =================");
+        //         str.push("      method: "+method.requests[0].protocol.http.method);
+        //         str.push("      name: "+method.language.default.name);
+        //         str.push("      path:" + method.requests[0].protocol.http.path);
+        //         str.push("      version:" + method.apiVersions[0].version)
+        //         idx1++;
+        //         let idx2 = 1;
+        //         for (var p of method.parameters){
+        //             str.push("============parameter: "+idx2 + "==============")
+        //             str.push("" + yaml.dump(p));
+        //             idx2++;
+        //         }
+        //     }
         // }
+        // host.WriteFile("test.txt", str.join(EOL));
+        let model = new AnsibleCodeModel(session);
+        let files: any = await GenerateAll(model, ArtifactType.ArtifactTypeAnsibleRest);
+        for (let f in files) {
+            host.WriteFile(f, files[f].join(EOL));
+        }
     } catch (E) {
         if (debug) {
             console.error(`${__filename} - FAILURE  ${JSON.stringify(E)} ${E.stack}`);
