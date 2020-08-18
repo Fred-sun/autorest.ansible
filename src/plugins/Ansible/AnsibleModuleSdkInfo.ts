@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModel } from "../Common/CodeModel"
+import { AnsibleCodeModel } from "../Common/AnsibleCodeModel"
 import {
     ModuleTopLevelOptionsVariables,
     AppendModuleHeader,
@@ -15,14 +15,15 @@ import {
     ModuleGenerateApiCall,
     AppendInfoModuleLogic
 } from "./AnsibleModuleCommon"
+import {Module} from "../Common/Module";
 
-export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
+export function GenerateModuleSdkInfo(module: Module) : string[] {
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    // AppendModuleDocumentation(output, model, true, false);
-    // AppendModuleExamples(output, model, false);
-    // AppendModuleReturnDoc(output, model, true);
+    // AppendModuleDocumentation(output, module, true, false);
+    // AppendModuleExamples(output, module, false);
+    // AppendModuleReturnDoc(output, module, true);
 
     output.push("");
     output.push("import time");
@@ -31,7 +32,7 @@ export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
     output.push("from copy import deepcopy");
     output.push("try:");
     output.push("    from msrestazure.azure_exceptions import CloudError");
-    output.push("    from " + model.PythonNamespace + " import " + model.PythonMgmtClient + "");
+    output.push("    from " + module.PythonNamespace + " import " + module.PythonMgmtClient + "");
     output.push("    from msrestazure.azure_operation import AzureOperationPoller");
     output.push("    from msrest.polling import LROPoller");
     output.push("except ImportError:");
@@ -39,15 +40,15 @@ export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
     output.push("    pass");    
     output.push("");
     output.push("");
-    output.push("class " + model.ModuleClassName + "(AzureRMModuleBase):");
+    output.push("class " + module.ModuleClassName + "(AzureRMModuleBase):");
     output.push("    def __init__(self):");
 
 
-    AppendModuleArgSpec(output, model, false, true);
+    AppendModuleArgSpec(output, module, false, true);
 
     output.push("");
 
-    let vars = ModuleTopLevelOptionsVariables(model.ModuleOptions);
+    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }
@@ -60,34 +61,34 @@ export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
     output.push("        self.status_code = [200]");
     output.push("");
     output.push("        self.query_parameters = {}");
-    output.push("        self.query_parameters['api-version'] = '" + model.ModuleApiVersion + "'");
+    output.push("        self.query_parameters['api-version'] = '" + module.ModuleApiVersion + "'");
     output.push("        self.header_parameters = {}");
     output.push("        self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'");
     output.push("");
     output.push("        self.mgmt_client = None");
 
-    output.push("        super(" + model.ModuleClassName + ", self).__init__(self.module_arg_spec, supports_tags=" + (model.SupportsTags ? "True" : "False") + ")");
+    output.push("        super(" + module.ModuleClassName + ", self).__init__(self.module_arg_spec, supports_tags=" + (module.SupportsTags ? "True" : "False") + ")");
     output.push("");
     output.push("    def exec_module(self, **kwargs):");
     output.push("");
     output.push("        for key in self.module_arg_spec:");
     output.push("            setattr(self, key, kwargs[key])");
     output.push("");        
-    output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + model.MgmtClientName + "Client,");
+    output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + module.MgmtClientName + "Client,");
     output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager)");
     output.push("");
 
-    AppendInfoModuleLogic(output, model);
+    AppendInfoModuleLogic(output, module);
 
     output.push("");
 
-    for (let m of model.ModuleMethods)
+    for (let m of module.ModuleMethods)
     {
         output.push("    def " + m.Name.toLowerCase() + "(self):");
         output.push("        response = None");
         output.push("");
         output.push("        try:");
-        ModuleGenerateApiCall(output, "            ", model, m.Name);
+        ModuleGenerateApiCall(output, "            ", module, m.Name);
         output.push("        except CloudError as e:");
         output.push("            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')");
         output.push("");
@@ -99,7 +100,7 @@ export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
     output.push("");
     output.push("");
 
-    AppendMain(output, model);
+    AppendMain(output, module);
 
     return output;
 }

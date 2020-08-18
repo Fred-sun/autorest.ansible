@@ -3,12 +3,15 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModel } from "../Common/CodeModel"
-import { MapModuleGroup, ModuleOption, ModuleMethod, ModuleOptionKind } from "../Common/ModuleMap"
+import { AnsibleCodeModel } from "../Common/AnsibleCodeModel"
+
 // import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Indent, ToSnakeCase } from "../../utils/helper";
 
 import * as yaml from "node-yaml";
+import {Module} from "../Common/Module";
+import {ModuleOption} from "../Common/ModuleOption";
+import {ModuleMethod} from "../Common/ModuleMethod";
 
 
 export function AppendModuleHeader(output: string[])
@@ -30,23 +33,23 @@ export function AppendModuleHeader(output: string[])
     output.push("");
 }
 
-// export function AppendModuleDocumentation(output: string[], model: CodeModel, isInfoModule: boolean, isCollection: boolean)
+// export function AppendModuleDocumentation(output: string[], module: Module, isInfoModule: boolean, isCollection: boolean)
 // {
 //     output.push("DOCUMENTATION = '''");
 //     output.push("---");
 //
 //     var doc: any = {};
-//     let moduleName = model.ModuleName;
+//     let moduleName = module.ModuleName;
 //
 //     if (isCollection)
 //     {
 //         if (!isInfoModule)
 //         {
-//             moduleName = model.ModuleName.split("_").pop();
+//             moduleName = module.ModuleName.split("_").pop();
 //         }
 //         else
 //         {
-//             moduleName = model.ModuleName.split("_info")[0].split("_").pop() + "_info";
+//             moduleName = module.ModuleName.split("_info")[0].split("_").pop() + "_info";
 //         }
 //     }
 //     doc['module'] = moduleName;
@@ -54,24 +57,24 @@ export function AppendModuleHeader(output: string[])
 //
 //     if (isInfoModule)
 //     {
-//         doc['short_description'] = "Get " + model.ObjectName + " info.";
-//         doc['description'] = [ "Get info of " + model.ObjectName + "."];
+//         doc['short_description'] = "Get " + module.ObjectName + " info.";
+//         doc['description'] = [ "Get info of " + module.ObjectName + "."];
 //     }
 //     else
 //     {
-//         doc['short_description'] = "Manage Azure " + model.ObjectName + " instance.";
-//         doc['description'] = [ "Create, update and delete instance of Azure " + model.ObjectName + "."];
+//         doc['short_description'] = "Manage Azure " + module.ObjectName + " instance.";
+//         doc['description'] = [ "Create, update and delete instance of Azure " + module.ObjectName + "."];
 //     }
-//     doc['options'] = ModuleHelp(model, isInfoModule);
+//     doc['options'] = ModuleHelp(module, isInfoModule);
 //     if (!isInfoModule)
 //     {
 //         doc['options']['state'] = {}
-//         doc['options']['state']['description'] = ["Assert the state of the " + model.ObjectName + ".", "Use C(present) to create or update an " + model.ObjectName + " and C(absent) to delete it."]
+//         doc['options']['state']['description'] = ["Assert the state of the " + module.ObjectName + ".", "Use C(present) to create or update an " + module.ObjectName + " and C(absent) to delete it."]
 //         doc['options']['state']['default'] = 'present';
 //         doc['options']['state']['choices'] = ['absent', 'present'];
 //     }
 //     doc['extends_documentation_fragment'] = ['azure'];
-//     if (model.SupportsTags() && !isInfoModule)
+//     if (module.SupportsTags() && !isInfoModule)
 //     {
 //         doc['extends_documentation_fragment'].push('azure_tags');
 //     }
@@ -84,13 +87,13 @@ export function AppendModuleHeader(output: string[])
 //     output.push("'''");
 //     output.push("");
 // }
-//
-// export function AppendModuleExamples(output: string[], model: CodeModel, isCollection: boolean)
+
+// export function AppendModuleExamples(output: string[], module: Module, isCollection: boolean)
 // {
 //     output.push("EXAMPLES = '''");
 //
-//     let pp = new ExamplePostProcessor(model.Module);
-//     let examples = model.ModuleExamples;
+//     let pp = new ExamplePostProcessor(module.Module);
+//     let examples = module.ModuleExamples;
 //     let processedExamples: any[] = []
 //
 //     for (let exampleIdx in examples)
@@ -107,11 +110,11 @@ export function AppendModuleHeader(output: string[])
 //     output.push("");
 // }
 //
-// export function AppendModuleReturnDoc(output: string[], model: CodeModel, isInfoModule: boolean)
+// export function AppendModuleReturnDoc(output: string[], module: Module, isInfoModule: boolean)
 // {
 //     output.push("RETURN = '''");
 //
-//     let doc: any = isInfoModule ? ModuleInfoReturnResponseFields(model) : ModuleReturnResponseFields(model);
+//     let doc: any = isInfoModule ? ModuleInfoReturnResponseFields(module) : ModuleReturnResponseFields(module);
 //
 //     yaml.dump(doc).split(/\r?\n/).forEach(element => {
 //         output.push(element);
@@ -121,26 +124,26 @@ export function AppendModuleHeader(output: string[])
 //
 // }
 
-export function AppendModuleArgSpec(output: string[], model: CodeModel, mainModule: boolean, useSdk: boolean)
+export function AppendModuleArgSpec(output: string[], module: Module, mainModule: boolean, useSdk: boolean)
 {
     output.push("        self.module_arg_spec = dict(");
 
-    let argspec = GetModuleArgSpec(model, model.ModuleOptions, mainModule, mainModule, useSdk);
+    let argspec = GetModuleArgSpec(module, module.ModuleOptions, mainModule, mainModule, useSdk);
     for (var i = 0; i < argspec.length; i++) {
         output.push("            " + argspec[i]);
     }
     output.push("        )");
 }
 
-export function AppendInfoModuleLogic(output: string[], model: CodeModel)
+export function AppendInfoModuleLogic(output: string[], module: Module)
 {
     let ifStatement: string = "if";
-    let sortedMethods = model.ModuleMethods.sort((m1,m2) => {
+    let sortedMethods = module.ModuleMethods.sort((m1,m2) => {
         return (m1.Url.length > m2.Url.length) ? -1 : 1;
     });
     for (let m of sortedMethods)
     {
-        let ps: ModuleOption[] = model.GetMethodOptions(m.Name, true);
+        let ps: ModuleOption[] = module.GetMethodOptions(m.Name, true);
 
         if (ps.length == 0)
         {
@@ -159,21 +162,21 @@ export function AppendInfoModuleLogic(output: string[], model: CodeModel)
 
         if (ps.length == 0)
         {
-            output.push("            self.results['" + model.ModuleOperationName +"'] = [self.format_item(self." + m.Name.toLowerCase() + "())]");
+            output.push("            self.results['" + module.ModuleOperationName +"'] = [self.format_item(self." + m.Name.toLowerCase() + "())]");
         }
         else
         {
-            output.push("            self.results['" + model.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
+            output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
         }
         ifStatement = "elif"
     }
     output.push("        return self.results");
 }
 
-export function AppendMain(output: string[], model: CodeModel)
+export function AppendMain(output: string[], module: Module)
 {
     output.push("def main():");
-    output.push("    " + model.ModuleClassName + "()");
+    output.push("    " + module.ModuleClassName + "()");
     output.push("");
     output.push("");
     output.push("if __name__ == '__main__':");
@@ -183,15 +186,15 @@ export function AppendMain(output: string[], model: CodeModel)
 //-----------------------------------------------------------------------------
 // get module documentation
 //-----------------------------------------------------------------------------
-function ModuleHelp(model: CodeModel, isInfoModule: boolean): any
+function ModuleHelp(module: Module, isInfoModule: boolean): any
 {
-    return GetHelpFromOptions(model, model.ModuleOptions, "    ");
+    return GetHelpFromOptions(module, module.ModuleOptions, "    ");
 }
 
 //-----------------------------------------------------------------------------
 // get module documentation from subset of options
 //-----------------------------------------------------------------------------
-function GetHelpFromOptions(model: CodeModel, options: ModuleOption[], padding: string): any
+function GetHelpFromOptions(module: Module, options: ModuleOption[], padding: string): any
 {
     var help: any = {};
 
@@ -250,7 +253,7 @@ function GetHelpFromOptions(model: CodeModel, options: ModuleOption[], padding: 
 
         if (haveSuboptions(option))
         {
-            option_doc['suboptions'] = GetHelpFromOptions(model, option.SubOptions, padding + "        ");
+            option_doc['suboptions'] = GetHelpFromOptions(module, option.SubOptions, padding + "        ");
         }
     }
 
@@ -260,9 +263,9 @@ function GetHelpFromOptions(model: CodeModel, options: ModuleOption[], padding: 
 //---------------------------------------------------------------------------------------------------------------------------------------
 // Return module options as module_arg_spec
 //---------------------------------------------------------------------------------------------------------------------------------------
-export function GetModuleArgSpec(model: CodeModel, options: ModuleOption[], appendMainModuleOptions: boolean, mainModule: boolean, useSdk: boolean): string[]
+export function GetModuleArgSpec(module: Module, options: ModuleOption[], appendMainModuleOptions: boolean, mainModule: boolean, useSdk: boolean): string[]
 {
-    var argSpec: string[] = GetArgSpecFromOptions(model, options, "", mainModule, useSdk);
+    var argSpec: string[] = GetArgSpecFromOptions(module, options, "", mainModule, useSdk);
 
     if (appendMainModuleOptions)
     {
@@ -284,7 +287,7 @@ export function GetModuleArgSpec(model: CodeModel, options: ModuleOption[], appe
     return argSpec;
 }
 
-function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix: string, mainModule: boolean, useSdk: boolean): string[]
+function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: string, mainModule: boolean, useSdk: boolean): string[]
 {
     var argSpec: string[] = [];
 
@@ -443,7 +446,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
             argSpec.push(argSpec.pop() + ",");
             argSpec.push(prefix + "    options=dict(");
 
-            argSpec = argSpec.concat(GetArgSpecFromOptions(model, option.SubOptions, prefix + "        ", mainModule, useSdk));
+            argSpec = argSpec.concat(GetArgSpecFromOptions(module, option.SubOptions, prefix + "        ", mainModule, useSdk));
 
             argSpec.push(prefix + "    )");
         }
@@ -501,12 +504,12 @@ export function ModuleTopLevelOptionsVariables(options: ModuleOption[]): string[
     return variables;
 }
 
-export function ModuleGenerateApiCall(output: string[], indent: string, model: CodeModel, methodName: string): string[] 
+export function ModuleGenerateApiCall(output: string[], indent: string, module: Module, methodName: string): string[]
 {
     // XXX - ModuleOperationName
-    let line: string = indent + "response = self.mgmt_client." + model.ModuleOperationName + "." + ToSnakeCase(methodName) + "(";
+    let line: string = indent + "response = self.mgmt_client." + module.ModuleOperationName + "." + ToSnakeCase(methodName) + "(";
     indent = Indent(line);
-    let method: ModuleMethod = model.GetMethod(methodName);
+    let method: ModuleMethod = module.GetMethod(methodName);
 
     if (method != null)
     {
@@ -514,11 +517,11 @@ export function ModuleGenerateApiCall(output: string[], indent: string, model: C
         {
             var o: ModuleOption = null;
 
-            for (var i = 0; i < model.ModuleOptions.length; i++)
+            for (var i = 0; i < module.ModuleOptions.length; i++)
             {
-                if (model.ModuleOptions[i].NameSwagger == p)
+                if (module.ModuleOptions[i].NameSwagger == p)
                 {
-                    o = model.ModuleOptions[i];
+                    o = module.ModuleOptions[i];
                     break;
                 }
             }
@@ -548,7 +551,7 @@ export function ModuleGenerateApiCall(output: string[], indent: string, model: C
     return output;
 }
 
-// export function GetFixUrlStatements(model: CodeModel): string[]
+// export function GetFixUrlStatements(model: AnsibleCodeModel): string[]
 // {
 //     let ss: string[] = [];
 //     let url = model.ModuleUrl;
@@ -607,27 +610,27 @@ export function GetFixUrlStatements(baseUrl: string): string[]
 }
 
 
-function ModuleReturnResponseFields(model: CodeModel): any
+function ModuleReturnResponseFields(module: Module): any
 {
-    return GetHelpFromResponseFields(model, model.ModuleResponseFields, "");
+    return GetHelpFromResponseFields(module, module.ModuleResponseFields, "");
 }
 
-function ModuleInfoReturnResponseFields(model: CodeModel):  any
+function ModuleInfoReturnResponseFields(module: Module):  any
 {
     let help: any = {}     
-    help[model.ModuleOperationName] = {};
-    help[model.ModuleOperationName]['description'] = "A list of dict results where the key is the name of the " + model.ObjectName + " and the values are the facts for that " + model.ObjectName + ".";
-    help[model.ModuleOperationName]['returned'] = 'always';
-    help[model.ModuleOperationName]['type'] = 'complex';
-    help[model.ModuleOperationName]['contains'] = {};
-    help[model.ModuleOperationName]['contains'][model.ObjectNamePythonized + "_name"] = {};
-    help[model.ModuleOperationName]['contains'][model.ObjectNamePythonized + "_name"]['description'] = "The key is the name of the server that the values relate to.";
-    help[model.ModuleOperationName]['contains'][model.ObjectNamePythonized + "_name"]['type'] = 'complex';
-    help[model.ModuleOperationName]['contains'][model.ObjectNamePythonized + "_name"]['contains'] = GetHelpFromResponseFields(model, model.ModuleResponseFields, "                ");
+    help[module.ModuleOperationName] = {};
+    help[module.ModuleOperationName]['description'] = "A list of dict results where the key is the name of the " + module.ObjectName + " and the values are the facts for that " + module.ObjectName + ".";
+    help[module.ModuleOperationName]['returned'] = 'always';
+    help[module.ModuleOperationName]['type'] = 'complex';
+    help[module.ModuleOperationName]['contains'] = {};
+    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"] = {};
+    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['description'] = "The key is the name of the server that the values relate to.";
+    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['type'] = 'complex';
+    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['contains'] = GetHelpFromResponseFields(module, module.ModuleResponseFields, "                ");
     return help;
 }
 
-function GetHelpFromResponseFields(model: CodeModel, fields: ModuleOption[], padding: string): any
+function GetHelpFromResponseFields(module: Module, fields: ModuleOption[], padding: string): any
 {
     //let help: string[] = [];
     let help: any = {}
@@ -659,7 +662,7 @@ function GetHelpFromResponseFields(model: CodeModel, fields: ModuleOption[], pad
 
             if (haveSuboptions(field))
             {
-                field_doc['contains'] = GetHelpFromResponseFields(model, field.SubOptions, padding + "        ");
+                field_doc['contains'] = GetHelpFromResponseFields(module, field.SubOptions, padding + "        ");
                 //help.push(padding + "    contains:");
                 //help.concat(this.GetHelpFromResponseFields(field.SubOptions, padding + "        "));
             }

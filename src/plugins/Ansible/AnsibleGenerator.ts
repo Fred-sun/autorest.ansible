@@ -1,33 +1,31 @@
-import { CodeModel, codeModelSchema } from '@azure-tools/codemodel';
-import { Session, startSession, Host, Channel } from '@azure-tools/autorest-extension-base';
-import { serialize, deserialize } from '@azure-tools/codegen';
-import { GenerateAll } from "./Generator";
-import { CodeModelCliImpl } from "./CodeModelAzImpl";
-import { EOL } from "os";
+import {AnsibleCodeModel} from "../Common/AnsibleCodeModel";
+import {ArtifactType} from "../../test";
+import {GenerateModuleRestInfo} from "./AnsibleModuleRestInfo";
+import {GenerateModuleSdk} from "./AnsibleModuleSdk";
+import {GenerateModuleSdkInfo} from "./AnsibleModuleSdkInfo";
+import {GenerateModuleRest} from "./AnsibleModuleRest";
 
 
-export async function processRequest(host: Host) {
-    const debug = await host.GetValue('debug') || false;
-    //host.Message({Channel:Channel.Warning, Text:"in azgenerator processRequest"});
-    try {
-        const session = await startSession<CodeModel>(host, {}, codeModelSchema); 
-        let model = new CodeModelCliImpl(session);
-        let files: any = await GenerateAll(model, true);
-        if (model.SelectFirstExtension()) {
-            do {
-                let path = "azext_" + model.Extension_Name.replace("-", "_") + "/";
-                session.protectFiles(path + "manual");
-                session.protectFiles(path + "tests/latest/recordings")
-            } while (model.SelectNextExtension());
+export function GenerateAll(model:AnsibleCodeModel, type:ArtifactType) {
+    let modules = model.modules;
+    let files = [];
+    let path = "";
+    for (let module of modules){
+        if (module.IsInfoModule){
+            if (type == ArtifactType.ArtifactTypeAnsibleRest){
+                files[path+module.ModuleName+".py"] = GenerateModuleRestInfo(model, false);
+            }
+            if (type == ArtifactType.ArtifactTypeAnsibleSdk){
+                files[path+module.ModuleName+".py"] = GenerateModuleSdkInfo(model);
+            }
+        }else {
+            if (type == ArtifactType.ArtifactTypeAnsibleRest){
+                files[path+module.ModuleName+".py"] = GenerateModuleRest(model, false);
+            }
+            if (type == ArtifactType.ArtifactTypeAnsibleSdk){
+                files[path+module.ModuleName+".py"] = GenerateModuleSdk(model);
+            }
         }
-        for (let f in files) {
-            host.WriteFile(f, files[f].join(EOL));
-        }
-    } catch (E) {
-        if (debug) {
-            console.error(`${__filename} - FAILURE  ${JSON.stringify(E)} ${E.stack}`);
-        }
-        throw E;
     }
-
+    return files;
 }

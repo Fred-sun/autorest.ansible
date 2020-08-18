@@ -10,24 +10,6 @@ export enum ModuleOptionKind{
 }
 
 
-export class ModuleMap {
-
-    public ModuleName: string = null;
-    public NameSwagger: string = null;
-    public Methods: ModuleMethod[] = null;
-
-    public ObjectName: string = null;
-}
-export class ModuleMethod {
-    public Name: string = null;
-    public NameSwagger: string = null;
-    public Options: ModuleOption[] = [];
-    public RequiredOptions: string[] = [];
-    public ResponseOptions: ModuleOption[] = [];
-    public Url: string = "";
-    public HttpMethod: string = "";
-    public ApiVersion: string = "";
-}
 
 export class ModuleOption {
     constructor(name: string, type:string="", required:boolean=false) {
@@ -78,7 +60,4 @@ export class ModuleOption {
     public SwaggerPath: string[]= [];
     public Computed: boolean;
 
-}
-export class MapModuleGroup {
-    public Modules: ModuleMap[] = [];
 }

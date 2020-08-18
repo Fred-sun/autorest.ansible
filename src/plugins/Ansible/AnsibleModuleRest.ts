@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModel } from "../Common/CodeModel"
+import { AnsibleCodeModel } from "../Common/AnsibleCodeModel"
 // import { Indent } from "../Common/Helpers";
 import {
     ModuleTopLevelOptionsVariables,
@@ -16,15 +16,16 @@ import {
     // AppendModuleReturnDoc
 } from "./AnsibleModuleCommon"
 import {Indent} from "../../utils/helper";
+import {Module} from "../Common/Module";
 
-export function GenerateModuleRest(model: CodeModel, collection: boolean) : string[] {
+export function GenerateModuleRest(module: Module, collection: boolean) : string[] {
     
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    // AppendModuleDocumentation(output, model, false, collection);
-    // AppendModuleExamples(output, model, collection);
-    // AppendModuleReturnDoc(output, model, false);
+    // AppendModuleDocumentation(output, module, false, collection);
+    // AppendModuleExamples(output, module, collection);
+    // AppendModuleReturnDoc(output, module, false);
 
     output.push("");
     output.push("import time");
@@ -44,15 +45,15 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("    NoAction, Create, Update, Delete = range(4)");
     output.push("");
     output.push("");
-    output.push("class " + model.ModuleClassName + "(AzureRMModuleBaseExt):");
+    output.push("class " + module.ModuleClassName + "(AzureRMModuleBaseExt):");
     output.push("    def __init__(self):");
 
     console.log("0");
-    AppendModuleArgSpec(output, model, true, false);
+    AppendModuleArgSpec(output, module, true, false);
 
     output.push("");
     console.log("1");
-    let vars = ModuleTopLevelOptionsVariables(model.ModuleOptions);
+    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }
@@ -67,13 +68,13 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("");
     output.push("        self.body = {}");
     output.push("        self.query_parameters = {}");
-    output.push("        self.query_parameters['api-version'] = '" + model.ModuleApiVersion + "'");
+    output.push("        self.query_parameters['api-version'] = '" + module.ModuleApiVersion + "'");
     output.push("        self.header_parameters = {}");
     output.push("        self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'");
     output.push("");
-    output.push("        super(" + model.ModuleClassName + ", self).__init__(derived_arg_spec=self.module_arg_spec,");
-    output.push("                               " + Indent(model.ModuleClassName) + "supports_check_mode=True,");
-    output.push("                               " + Indent(model.ModuleClassName) + "supports_tags=" + (model.SupportsTags ? "True" : "False") + ")");
+    output.push("        super(" + module.ModuleClassName + ", self).__init__(derived_arg_spec=self.module_arg_spec,");
+    output.push("                               " + Indent(module.ModuleClassName) + "supports_check_mode=True,");
+    output.push("                               " + Indent(module.ModuleClassName) + "supports_tags=" + (module.SupportsTags ? "True" : "False") + ")");
     output.push("");
     output.push("    def exec_module(self, **kwargs):");
     output.push("        for key in list(self.module_arg_spec.keys()):");
@@ -90,14 +91,14 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("");
     output.push("        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,");
     output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager)");
-    if (model.HasResourceGroup())
+    if (module.HasResourceGroup())
     {
         output.push("");
         output.push("        resource_group = self.get_resource_group(self.resource_group)");
     }
     output.push("");
 
-    let locationDisposition: string = model.LocationDisposition;
+    let locationDisposition: string = module.LocationDisposition;
     if (null != locationDisposition)
     {
         if (locationDisposition == "/")
@@ -114,7 +115,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
         }
     }
 
-    // var broken = model.ModuleUrl.split('/');
+    // var broken = module.ModuleUrl.split('/');
     // output.push("        self.url = ('/" + broken[1] + "'");
     // for (var i = 2; i < broken.length; i++)
     // {
@@ -122,9 +123,9 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     //     output.push("                    '/" + broken[i] + "'");
     // }
     // output[output.length - 1] += ")";
-    output.push("        self.url= '" +model.BasicURL + "'")
+    output.push("        self.url= '" +module.BasicURL + "'")
     console.log("3");
-    let fixurl = GetFixUrlStatements(model.BasicURL);
+    let fixurl = GetFixUrlStatements(module.BasicURL);
     console.log("4");
     fixurl.forEach(element => {
         output.push("        " + element);
@@ -134,14 +135,14 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("        old_response = self.get_resource()");
     output.push("");
     output.push("        if not old_response:");
-    output.push("            self.log(\"" + model.ObjectName + " instance doesn't exist\")");
+    output.push("            self.log(\"" + module.ObjectName + " instance doesn't exist\")");
     output.push("");
     output.push("            if self.state == 'absent':");
     output.push("                self.log(\"Old instance didn't exist\")");
     output.push("            else:");
     output.push("                self.to_do = Actions.Create");
     output.push("        else:");
-    output.push("            self.log('" + model.ObjectName + " instance already exists')");
+    output.push("            self.log('" + module.ObjectName + " instance already exists')");
     output.push("");
     output.push("            if self.state == 'absent':");
     output.push("                self.to_do = Actions.Delete");
@@ -155,14 +156,14 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("                if not self.default_compare(modifiers, self.body, old_response, '', self.results):");
     output.push("                    self.to_do = Actions.Update");
 
-    //let ucr = model.GetUpdateCheckRules();
+    //let ucr = module.GetUpdateCheckRules();
     //for (var i = 0; i < ucr.length; i++) {
     //    output.push("                " + ucr[i]);
     //}
 
-    if (model.NeedsDeleteBeforeUpdate)
+    if (module.NeedsDeleteBeforeUpdate)
     {
-        if (model.NeedsForceUpdate)
+        if (module.NeedsForceUpdate)
         {
             output.push("        if self.to_do == Actions.Update:");
             output.push("            if self.force_update:");
@@ -180,7 +181,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
 
     output.push("");
     output.push("        if (self.to_do == Actions.Create) or (self.to_do == Actions.Update):");
-    output.push("            self.log('Need to Create / Update the " + model.ObjectName + " instance')");
+    output.push("            self.log('Need to Create / Update the " + module.ObjectName + " instance')");
     output.push("");
     output.push("            if self.check_mode:");
     output.push("                self.results['changed'] = True");
@@ -188,7 +189,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("");
     output.push("            response = self.create_update_resource()");
 
-    output = output.concat(model.DeleteResponseNoLogFields);
+    output = output.concat(module.DeleteResponseNoLogFields);
 
     output.push("");
     output.push("            # if not old_response:");
@@ -197,7 +198,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("            #     self.results['changed'] = old_response.__ne__(response)");
     output.push("            self.log('Creation / Update done')");
     output.push("        elif self.to_do == Actions.Delete:");
-    output.push("            self.log('" + model.ObjectName + " instance deleted')");
+    output.push("            self.log('" + module.ObjectName + " instance deleted')");
     output.push("            self.results['changed'] = True");
     output.push("");
     output.push("            if self.check_mode:");
@@ -210,12 +211,12 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("            while self.get_resource():");
     output.push("                time.sleep(20)");
     output.push("        else:");
-    output.push("            self.log('" + model.ObjectName + " instance unchanged')");
+    output.push("            self.log('" + module.ObjectName + " instance unchanged')");
     output.push("            self.results['changed'] = False");
     output.push("            response = old_response");
     output.push("");
     {
-        var stmtsx = model.ResponseFieldStatements;
+        var stmtsx = module.ResponseFieldStatements;
 
         if (stmtsx.length > 0)
         {
@@ -230,10 +231,10 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     //}
     output.push("");
     output.push("    def create_update_resource(self):");
-    // output.push("        # self.log('Creating / Updating the " + model.ObjectName + " instance {0}'.format(self." + model.ModuleResourceName + "))");
+    // output.push("        # self.log('Creating / Updating the " + module.ObjectName + " instance {0}'.format(self." + module.ModuleResourceName + "))");
     output.push("");
     output.push("        try:");
-    if (model.HasCreateOrUpdate())
+    if (module.HasCreateOrUpdate())
     {
         output.push("            response = self.mgmt_client.query(self.url,");
         output.push("                                              'PUT',");
@@ -266,8 +267,8 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
         output.push("                                                  30)");
     }
     output.push("        except CloudError as exc:");
-    output.push("            self.log('Error attempting to create the " + model.ObjectName + " instance.')");
-    output.push("            self.fail('Error creating the " + model.ObjectName + " instance: {0}'.format(str(exc)))");
+    output.push("            self.log('Error attempting to create the " + module.ObjectName + " instance.')");
+    output.push("            self.fail('Error creating the " + module.ObjectName + " instance: {0}'.format(str(exc)))");
     output.push("");
     output.push("        try:");
     output.push("            response = json.loads(response.text)");
@@ -279,7 +280,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("        return response");
     output.push("");
     output.push("    def delete_resource(self):");
-    //output.push("        # self.log('Deleting the " + model.ObjectName + " instance {0}'.format(self." + model.ModuleResourceName + "))");
+    //output.push("        # self.log('Deleting the " + module.ObjectName + " instance {0}'.format(self." + module.ModuleResourceName + "))");
     output.push("        try:");
 
     output.push("            response = self.mgmt_client.query(self.url,");
@@ -292,13 +293,13 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("                                              30)");
 
     output.push("        except CloudError as e:");
-    output.push("            self.log('Error attempting to delete the " + model.ObjectName + " instance.')");
-    output.push("            self.fail('Error deleting the " + model.ObjectName + " instance: {0}'.format(str(e)))");
+    output.push("            self.log('Error attempting to delete the " + module.ObjectName + " instance.')");
+    output.push("            self.fail('Error deleting the " + module.ObjectName + " instance: {0}'.format(str(e)))");
     output.push("");
     output.push("        return True");
     output.push("");
     output.push("    def get_resource(self):");
-    //output.push("        # self.log('Checking if the " + model.ObjectName + " instance {0} is present'.format(self." + model.ModuleResourceName + "))");
+    //output.push("        # self.log('Checking if the " + module.ObjectName + " instance {0} is present'.format(self." + module.ModuleResourceName + "))");
     output.push("        found = False");
     output.push("        try:");
 
@@ -313,9 +314,9 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
 
     output.push("            found = True");
     output.push("            self.log(\"Response : {0}\".format(response))");
-    output.push("            # self.log(\"" + model.ObjectName + " instance : {0} found\".format(response.name))");
+    output.push("            # self.log(\"" + module.ObjectName + " instance : {0} found\".format(response.name))");
     output.push("        except CloudError as e:");
-    output.push("            self.log('Did not find the " + model.ObjectName + " instance.')");
+    output.push("            self.log('Did not find the " + module.ObjectName + " instance.')");
     output.push("        if found is True:");
     output.push("            return response");
     output.push("");
@@ -323,7 +324,7 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("");
     output.push("");
     
-    AppendMain(output, model);
+    AppendMain(output, module);
 
     return output;
 }

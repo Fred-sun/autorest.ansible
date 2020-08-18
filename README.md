@@ -21,22 +21,17 @@ pipeline-model: v3
 pipeline:
     python/m2r:
         input: clicommon/identity
-    hider:
-        input: python/namer
-        output-artifact: source-file-hider
     ansible:
-        input: hider
+        input: python/namer
         output-artifact: some-file-generated-by-ansible
     ansible/emitter:
         input:
-            - hider
             - ansible
         scope: scope-ansible/emitter
 
 scope-ansible/emitter:
     is-object: false
     output-artifact:
-        - source-file-hider
         - some-file-generated-by-ansible
     output-folder: $(az-output-folder)
 

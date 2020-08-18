@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModel } from "../Common/CodeModel"
+import { AnsibleCodeModel } from "../Common/AnsibleCodeModel"
 import {
     ModuleTopLevelOptionsVariables,
     GetFixUrlStatements,
@@ -15,14 +15,15 @@ import {
     // AppendModuleReturnDoc,
     AppendInfoModuleLogic
 } from "./AnsibleModuleCommon"
+import {Module} from "../Common/Module";
 
-export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : string[] {
+export function GenerateModuleRestInfo(module: Module, collection: boolean) : string[] {
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    // AppendModuleDocumentation(output, model, true, collection);
-    // AppendModuleExamples(output, model, collection);
-    // AppendModuleReturnDoc(output, model, true);
+    // AppendModuleDocumentation(output, module, true, collection);
+    // AppendModuleExamples(output, module, collection);
+    // AppendModuleReturnDoc(output, module, true);
 
     output.push("");
     output.push("import time");
@@ -34,14 +35,14 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     
     output.push("");
     output.push("");
-    output.push("class " + model.ModuleClassName + "(AzureRMModuleBase):");
+    output.push("class " + module.ModuleClassName + "(AzureRMModuleBase):");
     output.push("    def __init__(self):");
 
-    AppendModuleArgSpec(output, model, false, false);
+    AppendModuleArgSpec(output, module, false, false);
 
     output.push("");
 
-    let vars = ModuleTopLevelOptionsVariables(model.ModuleOptions);
+    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }
@@ -54,7 +55,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     output.push("        self.status_code = [200]");
     output.push("");
     output.push("        self.query_parameters = {}");
-    output.push("        self.query_parameters['api-version'] = '" + model.ModuleApiVersion + "'");
+    output.push("        self.query_parameters['api-version'] = '" + module.ModuleApiVersion + "'");
     output.push("        self.header_parameters = {}");
     output.push("        self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'");
     output.push("");
@@ -63,7 +64,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     //{
     //output.push("        self.@(v.NameAlt) = None");
     //}
-    output.push("        super(" + model.ModuleClassName + ", self).__init__(self.module_arg_spec, supports_tags=" + (model.SupportsTags ? "True" : "False") + ")");
+    output.push("        super(" + module.ModuleClassName + ", self).__init__(self.module_arg_spec, supports_tags=" + (module.SupportsTags ? "True" : "False") + ")");
     output.push("");
     output.push("    def exec_module(self, **kwargs):");
     output.push("");
@@ -74,12 +75,12 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager)");
     output.push("");
 
-    AppendInfoModuleLogic(output, model);
+    AppendInfoModuleLogic(output, module);
 
     output.push("");
     //@foreach (var m in Model.ModuleMethods)
     //{
-    for (let m of model.ModuleMethods)
+    for (let m of module.ModuleMethods)
     {
         output.push("    def " + m.Name.toLowerCase() + "(self):");
         output.push("        response = None");
@@ -133,7 +134,7 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     output.push("");
     output.push("");
 
-    AppendMain(output, model);
+    AppendMain(output, module);
 
     return output;
 }
