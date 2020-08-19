@@ -61,4 +61,5 @@ export class ModuleOption {
     public SwaggerPath: string[]= [];
     public Computed: boolean;
 
+
 }

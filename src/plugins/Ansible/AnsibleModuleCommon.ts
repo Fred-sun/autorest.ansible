@@ -10,7 +10,7 @@ import { Indent, ToSnakeCase } from "../../utils/helper";
 
 import * as yaml from "node-yaml";
 import {Module} from "../Common/Module";
-import {ModuleOption} from "../Common/ModuleOption";
+import {ModuleOption, ModuleOptionKind} from "../Common/ModuleOption";
 import {ModuleMethod} from "../Common/ModuleMethod";
 
 
@@ -334,20 +334,19 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
             argSpec.push(prefix + "    no_log=True");
         }
 
-        if (mainModule)
+        if (mainModule && option.Kind == ModuleOptionKind.MODULE_OPTION_BODY)
         {
+            // if (option.Comparison != "")
+            // {
+            //     argSpec.push(argSpec.pop() + ",");
+            //     argSpec.push(prefix + "    comparison='" + option.Comparison + "'");
+            // }
 
-            if (option.Comparison != "")
-            {
-                argSpec.push(argSpec.pop() + ",");
-                argSpec.push(prefix + "    comparison='" + option.Comparison + "'");
-            }
-
-            if (!option.Updatable)
-            {
-                argSpec.push(argSpec.pop() + ",");
-                argSpec.push(prefix + "    updatable=" + (option.Updatable ? "True" : "False"));
-            }
+            // if (!option.Updatable)
+            // {
+            //     argSpec.push(argSpec.pop() + ",");
+            //     argSpec.push(prefix + "    updatable=" + (option.Updatable ? "True" : "False"));
+            // }
 
             let disposition = useSdk ? option.DispositionSdk : option.DispositionRest;
 
@@ -478,12 +477,14 @@ function haveSuboptions(option: ModuleOption): boolean
     return (cnt > 0);
 }
 
-export function ModuleTopLevelOptionsVariables(options: ModuleOption[]): string[]
+export function ModuleTopLevelOptionsVariables(options: ModuleOption[], useSdk: boolean): string[]
 {
     var variables: string[] = [];
 
     for (let option of options)
     {
+        if (!useSdk && option.Kind == ModuleOptionKind.MODULE_OPTION_BODY)
+            continue;
         if (option.DispositionSdk == "*")
         {
             variables.push("self." + option.NameAnsible + " = None");

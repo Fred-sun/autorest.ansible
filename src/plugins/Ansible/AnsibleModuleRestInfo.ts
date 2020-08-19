@@ -42,7 +42,7 @@ export function GenerateModuleRestInfo(module: Module, collection: boolean) : st
 
     output.push("");
 
-    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions);
+    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions, false);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }

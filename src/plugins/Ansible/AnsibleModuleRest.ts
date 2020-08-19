@@ -52,12 +52,12 @@ export function GenerateModuleRest(module: Module, collection: boolean) : string
     AppendModuleArgSpec(output, module, true, false);
 
     output.push("");
-    console.log("1");
-    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions);
+
+    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions, false);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }
-    console.log("2");
+
     output.push("");
     output.push("        self.results = dict(changed=False)");
     output.push("        self.mgmt_client = None");

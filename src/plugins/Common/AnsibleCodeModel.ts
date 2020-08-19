@@ -20,6 +20,7 @@ export class AnsibleCodeModel {
             let mainModule = new Module(module["$key"], false);
             mainModule.BasicURL = this.GetBasicCRUDUrl(module.operations);
             mainModule.ModuleApiVersion = module.operations[0].apiVersions[0].version;
+            mainModule.MgmtClientName ="GenericRestClient";
 
             let infoModule = new Module(module["$key"], true);
             infoModule.BasicURL = this.GetBasicCRUDUrl(module.operations);
@@ -29,8 +30,7 @@ export class AnsibleCodeModel {
                 if( method.requests[0].protocol.http.method == "get"){
                     this.AddMethod(method, infoModule);
                 }
-                else
-                    this.AddMethod(method, mainModule);
+                this.AddMethod(method, mainModule);
             }
             this.AddModelModuleoptions(infoModule);
             this.AddModelModuleoptions(mainModule);
@@ -241,6 +241,7 @@ export class AnsibleCodeModel {
 
         option = new ModuleOption(name);
 
+
         option.DispositionSdk = "*";
         option.NameAnsible = ToSnakeCase(name);
         // if (targetschema !== undefined && targetschema.discriminator !== undefined) {
@@ -274,6 +275,7 @@ export class AnsibleCodeModel {
                     option.IncludeInArgSpec = true;
                 } else if (location == "body") {
                     option.Kind = ModuleOptionKind.MODULE_OPTION_BODY;
+                    option.DispositionRest = this.GetRestDisposition(option, parent);
                     option.IncludeInArgSpec = true;
                 } else if (location == "header") {
                     option.Kind = ModuleOptionKind.MODULE_OPTION_HEADER;
@@ -285,6 +287,7 @@ export class AnsibleCodeModel {
                 }
             } else {
                 option.Kind = ModuleOptionKind.MODULE_OPTION_BODY;
+                option.DispositionRest = this.GetRestDisposition(option, parent);
                 option.IncludeInArgSpec = true;
             }
         }
@@ -293,6 +296,12 @@ export class AnsibleCodeModel {
             option.Implementation = p.implementation;
         }
 
+        if (p.schema != undefined && p.schema.properties != undefined){
+            for (let subParameter of p.schema.properties){
+                let subOption = this.LoadOption(subParameter,isResponse, filterFunction, option);
+                option.SubOptions.push(subOption);
+            }
+        }
         // if (p.schema != undefined) {
         //     this.LoadSchema(p.schema, option, filterFunction, isResponse);
         // } else {
@@ -323,7 +332,7 @@ export class AnsibleCodeModel {
 
     private IsAnsibleIgnoredOption(name: string) : boolean
     {
-        let ignoreOptions = new Set(['Apiversion','SubscriptionId', 'ApiVersion','subscriptionId']);
+        let ignoreOptions = new Set(['Apiversion','SubscriptionId', 'ApiVersion','subscriptionId', 'content_type','ContentType']);
         return name.indexOf('$') != -1 ||name.indexOf('_') != -1 || ignoreOptions.has(name);
     }
 
@@ -486,5 +495,15 @@ export class AnsibleCodeModel {
     //         }
     //     }
     // }
+
+    private GetRestDisposition(option: ModuleOption, parent: ModuleOption = null): string{
+        if (parent != null)
+            return "/" + option.NameSwagger;
+        if (option.NameSwagger != 'location' && option.NameSwagger !='tags' &&
+            option.NameSwagger != 'identity' && option.NameSwagger != 'location' && option.NameSwagger != 'sku' ){
+            return "/properties/"+option.NameSwagger;
+        }
+        return "/" + option.NameSwagger;
+    }
 }
 

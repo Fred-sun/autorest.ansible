@@ -296,7 +296,7 @@ export function Indent(str: string):string {
     return result;
 }
 
-export enum SwaggerOptionType {
+export enum SwaggerModelType {
     SWAGGER_MODEL_ANY = "any",
     SWAGGER_MODEL_OBJECT = "object",
     SWAGGER_MODEL_ARRAY = "array",
@@ -320,15 +320,17 @@ export enum SwaggerOptionType {
 
 
 export function ParseType(type: string) {
-    if (type == SwaggerOptionType.SWAGGER_MODEL_STRING)
+    if (type == SwaggerModelType.SWAGGER_MODEL_STRING)
         return 'str';
-    if (type == SwaggerOptionType.SWAGGER_MODEL_ARRAY)
+    if (type == SwaggerModelType.SWAGGER_MODEL_ARRAY)
         return 'list';
-    if (type == SwaggerOptionType.SWAGGER_MODEL_BOOLEAN)
+    if (type == SwaggerModelType.SWAGGER_MODEL_BOOLEAN)
         return 'bool';
-    if (type == SwaggerOptionType.SWAGGER_MODEL_DATETIEM )
+    if (type == SwaggerModelType.SWAGGER_MODEL_DATETIEM )
         return 'str';
-    if (type == SwaggerOptionType.SWAGGER_MODEL_INTEGER_32 || type == SwaggerOptionType.SWAGGER_MODEL_INTEGER_64)
+    if (type == SwaggerModelType.SWAGGER_MODEL_INTEGER_32 || type == SwaggerModelType.SWAGGER_MODEL_INTEGER_64)
         return 'int';
+    if (type == SwaggerModelType.SWAGGER_MODEL_OBJECT)
+        return 'dict';
     return type;
 }

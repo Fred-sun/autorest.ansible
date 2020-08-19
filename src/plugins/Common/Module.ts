@@ -24,7 +24,7 @@ export class Module {
     public LocationDisposition: string = null;
     public DeleteResponseNoLogFields: string[] = [];
     public ResponseFieldStatements: string[] = [];
-    public NeedsDeleteBeforeUpdate: boolean;
+    public NeedsDeleteBeforeUpdate: boolean = false;
     public NeedsForceUpdate: boolean;
     public ModuleOperationName: string = null;
     public ModuleUrl: string = null;
@@ -36,7 +36,7 @@ export class Module {
     }
 
     public HasResourceGroup(): boolean{
-        return true;
+        return false;
     }
     public GetObjectName(): string
     {
@@ -64,7 +64,10 @@ export class Module {
     }
 
     public GetMethod(methodName:string): ModuleMethod{
-        return null;
+        for (let method of this.ModuleMethods){
+            if (method.Name == methodName)
+                return method;
+        }
     }
 
     public SupportsTags():boolean{

@@ -8,11 +8,11 @@ import { AnsibleCodeModel } from "../Common/AnsibleCodeModel";
 import {
     ModuleTopLevelOptionsVariables,
     AppendModuleHeader,
-    AppendModuleDocumentation,
-    AppendModuleExamples,
+    // AppendModuleDocumentation,
+    // AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
-    AppendModuleReturnDoc,
+    // AppendModuleReturnDoc,
     ModuleGenerateApiCall
 } from "./AnsibleModuleCommon"
 import { Indent } from "../../utils/helper";
@@ -23,9 +23,9 @@ export function GenerateModuleSdk(module: Module) : string[] {
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    AppendModuleDocumentation(output, module, false, false);
-    AppendModuleExamples(output, module, false);
-    AppendModuleReturnDoc(output, module, false);
+    // AppendModuleDocumentation(output, module, false, false);
+    // AppendModuleExamples(output, module, false);
+    // AppendModuleReturnDoc(output, module, false);
 
     output.push("");
     output.push("import time");
@@ -72,12 +72,8 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("");
     output.push("    def exec_module(self, **kwargs):");
     output.push("        for key in list(self.module_arg_spec.keys()):");
-    output.push("            if hasattr(self, key):");
-    output.push("                setattr(self, key, kwargs[key])");
-    output.push("            elif kwargs[key] is not None:");
-    output.push("                self.body[key] = kwargs[key]");
+    output.push("            setattr(self, key, kwargs[key])");
     output.push("");
-    output.push("        self.inflate_parameters(self.module_arg_spec, self.body, 0)");    
     output.push("");
     output.push("        old_response = None");
     output.push("        response = None");
@@ -91,21 +87,21 @@ export function GenerateModuleSdk(module: Module) : string[] {
     }
     output.push("");
 
-    let locationDisposition: string = module.LocationDisposition;
-    if (null != locationDisposition)
-    {
-        if (locationDisposition == "/")
-        {
-            output.push("        if 'location' not in self.body:");
-            output.push("            self.body['location'] = resource_group.location");
-        }
-        else
-        {
-            output.push("        if self.location is None:");
-            output.push("            self.location = resource_group.location");
-        }
-        output.push("");
-    }
+    // let locationDisposition: string = module.LocationDisposition;
+    // if (null != locationDisposition)
+    // {
+    //     if (locationDisposition == "/")
+    //     {
+    //         output.push("        if 'location' not in self.body:");
+    //         output.push("            self.body['location'] = resource_group.location");
+    //     }
+    //     else
+    //     {
+    //         output.push("        if self.location is None:");
+    //         output.push("            self.location = resource_group.location");
+    //     }
+    //     output.push("");
+    // }
 
     output.push("        old_response = self.get_resource()");
     output.push("");
