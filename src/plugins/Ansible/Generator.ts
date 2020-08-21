@@ -92,7 +92,7 @@ export async function processRequest(host: Host) {
 
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
-        host.WriteFile("model4.yaml",serialize(session.model));
+        host.WriteFile("authorization.yaml",serialize(session.model));
         // let str : string[] = [];
         // let codeModel = session.model;
         // for (let module of codeModel.operationGroups){
