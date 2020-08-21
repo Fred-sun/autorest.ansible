@@ -18,12 +18,14 @@ import time
 import json
 import re
 from ansible.module_utils.azure_rm_common_ext import AzureRMModuleBaseExt
-from ansible.module_utils.azure_rm_common_rest import GenericRestClient
 from copy import deepcopy
 try:
     from msrestazure.azure_exceptions import CloudError
+    from azure.mgmt.compute import ComputeManagementClient
+    from msrestazure.azure_operation import AzureOperationPoller
+    from msrest.polling import LROPoller
 except ImportError:
-    # this is handled in azure_rm_common
+    # This is handled in azure_rm_common
     pass
 
 
@@ -45,119 +47,120 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
             ),
             vhd_prefix=dict(
                 type='str',
-                disposition='/properties/vhdPrefix'
+                disposition='null'
             ),
             destination_container_name=dict(
                 type='str',
-                disposition='/properties/destinationContainerName'
+                disposition='null'
             ),
             overwrite_vhds=dict(
                 type='bool',
-                disposition='/properties/overwriteVhds'
+                disposition='null'
             ),
             plan=dict(
                 type='dict',
-                disposition='/properties/plan',
+                disposition='null',
                 options=dict(
                     name=dict(
                         type='str',
-                        disposition='/name'
+                        disposition='null'
                     ),
                     publisher=dict(
                         type='str',
-                        disposition='/publisher'
+                        disposition='null'
                     ),
                     product=dict(
                         type='str',
-                        disposition='/product'
+                        disposition='null'
                     ),
                     promotion_code=dict(
                         type='str',
-                        disposition='/promotionCode'
+                        disposition='null'
                     )
                 )
             ),
             zones=dict(
                 type='list',
-                disposition='/properties/zones'
+                disposition='null'
             ),
             type=dict(
                 type='sealed-choice',
-                disposition='/properties/type'
+                disposition='null'
             ),
             user_assigned_identities=dict(
                 type='dictionary',
-                disposition='/properties/userAssignedIdentities'
+                disposition='null'
             ),
             hardware_profile=dict(
                 type='dict',
-                disposition='/properties/hardwareProfile',
+                disposition='null',
                 options=dict(
                     vm_size=dict(
                         type='choice',
-                        disposition='/vmSize'
+                        disposition='null'
                     )
                 )
             ),
             storage_profile=dict(
                 type='dict',
-                disposition='/properties/storageProfile',
+                disposition='null',
                 options=dict(
                     image_reference=dict(
                         type='dict',
-                        disposition='/imageReference',
+                        disposition='null',
                         options=dict(
                             publisher=dict(
                                 type='str',
-                                disposition='/publisher'
+                                disposition='null'
                             ),
                             offer=dict(
                                 type='str',
-                                disposition='/offer'
+                                disposition='null'
                             ),
                             sku=dict(
                                 type='str',
-                                disposition='/sku'
+                                disposition='null'
                             ),
                             version=dict(
                                 type='str',
-                                disposition='/version'
+                                disposition='null'
                             ),
                             exact_version=dict(
                                 type='str',
-                                disposition='/exactVersion'
+                                updatable=False,
+                                disposition='null'
                             )
                         )
                     ),
                     os_disk=dict(
                         type='dict',
-                        disposition='/osDisk',
+                        disposition='null',
                         options=dict(
                             os_type=dict(
                                 type='sealed-choice',
-                                disposition='/osType'
+                                disposition='null'
                             ),
                             encryption_settings=dict(
                                 type='dict',
-                                disposition='/encryptionSettings',
+                                disposition='null',
                                 options=dict(
                                     disk_encryption_key=dict(
                                         type='dict',
-                                        disposition='/diskEncryptionKey',
+                                        disposition='null',
                                         options=dict(
                                             secret_url=dict(
                                                 type='str',
-                                                disposition='/secretUrl',
+                                                disposition='null',
                                                 required=true
                                             ),
                                             source_vault=dict(
                                                 type='dict',
-                                                disposition='/sourceVault',
+                                                disposition='null',
                                                 required=true,
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
-                                                        disposition='/id'
+                                                        disposition='null'
                                                     )
                                                 )
                                             )
@@ -165,21 +168,21 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
                                     ),
                                     key_encryption_key=dict(
                                         type='dict',
-                                        disposition='/keyEncryptionKey',
+                                        disposition='null',
                                         options=dict(
                                             key_url=dict(
                                                 type='str',
-                                                disposition='/keyUrl',
+                                                disposition='null',
                                                 required=true
                                             ),
                                             source_vault=dict(
                                                 type='dict',
-                                                disposition='/sourceVault',
+                                                disposition='null',
                                                 required=true,
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
-                                                        disposition='/id'
+                                                        disposition='null'
                                                     )
                                                 )
                                             )
@@ -187,80 +190,80 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
                                     ),
                                     enabled=dict(
                                         type='bool',
-                                        disposition='/enabled'
+                                        disposition='null'
                                     )
                                 )
                             ),
                             name=dict(
                                 type='str',
-                                disposition='/name'
+                                disposition='null'
                             ),
                             vhd=dict(
                                 type='dict',
-                                disposition='/vhd',
+                                disposition='null',
                                 options=dict(
                                     uri=dict(
                                         type='str',
-                                        disposition='/uri'
+                                        disposition='null'
                                     )
                                 )
                             ),
                             image=dict(
                                 type='dict',
-                                disposition='/image',
+                                disposition='null',
                                 options=dict(
                                     uri=dict(
                                         type='str',
-                                        disposition='/uri'
+                                        disposition='null'
                                     )
                                 )
                             ),
                             caching=dict(
                                 type='sealed-choice',
-                                disposition='/caching'
+                                disposition='null'
                             ),
                             write_accelerator_enabled=dict(
                                 type='bool',
-                                disposition='/writeAcceleratorEnabled'
+                                disposition='null'
                             ),
                             diff_disk_settings=dict(
                                 type='dict',
-                                disposition='/diffDiskSettings',
+                                disposition='null',
                                 options=dict(
                                     option=dict(
                                         type='choice',
-                                        disposition='/option'
+                                        disposition='null'
                                     ),
                                     placement=dict(
                                         type='choice',
-                                        disposition='/placement'
+                                        disposition='null'
                                     )
                                 )
                             ),
                             create_option=dict(
                                 type='choice',
-                                disposition='/createOption',
+                                disposition='null',
                                 required=true
                             ),
                             disk_size_gb=dict(
                                 type='integer',
-                                disposition='/diskSizeGB'
+                                disposition='null'
                             ),
                             managed_disk=dict(
                                 type='dict',
-                                disposition='/managedDisk',
+                                disposition='null',
                                 options=dict(
                                     storage_account_type=dict(
                                         type='choice',
-                                        disposition='/storageAccountType'
+                                        disposition='null'
                                     ),
                                     disk_encryption_set=dict(
                                         type='dict',
-                                        disposition='/diskEncryptionSet',
+                                        disposition='null',
                                         options=dict(
                                             id=dict(
                                                 type='str',
-                                                disposition='/id'
+                                                disposition='null'
                                             )
                                         )
                                     )
@@ -270,77 +273,77 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
                     ),
                     data_disks=dict(
                         type='list',
-                        disposition='/dataDisks'
+                        disposition='null'
                     )
                 )
             ),
             additional_capabilities=dict(
                 type='dict',
-                disposition='/properties/additionalCapabilities',
+                disposition='null',
                 options=dict(
                     ultra_ssd_enabled=dict(
                         type='bool',
-                        disposition='/ultraSsdEnabled'
+                        disposition='null'
                     )
                 )
             ),
             os_profile=dict(
                 type='dict',
-                disposition='/properties/osProfile',
+                disposition='null',
                 options=dict(
                     computer_name=dict(
                         type='str',
-                        disposition='/computerName'
+                        disposition='null'
                     ),
                     admin_username=dict(
                         type='str',
-                        disposition='/adminUsername'
+                        disposition='null'
                     ),
                     admin_password=dict(
                         type='str',
-                        disposition='/adminPassword'
+                        disposition='null'
                     ),
                     custom_data=dict(
                         type='str',
-                        disposition='/customData'
+                        disposition='null'
                     ),
                     windows_configuration=dict(
                         type='dict',
-                        disposition='/windowsConfiguration',
+                        disposition='null',
                         options=dict(
                             provision_vm_agent=dict(
                                 type='bool',
-                                disposition='/provisionVmAgent'
+                                disposition='null'
                             ),
                             enable_automatic_updates=dict(
                                 type='bool',
-                                disposition='/enableAutomaticUpdates'
+                                disposition='null'
                             ),
                             time_zone=dict(
                                 type='str',
-                                disposition='/timeZone'
+                                disposition='null'
                             ),
                             additional_unattend_content=dict(
                                 type='list',
-                                disposition='/additionalUnattendContent'
+                                disposition='null'
                             ),
                             patch_settings=dict(
                                 type='dict',
-                                disposition='/patchSettings',
+                                disposition='null',
                                 options=dict(
                                     patch_mode=dict(
                                         type='choice',
-                                        disposition='/patchMode'
+                                        disposition='null'
                                     )
                                 )
                             ),
                             win_rm=dict(
                                 type='dict',
-                                disposition='/winRm',
+                                disposition='null',
                                 options=dict(
                                     listeners=dict(
                                         type='list',
-                                        disposition='/listeners'
+                                        disposition='null'
                                     )
                                 )
                             )
@@ -348,77 +351,77 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
                     ),
                     linux_configuration=dict(
                         type='dict',
-                        disposition='/linuxConfiguration',
+                        disposition='null',
                         options=dict(
                             disable_password_authentication=dict(
                                 type='bool',
-                                disposition='/disablePasswordAuthentication'
+                                disposition='null'
                             ),
                             ssh=dict(
                                 type='dict',
-                                disposition='/ssh',
+                                disposition='null',
                                 options=dict(
                                     public_keys=dict(
                                         type='list',
-                                        disposition='/publicKeys'
+                                        disposition='null'
                                     )
                                 )
                             ),
                             provision_vm_agent=dict(
                                 type='bool',
-                                disposition='/provisionVmAgent'
+                                disposition='null'
                             )
                         )
                     ),
                     secrets=dict(
                         type='list',
-                        disposition='/secrets'
+                        disposition='null'
                     ),
                     allow_extension_operations=dict(
                         type='bool',
-                        disposition='/allowExtensionOperations'
+                        disposition='null'
                     ),
                     require_guest_provision_signal=dict(
                         type='bool',
-                        disposition='/requireGuestProvisionSignal'
+                        disposition='null'
                     )
                 )
             ),
             network_profile=dict(
                 type='dict',
-                disposition='/properties/networkProfile',
+                disposition='null',
                 options=dict(
                     network_interfaces=dict(
                         type='list',
-                        disposition='/networkInterfaces'
+                        disposition='null'
                     )
                 )
             ),
             security_profile=dict(
                 type='dict',
-                disposition='/properties/securityProfile',
+                disposition='null',
                 options=dict(
                     encryption_at_host=dict(
                         type='bool',
-                        disposition='/encryptionAtHost'
+                        disposition='null'
                     )
                 )
             ),
             diagnostics_profile=dict(
                 type='dict',
-                disposition='/properties/diagnosticsProfile',
+                disposition='null',
                 options=dict(
                     boot_diagnostics=dict(
                         type='dict',
-                        disposition='/bootDiagnostics',
+                        disposition='null',
                         options=dict(
                             enabled=dict(
                                 type='bool',
-                                disposition='/enabled'
+                                disposition='null'
                             ),
                             storage_uri=dict(
                                 type='str',
-                                disposition='/storageUri'
+                                disposition='null'
                             )
                         )
                     )
@@ -426,79 +429,79 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
             ),
             availability_set=dict(
                 type='dict',
-                disposition='/properties/availabilitySet',
+                disposition='null',
                 options=dict(
                     id=dict(
                         type='str',
-                        disposition='/id'
+                        disposition='null'
                     )
                 )
             ),
             virtual_machine_scale_set=dict(
                 type='dict',
-                disposition='/properties/virtualMachineScaleSet',
+                disposition='null',
                 options=dict(
                     id=dict(
                         type='str',
-                        disposition='/id'
+                        disposition='null'
                     )
                 )
             ),
             proximity_placement_group=dict(
                 type='dict',
-                disposition='/properties/proximityPlacementGroup',
+                disposition='null',
                 options=dict(
                     id=dict(
                         type='str',
-                        disposition='/id'
+                        disposition='null'
                     )
                 )
             ),
             priority=dict(
                 type='choice',
-                disposition='/properties/priority'
+                disposition='null'
             ),
             eviction_policy=dict(
                 type='choice',
-                disposition='/properties/evictionPolicy'
+                disposition='null'
             ),
             billing_profile=dict(
                 type='dict',
-                disposition='/properties/billingProfile',
+                disposition='null',
                 options=dict(
                     max_price=dict(
                         type='number',
-                        disposition='/maxPrice'
+                        disposition='null'
                     )
                 )
             ),
             host=dict(
                 type='dict',
-                disposition='/properties/host',
+                disposition='null',
                 options=dict(
                     id=dict(
                         type='str',
-                        disposition='/id'
+                        disposition='null'
                     )
                 )
             ),
             host_group=dict(
                 type='dict',
-                disposition='/properties/hostGroup',
+                disposition='null',
                 options=dict(
                     id=dict(
                         type='str',
-                        disposition='/id'
+                        disposition='null'
                     )
                 )
             ),
             license_type=dict(
                 type='str',
-                disposition='/properties/licenseType'
+                disposition='null'
             ),
             extensions_time_budget=dict(
                 type='str',
-                disposition='/properties/extensionsTimeBudget'
+                disposition='null'
             ),
             expand=dict(
                 type='constant'
@@ -511,22 +514,22 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
             ),
             temp_disk=dict(
                 type='bool',
-                disposition='/properties/tempDisk'
+                disposition='null'
             ),
             sas_uri_expiration_time_in_minutes=dict(
                 type='integer'
             ),
             command_id=dict(
                 type='str',
-                disposition='/properties/commandId'
+                disposition='null'
             ),
             script=dict(
                 type='list',
-                disposition='/properties/script'
+                disposition='null'
             ),
             parameters=dict(
                 type='list',
-                disposition='/properties/parameters'
+                disposition='null'
             ),
             state=dict(
                 type='str',
@@ -538,23 +541,45 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
         self.location = None
         self.resource_group_name = None
         self.vm_name = None
+        self.vhd_prefix = None
+        self.destination_container_name = None
+        self.overwrite_vhds = None
+        self.tags = None
+        self.plan = None
+        self.zones = None
+        self.type = None
+        self.user_assigned_identities = None
+        self.hardware_profile = None
+        self.storage_profile = None
+        self.additional_capabilities = None
+        self.os_profile = None
+        self.network_profile = None
+        self.security_profile = None
+        self.diagnostics_profile = None
+        self.availability_set = None
+        self.virtual_machine_scale_set = None
+        self.proximity_placement_group = None
+        self.priority = None
+        self.eviction_policy = None
+        self.billing_profile = None
+        self.host = None
+        self.host_group = None
+        self.license_type = None
+        self.extensions_time_budget = None
         self.expand = None
         self.status_only = None
         self.skip_shutdown = None
+        self.temp_disk = None
         self.sas_uri_expiration_time_in_minutes = None
+        self.command_id = None
+        self.script = None
+        self.parameters = None
+        self.body = {}
 
         self.results = dict(changed=False)
         self.mgmt_client = None
         self.state = None
-        self.url = None
-        self.status_code = [200, 201, 202]
         self.to_do = Actions.NoAction
-
-        self.body = {}
-        self.query_parameters = {}
-        self.query_parameters['api-version'] = '2020-06-01'
-        self.header_parameters = {}
-        self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
         super(AzureRMVirtualMachine, self).__init__(derived_arg_spec=self.module_arg_spec,
                                                     supports_check_mode=True,
@@ -562,12 +587,8 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            if hasattr(self, key):
-                setattr(self, key, kwargs[key])
-            elif kwargs[key] is not None:
-                self.body[key] = kwargs[key]
+            setattr(self, key, kwargs[key])
 
-        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
@@ -575,101 +596,52 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}'
-        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
-        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
-        self.url = self.url.replace('{vmName}', self.vm_name)
-
         old_response = self.get_resource()
 
         if not old_response:
-            self.log("VirtualMachine instance doesn't exist")
-
-            if self.state == 'absent':
-                self.log("Old instance didn't exist")
-            else:
+            if self.state == 'present':
                 self.to_do = Actions.Create
         else:
-            self.log('VirtualMachine instance already exists')
-
             if self.state == 'absent':
                 self.to_do = Actions.Delete
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
-                self.results['modifiers'] = modifiers
-                self.results['compare'] = []
-                self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
         if (self.to_do == Actions.Create) or (self.to_do == Actions.Update):
-            self.log('Need to Create / Update the VirtualMachine instance')
-
+            self.results['changed'] = True
             if self.check_mode:
-                self.results['changed'] = True
                 return self.results
-
             response = self.create_update_resource()
-
-            # if not old_response:
-            self.results['changed'] = True
-            # else:
-            #     self.results['changed'] = old_response.__ne__(response)
-            self.log('Creation / Update done')
         elif self.to_do == Actions.Delete:
-            self.log('VirtualMachine instance deleted')
             self.results['changed'] = True
-
             if self.check_mode:
                 return self.results
-
             self.delete_resource()
-
-            # make sure instance is actually deleted, for some Azure resources, instance is hanging around
-            # for some time after deletion -- this should be really fixed in Azure
-            while self.get_resource():
-                time.sleep(20)
         else:
-            self.log('VirtualMachine instance unchanged')
             self.results['changed'] = False
             response = old_response
 
         return self.results
 
     def create_update_resource(self):
-
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'PUT',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              self.body,
-                                              self.status_code,
-                                              600,
-                                              30)
+            response = self.mgmt_client.virtualmachines.create_or_update(resource_group_name=self.resource_group_name,
+                                                                         vm_name=self.vm_name,
+                                                                         location=self.location)
+            if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
+                response = self.get_poller_result(response)
         except CloudError as exc:
             self.log('Error attempting to create the VirtualMachine instance.')
             self.fail('Error creating the VirtualMachine instance: {0}'.format(str(exc)))
-
-        try:
-            response = json.loads(response.text)
-        except Exception:
-            response = {'text': response.text}
-            pass
-
-        return response
+        return response.as_dict()
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'DELETE',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              None,
-                                              self.status_code,
-                                              600,
-                                              30)
+            response = self.mgmt_client.virtualmachines.delete(resource_group_name=self.resource_group_name,
+                                                               vm_name=self.vm_name)
         except CloudError as e:
             self.log('Error attempting to delete the VirtualMachine instance.')
             self.fail('Error deleting the VirtualMachine instance: {0}'.format(str(e)))
@@ -679,23 +651,11 @@ class AzureRMVirtualMachine(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'GET',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              None,
-                                              self.status_code,
-                                              600,
-                                              30)
-            found = True
-            self.log("Response : {0}".format(response))
-            # self.log("VirtualMachine instance : {0} found".format(response.name))
+            response = self.mgmt_client.virtualmachines.get(resource_group_name=self.resource_group_name,
+                                                            vm_name=self.vm_name)
         except CloudError as e:
-            self.log('Did not find the VirtualMachine instance.')
-        if found is True:
-            return response
-
-        return False
+            return False
+        return response.as_dict()
 
 
 def main():

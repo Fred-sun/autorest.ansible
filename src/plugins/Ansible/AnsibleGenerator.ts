@@ -18,15 +18,15 @@ export function GenerateAll(model:AnsibleCodeModel, type:ArtifactType) {
     let files = [];
     let path = "";
     for (let module of modules){
+        console.log(module.ModuleName);
         if (module.IsInfoModule){
-            // if (type == ArtifactType.ArtifactTypeAnsibleRest){
-            //     files[path+module.ModuleName+".py"] = GenerateModuleRestInfo(module, false);
-            // }
-            // if (type == ArtifactType.ArtifactTypeAnsibleSdk){
-            //     files[path+module.ModuleName+".py"] = GenerateModuleSdkInfo(module);
-            // }
+            if (type == ArtifactType.ArtifactTypeAnsibleRest){
+                files[path+module.ModuleName+".py"] = GenerateModuleRestInfo(module, false);
+            }
+            if (type == ArtifactType.ArtifactTypeAnsibleSdk){
+                files[path+module.ModuleName+".py"] = GenerateModuleSdkInfo(module);
+            }
         }else {
-            console.log(module.ModuleName);
             if (type == ArtifactType.ArtifactTypeAnsibleRest){
                 files[path+module.ModuleName+".py"] = GenerateModuleRest(module, false);
             }

@@ -18,12 +18,14 @@ import time
 import json
 import re
 from ansible.module_utils.azure_rm_common_ext import AzureRMModuleBaseExt
-from ansible.module_utils.azure_rm_common_rest import GenericRestClient
 from copy import deepcopy
 try:
     from msrestazure.azure_exceptions import CloudError
+    from azure.mgmt.compute import ComputeManagementClient
+    from msrestazure.azure_operation import AzureOperationPoller
+    from msrest.polling import LROPoller
 except ImportError:
-    # this is handled in azure_rm_common
+    # This is handled in azure_rm_common
     pass
 
 
@@ -42,19 +44,19 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='/location'
+                disposition='null'
             ),
             zones=dict(
                 type='list',
-                disposition='/properties/zones'
+                disposition='null'
             ),
             platform_fault_domain_count=dict(
                 type='integer',
-                disposition='/properties/platformFaultDomainCount'
+                disposition='null'
             ),
             support_automatic_placement=dict(
                 type='bool',
-                disposition='/properties/supportAutomaticPlacement'
+                disposition='null'
             ),
             expand=dict(
                 type='constant'
@@ -68,20 +70,18 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.host_group_name = None
+        self.location = None
+        self.tags = None
+        self.zones = None
+        self.platform_fault_domain_count = None
+        self.support_automatic_placement = None
         self.expand = None
+        self.body = {}
 
         self.results = dict(changed=False)
         self.mgmt_client = None
         self.state = None
-        self.url = None
-        self.status_code = [200, 201, 202]
         self.to_do = Actions.NoAction
-
-        self.body = {}
-        self.query_parameters = {}
-        self.query_parameters['api-version'] = '2020-06-01'
-        self.header_parameters = {}
-        self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
         super(AzureRMDedicatedHostGroup, self).__init__(derived_arg_spec=self.module_arg_spec,
                                                         supports_check_mode=True,
@@ -89,12 +89,8 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            if hasattr(self, key):
-                setattr(self, key, kwargs[key])
-            elif kwargs[key] is not None:
-                self.body[key] = kwargs[key]
+            setattr(self, key, kwargs[key])
 
-        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
@@ -102,101 +98,52 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}'
-        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
-        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
-        self.url = self.url.replace('{hostGroupName}', self.host_group_name)
-
         old_response = self.get_resource()
 
         if not old_response:
-            self.log("DedicatedHostGroup instance doesn't exist")
-
-            if self.state == 'absent':
-                self.log("Old instance didn't exist")
-            else:
+            if self.state == 'present':
                 self.to_do = Actions.Create
         else:
-            self.log('DedicatedHostGroup instance already exists')
-
             if self.state == 'absent':
                 self.to_do = Actions.Delete
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
-                self.results['modifiers'] = modifiers
-                self.results['compare'] = []
-                self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
         if (self.to_do == Actions.Create) or (self.to_do == Actions.Update):
-            self.log('Need to Create / Update the DedicatedHostGroup instance')
-
+            self.results['changed'] = True
             if self.check_mode:
-                self.results['changed'] = True
                 return self.results
-
             response = self.create_update_resource()
-
-            # if not old_response:
-            self.results['changed'] = True
-            # else:
-            #     self.results['changed'] = old_response.__ne__(response)
-            self.log('Creation / Update done')
         elif self.to_do == Actions.Delete:
-            self.log('DedicatedHostGroup instance deleted')
             self.results['changed'] = True
-
             if self.check_mode:
                 return self.results
-
             self.delete_resource()
-
-            # make sure instance is actually deleted, for some Azure resources, instance is hanging around
-            # for some time after deletion -- this should be really fixed in Azure
-            while self.get_resource():
-                time.sleep(20)
         else:
-            self.log('DedicatedHostGroup instance unchanged')
             self.results['changed'] = False
             response = old_response
 
         return self.results
 
     def create_update_resource(self):
-
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'PUT',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              self.body,
-                                              self.status_code,
-                                              600,
-                                              30)
+            response = self.mgmt_client.dedicatedhostgroups.create_or_update(resource_group_name=self.resource_group_name,
+                                                                             host_group_name=self.host_group_name,
+                                                                             location=self.location)
+            if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
+                response = self.get_poller_result(response)
         except CloudError as exc:
             self.log('Error attempting to create the DedicatedHostGroup instance.')
             self.fail('Error creating the DedicatedHostGroup instance: {0}'.format(str(exc)))
-
-        try:
-            response = json.loads(response.text)
-        except Exception:
-            response = {'text': response.text}
-            pass
-
-        return response
+        return response.as_dict()
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'DELETE',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              None,
-                                              self.status_code,
-                                              600,
-                                              30)
+            response = self.mgmt_client.dedicatedhostgroups.delete(resource_group_name=self.resource_group_name,
+                                                                   host_group_name=self.host_group_name)
         except CloudError as e:
             self.log('Error attempting to delete the DedicatedHostGroup instance.')
             self.fail('Error deleting the DedicatedHostGroup instance: {0}'.format(str(e)))
@@ -206,23 +153,11 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'GET',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              None,
-                                              self.status_code,
-                                              600,
-                                              30)
-            found = True
-            self.log("Response : {0}".format(response))
-            # self.log("DedicatedHostGroup instance : {0} found".format(response.name))
+            response = self.mgmt_client.dedicatedhostgroups.get(resource_group_name=self.resource_group_name,
+                                                                host_group_name=self.host_group_name)
         except CloudError as e:
-            self.log('Did not find the DedicatedHostGroup instance.')
-        if found is True:
-            return response
-
-        return False
+            return False
+        return response.as_dict()
 
 
 def main():

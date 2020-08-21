@@ -40,7 +40,7 @@ export async function main() {
 
     let codeModel = new AnsibleCodeModel(model);
     let files = [];
-    files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleRest);
+    files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleSdk);
     for (let f in files) {
         WriteFile(f, files[f]);
     }

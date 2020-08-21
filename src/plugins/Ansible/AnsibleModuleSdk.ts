@@ -54,7 +54,7 @@ export function GenerateModuleSdk(module: Module) : string[] {
 
     output.push("");
 
-    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions);
+    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions, true);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }
@@ -186,7 +186,7 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("        return response.as_dict()");
     output.push("");
     output.push("    def delete_resource(self):");
-    output.push("        # self.log('Deleting the " + module.ObjectName + " instance {0}'.format(self." + module.ModuleResourceName + "))");
+    // output.push("        # self.log('Deleting the " + module.ObjectName + " instance {0}'.format(self." + module.ModuleResourceName + "))");
     output.push("        try:");
 
     ModuleGenerateApiCall(output, "            ", module, "Delete");
@@ -198,7 +198,7 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("        return True");
     output.push("");
     output.push("    def get_resource(self):");
-    output.push("        # self.log('Checking if the " + module.ObjectName + " instance {0} is present'.format(self." + module.ModuleResourceName + "))");
+    // output.push("        # self.log('Checking if the " + module.ObjectName + " instance {0} is present'.format(self." + module.ModuleResourceName + "))");
     output.push("        found = False");
     output.push("        try:");
 

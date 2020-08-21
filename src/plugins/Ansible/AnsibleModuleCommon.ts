@@ -160,14 +160,12 @@ export function AppendInfoModuleLogic(output: string[], module: Module)
             }
         }
 
-        if (ps.length == 0)
-        {
-            output.push("            self.results['" + module.ModuleOperationName +"'] = [self.format_item(self." + m.Name.toLowerCase() + "())]");
-        }
-        else
-        {
-            output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
-        }
+
+
+        output.push("            self.results['" + module.ModuleOperationName +"'] = [self.format_item(self." + m.Name.toLowerCase() + "())]");
+
+        // output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
+
         ifStatement = "elif"
     }
     output.push("        return self.results");
@@ -342,11 +340,11 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
             //     argSpec.push(prefix + "    comparison='" + option.Comparison + "'");
             // }
 
-            // if (!option.Updatable)
-            // {
-            //     argSpec.push(argSpec.pop() + ",");
-            //     argSpec.push(prefix + "    updatable=" + (option.Updatable ? "True" : "False"));
-            // }
+            if (!option.Updatable)
+            {
+                argSpec.push(argSpec.pop() + ",");
+                argSpec.push(prefix + "    updatable=" + (option.Updatable ? "True" : "False"));
+            }
 
             let disposition = useSdk ? option.DispositionSdk : option.DispositionRest;
 

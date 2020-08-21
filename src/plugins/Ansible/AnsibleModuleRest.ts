@@ -313,6 +313,7 @@ export function GenerateModuleRest(module: Module, collection: boolean) : string
     output.push("                                              30)");
 
     output.push("            found = True");
+    output.push("            response = json.loads(response.text)");
     output.push("            self.log(\"Response : {0}\".format(response))");
     output.push("            # self.log(\"" + module.ObjectName + " instance : {0} found\".format(response.name))");
     output.push("        except CloudError as e:");
@@ -323,7 +324,8 @@ export function GenerateModuleRest(module: Module, collection: boolean) : string
     output.push("        return False");
     output.push("");
     output.push("");
-    
+
+
     AppendMain(output, module);
 
     return output;

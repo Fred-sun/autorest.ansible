@@ -41,7 +41,7 @@ export class ModuleOption {
     public IsMap: boolean = false;
 
     public Required: boolean = false;
-    public Readonly: boolean = false;
+    public ReadOnly: boolean = false;
     public Documentation: string = null;
     public DefaultValue: string = null;
     public IncludeInDocumentation: boolean = false;

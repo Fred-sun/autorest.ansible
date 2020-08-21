@@ -18,12 +18,14 @@ import time
 import json
 import re
 from ansible.module_utils.azure_rm_common_ext import AzureRMModuleBaseExt
-from ansible.module_utils.azure_rm_common_rest import GenericRestClient
 from copy import deepcopy
 try:
     from msrestazure.azure_exceptions import CloudError
+    from azure.mgmt.compute import ComputeManagementClient
+    from msrestazure.azure_operation import AzureOperationPoller
+    from msrest.polling import LROPoller
 except ImportError:
-    # this is handled in azure_rm_common
+    # This is handled in azure_rm_common
     pass
 
 
@@ -47,37 +49,37 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='/location'
+                disposition='null'
             ),
             sku=dict(
                 type='dict',
-                disposition='/sku',
+                disposition='null',
                 options=dict(
                     name=dict(
                         type='str',
-                        disposition='/name'
+                        disposition='null'
                     ),
                     tier=dict(
                         type='str',
-                        disposition='/tier'
+                        disposition='null'
                     ),
                     capacity=dict(
                         type='integer',
-                        disposition='/capacity'
+                        disposition='null'
                     )
                 )
             ),
             platform_fault_domain=dict(
                 type='integer',
-                disposition='/properties/platformFaultDomain'
+                disposition='null'
             ),
             auto_replace_on_failure=dict(
                 type='bool',
-                disposition='/properties/autoReplaceOnFailure'
+                disposition='null'
             ),
             license_type=dict(
                 type='sealed-choice',
-                disposition='/properties/licenseType'
+                disposition='null'
             ),
             expand=dict(
                 type='constant'
@@ -92,20 +94,19 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
         self.resource_group_name = None
         self.host_group_name = None
         self.host_name = None
+        self.location = None
+        self.tags = None
+        self.sku = None
+        self.platform_fault_domain = None
+        self.auto_replace_on_failure = None
+        self.license_type = None
         self.expand = None
+        self.body = {}
 
         self.results = dict(changed=False)
         self.mgmt_client = None
         self.state = None
-        self.url = None
-        self.status_code = [200, 201, 202]
         self.to_do = Actions.NoAction
-
-        self.body = {}
-        self.query_parameters = {}
-        self.query_parameters['api-version'] = '2020-06-01'
-        self.header_parameters = {}
-        self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
         super(AzureRMDedicatedHost, self).__init__(derived_arg_spec=self.module_arg_spec,
                                                    supports_check_mode=True,
@@ -113,12 +114,8 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            if hasattr(self, key):
-                setattr(self, key, kwargs[key])
-            elif kwargs[key] is not None:
-                self.body[key] = kwargs[key]
+            setattr(self, key, kwargs[key])
 
-        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
@@ -126,102 +123,55 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
         self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
-        self.url= '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}'
-        self.url = self.url.replace('{subscriptionId}', self.subscription_id)
-        self.url = self.url.replace('{resourceGroupName}', self.resource_group_name)
-        self.url = self.url.replace('{hostGroupName}', self.host_group_name)
-        self.url = self.url.replace('{hostName}', self.host_name)
-
         old_response = self.get_resource()
 
         if not old_response:
-            self.log("DedicatedHost instance doesn't exist")
-
-            if self.state == 'absent':
-                self.log("Old instance didn't exist")
-            else:
+            if self.state == 'present':
                 self.to_do = Actions.Create
         else:
-            self.log('DedicatedHost instance already exists')
-
             if self.state == 'absent':
                 self.to_do = Actions.Delete
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
-                self.results['modifiers'] = modifiers
-                self.results['compare'] = []
-                self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
         if (self.to_do == Actions.Create) or (self.to_do == Actions.Update):
-            self.log('Need to Create / Update the DedicatedHost instance')
-
+            self.results['changed'] = True
             if self.check_mode:
-                self.results['changed'] = True
                 return self.results
-
             response = self.create_update_resource()
-
-            # if not old_response:
-            self.results['changed'] = True
-            # else:
-            #     self.results['changed'] = old_response.__ne__(response)
-            self.log('Creation / Update done')
         elif self.to_do == Actions.Delete:
-            self.log('DedicatedHost instance deleted')
             self.results['changed'] = True
-
             if self.check_mode:
                 return self.results
-
             self.delete_resource()
-
-            # make sure instance is actually deleted, for some Azure resources, instance is hanging around
-            # for some time after deletion -- this should be really fixed in Azure
-            while self.get_resource():
-                time.sleep(20)
         else:
-            self.log('DedicatedHost instance unchanged')
             self.results['changed'] = False
             response = old_response
 
         return self.results
 
     def create_update_resource(self):
-
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'PUT',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              self.body,
-                                              self.status_code,
-                                              600,
-                                              30)
+            response = self.mgmt_client.dedicatedhosts.create_or_update(resource_group_name=self.resource_group_name,
+                                                                        host_group_name=self.host_group_name,
+                                                                        host_name=self.host_name,
+                                                                        location=self.location,
+                                                                        sku=self.sku)
+            if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
+                response = self.get_poller_result(response)
         except CloudError as exc:
             self.log('Error attempting to create the DedicatedHost instance.')
             self.fail('Error creating the DedicatedHost instance: {0}'.format(str(exc)))
-
-        try:
-            response = json.loads(response.text)
-        except Exception:
-            response = {'text': response.text}
-            pass
-
-        return response
+        return response.as_dict()
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'DELETE',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              None,
-                                              self.status_code,
-                                              600,
-                                              30)
+            response = self.mgmt_client.dedicatedhosts.delete(resource_group_name=self.resource_group_name,
+                                                              host_group_name=self.host_group_name,
+                                                              host_name=self.host_name)
         except CloudError as e:
             self.log('Error attempting to delete the DedicatedHost instance.')
             self.fail('Error deleting the DedicatedHost instance: {0}'.format(str(e)))
@@ -231,23 +181,12 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.query(self.url,
-                                              'GET',
-                                              self.query_parameters,
-                                              self.header_parameters,
-                                              None,
-                                              self.status_code,
-                                              600,
-                                              30)
-            found = True
-            self.log("Response : {0}".format(response))
-            # self.log("DedicatedHost instance : {0} found".format(response.name))
+            response = self.mgmt_client.dedicatedhosts.get(resource_group_name=self.resource_group_name,
+                                                           host_group_name=self.host_group_name,
+                                                           host_name=self.host_name)
         except CloudError as e:
-            self.log('Did not find the DedicatedHost instance.')
-        if found is True:
-            return response
-
-        return False
+            return False
+        return response.as_dict()
 
 
 def main():

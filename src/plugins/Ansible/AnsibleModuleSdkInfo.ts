@@ -48,7 +48,7 @@ export function GenerateModuleSdkInfo(module: Module) : string[] {
 
     output.push("");
 
-    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions);
+    let vars = ModuleTopLevelOptionsVariables(module.ModuleOptions, true);
     for (var i = 0; i < vars.length; i++) {
         output.push("        " + vars[i]);
     }
@@ -74,8 +74,9 @@ export function GenerateModuleSdkInfo(module: Module) : string[] {
     output.push("        for key in self.module_arg_spec:");
     output.push("            setattr(self, key, kwargs[key])");
     output.push("");        
-    output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + module.MgmtClientName + "Client,");
-    output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager)");
+    output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + module.PythonMgmtClient + ",");
+    output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager,");
+    output.push("                                                    api_version='"+module.ModuleApiVersion+"')");
     output.push("");
 
     AppendInfoModuleLogic(output, module);
@@ -95,7 +96,7 @@ export function GenerateModuleSdkInfo(module: Module) : string[] {
         output.push("        return response.as_dict()");
         output.push("");
     }
-    output.push("    def format_item(item):");
+    output.push("    def format_item(self, item):");
     output.push("        return item");
     output.push("");
     output.push("");

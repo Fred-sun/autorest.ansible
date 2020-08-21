@@ -21,11 +21,13 @@ export class AnsibleCodeModel {
             mainModule.BasicURL = this.GetBasicCRUDUrl(module.operations);
             mainModule.ModuleApiVersion = module.operations[0].apiVersions[0].version;
             mainModule.MgmtClientName ="GenericRestClient";
-
+            mainModule.PythonMgmtClient = this.model.info.title;
+            mainModule.PythonNamespace = "azure.mgmt."+ this.model.info.python_title.split("_")[0];
             let infoModule = new Module(module["$key"], true);
             infoModule.BasicURL = this.GetBasicCRUDUrl(module.operations);
+            infoModule.PythonNamespace = "azure.mgmt."+ this.model.info.python_title.split("_")[0];
             infoModule.ModuleApiVersion = module.operations[0].apiVersions[0].version;
-
+            infoModule.PythonMgmtClient = this.model.info.title;
             for (let method of module.operations){
                 if( method.requests[0].protocol.http.method == "get"){
                     this.AddMethod(method, infoModule);
@@ -259,8 +261,9 @@ export class AnsibleCodeModel {
         }
         option.SwaggerPath.push(name);
 
+        option.Updatable = true;
         if (p.readOnly != undefined) {
-            option.Readonly = p.readOnly;
+            option.Updatable = !p.readOnly;
             option.Computed = option.Readonly;
         }
         if (isResponse) {
@@ -443,13 +446,13 @@ export class AnsibleCodeModel {
     //         /*pop-up readonly metadata up. */
     //         let popup:boolean = true;
     //         for (let sub of option.SubOptions) {
-    //             if (!sub.Readonly) {
+    //             if (!sub.ReadOnly) {
     //                 popup = false;
     //                 break;
     //             }
     //         }
     //         if (popup && !option.IsBase) {
-    //             option.Readonly = true;
+    //             option.ReadOnly = true;
     //         }
     //     }
     //
@@ -497,13 +500,18 @@ export class AnsibleCodeModel {
     // }
 
     private GetRestDisposition(option: ModuleOption, parent: ModuleOption = null): string{
-        if (parent != null)
-            return "/" + option.NameSwagger;
-        if (option.NameSwagger != 'location' && option.NameSwagger !='tags' &&
-            option.NameSwagger != 'identity' && option.NameSwagger != 'location' && option.NameSwagger != 'sku' ){
-            return "/properties/"+option.NameSwagger;
+
+        if (parent == null){
+            if (option.NameSwagger == 'location' || option.NameSwagger =='tags' ||
+                option.NameSwagger == 'identity' ||  option.NameSwagger == 'sku'){
+                return "/"+option.NameSwagger;
+            }
+            else
+                return "/properties/"+option.NameSwagger;
         }
-        return "/" + option.NameSwagger;
+
+
+        return  option.NameSwagger;
     }
 }
 
