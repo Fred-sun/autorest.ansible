@@ -8,7 +8,7 @@ import {
     ModuleTopLevelOptionsVariables,
     GetFixUrlStatements,
     AppendModuleHeader,
-    // AppendModuleDocumentation,
+    AppendModuleDocumentation,
     // AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
@@ -21,7 +21,7 @@ export function GenerateModuleRestInfo(module: Module, collection: boolean) : st
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    // AppendModuleDocumentation(output, module, true, collection);
+    AppendModuleDocumentation(output, module, true, collection);
     // AppendModuleExamples(output, module, collection);
     // AppendModuleReturnDoc(output, module, true);
 

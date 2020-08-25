@@ -30,7 +30,7 @@ export async function main() {
         })
     }
     let fs = require("fs");
-    const inputFileUri = "./model4.yaml";
+    const inputFileUri = "./authorization.yaml";
 
 
     const input : string = fs.readFileSync(inputFileUri);

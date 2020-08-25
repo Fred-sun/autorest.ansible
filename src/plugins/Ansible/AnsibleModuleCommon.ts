@@ -135,11 +135,15 @@ export function AppendInfoModuleLogic(output: string[], module: Module)
 {
     let ifStatement: string = "if";
     let sortedMethods = module.ModuleMethods.sort((m1,m2) => {
-        return (m1.Url.length > m2.Url.length) ? -1 : 1;
+        if (m1.RequiredOptions.length > m2.RequiredOptions.length)
+            return -1;
+        if (m1.RequiredOptions.length == m2.RequiredOptions.length && m1.Options.length > m2.Options.length)
+            return -1;
+        return 1;
     });
-    for (let m of sortedMethods)
+    for (let method of sortedMethods)
     {
-        let ps: ModuleOption[] = module.GetMethodOptions(m.Name, true);
+        let ps: ModuleOption[] = method.RequiredOptions;
 
         if (ps.length == 0)
         {
@@ -158,9 +162,9 @@ export function AppendInfoModuleLogic(output: string[], module: Module)
 
 
 
-        output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
+        output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + method.Name.toLowerCase() + "())");
 
-        // output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
+        // output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + method.Name.toLowerCase() + "())");
 
         ifStatement = "elif"
     }

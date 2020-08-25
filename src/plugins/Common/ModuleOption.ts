@@ -10,8 +10,6 @@ export enum ModuleOptionKind{
 }
 
 
-
-
 export class ModuleOption {
     constructor(name: string, type:string="", required:boolean=false) {
         this.NameSwagger = name;

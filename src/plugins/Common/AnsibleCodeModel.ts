@@ -1,5 +1,5 @@
 
-import {ParseType, ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
+import {ParseType, SwaggerModelType, ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
 import {pascalCase} from "@azure-tools/codegen";
 import {CodeModel, Info} from "@azure-tools/codemodel";
 import {Module} from "./Module";
@@ -142,7 +142,7 @@ export class AnsibleCodeModel {
                 moduleMethod.Options.push(option);
                 if (option.Required)
                 {
-                    moduleMethod.RequiredOptions.push(option.Name);
+                    moduleMethod.RequiredOptions.push(option);
                 }
             }
 
@@ -158,7 +158,7 @@ export class AnsibleCodeModel {
                 moduleMethod.Options.push(option);
                 if (option.Required)
                 {
-                    moduleMethod.RequiredOptions.push(option.Name);
+                    moduleMethod.RequiredOptions.push(option);
                 }
 
             }
@@ -307,6 +307,11 @@ export class AnsibleCodeModel {
                 let subOption = this.LoadOption(subParameter,isResponse, filterFunction, option);
                 option.SubOptions.push(subOption);
             }
+        }
+
+        if (p.schema != undefined && p.schema.type == SwaggerModelType.SWAGGER_MODEL_ARRAY){
+            let subOption = this.LoadOption(p.schema.elementType,isResponse, filterFunction, option);
+            option.SubOptions.push(subOption);
         }
         // if (p.schema != undefined) {
         //     this.LoadSchema(p.schema, option, filterFunction, isResponse);

@@ -9,7 +9,7 @@ import {
     ModuleTopLevelOptionsVariables,
     GetFixUrlStatements,
     AppendModuleHeader,
-    // AppendModuleDocumentation,
+    AppendModuleDocumentation,
     // AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
@@ -23,7 +23,7 @@ export function GenerateModuleRest(module: Module, collection: boolean) : string
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    // AppendModuleDocumentation(output, module, false, collection);
+    AppendModuleDocumentation(output, module, false, collection);
     // AppendModuleExamples(output, module, collection);
     // AppendModuleReturnDoc(output, module, false);
 
