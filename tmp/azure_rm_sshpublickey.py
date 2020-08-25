@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,52 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_sshpublickey
+version_added: '2.9'
+short_description: Manage Azure SshPublicKey instance.
+description:
+  - 'Create, update and delete instance of Azure SshPublicKey.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  ssh_public_key_name:
+    description:
+      - The name of the SSH public key.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  public_key:
+    description:
+      - >-
+        SSH public key used to authenticate to a virtual machine through ssh. If
+        this property is not initially provided when the resource is created,
+        the publicKey property will be populated when generateKeyPair is called.
+        If the public key is provided upon resource creation, the provided
+        public key needs to be at least 2048-bit and in ssh-rsa format.
+    type: str
+  state:
+    description:
+      - Assert the state of the SshPublicKey.
+      - >-
+        Use C(present) to create or update an SshPublicKey and C(absent) to
+        delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -83,7 +129,8 @@ class AzureRMSshPublicKey(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

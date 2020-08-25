@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,97 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_availabilityset
+version_added: '2.9'
+short_description: Manage Azure AvailabilitySet instance.
+description:
+  - 'Create, update and delete instance of Azure AvailabilitySet.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  availability_set_name:
+    description:
+      - The name of the availability set.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  sku:
+    description:
+      - >-
+        Sku of the availability set, only name is required to be set. See
+        AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for
+        virtual machines with managed disks and 'Classic' for virtual machines
+        with unmanaged disks. Default value is 'Classic'.
+    type: dict
+    suboptions:
+      name:
+        description:
+          - The sku name.
+        type: str
+      tier:
+        description:
+          - >-
+            Specifies the tier of virtual machines in a scale set.:code:`<br
+            />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
+            **Standard**\ :code:`<br />`:code:`<br />` **Basic**
+        type: str
+      capacity:
+        description:
+          - Specifies the number of virtual machines in the scale set.
+        type: integer
+  platform_update_domain_count:
+    description:
+      - Update Domain count.
+    type: integer
+  platform_fault_domain_count:
+    description:
+      - Fault Domain count.
+    type: integer
+  virtual_machines:
+    description:
+      - A list of references to all virtual machines in the availability set.
+    type: list
+  proximity_placement_group:
+    description:
+      - >-
+        Specifies information about the proximity placement group that the
+        availability set should be assigned to. :code:`<br>`:code:`<br>`Minimum
+        api-version: 2018-04-01.
+    type: dict
+    suboptions:
+      id:
+        description:
+          - Resource Id
+        type: str
+  expand:
+    description:
+      - >-
+        The expand expression to apply to the operation. Allowed values are
+        'instanceView'.
+    type: str
+  state:
+    description:
+      - Assert the state of the AvailabilitySet.
+      - >-
+        Use C(present) to create or update an AvailabilitySet and C(absent) to
+        delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -123,7 +214,8 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

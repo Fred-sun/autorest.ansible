@@ -8,13 +8,13 @@ import {Indent, ToSnakeCase} from "../../utils/helper";
 import {Module} from "../Common/Module";
 import {ModuleOption, ModuleOptionKind} from "../Common/ModuleOption";
 import {ModuleMethod} from "../Common/ModuleMethod";
-
+import * as yaml from "node-yaml";
 
 export function AppendModuleHeader(output: string[])
 {
     output.push("#!/usr/bin/python");
     output.push("#");
-    output.push("# Copyright (c) 2019 Zim Kalinowski, (@zikalino)");
+    output.push("# Copyright (c) 2020 GuopengLin, (@t-glin)");
     output.push("#");
     output.push("# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)");
     output.push("");
@@ -29,60 +29,60 @@ export function AppendModuleHeader(output: string[])
     output.push("");
 }
 
-// export function AppendModuleDocumentation(output: string[], module: Module, isInfoModule: boolean, isCollection: boolean)
-// {
-//     output.push("DOCUMENTATION = '''");
-//     output.push("---");
-//
-//     var doc: any = {};
-//     let moduleName = module.ModuleName;
-//
-//     if (isCollection)
-//     {
-//         if (!isInfoModule)
-//         {
-//             moduleName = module.ModuleName.split("_").pop();
-//         }
-//         else
-//         {
-//             moduleName = module.ModuleName.split("_info")[0].split("_").pop() + "_info";
-//         }
-//     }
-//     doc['module'] = moduleName;
-//     doc['version_added'] = '2.9';
-//
-//     if (isInfoModule)
-//     {
-//         doc['short_description'] = "Get " + module.ObjectName + " info.";
-//         doc['description'] = [ "Get info of " + module.ObjectName + "."];
-//     }
-//     else
-//     {
-//         doc['short_description'] = "Manage Azure " + module.ObjectName + " instance.";
-//         doc['description'] = [ "Create, update and delete instance of Azure " + module.ObjectName + "."];
-//     }
-//     doc['options'] = ModuleHelp(module, isInfoModule);
-//     if (!isInfoModule)
-//     {
-//         doc['options']['state'] = {}
-//         doc['options']['state']['description'] = ["Assert the state of the " + module.ObjectName + ".", "Use C(present) to create or update an " + module.ObjectName + " and C(absent) to delete it."]
-//         doc['options']['state']['default'] = 'present';
-//         doc['options']['state']['choices'] = ['absent', 'present'];
-//     }
-//     doc['extends_documentation_fragment'] = ['azure'];
-//     if (module.SupportsTags() && !isInfoModule)
-//     {
-//         doc['extends_documentation_fragment'].push('azure_tags');
-//     }
-//     doc['author'] = ['Zim Kalinowski (@zikalino)'];
-//
-//     yaml.dump(doc).split('\r').forEach(element => {
-//         output.push(element);
-//     });
-//
-//     output.push("'''");
-//     output.push("");
-// }
+export function AppendModuleDocumentation(output: string[], module: Module, isInfoModule: boolean, isCollection: boolean)
+{
+    output.push("DOCUMENTATION = '''");
+    output.push("---");
+
+    var doc: any = {};
+    let moduleName = module.ModuleName;
+
+    if (isCollection)
+    {
+        if (!isInfoModule)
+        {
+            moduleName = module.ModuleName.split("_").pop();
+        }
+        else
+        {
+            moduleName = module.ModuleName.split("_info")[0].split("_").pop() + "_info";
+        }
+    }
+    doc['module'] = moduleName;
+    doc['version_added'] = '2.9';
+
+    if (isInfoModule)
+    {
+        doc['short_description'] = "Get " + module.ObjectName + " info.";
+        doc['description'] = [ "Get info of " + module.ObjectName + "."];
+    }
+    else
+    {
+        doc['short_description'] = "Manage Azure " + module.ObjectName + " instance.";
+        doc['description'] = [ "Create, update and delete instance of Azure " + module.ObjectName + "."];
+    }
+    doc['options'] = ModuleHelp(module, isInfoModule);
+    if (!isInfoModule)
+    {
+        doc['options']['state'] = {}
+        doc['options']['state']['description'] = ["Assert the state of the " + module.ObjectName + ".", "Use C(present) to create or update an " + module.ObjectName + " and C(absent) to delete it."]
+        doc['options']['state']['default'] = 'present';
+        doc['options']['state']['choices'] = ['absent', 'present'];
+    }
+    doc['extends_documentation_fragment'] = ['azure'];
+    if (module.SupportsTags() && !isInfoModule)
+    {
+        doc['extends_documentation_fragment'].push('azure_tags');
+    }
+    doc['author'] = ['GuopengLin (@t-glin)'];
+
+    yaml.dump(doc).split('\r').forEach(element => {
+        output.push(element);
+    });
+
+    output.push("'''");
+    output.push("");
+}
 
 // export function AppendModuleExamples(output: string[], module: Module, isCollection: boolean)
 // {

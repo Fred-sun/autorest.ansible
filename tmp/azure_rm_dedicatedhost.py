@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,95 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_dedicatedhost
+version_added: '2.9'
+short_description: Manage Azure DedicatedHost instance.
+description:
+  - 'Create, update and delete instance of Azure DedicatedHost.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  host_group_name:
+    description:
+      - The name of the dedicated host group.
+    required: true
+    type: str
+  host_name:
+    description:
+      - The name of the dedicated host .
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  sku:
+    description:
+      - >-
+        SKU of the dedicated host for Hardware Generation and VM family. Only
+        name is required to be set. List Microsoft.Compute SKUs for a list of
+        possible values.
+    type: dict
+    suboptions:
+      name:
+        description:
+          - The sku name.
+        type: str
+      tier:
+        description:
+          - >-
+            Specifies the tier of virtual machines in a scale set.:code:`<br
+            />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
+            **Standard**\ :code:`<br />`:code:`<br />` **Basic**
+        type: str
+      capacity:
+        description:
+          - Specifies the number of virtual machines in the scale set.
+        type: integer
+  platform_fault_domain:
+    description:
+      - Fault domain of the dedicated host within a dedicated host group.
+    type: integer
+  auto_replace_on_failure:
+    description:
+      - >-
+        Specifies whether the dedicated host should be replaced automatically in
+        case of a failure. The value is defaulted to 'true' when not provided.
+    type: bool
+  license_type:
+    description:
+      - >-
+        Specifies the software license type that will be applied to the VMs
+        deployed on the dedicated host. :code:`<br>`:code:`<br>` Possible values
+        are: :code:`<br>`:code:`<br>` **None** :code:`<br>`:code:`<br>`
+        **Windows_Server_Hybrid** :code:`<br>`:code:`<br>`
+        **Windows_Server_Perpetual** :code:`<br>`:code:`<br>` Default: **None**
+    type: sealed-choice
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: constant
+  state:
+    description:
+      - Assert the state of the DedicatedHost.
+      - >-
+        Use C(present) to create or update an DedicatedHost and C(absent) to
+        delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -119,7 +208,8 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

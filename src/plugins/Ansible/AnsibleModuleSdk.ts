@@ -8,7 +8,7 @@ import { AnsibleCodeModel } from "../Common/AnsibleCodeModel";
 import {
     ModuleTopLevelOptionsVariables,
     AppendModuleHeader,
-    // AppendModuleDocumentation,
+    AppendModuleDocumentation,
     // AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
@@ -23,7 +23,7 @@ export function GenerateModuleSdk(module: Module) : string[] {
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    // AppendModuleDocumentation(output, module, false, false);
+    AppendModuleDocumentation(output, module, false, false);
     // AppendModuleExamples(output, module, false);
     // AppendModuleReturnDoc(output, module, false);
 
@@ -83,7 +83,8 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("        response = None");
     output.push("");
     output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + module.PythonMgmtClient + ",");
-    output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager)");
+    output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager,");
+    output.push("                                                    api_version='"+module.ModuleApiVersion+"')");
     if (module.HasResourceGroup())
     {
         output.push("");

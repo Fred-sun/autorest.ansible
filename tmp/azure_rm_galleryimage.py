@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,172 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_galleryimage
+version_added: '2.9'
+short_description: Manage Azure GalleryImage instance.
+description:
+  - 'Create, update and delete instance of Azure GalleryImage.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  gallery_name:
+    description:
+      - >-
+        The name of the Shared Image Gallery in which the Image Definition is to
+        be created.
+    required: true
+    type: str
+  gallery_image_name:
+    description:
+      - >-
+        The name of the gallery Image Definition to be created or updated. The
+        allowed characters are alphabets and numbers with dots, dashes, and
+        periods allowed in the middle. The maximum length is 80 characters.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  description:
+    description:
+      - >-
+        The description of this gallery Image Definition resource. This property
+        is updatable.
+    type: str
+  eula:
+    description:
+      - The Eula agreement for the gallery Image Definition.
+    type: str
+  privacy_statement_uri:
+    description:
+      - The privacy statement uri.
+    type: str
+  release_note_uri:
+    description:
+      - The release note uri.
+    type: str
+  os_type:
+    description:
+      - >-
+        This property allows you to specify the type of the OS that is included
+        in the disk when creating a VM from a managed image.
+        :code:`<br>`:code:`<br>` Possible values are: :code:`<br>`:code:`<br>`
+        **Windows** :code:`<br>`:code:`<br>` **Linux**
+    type: sealed-choice
+  os_state:
+    description:
+      - >-
+        This property allows the user to specify whether the virtual machines
+        created under this image are 'Generalized' or 'Specialized'.
+    type: sealed-choice
+  hyper_vgeneration:
+    description:
+      - >-
+        The hypervisor generation of the Virtual Machine. Applicable to OS disks
+        only.
+    type: choice
+  end_of_life_date:
+    description:
+      - >-
+        The end of life date of the gallery Image Definition. This property can
+        be used for decommissioning purposes. This property is updatable.
+    type: str
+  identifier:
+    description:
+      - This is the gallery Image Definition identifier.
+    type: dict
+    suboptions:
+      publisher:
+        description:
+          - The name of the gallery Image Definition publisher.
+        required: true
+        type: str
+      offer:
+        description:
+          - The name of the gallery Image Definition offer.
+        required: true
+        type: str
+      sku:
+        description:
+          - The name of the gallery Image Definition SKU.
+        required: true
+        type: str
+  disallowed:
+    description:
+      - Describes the disallowed disk types.
+    type: dict
+    suboptions:
+      disk_types:
+        description:
+          - A list of disk types.
+        type: list
+  purchase_plan:
+    description:
+      - >-
+        Describes the gallery Image Definition purchase plan. This is used by
+        marketplace images.
+    type: dict
+    suboptions:
+      name:
+        description:
+          - The plan ID.
+        type: str
+      publisher:
+        description:
+          - The publisher ID.
+        type: str
+      product:
+        description:
+          - The product ID.
+        type: str
+  v_cp_us:
+    description:
+      - Describes the resource range.
+    type: dict
+    suboptions:
+      min:
+        description:
+          - The minimum number of the resource.
+        type: integer
+      max:
+        description:
+          - The maximum number of the resource.
+        type: integer
+  memory:
+    description:
+      - Describes the resource range.
+    type: dict
+    suboptions:
+      min:
+        description:
+          - The minimum number of the resource.
+        type: integer
+      max:
+        description:
+          - The maximum number of the resource.
+        type: integer
+  state:
+    description:
+      - Assert the state of the GalleryImage.
+      - >-
+        Use C(present) to create or update an GalleryImage and C(absent) to
+        delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -194,7 +360,8 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2019-12-01')
 
         old_response = self.get_resource()
 

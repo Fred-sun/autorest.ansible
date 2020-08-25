@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,223 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_snapshot
+version_added: '2.9'
+short_description: Manage Azure Snapshot instance.
+description:
+  - 'Create, update and delete instance of Azure Snapshot.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  snapshot_name:
+    description:
+      - >-
+        The name of the snapshot that is being created. The name can't be
+        changed after the snapshot is created. Supported characters for the name
+        are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  os_type:
+    description:
+      - The Operating System type.
+    type: sealed-choice
+  hyper_vgeneration:
+    description:
+      - >-
+        The hypervisor generation of the Virtual Machine. Applicable to OS disks
+        only.
+    type: choice
+  creation_data:
+    description:
+      - >-
+        Disk source information. CreationData information cannot be changed
+        after the disk has been created.
+    type: dict
+    suboptions:
+      create_option:
+        description:
+          - This enumerates the possible sources of a disk's creation.
+        required: true
+        type: choice
+      storage_account_id:
+        description:
+          - >-
+            Required if createOption is Import. The Azure Resource Manager
+            identifier of the storage account containing the blob to import as a
+            disk.
+        type: str
+      image_reference:
+        description:
+          - Disk source information.
+        type: dict
+        suboptions:
+          id:
+            description:
+              - >-
+                A relative uri containing either a Platform Image Repository or
+                user image reference.
+            required: true
+            type: str
+          lun:
+            description:
+              - >-
+                If the disk is created from an image's data disk, this is an
+                index that indicates which of the data disks in the image to
+                use. For OS disks, this field is null.
+            type: integer
+      gallery_image_reference:
+        description:
+          - >-
+            Required if creating from a Gallery Image. The id of the
+            ImageDiskReference will be the ARM id of the shared galley image
+            version from which to create a disk.
+        type: dict
+        suboptions:
+          id:
+            description:
+              - >-
+                A relative uri containing either a Platform Image Repository or
+                user image reference.
+            required: true
+            type: str
+          lun:
+            description:
+              - >-
+                If the disk is created from an image's data disk, this is an
+                index that indicates which of the data disks in the image to
+                use. For OS disks, this field is null.
+            type: integer
+      source_uri:
+        description:
+          - >-
+            If createOption is Import, this is the URI of a blob to be imported
+            into a managed disk.
+        type: str
+      source_resource_id:
+        description:
+          - >-
+            If createOption is Copy, this is the ARM id of the source snapshot
+            or disk.
+        type: str
+      source_unique_id:
+        description:
+          - >-
+            If this field is set, this is the unique id identifying the source
+            of this resource.
+        type: str
+      upload_size_bytes:
+        description:
+          - >-
+            If createOption is Upload, this is the size of the contents of the
+            upload including the VHD footer. This value should be between
+            20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520
+            bytes (32 TiB + 512 bytes for the VHD footer).
+        type: integer
+  disk_size_gb:
+    description:
+      - >-
+        If creationData.createOption is Empty, this field is mandatory and it
+        indicates the size of the disk to create. If this field is present for
+        updates or creation with other options, it indicates a resize. Resizes
+        are only allowed if the disk is not attached to a running VM, and can
+        only increase the disk's size.
+    type: integer
+  encryption_settings_collection:
+    description:
+      - >-
+        Encryption settings collection used be Azure Disk Encryption, can
+        contain multiple encryption settings per disk or snapshot.
+    type: dict
+    suboptions:
+      enabled:
+        description:
+          - >-
+            Set this flag to true and provide DiskEncryptionKey and optional
+            KeyEncryptionKey to enable encryption. Set this flag to false and
+            remove DiskEncryptionKey and KeyEncryptionKey to disable encryption.
+            If EncryptionSettings is null in the request object, the existing
+            settings remain unchanged.
+        required: true
+        type: bool
+      encryption_settings:
+        description:
+          - 'A collection of encryption settings, one for each disk volume.'
+        type: list
+      encryption_settings_version:
+        description:
+          - >-
+            Describes what type of encryption is used for the disks. Once this
+            field is set, it cannot be overwritten. '1.0' corresponds to Azure
+            Disk Encryption with AAD app.'1.1' corresponds to Azure Disk
+            Encryption.
+        type: str
+  incremental:
+    description:
+      - >-
+        Whether a snapshot is incremental. Incremental snapshots on the same
+        disk occupy less space than full snapshots and can be diffed.
+    type: bool
+  encryption:
+    description:
+      - >-
+        Encryption property can be used to encrypt data at rest with customer
+        managed keys or platform managed keys.
+    type: dict
+    suboptions:
+      disk_encryption_set_id:
+        description:
+          - >-
+            ResourceId of the disk encryption set to use for enabling encryption
+            at rest.
+        type: str
+      type:
+        description:
+          - The type of key used to encrypt the data of the disk.
+        type: choice
+  network_access_policy:
+    description:
+      - Policy for accessing the disk via network.
+    type: choice
+  disk_access_id:
+    description:
+      - ARM id of the DiskAccess resource for using private endpoints on disks.
+    type: str
+  name:
+    description:
+      - The sku name.
+    type: choice
+  access:
+    description:
+      - undefined
+    type: choice
+  duration_in_seconds:
+    description:
+      - Time duration in seconds until the SAS access expires.
+    type: integer
+  state:
+    description:
+      - Assert the state of the Snapshot.
+      - >-
+        Use C(present) to create or update an Snapshot and C(absent) to delete
+        it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -210,7 +427,8 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-05-01')
 
         old_response = self.get_resource()
 

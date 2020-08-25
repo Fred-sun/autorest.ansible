@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,72 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_dedicatedhostgroup
+version_added: '2.9'
+short_description: Manage Azure DedicatedHostGroup instance.
+description:
+  - 'Create, update and delete instance of Azure DedicatedHostGroup.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  host_group_name:
+    description:
+      - The name of the dedicated host group.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  zones:
+    description:
+      - >-
+        Availability Zone to use for this host group. Only single zone is
+        supported. The zone can be assigned only during creation. If not
+        provided, the group supports all zones in the region. If provided,
+        enforces each host in the group to be in the same zone.
+    type: list
+  platform_fault_domain_count:
+    description:
+      - Number of fault domains that the host group can span.
+    type: integer
+  support_automatic_placement:
+    description:
+      - >-
+        Specifies whether virtual machines or virtual machine scale sets can be
+        placed automatically on the dedicated host group. Automatic placement
+        means resources are allocated on dedicated hosts, that are chosen by
+        Azure, under the dedicated host group. The value is defaulted to 'true'
+        when not provided. :code:`<br>`:code:`<br>`Minimum api-version:
+        2020-06-01.
+    type: bool
+  expand:
+    description:
+      - >-
+        The expand expression to apply on the operation. The response shows the
+        list of instance view of the dedicated hosts under the dedicated host
+        group.
+    type: constant
+  state:
+    description:
+      - Assert the state of the DedicatedHostGroup.
+      - >-
+        Use C(present) to create or update an DedicatedHostGroup and C(absent)
+        to delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -95,7 +161,8 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

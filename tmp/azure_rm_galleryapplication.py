@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,86 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_galleryapplication
+version_added: '2.9'
+short_description: Manage Azure GalleryApplication instance.
+description:
+  - 'Create, update and delete instance of Azure GalleryApplication.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  gallery_name:
+    description:
+      - >-
+        The name of the Shared Application Gallery in which the Application
+        Definition is to be created.
+    required: true
+    type: str
+  gallery_application_name:
+    description:
+      - >-
+        The name of the gallery Application Definition to be created or updated.
+        The allowed characters are alphabets and numbers with dots, dashes, and
+        periods allowed in the middle. The maximum length is 80 characters.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  description:
+    description:
+      - >-
+        The description of this gallery Application Definition resource. This
+        property is updatable.
+    type: str
+  eula:
+    description:
+      - The Eula agreement for the gallery Application Definition.
+    type: str
+  privacy_statement_uri:
+    description:
+      - The privacy statement uri.
+    type: str
+  release_note_uri:
+    description:
+      - The release note uri.
+    type: str
+  end_of_life_date:
+    description:
+      - >-
+        The end of life date of the gallery Application Definition. This
+        property can be used for decommissioning purposes. This property is
+        updatable.
+    type: str
+  supported_os_type:
+    description:
+      - >-
+        This property allows you to specify the supported type of the OS that
+        application is built for. :code:`<br>`:code:`<br>` Possible values are:
+        :code:`<br>`:code:`<br>` **Windows** :code:`<br>`:code:`<br>` **Linux**
+    type: sealed-choice
+  state:
+    description:
+      - Assert the state of the GalleryApplication.
+      - >-
+        Use C(present) to create or update an GalleryApplication and C(absent)
+        to delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -109,7 +189,8 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2019-12-01')
 
         old_response = self.get_resource()
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,47 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_diskaccesse
+version_added: '2.9'
+short_description: Manage Azure DiskAccesse instance.
+description:
+  - 'Create, update and delete instance of Azure DiskAccesse.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  disk_access_name:
+    description:
+      - >-
+        The name of the disk access resource that is being created. The name
+        can't be changed after the disk encryption set is created. Supported
+        characters for the name are a-z, A-Z, 0-9 and _. The maximum name length
+        is 80 characters.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  state:
+    description:
+      - Assert the state of the DiskAccesse.
+      - >-
+        Use C(present) to create or update an DiskAccesse and C(absent) to
+        delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -79,7 +120,8 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-05-01')
 
         old_response = self.get_resource()
 

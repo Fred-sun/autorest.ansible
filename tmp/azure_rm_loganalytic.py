@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,72 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_loganalytic
+version_added: '2.9'
+short_description: Manage Azure LogAnalytic instance.
+description:
+  - 'Create, update and delete instance of Azure LogAnalytic.'
+options:
+  location:
+    description:
+      - The location upon which virtual-machine-sizes is queried.
+    required: true
+    type: str
+  blob_container_sas_uri:
+    description:
+      - >-
+        SAS Uri of the logging blob container to which LogAnalytics Api writes
+        output logs to.
+    required: true
+    type: str
+  from_time:
+    description:
+      - From time of the query
+    required: true
+    type: str
+  to_time:
+    description:
+      - To time of the query
+    required: true
+    type: str
+  group_by_throttle_policy:
+    description:
+      - Group query result by Throttle Policy applied.
+    required: true
+    type: bool
+  group_by_operation_name:
+    description:
+      - Group query result by Operation Name.
+    required: true
+    type: bool
+  group_by_resource_name:
+    description:
+      - Group query result by Resource Name.
+    required: true
+    type: bool
+  interval_length:
+    description:
+      - Interval value in minutes used to create LogAnalytics call rate logs.
+    type: sealed-choice
+  state:
+    description:
+      - Assert the state of the LogAnalytic.
+      - >-
+        Use C(present) to create or update an LogAnalytic and C(absent) to
+        delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -106,7 +172,8 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

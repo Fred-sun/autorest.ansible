@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,119 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_galleryimageversion
+version_added: '2.9'
+short_description: Manage Azure GalleryImageVersion instance.
+description:
+  - 'Create, update and delete instance of Azure GalleryImageVersion.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  gallery_name:
+    description:
+      - >-
+        The name of the Shared Image Gallery in which the Image Definition
+        resides.
+    required: true
+    type: str
+  gallery_image_name:
+    description:
+      - >-
+        The name of the gallery Image Definition in which the Image Version is
+        to be created.
+    required: true
+    type: str
+  gallery_image_version_name:
+    description:
+      - >-
+        The name of the gallery Image Version to be created. Needs to follow
+        semantic version name pattern: The allowed characters are digit and
+        period. Digits must be within the range of a 32-bit integer. Format:
+        :code:`<MajorVersion>`.:code:`<MinorVersion>`.:code:`<Patch>`
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  data_disk_images:
+    description:
+      - A list of data disk images.
+    type: list
+  host_caching:
+    description:
+      - >-
+        The host caching of the disk. Valid values are 'None', 'ReadOnly', and
+        'ReadWrite'
+    type: sealed-choice
+  id:
+    description:
+      - >-
+        The id of the gallery artifact version source. Can specify a disk uri,
+        snapshot uri, or user image.
+    type: str
+  gallery_artifact_version_source_id:
+    description:
+      - >-
+        The id of the gallery artifact version source. Can specify a disk uri,
+        snapshot uri, or user image.
+    type: str
+  target_regions:
+    description:
+      - >-
+        The target regions where the Image Version is going to be replicated to.
+        This property is updatable.
+    type: list
+  replica_count:
+    description:
+      - >-
+        The number of replicas of the Image Version to be created per region.
+        This property would take effect for a region when regionalReplicaCount
+        is not specified. This property is updatable.
+    type: integer
+  exclude_from_latest:
+    description:
+      - >-
+        If set to true, Virtual Machines deployed from the latest version of the
+        Image Definition won't use this Image Version.
+    type: bool
+  end_of_life_date:
+    description:
+      - >-
+        The end of life date of the gallery Image Version. This property can be
+        used for decommissioning purposes. This property is updatable.
+    type: str
+  storage_account_type:
+    description:
+      - >-
+        Specifies the storage account type to be used to store the image. This
+        property is not updatable.
+    type: choice
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: choice
+  state:
+    description:
+      - Assert the state of the GalleryImageVersion.
+      - >-
+        Use C(present) to create or update an GalleryImageVersion and C(absent)
+        to delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -130,7 +243,8 @@ class AzureRMGalleryImageVersion(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2019-12-01')
 
         old_response = self.get_resource()
 

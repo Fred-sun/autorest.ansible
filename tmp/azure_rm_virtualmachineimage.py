@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,64 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachineimage
+version_added: '2.9'
+short_description: Manage Azure VirtualMachineImage instance.
+description:
+  - 'Create, update and delete instance of Azure VirtualMachineImage.'
+options:
+  location:
+    description:
+      - The name of a supported Azure region.
+    required: true
+    type: str
+  publisher_name:
+    description:
+      - A valid image publisher.
+    type: str
+  offer:
+    description:
+      - A valid image publisher offer.
+    type: str
+  skus:
+    description:
+      - A valid image SKU.
+    type: str
+  version:
+    description:
+      - A valid image SKU version.
+    type: str
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: str
+  top:
+    description:
+      - undefined
+    type: integer
+  orderby:
+    description:
+      - undefined
+    type: str
+  state:
+    description:
+      - Assert the state of the VirtualMachineImage.
+      - >-
+        Use C(present) to create or update an VirtualMachineImage and C(absent)
+        to delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -100,7 +158,8 @@ class AzureRMVirtualMachineImage(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

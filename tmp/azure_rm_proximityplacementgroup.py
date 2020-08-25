@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,84 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_proximityplacementgroup
+version_added: '2.9'
+short_description: Manage Azure ProximityPlacementGroup instance.
+description:
+  - 'Create, update and delete instance of Azure ProximityPlacementGroup.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  proximity_placement_group_name:
+    description:
+      - The name of the proximity placement group.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  proximity_placement_group_type:
+    description:
+      - >-
+        Specifies the type of the proximity placement group.
+        :code:`<br>`:code:`<br>` Possible values are: :code:`<br>`:code:`<br>`
+        **Standard** : Co-locate resources within an Azure region or
+        Availability Zone. :code:`<br>`:code:`<br>` **Ultra** : For future use.
+    type: choice
+  colocation_status:
+    description:
+      - Describes colocation status of the Proximity Placement Group.
+    type: dict
+    suboptions:
+      code:
+        description:
+          - The status code.
+        type: str
+      level:
+        description:
+          - The level code.
+        type: sealed-choice
+      display_status:
+        description:
+          - The short localizable label for the status.
+        type: str
+      message:
+        description:
+          - >-
+            The detailed status message, including for alerts and error
+            messages.
+        type: str
+      time:
+        description:
+          - The time of the status.
+        type: str
+  include_colocation_status:
+    description:
+      - >-
+        includeColocationStatus=true enables fetching the colocation status of
+        all the resources in the proximity placement group.
+    type: str
+  state:
+    description:
+      - Assert the state of the ProximityPlacementGroup.
+      - >-
+        Use C(present) to create or update an ProximityPlacementGroup and
+        C(absent) to delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -113,7 +191,8 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

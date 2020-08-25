@@ -72,7 +72,7 @@ export class Module {
     }
 
     public SupportsTags():boolean{
-        return true;
+        return false;
     }
 
     public GetMethodOptions(methodName:string, bo:boolean):ModuleOption[]{

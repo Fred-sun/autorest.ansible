@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,126 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachinescalesetvmextension
+version_added: '2.9'
+short_description: Manage Azure VirtualMachineScaleSetVMExtension instance.
+description:
+  - >-
+    Create, update and delete instance of Azure
+    VirtualMachineScaleSetVMExtension.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  vm_scale_set_name:
+    description:
+      - The name of the VM scale set.
+    required: true
+    type: str
+  instance_id:
+    description:
+      - The instance ID of the virtual machine.
+    required: true
+    type: str
+  vm_extension_name:
+    description:
+      - The name of the virtual machine extension.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  force_update_tag:
+    description:
+      - >-
+        How the extension handler should be forced to update even if the
+        extension configuration has not changed.
+    type: str
+  publisher:
+    description:
+      - The name of the extension handler publisher.
+    type: str
+  type:
+    description:
+      - >-
+        Specifies the type of the extension; an example is
+        "CustomScriptExtension".
+    type: str
+  type_handler_version:
+    description:
+      - Specifies the version of the script handler.
+    type: str
+  auto_upgrade_minor_version:
+    description:
+      - >-
+        Indicates whether the extension should use a newer minor version if one
+        is available at deployment time. Once deployed, however, the extension
+        will not upgrade minor versions unless redeployed, even with this
+        property set to true.
+    type: bool
+  enable_automatic_upgrade:
+    description:
+      - >-
+        Indicates whether the extension should be automatically upgraded by the
+        platform if there is a newer version of the extension available.
+    type: bool
+  settings:
+    description:
+      - Json formatted public settings for the extension.
+    type: any
+  protected_settings:
+    description:
+      - >-
+        The extension can contain either protectedSettings or
+        protectedSettingsFromKeyVault or no protected settings at all.
+    type: any
+  name:
+    description:
+      - The virtual machine extension name.
+    type: str
+  virtual_machine_extension_instance_view_type:
+    description:
+      - >-
+        Specifies the type of the extension; an example is
+        "CustomScriptExtension".
+    type: str
+  virtual_machine_extension_instance_view_type_handler_version_type_handler_version:
+    description:
+      - Specifies the version of the script handler.
+    type: str
+  substatuses:
+    description:
+      - The resource status information.
+    type: list
+  statuses:
+    description:
+      - The resource status information.
+    type: list
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: str
+  state:
+    description:
+      - Assert the state of the VirtualMachineScaleSetVMExtension.
+      - >-
+        Use C(present) to create or update an VirtualMachineScaleSetVMExtension
+        and C(absent) to delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -146,7 +266,8 @@ class AzureRMVirtualMachineScaleSetVMExtension(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 

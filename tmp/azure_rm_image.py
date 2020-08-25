@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2019 Zim Kalinowski, (@zikalino)
+# Copyright (c) 2020 GuopengLin, (@t-glin)
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -12,6 +12,94 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
 
+
+DOCUMENTATION = '''
+---
+module: azure_rm_image
+version_added: '2.9'
+short_description: Manage Azure Image instance.
+description:
+  - 'Create, update and delete instance of Azure Image.'
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  image_name:
+    description:
+      - The name of the image.
+    type: str
+  location:
+    description:
+      - Resource location
+    type: str
+  hyper_vgeneration:
+    description:
+      - >-
+        Gets the HyperVGenerationType of the VirtualMachine created from the
+        image
+    type: choice
+  os_disk:
+    description:
+      - >-
+        Specifies information about the operating system disk used by the
+        virtual machine. :code:`<br>`:code:`<br>` For more information about
+        disks, see `About disks and VHDs for Azure virtual machines
+        <https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json>`_.
+    type: dict
+    suboptions:
+      os_type:
+        description:
+          - >-
+            This property allows you to specify the type of the OS that is
+            included in the disk if creating a VM from a custom image.
+            :code:`<br>`:code:`<br>` Possible values are:
+            :code:`<br>`:code:`<br>` **Windows** :code:`<br>`:code:`<br>`
+            **Linux**
+        required: true
+        type: sealed-choice
+      os_state:
+        description:
+          - The OS State.
+        required: true
+        type: sealed-choice
+  data_disks:
+    description:
+      - >-
+        Specifies the parameters that are used to add a data disk to a virtual
+        machine. :code:`<br>`:code:`<br>` For more information about disks, see
+        `About disks and VHDs for Azure virtual machines
+        <https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json>`_.
+    type: list
+  zone_resilient:
+    description:
+      - >-
+        Specifies whether an image is zone resilient or not. Default is false.
+        Zone resilient images can be created only in regions that provide Zone
+        Redundant Storage (ZRS).
+    type: bool
+  id:
+    description:
+      - Resource Id
+    type: str
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: str
+  state:
+    description:
+      - Assert the state of the Image.
+      - Use C(present) to create or update an Image and C(absent) to delete it.
+    default: present
+    choices:
+      - absent
+      - present
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
 
 
 import time
@@ -115,7 +203,8 @@ class AzureRMImage(AzureRMModuleBaseExt):
         response = None
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         old_response = self.get_resource()
 
