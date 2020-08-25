@@ -44,7 +44,7 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             state=dict(
                 type='str',
@@ -55,8 +55,6 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.disk_access_name = None
-        self.location = None
-        self.tags = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -70,13 +68,17 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -90,6 +92,8 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -111,9 +115,9 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.diskaccesses.create_or_update(resource_group_name=self.resource_group_name,
-                                                                      disk_access_name=self.disk_access_name,
-                                                                      location=self.location)
+            response = self.mgmt_client.disk_accesses.create_or_update(resource_group_name=self.resource_group_name,
+                                                                       disk_access_name=self.disk_access_name,
+                                                                       parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -123,8 +127,8 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.diskaccesses.delete(resource_group_name=self.resource_group_name,
-                                                            disk_access_name=self.disk_access_name)
+            response = self.mgmt_client.disk_accesses.delete(resource_group_name=self.resource_group_name,
+                                                             disk_access_name=self.disk_access_name)
         except CloudError as e:
             self.log('Error attempting to delete the DiskAccesse instance.')
             self.fail('Error deleting the DiskAccesse instance: {0}'.format(str(e)))
@@ -134,8 +138,8 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.diskaccesses.get(resource_group_name=self.resource_group_name,
-                                                         disk_access_name=self.disk_access_name)
+            response = self.mgmt_client.disk_accesses.get(resource_group_name=self.resource_group_name,
+                                                          disk_access_name=self.disk_access_name)
         except CloudError as e:
             return False
         return response.as_dict()

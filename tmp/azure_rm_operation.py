@@ -57,13 +57,17 @@ class AzureRMOperation(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -77,6 +81,8 @@ class AzureRMOperation(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 

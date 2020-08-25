@@ -33,7 +33,7 @@ class AzureRMResourceSkuInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             filter=dict(
                 type='str',
-                required=true
+                required=True
             )
         )
 
@@ -59,25 +59,31 @@ class AzureRMResourceSkuInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2019-04-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.filter is not None):
-            self.results['resourceskus'] = [self.format_item(self.list())]
+            self.results['resource_skus'] = self.format_item(self.list())
         return self.results
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.resourceskus.list()
+            response = self.mgmt_client.resource_skus.list(filter=self.filter)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

@@ -33,11 +33,11 @@ class AzureRMDedicatedHostInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             host_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             host_name=dict(
                 type='str'
@@ -72,44 +72,51 @@ class AzureRMDedicatedHostInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.host_group_name is not None and
             self.host_name is not None and
             self.expand is not None):
-            self.results['dedicatedhosts'] = [self.format_item(self.get())]
+            self.results['dedicated_hosts'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.host_group_name is not None):
-            self.results['dedicatedhosts'] = [self.format_item(self.listbyhostgroup())]
+            self.results['dedicated_hosts'] = self.format_item(self.listbyhostgroup())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.dedicatedhosts.get(resource_group_name=self.resource_group_name,
-                                                           host_group_name=self.host_group_name,
-                                                           host_name=self.host_name)
+            response = self.mgmt_client.dedicated_hosts.get(resource_group_name=self.resource_group_name,
+                                                            host_group_name=self.host_group_name,
+                                                            host_name=self.host_name,
+                                                            expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbyhostgroup(self):
         response = None
 
         try:
-            response = self.mgmt_client.dedicatedhosts.list_by_host_group(resource_group_name=self.resource_group_name,
-                                                                          host_group_name=self.host_group_name)
+            response = self.mgmt_client.dedicated_hosts.list_by_host_group(resource_group_name=self.resource_group_name,
+                                                                           host_group_name=self.host_group_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

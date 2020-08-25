@@ -33,7 +33,7 @@ class AzureRMUsageInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             location=dict(
                 type='str',
-                required=true
+                required=True
             )
         )
 
@@ -59,11 +59,10 @@ class AzureRMUsageInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.location is not None):
-            self.results['usage'] = [self.format_item(self.list())]
+            self.results['usage'] = self.format_item(self.list())
         return self.results
 
     def list(self):
@@ -74,10 +73,17 @@ class AzureRMUsageInfo(AzureRMModuleBase):
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

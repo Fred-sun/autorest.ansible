@@ -38,11 +38,11 @@ class AzureRMVirtualMachineScaleSetRollingUpgrade(AzureRMModuleBaseExt):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_scale_set_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             state=dict(
                 type='str',
@@ -66,13 +66,17 @@ class AzureRMVirtualMachineScaleSetRollingUpgrade(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -86,6 +90,8 @@ class AzureRMVirtualMachineScaleSetRollingUpgrade(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -107,7 +113,7 @@ class AzureRMVirtualMachineScaleSetRollingUpgrade(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtualmachinescalesetrollingupgrades.create_or_update()
+            response = self.mgmt_client.virtual_machine_scale_set_rolling_upgrades.create_or_update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -117,7 +123,7 @@ class AzureRMVirtualMachineScaleSetRollingUpgrade(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.virtualmachinescalesetrollingupgrades.delete()
+            response = self.mgmt_client.virtual_machine_scale_set_rolling_upgrades.delete()
         except CloudError as e:
             self.log('Error attempting to delete the VirtualMachineScaleSetRollingUpgrade instance.')
             self.fail('Error deleting the VirtualMachineScaleSetRollingUpgrade instance: {0}'.format(str(e)))
@@ -127,7 +133,7 @@ class AzureRMVirtualMachineScaleSetRollingUpgrade(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.virtualmachinescalesetrollingupgrades.get()
+            response = self.mgmt_client.virtual_machine_scale_set_rolling_upgrades.get()
         except CloudError as e:
             return False
         return response.as_dict()

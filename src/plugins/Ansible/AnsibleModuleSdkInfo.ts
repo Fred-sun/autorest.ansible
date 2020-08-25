@@ -75,8 +75,8 @@ export function GenerateModuleSdkInfo(module: Module) : string[] {
     output.push("            setattr(self, key, kwargs[key])");
     output.push("");        
     output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + module.PythonMgmtClient + ",");
-    output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager,");
-    output.push("                                                    api_version='"+module.ModuleApiVersion+"')");
+    output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager)");
+    // output.push("                                                    api_version='"+module.ModuleApiVersion+"')");
     output.push("");
 
     AppendInfoModuleLogic(output, module);
@@ -93,11 +93,18 @@ export function GenerateModuleSdkInfo(module: Module) : string[] {
         output.push("        except CloudError as e:");
         output.push("            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')");
         output.push("");
-        output.push("        return response.as_dict()");
+        output.push("        return response");
         output.push("");
     }
     output.push("    def format_item(self, item):");
-    output.push("        return item");
+    output.push("        if hasattr(item, 'as_dict'):");
+    output.push("            return [item.as_dict()]");
+    output.push("        else:");
+    output.push("            result = []");
+    output.push("            items = list(item)");
+    output.push("            for tmp in items:");
+    output.push("               result.append(tmp.as_dict())");
+    output.push("            return result");
     output.push("");
     output.push("");
 

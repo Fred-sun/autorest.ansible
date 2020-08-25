@@ -44,36 +44,36 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             encryption_type=dict(
                 type='choice',
-                disposition='null'
+                disposition='/encryption_type'
             ),
             key_url=dict(
                 type='str',
-                disposition='null'
+                disposition='/key_url'
             ),
             id=dict(
                 type='str',
-                disposition='null'
+                disposition='/id'
             ),
             type=dict(
                 type='choice',
-                disposition='null'
+                disposition='/type'
             ),
             active_key=dict(
                 type='dict',
-                disposition='null',
+                disposition='/active_key',
                 options=dict(
                     key_url=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='key_url',
+                        required=True
                     ),
                     id=dict(
                         type='str',
-                        disposition='null'
+                        disposition='id'
                     )
                 )
             ),
@@ -86,13 +86,6 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.disk_encryption_set_name = None
-        self.location = None
-        self.tags = None
-        self.encryption_type = None
-        self.key_url = None
-        self.id = None
-        self.type = None
-        self.active_key = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -106,13 +99,17 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -126,6 +123,8 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -147,9 +146,9 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.diskencryptionsets.create_or_update(resource_group_name=self.resource_group_name,
-                                                                            disk_encryption_set_name=self.disk_encryption_set_name,
-                                                                            location=self.location)
+            response = self.mgmt_client.disk_encryption_sets.create_or_update(resource_group_name=self.resource_group_name,
+                                                                              disk_encryption_set_name=self.disk_encryption_set_name,
+                                                                              parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -159,8 +158,8 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.diskencryptionsets.delete(resource_group_name=self.resource_group_name,
-                                                                  disk_encryption_set_name=self.disk_encryption_set_name)
+            response = self.mgmt_client.disk_encryption_sets.delete(resource_group_name=self.resource_group_name,
+                                                                    disk_encryption_set_name=self.disk_encryption_set_name)
         except CloudError as e:
             self.log('Error attempting to delete the DiskEncryptionSet instance.')
             self.fail('Error deleting the DiskEncryptionSet instance: {0}'.format(str(e)))
@@ -170,8 +169,8 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.diskencryptionsets.get(resource_group_name=self.resource_group_name,
-                                                               disk_encryption_set_name=self.disk_encryption_set_name)
+            response = self.mgmt_client.disk_encryption_sets.get(resource_group_name=self.resource_group_name,
+                                                                 disk_encryption_set_name=self.disk_encryption_set_name)
         except CloudError as e:
             return False
         return response.as_dict()

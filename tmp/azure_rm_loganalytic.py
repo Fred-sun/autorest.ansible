@@ -38,41 +38,41 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
         self.module_arg_spec = dict(
             location=dict(
                 type='str',
-                required=true
+                required=True
             ),
             blob_container_sas_uri=dict(
                 type='str',
-                disposition='null',
-                required=true
+                disposition='/blob_container_sas_uri',
+                required=True
             ),
             from_time=dict(
                 type='str',
-                disposition='null',
-                required=true
+                disposition='/from_time',
+                required=True
             ),
             to_time=dict(
                 type='str',
-                disposition='null',
-                required=true
+                disposition='/to_time',
+                required=True
             ),
             group_by_throttle_policy=dict(
                 type='bool',
-                disposition='null',
-                required=true
+                disposition='/group_by_throttle_policy',
+                required=True
             ),
             group_by_operation_name=dict(
                 type='bool',
-                disposition='null',
-                required=true
+                disposition='/group_by_operation_name',
+                required=True
             ),
             group_by_resource_name=dict(
                 type='bool',
-                disposition='null',
-                required=true
+                disposition='/group_by_resource_name',
+                required=True
             ),
             interval_length=dict(
                 type='sealed-choice',
-                disposition='null'
+                disposition='/interval_length'
             ),
             state=dict(
                 type='str',
@@ -82,13 +82,6 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
         )
 
         self.location = None
-        self.blob_container_sas_uri = None
-        self.from_time = None
-        self.to_time = None
-        self.group_by_throttle_policy = None
-        self.group_by_operation_name = None
-        self.group_by_resource_name = None
-        self.interval_length = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -102,13 +95,17 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -122,6 +119,8 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -143,7 +142,7 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.loganalytics.create_or_update()
+            response = self.mgmt_client.log_analytics.create_or_update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -153,7 +152,7 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.loganalytics.delete()
+            response = self.mgmt_client.log_analytics.delete()
         except CloudError as e:
             self.log('Error attempting to delete the LogAnalytic instance.')
             self.fail('Error deleting the LogAnalytic instance: {0}'.format(str(e)))
@@ -163,7 +162,7 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.loganalytics.get()
+            response = self.mgmt_client.log_analytics.get()
         except CloudError as e:
             return False
         return response.as_dict()

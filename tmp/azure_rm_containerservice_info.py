@@ -62,51 +62,57 @@ class AzureRMContainerServiceInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2017-01-31')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.container_service_name is not None):
-            self.results['containerservices'] = [self.format_item(self.get())]
+            self.results['container_services'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
-            self.results['containerservices'] = [self.format_item(self.listbyresourcegroup())]
+            self.results['container_services'] = self.format_item(self.listbyresourcegroup())
         else:
-            self.results['containerservices'] = [self.format_item(self.list())]
+            self.results['container_services'] = self.format_item(self.list())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.containerservices.get(resource_group_name=self.resource_group_name,
-                                                              container_service_name=self.container_service_name)
+            response = self.mgmt_client.container_services.get(resource_group_name=self.resource_group_name,
+                                                               container_service_name=self.container_service_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbyresourcegroup(self):
         response = None
 
         try:
-            response = self.mgmt_client.containerservices.list_by_resource_group(resource_group_name=self.resource_group_name)
+            response = self.mgmt_client.container_services.list_by_resource_group(resource_group_name=self.resource_group_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.containerservices.list()
+            response = self.mgmt_client.container_services.list()
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

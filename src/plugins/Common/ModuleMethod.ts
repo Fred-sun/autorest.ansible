@@ -9,4 +9,5 @@ export class ModuleMethod {
     public Url: string = "";
     public HttpMethod: string = "";
     public ApiVersion: string = "";
+    public HasBody: boolean = true;
 }

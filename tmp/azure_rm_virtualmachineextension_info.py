@@ -33,18 +33,18 @@ class AzureRMVirtualMachineExtensionInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_extension_name=dict(
                 type='str'
             ),
             expand=dict(
                 type='str',
-                required=true
+                required=True
             )
         )
 
@@ -73,45 +73,53 @@ class AzureRMVirtualMachineExtensionInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.vm_name is not None and
             self.vm_extension_name is not None and
             self.expand is not None):
-            self.results['virtualmachineextensions'] = [self.format_item(self.get())]
+            self.results['virtual_machine_extensions'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.vm_name is not None and
               self.expand is not None):
-            self.results['virtualmachineextensions'] = [self.format_item(self.list())]
+            self.results['virtual_machine_extensions'] = self.format_item(self.list())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachineextensions.get(resource_group_name=self.resource_group_name,
-                                                                     vm_name=self.vm_name,
-                                                                     vm_extension_name=self.vm_extension_name)
+            response = self.mgmt_client.virtual_machine_extensions.get(resource_group_name=self.resource_group_name,
+                                                                       vm_name=self.vm_name,
+                                                                       vm_extension_name=self.vm_extension_name,
+                                                                       expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachineextensions.list(resource_group_name=self.resource_group_name,
-                                                                      vm_name=self.vm_name)
+            response = self.mgmt_client.virtual_machine_extensions.list(resource_group_name=self.resource_group_name,
+                                                                        vm_name=self.vm_name,
+                                                                        expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

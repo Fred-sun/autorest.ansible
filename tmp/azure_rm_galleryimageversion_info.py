@@ -33,15 +33,15 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_image_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_image_version_name=dict(
                 type='str'
@@ -77,48 +77,55 @@ class AzureRMGalleryImageVersionInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2019-12-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.gallery_name is not None and
             self.gallery_image_name is not None and
             self.gallery_image_version_name is not None and
             self.expand is not None):
-            self.results['galleryimageversions'] = [self.format_item(self.get())]
+            self.results['gallery_image_versions'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.gallery_name is not None and
               self.gallery_image_name is not None):
-            self.results['galleryimageversions'] = [self.format_item(self.listbygalleryimage())]
+            self.results['gallery_image_versions'] = self.format_item(self.listbygalleryimage())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.galleryimageversions.get(resource_group_name=self.resource_group_name,
-                                                                 gallery_name=self.gallery_name,
-                                                                 gallery_image_name=self.gallery_image_name,
-                                                                 gallery_image_version_name=self.gallery_image_version_name)
+            response = self.mgmt_client.gallery_image_versions.get(resource_group_name=self.resource_group_name,
+                                                                   gallery_name=self.gallery_name,
+                                                                   gallery_image_name=self.gallery_image_name,
+                                                                   gallery_image_version_name=self.gallery_image_version_name,
+                                                                   expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbygalleryimage(self):
         response = None
 
         try:
-            response = self.mgmt_client.galleryimageversions.list_by_gallery_image(resource_group_name=self.resource_group_name,
-                                                                                   gallery_name=self.gallery_name,
-                                                                                   gallery_image_name=self.gallery_image_name)
+            response = self.mgmt_client.gallery_image_versions.list_by_gallery_image(resource_group_name=self.resource_group_name,
+                                                                                     gallery_name=self.gallery_name,
+                                                                                     gallery_image_name=self.gallery_image_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

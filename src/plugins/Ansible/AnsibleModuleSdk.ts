@@ -72,13 +72,17 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("");
     output.push("    def exec_module(self, **kwargs):");
     output.push("        for key in list(self.module_arg_spec.keys()):");
-    output.push("            setattr(self, key, kwargs[key])");
+    output.push("            if hasattr(self, key):");
+    output.push("                setattr(self, key, kwargs[key])");
+    output.push("            elif kwargs[key] is not None:");
+    output.push("                self.body[key] = kwargs[key]");
     output.push("");
+    output.push("        self.inflate_parameters(self.module_arg_spec, self.body, 0)");    
     output.push("");
     output.push("        old_response = None");
     output.push("        response = None");
     output.push("");
-    output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + module.MgmtClientName + ",");
+    output.push("        self.mgmt_client = self.get_mgmt_svc_client(" + module.PythonMgmtClient + ",");
     output.push("                                                    base_url=self._cloud_environment.endpoints.resource_manager)");
     if (module.HasResourceGroup())
     {
@@ -87,21 +91,21 @@ export function GenerateModuleSdk(module: Module) : string[] {
     }
     output.push("");
 
-    // let locationDisposition: string = module.LocationDisposition;
-    // if (null != locationDisposition)
-    // {
-    //     if (locationDisposition == "/")
-    //     {
-    //         output.push("        if 'location' not in self.body:");
-    //         output.push("            self.body['location'] = resource_group.location");
-    //     }
-    //     else
-    //     {
-    //         output.push("        if self.location is None:");
-    //         output.push("            self.location = resource_group.location");
-    //     }
-    //     output.push("");
-    // }
+    let locationDisposition: string = module.LocationDisposition;
+    if (null != locationDisposition)
+    {
+        if (locationDisposition == "/")
+        {
+            output.push("        if 'location' not in self.body:");
+            output.push("            self.body['location'] = resource_group.location");
+        }
+        else
+        {
+            output.push("        if self.location is None:");
+            output.push("            self.location = resource_group.location");
+        }
+        output.push("");
+    }
 
     output.push("        old_response = self.get_resource()");
     output.push("");
@@ -114,6 +118,8 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("            else:");
     output.push("                modifiers = {}");
     output.push("                self.create_compare_modifiers(self.module_arg_spec, '', modifiers)");
+    output.push("                self.results['modifiers'] = modifiers");
+    output.push("                self.results['compare'] = []");
     output.push("                if not self.default_compare(modifiers, self.body, old_response, '', self.results):");
     output.push("                    self.to_do = Actions.Update");
 
@@ -186,7 +192,7 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("        return response.as_dict()");
     output.push("");
     output.push("    def delete_resource(self):");
-    // output.push("        # self.log('Deleting the " + module.ObjectName + " instance {0}'.format(self." + module.ModuleResourceName + "))");
+    //output.push("        # self.log('Deleting the " + module.ObjectName + " instance {0}'.format(self." + module.ModuleResourceName + "))");
     output.push("        try:");
 
     ModuleGenerateApiCall(output, "            ", module, "Delete");
@@ -198,7 +204,7 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("        return True");
     output.push("");
     output.push("    def get_resource(self):");
-    // output.push("        # self.log('Checking if the " + module.ObjectName + " instance {0} is present'.format(self." + module.ModuleResourceName + "))");
+    //output.push("        # self.log('Checking if the " + module.ObjectName + " instance {0} is present'.format(self." + module.ModuleResourceName + "))");
     output.push("        found = False");
     output.push("        try:");
 

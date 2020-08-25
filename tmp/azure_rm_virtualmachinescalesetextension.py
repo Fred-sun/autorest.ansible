@@ -38,54 +38,54 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_scale_set_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vmss_extension_name=dict(
                 type='str'
             ),
             name=dict(
                 type='str',
-                disposition='null'
+                disposition='/name'
             ),
             force_update_tag=dict(
                 type='str',
-                disposition='null'
+                disposition='/force_update_tag'
             ),
             publisher=dict(
                 type='str',
-                disposition='null'
+                disposition='/publisher'
             ),
             type=dict(
                 type='str',
-                disposition='null'
+                disposition='/type'
             ),
             type_handler_version=dict(
                 type='str',
-                disposition='null'
+                disposition='/type_handler_version'
             ),
             auto_upgrade_minor_version=dict(
                 type='bool',
-                disposition='null'
+                disposition='/auto_upgrade_minor_version'
             ),
             enable_automatic_upgrade=dict(
                 type='bool',
-                disposition='null'
+                disposition='/enable_automatic_upgrade'
             ),
             settings=dict(
                 type='any',
-                disposition='null'
+                disposition='/settings'
             ),
             protected_settings=dict(
                 type='any',
-                disposition='null'
+                disposition='/protected_settings'
             ),
             provision_after_extensions=dict(
                 type='list',
-                disposition='null'
+                disposition='/provision_after_extensions'
             ),
             expand=dict(
                 type='str'
@@ -100,16 +100,6 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
         self.resource_group_name = None
         self.vm_scale_set_name = None
         self.vmss_extension_name = None
-        self.name = None
-        self.force_update_tag = None
-        self.publisher = None
-        self.type = None
-        self.type_handler_version = None
-        self.auto_upgrade_minor_version = None
-        self.enable_automatic_upgrade = None
-        self.settings = None
-        self.protected_settings = None
-        self.provision_after_extensions = None
         self.expand = None
         self.body = {}
 
@@ -124,13 +114,17 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -144,6 +138,8 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -165,9 +161,10 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtualmachinescalesetextensions.create_or_update(resource_group_name=self.resource_group_name,
-                                                                                          vm_scale_set_name=self.vm_scale_set_name,
-                                                                                          vmss_extension_name=self.vmss_extension_name)
+            response = self.mgmt_client.virtual_machine_scale_set_extensions.create_or_update(resource_group_name=self.resource_group_name,
+                                                                                              vm_scale_set_name=self.vm_scale_set_name,
+                                                                                              vmss_extension_name=self.vmss_extension_name,
+                                                                                              parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -177,9 +174,9 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.virtualmachinescalesetextensions.delete(resource_group_name=self.resource_group_name,
-                                                                                vm_scale_set_name=self.vm_scale_set_name,
-                                                                                vmss_extension_name=self.vmss_extension_name)
+            response = self.mgmt_client.virtual_machine_scale_set_extensions.delete(resource_group_name=self.resource_group_name,
+                                                                                    vm_scale_set_name=self.vm_scale_set_name,
+                                                                                    vmss_extension_name=self.vmss_extension_name)
         except CloudError as e:
             self.log('Error attempting to delete the VirtualMachineScaleSetExtension instance.')
             self.fail('Error deleting the VirtualMachineScaleSetExtension instance: {0}'.format(str(e)))
@@ -189,9 +186,10 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.virtualmachinescalesetextensions.get(resource_group_name=self.resource_group_name,
-                                                                             vm_scale_set_name=self.vm_scale_set_name,
-                                                                             vmss_extension_name=self.vmss_extension_name)
+            response = self.mgmt_client.virtual_machine_scale_set_extensions.get(resource_group_name=self.resource_group_name,
+                                                                                 vm_scale_set_name=self.vm_scale_set_name,
+                                                                                 vmss_extension_name=self.vmss_extension_name,
+                                                                                 expand=self.expand)
         except CloudError as e:
             return False
         return response.as_dict()

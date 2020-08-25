@@ -133,7 +133,7 @@ export function GenerateModuleRestInfo(module: Module, collection: boolean) : st
     output.push("        if 'value' in item: ");
     output.push("           return item['value']");
     output.push("        else:");
-    output.push("           return item");
+    output.push("           return [item]");
     output.push("");
     output.push("");
 

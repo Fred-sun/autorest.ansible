@@ -33,15 +33,15 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_application_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_application_version_name=dict(
                 type='str'
@@ -77,48 +77,55 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2019-12-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.gallery_name is not None and
             self.gallery_application_name is not None and
             self.gallery_application_version_name is not None and
             self.expand is not None):
-            self.results['galleryapplicationversions'] = [self.format_item(self.get())]
+            self.results['gallery_application_versions'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.gallery_name is not None and
               self.gallery_application_name is not None):
-            self.results['galleryapplicationversions'] = [self.format_item(self.listbygalleryapplication())]
+            self.results['gallery_application_versions'] = self.format_item(self.listbygalleryapplication())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.galleryapplicationversions.get(resource_group_name=self.resource_group_name,
-                                                                       gallery_name=self.gallery_name,
-                                                                       gallery_application_name=self.gallery_application_name,
-                                                                       gallery_application_version_name=self.gallery_application_version_name)
+            response = self.mgmt_client.gallery_application_versions.get(resource_group_name=self.resource_group_name,
+                                                                         gallery_name=self.gallery_name,
+                                                                         gallery_application_name=self.gallery_application_name,
+                                                                         gallery_application_version_name=self.gallery_application_version_name,
+                                                                         expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbygalleryapplication(self):
         response = None
 
         try:
-            response = self.mgmt_client.galleryapplicationversions.list_by_gallery_application(resource_group_name=self.resource_group_name,
-                                                                                               gallery_name=self.gallery_name,
-                                                                                               gallery_application_name=self.gallery_application_name)
+            response = self.mgmt_client.gallery_application_versions.list_by_gallery_application(resource_group_name=self.resource_group_name,
+                                                                                                 gallery_name=self.gallery_name,
+                                                                                                 gallery_application_name=self.gallery_application_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

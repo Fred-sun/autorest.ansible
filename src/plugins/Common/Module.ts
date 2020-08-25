@@ -1,5 +1,6 @@
 import {ModuleOption} from "./ModuleOption";
 import {ModuleMethod} from "./ModuleMethod";
+import {ToSnakeCase} from "../../utils/helper";
 
 export class Module {
     constructor(swaggerName:string, isInfoModule:boolean) {
@@ -8,7 +9,7 @@ export class Module {
         this.ObjectName = this.GetObjectName();
         this.ModuleClassName = this.GetModuleClassName();
         this.ModuleName = this.GetModuleName();
-        this.ModuleOperationName = swaggerName.toLowerCase();
+        this.ModuleOperationName = ToSnakeCase(swaggerName);
     }
     public SwaggerName: string = null;
     public ModuleName: string = null;

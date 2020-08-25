@@ -33,11 +33,11 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             location=dict(
                 type='str',
-                required=true
+                required=True
             ),
             publisher_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             type=dict(
                 type='str'
@@ -84,64 +84,73 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.location is not None and
             self.publisher_name is not None and
             self.type is not None and
             self.version is not None):
-            self.results['virtualmachineextensionimages'] = [self.format_item(self.get())]
+            self.results['virtual_machine_extension_images'] = self.format_item(self.get())
         elif (self.location is not None and
               self.publisher_name is not None and
               self.type is not None and
               self.filter is not None and
               self.top is not None and
               self.orderby is not None):
-            self.results['virtualmachineextensionimages'] = [self.format_item(self.listversion())]
+            self.results['virtual_machine_extension_images'] = self.format_item(self.listversion())
         elif (self.location is not None and
               self.publisher_name is not None):
-            self.results['virtualmachineextensionimages'] = [self.format_item(self.listtype())]
+            self.results['virtual_machine_extension_images'] = self.format_item(self.listtype())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachineextensionimages.get(location=self.location,
-                                                                          publisher_name=self.publisher_name,
-                                                                          type=self.type,
-                                                                          version=self.version)
+            response = self.mgmt_client.virtual_machine_extension_images.get(location=self.location,
+                                                                             publisher_name=self.publisher_name,
+                                                                             type=self.type,
+                                                                             version=self.version)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listversion(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachineextensionimages.list_version(location=self.location,
-                                                                                   publisher_name=self.publisher_name,
-                                                                                   type=self.type)
+            response = self.mgmt_client.virtual_machine_extension_images.list_version(location=self.location,
+                                                                                      publisher_name=self.publisher_name,
+                                                                                      type=self.type,
+                                                                                      filter=self.filter,
+                                                                                      top=self.top,
+                                                                                      orderby=self.orderby)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listtype(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachineextensionimages.list_type(location=self.location,
-                                                                                publisher_name=self.publisher_name)
+            response = self.mgmt_client.virtual_machine_extension_images.list_type(location=self.location,
+                                                                                   publisher_name=self.publisher_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

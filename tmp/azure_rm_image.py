@@ -44,39 +44,39 @@ class AzureRMImage(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             hyper_vgeneration=dict(
                 type='choice',
-                disposition='null'
+                disposition='/hyper_vgeneration'
             ),
             os_disk=dict(
                 type='dict',
-                disposition='null',
+                disposition='/os_disk',
                 options=dict(
                     os_type=dict(
                         type='sealed-choice',
-                        disposition='null',
-                        required=true
+                        disposition='os_type',
+                        required=True
                     ),
                     os_state=dict(
                         type='sealed-choice',
-                        disposition='null',
-                        required=true
+                        disposition='os_state',
+                        required=True
                     )
                 )
             ),
             data_disks=dict(
                 type='list',
-                disposition='null'
+                disposition='/data_disks'
             ),
             zone_resilient=dict(
                 type='bool',
-                disposition='null'
+                disposition='/zone_resilient'
             ),
             id=dict(
                 type='str',
-                disposition='null'
+                disposition='/id'
             ),
             expand=dict(
                 type='str'
@@ -90,13 +90,6 @@ class AzureRMImage(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.image_name = None
-        self.location = None
-        self.tags = None
-        self.hyper_vgeneration = None
-        self.os_disk = None
-        self.data_disks = None
-        self.zone_resilient = None
-        self.id = None
         self.expand = None
         self.body = {}
 
@@ -111,13 +104,17 @@ class AzureRMImage(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -131,6 +128,8 @@ class AzureRMImage(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -154,7 +153,7 @@ class AzureRMImage(AzureRMModuleBaseExt):
         try:
             response = self.mgmt_client.images.create_or_update(resource_group_name=self.resource_group_name,
                                                                 image_name=self.image_name,
-                                                                location=self.location)
+                                                                parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -176,7 +175,8 @@ class AzureRMImage(AzureRMModuleBaseExt):
         found = False
         try:
             response = self.mgmt_client.images.get(resource_group_name=self.resource_group_name,
-                                                   image_name=self.image_name)
+                                                   image_name=self.image_name,
+                                                   expand=self.expand)
         except CloudError as e:
             return False
         return response.as_dict()

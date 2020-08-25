@@ -62,51 +62,57 @@ class AzureRMSshPublicKeyInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.ssh_public_key_name is not None):
-            self.results['sshpublickeys'] = [self.format_item(self.get())]
+            self.results['ssh_public_keys'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
-            self.results['sshpublickeys'] = [self.format_item(self.listbyresourcegroup())]
+            self.results['ssh_public_keys'] = self.format_item(self.listbyresourcegroup())
         else:
-            self.results['sshpublickeys'] = [self.format_item(self.listbysubscription())]
+            self.results['ssh_public_keys'] = self.format_item(self.listbysubscription())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.sshpublickeys.get(resource_group_name=self.resource_group_name,
-                                                          ssh_public_key_name=self.ssh_public_key_name)
+            response = self.mgmt_client.ssh_public_keys.get(resource_group_name=self.resource_group_name,
+                                                            ssh_public_key_name=self.ssh_public_key_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbyresourcegroup(self):
         response = None
 
         try:
-            response = self.mgmt_client.sshpublickeys.list_by_resource_group(resource_group_name=self.resource_group_name)
+            response = self.mgmt_client.ssh_public_keys.list_by_resource_group(resource_group_name=self.resource_group_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbysubscription(self):
         response = None
 
         try:
-            response = self.mgmt_client.sshpublickeys.list_by_subscription()
+            response = self.mgmt_client.ssh_public_keys.list_by_subscription()
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

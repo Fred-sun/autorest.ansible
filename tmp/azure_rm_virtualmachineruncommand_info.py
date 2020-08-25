@@ -33,7 +33,7 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             location=dict(
                 type='str',
-                required=true
+                required=True
             ),
             command_id=dict(
                 type='str'
@@ -63,39 +63,45 @@ class AzureRMVirtualMachineRunCommandInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.location is not None and
             self.command_id is not None):
-            self.results['virtualmachineruncommands'] = [self.format_item(self.get())]
+            self.results['virtual_machine_run_commands'] = self.format_item(self.get())
         elif (self.location is not None):
-            self.results['virtualmachineruncommands'] = [self.format_item(self.list())]
+            self.results['virtual_machine_run_commands'] = self.format_item(self.list())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachineruncommands.get(location=self.location,
-                                                                      command_id=self.command_id)
+            response = self.mgmt_client.virtual_machine_run_commands.get(location=self.location,
+                                                                         command_id=self.command_id)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachineruncommands.list(location=self.location)
+            response = self.mgmt_client.virtual_machine_run_commands.list(location=self.location)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

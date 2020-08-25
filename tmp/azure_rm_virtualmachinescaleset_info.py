@@ -62,93 +62,99 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None):
-            self.results['virtualmachinescalesets'] = [self.format_item(self.getosupgradehistory())]
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.getosupgradehistory())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
-            self.results['virtualmachinescalesets'] = [self.format_item(self.getinstanceview())]
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.getinstanceview())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
-            self.results['virtualmachinescalesets'] = [self.format_item(self.listsku())]
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.listsku())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
-            self.results['virtualmachinescalesets'] = [self.format_item(self.get())]
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
-            self.results['virtualmachinescalesets'] = [self.format_item(self.list())]
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.list())
         else:
-            self.results['virtualmachinescalesets'] = [self.format_item(self.listall())]
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.listall())
         return self.results
 
     def getosupgradehistory(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesets.get_os_upgrade_history(resource_group_name=self.resource_group_name,
-                                                                                       vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.get_os_upgrade_history(resource_group_name=self.resource_group_name,
+                                                                                          vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def getinstanceview(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesets.get_instance_view(resource_group_name=self.resource_group_name,
-                                                                                  vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.get_instance_view(resource_group_name=self.resource_group_name,
+                                                                                     vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listsku(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesets.list_sku(resource_group_name=self.resource_group_name,
-                                                                         vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.list_sku(resource_group_name=self.resource_group_name,
+                                                                            vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesets.get(resource_group_name=self.resource_group_name,
-                                                                    vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.get(resource_group_name=self.resource_group_name,
+                                                                       vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesets.list(resource_group_name=self.resource_group_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.list(resource_group_name=self.resource_group_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listall(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesets.list_all()
+            response = self.mgmt_client.virtual_machine_scale_sets.list_all()
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

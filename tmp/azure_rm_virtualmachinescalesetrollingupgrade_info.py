@@ -33,11 +33,11 @@ class AzureRMVirtualMachineScaleSetRollingUpgradeInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_scale_set_name=dict(
                 type='str',
-                required=true
+                required=True
             )
         )
 
@@ -64,27 +64,33 @@ class AzureRMVirtualMachineScaleSetRollingUpgradeInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None):
-            self.results['virtualmachinescalesetrollingupgrades'] = [self.format_item(self.getlatest())]
+            self.results['virtual_machine_scale_set_rolling_upgrades'] = self.format_item(self.getlatest())
         return self.results
 
     def getlatest(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesetrollingupgrades.get_latest(resource_group_name=self.resource_group_name,
-                                                                                         vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_set_rolling_upgrades.get_latest(resource_group_name=self.resource_group_name,
+                                                                                              vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

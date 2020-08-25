@@ -44,19 +44,19 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             zones=dict(
                 type='list',
-                disposition='null'
+                disposition='/zones'
             ),
             platform_fault_domain_count=dict(
                 type='integer',
-                disposition='null'
+                disposition='/platform_fault_domain_count'
             ),
             support_automatic_placement=dict(
                 type='bool',
-                disposition='null'
+                disposition='/support_automatic_placement'
             ),
             expand=dict(
                 type='constant'
@@ -70,11 +70,6 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.host_group_name = None
-        self.location = None
-        self.tags = None
-        self.zones = None
-        self.platform_fault_domain_count = None
-        self.support_automatic_placement = None
         self.expand = None
         self.body = {}
 
@@ -89,13 +84,17 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -109,6 +108,8 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -130,9 +131,9 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.dedicatedhostgroups.create_or_update(resource_group_name=self.resource_group_name,
-                                                                             host_group_name=self.host_group_name,
-                                                                             location=self.location)
+            response = self.mgmt_client.dedicated_host_groups.create_or_update(resource_group_name=self.resource_group_name,
+                                                                               host_group_name=self.host_group_name,
+                                                                               parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -142,8 +143,8 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.dedicatedhostgroups.delete(resource_group_name=self.resource_group_name,
-                                                                   host_group_name=self.host_group_name)
+            response = self.mgmt_client.dedicated_host_groups.delete(resource_group_name=self.resource_group_name,
+                                                                     host_group_name=self.host_group_name)
         except CloudError as e:
             self.log('Error attempting to delete the DedicatedHostGroup instance.')
             self.fail('Error deleting the DedicatedHostGroup instance: {0}'.format(str(e)))
@@ -153,8 +154,9 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.dedicatedhostgroups.get(resource_group_name=self.resource_group_name,
-                                                                host_group_name=self.host_group_name)
+            response = self.mgmt_client.dedicated_host_groups.get(resource_group_name=self.resource_group_name,
+                                                                  host_group_name=self.host_group_name,
+                                                                  expand=self.expand)
         except CloudError as e:
             return False
         return response.as_dict()

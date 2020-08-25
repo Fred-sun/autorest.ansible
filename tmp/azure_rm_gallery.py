@@ -44,20 +44,20 @@ class AzureRMGallery(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             description=dict(
                 type='str',
-                disposition='null'
+                disposition='/description'
             ),
             identifier=dict(
                 type='dict',
-                disposition='null',
+                disposition='/identifier',
                 options=dict(
                     unique_name=dict(
                         type='str',
                         updatable=False,
-                        disposition='null'
+                        disposition='unique_name'
                     )
                 )
             ),
@@ -70,10 +70,6 @@ class AzureRMGallery(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.gallery_name = None
-        self.location = None
-        self.tags = None
-        self.description = None
-        self.identifier = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -87,13 +83,17 @@ class AzureRMGallery(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -107,6 +107,8 @@ class AzureRMGallery(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -130,7 +132,7 @@ class AzureRMGallery(AzureRMModuleBaseExt):
         try:
             response = self.mgmt_client.galleries.create_or_update(resource_group_name=self.resource_group_name,
                                                                    gallery_name=self.gallery_name,
-                                                                   location=self.location)
+                                                                   parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

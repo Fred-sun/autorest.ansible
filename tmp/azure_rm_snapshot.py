@@ -44,138 +44,138 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             os_type=dict(
                 type='sealed-choice',
-                disposition='null'
+                disposition='/os_type'
             ),
             hyper_vgeneration=dict(
                 type='choice',
-                disposition='null'
+                disposition='/hyper_vgeneration'
             ),
             creation_data=dict(
                 type='dict',
-                disposition='null',
+                disposition='/creation_data',
                 options=dict(
                     create_option=dict(
                         type='choice',
-                        disposition='null',
-                        required=true
+                        disposition='create_option',
+                        required=True
                     ),
                     storage_account_id=dict(
                         type='str',
-                        disposition='null'
+                        disposition='storage_account_id'
                     ),
                     image_reference=dict(
                         type='dict',
-                        disposition='null',
+                        disposition='image_reference',
                         options=dict(
                             id=dict(
                                 type='str',
-                                disposition='null',
-                                required=true
+                                disposition='id',
+                                required=True
                             ),
                             lun=dict(
                                 type='integer',
-                                disposition='null'
+                                disposition='lun'
                             )
                         )
                     ),
                     gallery_image_reference=dict(
                         type='dict',
-                        disposition='null',
+                        disposition='gallery_image_reference',
                         options=dict(
                             id=dict(
                                 type='str',
-                                disposition='null',
-                                required=true
+                                disposition='id',
+                                required=True
                             ),
                             lun=dict(
                                 type='integer',
-                                disposition='null'
+                                disposition='lun'
                             )
                         )
                     ),
                     source_uri=dict(
                         type='str',
-                        disposition='null'
+                        disposition='source_uri'
                     ),
                     source_resource_id=dict(
                         type='str',
-                        disposition='null'
+                        disposition='source_resource_id'
                     ),
                     source_unique_id=dict(
                         type='str',
                         updatable=False,
-                        disposition='null'
+                        disposition='source_unique_id'
                     ),
                     upload_size_bytes=dict(
                         type='integer',
-                        disposition='null'
+                        disposition='upload_size_bytes'
                     )
                 )
             ),
             disk_size_gb=dict(
                 type='integer',
-                disposition='null'
+                disposition='/disk_size_gb'
             ),
             encryption_settings_collection=dict(
                 type='dict',
-                disposition='null',
+                disposition='/encryption_settings_collection',
                 options=dict(
                     enabled=dict(
                         type='bool',
-                        disposition='null',
-                        required=true
+                        disposition='enabled',
+                        required=True
                     ),
                     encryption_settings=dict(
                         type='list',
-                        disposition='null'
+                        disposition='encryption_settings'
                     ),
                     encryption_settings_version=dict(
                         type='str',
-                        disposition='null'
+                        disposition='encryption_settings_version'
                     )
                 )
             ),
             incremental=dict(
                 type='bool',
-                disposition='null'
+                disposition='/incremental'
             ),
             encryption=dict(
                 type='dict',
-                disposition='null',
+                disposition='/encryption',
                 options=dict(
                     disk_encryption_set_id=dict(
                         type='str',
-                        disposition='null'
+                        disposition='disk_encryption_set_id'
                     ),
                     type=dict(
                         type='choice',
-                        disposition='null'
+                        disposition='type'
                     )
                 )
             ),
             network_access_policy=dict(
                 type='choice',
-                disposition='null'
+                disposition='/network_access_policy'
             ),
             disk_access_id=dict(
                 type='str',
-                disposition='null'
+                disposition='/disk_access_id'
             ),
             name=dict(
                 type='choice',
-                disposition='null'
+                disposition='/name'
             ),
             access=dict(
                 type='choice',
-                disposition='null'
+                disposition='/access'
             ),
             duration_in_seconds=dict(
                 type='integer',
-                disposition='null'
+                disposition='/duration_in_seconds'
             ),
             state=dict(
                 type='str',
@@ -186,20 +186,6 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.snapshot_name = None
-        self.location = None
-        self.tags = None
-        self.os_type = None
-        self.hyper_vgeneration = None
-        self.creation_data = None
-        self.disk_size_gb = None
-        self.encryption_settings_collection = None
-        self.incremental = None
-        self.encryption = None
-        self.network_access_policy = None
-        self.disk_access_id = None
-        self.name = None
-        self.access = None
-        self.duration_in_seconds = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -213,13 +199,17 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -233,6 +223,8 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -256,7 +248,7 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
         try:
             response = self.mgmt_client.snapshots.create_or_update(resource_group_name=self.resource_group_name,
                                                                    snapshot_name=self.snapshot_name,
-                                                                   location=self.location)
+                                                                   parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

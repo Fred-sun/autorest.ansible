@@ -74,92 +74,99 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.vm_name is not None):
-            self.results['virtualmachines'] = [self.format_item(self.instanceview())]
+            self.results['virtual_machines'] = self.format_item(self.instanceview())
         elif (self.resource_group_name is not None and
               self.vm_name is not None):
-            self.results['virtualmachines'] = [self.format_item(self.listavailablesize())]
+            self.results['virtual_machines'] = self.format_item(self.listavailablesize())
         elif (self.resource_group_name is not None and
               self.vm_name is not None and
               self.expand is not None):
-            self.results['virtualmachines'] = [self.format_item(self.get())]
+            self.results['virtual_machines'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
-            self.results['virtualmachines'] = [self.format_item(self.list())]
+            self.results['virtual_machines'] = self.format_item(self.list())
         elif (self.location is not None):
-            self.results['virtualmachines'] = [self.format_item(self.listbylocation())]
+            self.results['virtual_machines'] = self.format_item(self.listbylocation())
         elif (self.status_only is not None):
-            self.results['virtualmachines'] = [self.format_item(self.listall())]
+            self.results['virtual_machines'] = self.format_item(self.listall())
         return self.results
 
     def instanceview(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachines.instance_view(resource_group_name=self.resource_group_name,
-                                                                      vm_name=self.vm_name)
+            response = self.mgmt_client.virtual_machines.instance_view(resource_group_name=self.resource_group_name,
+                                                                       vm_name=self.vm_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listavailablesize(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachines.list_available_size(resource_group_name=self.resource_group_name,
-                                                                            vm_name=self.vm_name)
+            response = self.mgmt_client.virtual_machines.list_available_size(resource_group_name=self.resource_group_name,
+                                                                             vm_name=self.vm_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachines.get(resource_group_name=self.resource_group_name,
-                                                            vm_name=self.vm_name)
+            response = self.mgmt_client.virtual_machines.get(resource_group_name=self.resource_group_name,
+                                                             vm_name=self.vm_name,
+                                                             expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachines.list(resource_group_name=self.resource_group_name)
+            response = self.mgmt_client.virtual_machines.list(resource_group_name=self.resource_group_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbylocation(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachines.list_by_location(location=self.location)
+            response = self.mgmt_client.virtual_machines.list_by_location(location=self.location)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listall(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachines.list_all()
+            response = self.mgmt_client.virtual_machines.list_all(status_only=self.status_only)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

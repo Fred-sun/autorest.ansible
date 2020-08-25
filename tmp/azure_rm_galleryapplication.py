@@ -38,42 +38,42 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_application_name=dict(
                 type='str'
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             description=dict(
                 type='str',
-                disposition='null'
+                disposition='/description'
             ),
             eula=dict(
                 type='str',
-                disposition='null'
+                disposition='/eula'
             ),
             privacy_statement_uri=dict(
                 type='str',
-                disposition='null'
+                disposition='/privacy_statement_uri'
             ),
             release_note_uri=dict(
                 type='str',
-                disposition='null'
+                disposition='/release_note_uri'
             ),
             end_of_life_date=dict(
                 type='str',
-                disposition='null'
+                disposition='/end_of_life_date'
             ),
             supported_os_type=dict(
                 type='sealed-choice',
-                disposition='null'
+                disposition='/supported_os_type'
             ),
             state=dict(
                 type='str',
@@ -85,14 +85,6 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
         self.resource_group_name = None
         self.gallery_name = None
         self.gallery_application_name = None
-        self.location = None
-        self.tags = None
-        self.description = None
-        self.eula = None
-        self.privacy_statement_uri = None
-        self.release_note_uri = None
-        self.end_of_life_date = None
-        self.supported_os_type = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -106,13 +98,17 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -126,6 +122,8 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -147,10 +145,10 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.galleryapplications.create_or_update(resource_group_name=self.resource_group_name,
-                                                                             gallery_name=self.gallery_name,
-                                                                             gallery_application_name=self.gallery_application_name,
-                                                                             location=self.location)
+            response = self.mgmt_client.gallery_applications.create_or_update(resource_group_name=self.resource_group_name,
+                                                                              gallery_name=self.gallery_name,
+                                                                              gallery_application_name=self.gallery_application_name,
+                                                                              parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -160,9 +158,9 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.galleryapplications.delete(resource_group_name=self.resource_group_name,
-                                                                   gallery_name=self.gallery_name,
-                                                                   gallery_application_name=self.gallery_application_name)
+            response = self.mgmt_client.gallery_applications.delete(resource_group_name=self.resource_group_name,
+                                                                    gallery_name=self.gallery_name,
+                                                                    gallery_application_name=self.gallery_application_name)
         except CloudError as e:
             self.log('Error attempting to delete the GalleryApplication instance.')
             self.fail('Error deleting the GalleryApplication instance: {0}'.format(str(e)))
@@ -172,9 +170,9 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.galleryapplications.get(resource_group_name=self.resource_group_name,
-                                                                gallery_name=self.gallery_name,
-                                                                gallery_application_name=self.gallery_application_name)
+            response = self.mgmt_client.gallery_applications.get(resource_group_name=self.resource_group_name,
+                                                                 gallery_name=self.gallery_name,
+                                                                 gallery_application_name=self.gallery_application_name)
         except CloudError as e:
             return False
         return response.as_dict()

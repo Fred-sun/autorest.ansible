@@ -33,7 +33,7 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_scale_set_name=dict(
                 type='str'
@@ -87,63 +87,73 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None and
             self.instance_id is not None):
-            self.results['virtualmachinescalesetvms'] = [self.format_item(self.getinstanceview())]
+            self.results['virtual_machine_scale_set_vms'] = self.format_item(self.getinstanceview())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None and
               self.instance_id is not None and
               self.expand is not None):
-            self.results['virtualmachinescalesetvms'] = [self.format_item(self.get())]
+            self.results['virtual_machine_scale_set_vms'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.virtual_machine_scale_set_name is not None and
               self.filter is not None and
               self.select is not None and
               self.expand is not None):
-            self.results['virtualmachinescalesetvms'] = [self.format_item(self.list())]
+            self.results['virtual_machine_scale_set_vms'] = self.format_item(self.list())
         return self.results
 
     def getinstanceview(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesetvms.get_instance_view(resource_group_name=self.resource_group_name,
-                                                                                    vm_scale_set_name=self.vm_scale_set_name,
-                                                                                    instance_id=self.instance_id)
+            response = self.mgmt_client.virtual_machine_scale_set_vms.get_instance_view(resource_group_name=self.resource_group_name,
+                                                                                        vm_scale_set_name=self.vm_scale_set_name,
+                                                                                        instance_id=self.instance_id)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesetvms.get(resource_group_name=self.resource_group_name,
-                                                                      vm_scale_set_name=self.vm_scale_set_name,
-                                                                      instance_id=self.instance_id)
+            response = self.mgmt_client.virtual_machine_scale_set_vms.get(resource_group_name=self.resource_group_name,
+                                                                          vm_scale_set_name=self.vm_scale_set_name,
+                                                                          instance_id=self.instance_id,
+                                                                          expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesetvms.list(resource_group_name=self.resource_group_name,
-                                                                       virtual_machine_scale_set_name=self.virtual_machine_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_set_vms.list(resource_group_name=self.resource_group_name,
+                                                                           virtual_machine_scale_set_name=self.virtual_machine_scale_set_name,
+                                                                           filter=self.filter,
+                                                                           select=self.select,
+                                                                           expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

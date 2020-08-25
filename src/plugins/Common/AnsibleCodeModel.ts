@@ -150,6 +150,7 @@ export class AnsibleCodeModel {
 
         /* load body requests. */
         if (method.requests[0].parameters !== undefined) {
+            moduleMethod.HasBody = true;
             for (var p of method.requests[0].parameters) {
                 let option: ModuleOption = this.LoadModuleOption(p);
                 if (option == undefined)
@@ -161,6 +162,8 @@ export class AnsibleCodeModel {
                 }
 
             }
+        }else {
+            moduleMethod.HasBody = false;
         }
         /* sort the request option according to the type: in-path, in-body, in-header */
         //moduleMethod.Options.sort((n1, n2) => n1.Kind - n2.Kind);
@@ -278,7 +281,7 @@ export class AnsibleCodeModel {
                     option.IncludeInArgSpec = true;
                 } else if (location == "body") {
                     option.Kind = ModuleOptionKind.MODULE_OPTION_BODY;
-                    option.DispositionRest = this.GetRestDisposition(option, parent);
+                    this.GetDisposition(option, parent);
                     option.IncludeInArgSpec = true;
                 } else if (location == "header") {
                     option.Kind = ModuleOptionKind.MODULE_OPTION_HEADER;
@@ -290,7 +293,7 @@ export class AnsibleCodeModel {
                 }
             } else {
                 option.Kind = ModuleOptionKind.MODULE_OPTION_BODY;
-                option.DispositionRest = this.GetRestDisposition(option, parent);
+                this.GetDisposition(option, parent);
                 option.IncludeInArgSpec = true;
             }
         }
@@ -499,19 +502,21 @@ export class AnsibleCodeModel {
     //     }
     // }
 
-    private GetRestDisposition(option: ModuleOption, parent: ModuleOption = null): string{
+    private GetDisposition(option: ModuleOption, parent: ModuleOption = null){
 
         if (parent == null){
             if (option.NameSwagger == 'location' || option.NameSwagger =='tags' ||
                 option.NameSwagger == 'identity' ||  option.NameSwagger == 'sku'){
-                return "/"+option.NameSwagger;
+                option.DispositionRest =  "/"+option.NameSwagger;
             }
             else
-                return "/properties/"+option.NameSwagger;
+                option.DispositionRest =  "/properties/"+option.NameSwagger;
+            option.DispositionSdk = "/"+ToSnakeCase(option.NameSwagger);
+        }else {
+            option.DispositionSdk = ToSnakeCase(option.NameSwagger);
+            option.DispositionRest =   option.NameSwagger;
         }
 
-
-        return  option.NameSwagger;
     }
 }
 

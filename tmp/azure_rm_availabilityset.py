@@ -44,45 +44,45 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             sku=dict(
                 type='dict',
-                disposition='null',
+                disposition='/sku',
                 options=dict(
                     name=dict(
                         type='str',
-                        disposition='null'
+                        disposition='name'
                     ),
                     tier=dict(
                         type='str',
-                        disposition='null'
+                        disposition='tier'
                     ),
                     capacity=dict(
                         type='integer',
-                        disposition='null'
+                        disposition='capacity'
                     )
                 )
             ),
             platform_update_domain_count=dict(
                 type='integer',
-                disposition='null'
+                disposition='/platform_update_domain_count'
             ),
             platform_fault_domain_count=dict(
                 type='integer',
-                disposition='null'
+                disposition='/platform_fault_domain_count'
             ),
             virtual_machines=dict(
                 type='list',
-                disposition='null'
+                disposition='/virtual_machines'
             ),
             proximity_placement_group=dict(
                 type='dict',
-                disposition='null',
+                disposition='/proximity_placement_group',
                 options=dict(
                     id=dict(
                         type='str',
-                        disposition='null'
+                        disposition='id'
                     )
                 )
             ),
@@ -98,13 +98,6 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.availability_set_name = None
-        self.location = None
-        self.tags = None
-        self.sku = None
-        self.platform_update_domain_count = None
-        self.platform_fault_domain_count = None
-        self.virtual_machines = None
-        self.proximity_placement_group = None
         self.expand = None
         self.body = {}
 
@@ -119,13 +112,17 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -139,6 +136,8 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -160,9 +159,9 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.availabilitysets.create_or_update(resource_group_name=self.resource_group_name,
-                                                                          availability_set_name=self.availability_set_name,
-                                                                          location=self.location)
+            response = self.mgmt_client.availability_sets.create_or_update(resource_group_name=self.resource_group_name,
+                                                                           availability_set_name=self.availability_set_name,
+                                                                           parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -172,8 +171,8 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.availabilitysets.delete(resource_group_name=self.resource_group_name,
-                                                                availability_set_name=self.availability_set_name)
+            response = self.mgmt_client.availability_sets.delete(resource_group_name=self.resource_group_name,
+                                                                 availability_set_name=self.availability_set_name)
         except CloudError as e:
             self.log('Error attempting to delete the AvailabilitySet instance.')
             self.fail('Error deleting the AvailabilitySet instance: {0}'.format(str(e)))
@@ -183,8 +182,8 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.availabilitysets.get(resource_group_name=self.resource_group_name,
-                                                             availability_set_name=self.availability_set_name)
+            response = self.mgmt_client.availability_sets.get(resource_group_name=self.resource_group_name,
+                                                              availability_set_name=self.availability_set_name)
         except CloudError as e:
             return False
         return response.as_dict()

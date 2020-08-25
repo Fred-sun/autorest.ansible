@@ -66,65 +66,71 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.availability_set_name is not None):
-            self.results['availabilitysets'] = [self.format_item(self.listavailablesize())]
+            self.results['availability_sets'] = self.format_item(self.listavailablesize())
         elif (self.resource_group_name is not None and
               self.availability_set_name is not None):
-            self.results['availabilitysets'] = [self.format_item(self.get())]
+            self.results['availability_sets'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
-            self.results['availabilitysets'] = [self.format_item(self.list())]
+            self.results['availability_sets'] = self.format_item(self.list())
         elif (self.expand is not None):
-            self.results['availabilitysets'] = [self.format_item(self.listbysubscription())]
+            self.results['availability_sets'] = self.format_item(self.listbysubscription())
         return self.results
 
     def listavailablesize(self):
         response = None
 
         try:
-            response = self.mgmt_client.availabilitysets.list_available_size(resource_group_name=self.resource_group_name,
-                                                                             availability_set_name=self.availability_set_name)
+            response = self.mgmt_client.availability_sets.list_available_size(resource_group_name=self.resource_group_name,
+                                                                              availability_set_name=self.availability_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.availabilitysets.get(resource_group_name=self.resource_group_name,
-                                                             availability_set_name=self.availability_set_name)
+            response = self.mgmt_client.availability_sets.get(resource_group_name=self.resource_group_name,
+                                                              availability_set_name=self.availability_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.availabilitysets.list(resource_group_name=self.resource_group_name)
+            response = self.mgmt_client.availability_sets.list(resource_group_name=self.resource_group_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def listbysubscription(self):
         response = None
 
         try:
-            response = self.mgmt_client.availabilitysets.list_by_subscription()
+            response = self.mgmt_client.availability_sets.list_by_subscription(expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

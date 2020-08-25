@@ -38,125 +38,125 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             gallery_image_name=dict(
                 type='str'
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             description=dict(
                 type='str',
-                disposition='null'
+                disposition='/description'
             ),
             eula=dict(
                 type='str',
-                disposition='null'
+                disposition='/eula'
             ),
             privacy_statement_uri=dict(
                 type='str',
-                disposition='null'
+                disposition='/privacy_statement_uri'
             ),
             release_note_uri=dict(
                 type='str',
-                disposition='null'
+                disposition='/release_note_uri'
             ),
             os_type=dict(
                 type='sealed-choice',
-                disposition='null'
+                disposition='/os_type'
             ),
             os_state=dict(
                 type='sealed-choice',
-                disposition='null'
+                disposition='/os_state'
             ),
             hyper_vgeneration=dict(
                 type='choice',
-                disposition='null'
+                disposition='/hyper_vgeneration'
             ),
             end_of_life_date=dict(
                 type='str',
-                disposition='null'
+                disposition='/end_of_life_date'
             ),
             identifier=dict(
                 type='dict',
-                disposition='null',
+                disposition='/identifier',
                 options=dict(
                     publisher=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='publisher',
+                        required=True
                     ),
                     offer=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='offer',
+                        required=True
                     ),
                     sku=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='sku',
+                        required=True
                     )
                 )
             ),
             disallowed=dict(
                 type='dict',
-                disposition='null',
+                disposition='/disallowed',
                 options=dict(
                     disk_types=dict(
                         type='list',
-                        disposition='null'
+                        disposition='disk_types'
                     )
                 )
             ),
             purchase_plan=dict(
                 type='dict',
-                disposition='null',
+                disposition='/purchase_plan',
                 options=dict(
                     name=dict(
                         type='str',
-                        disposition='null'
+                        disposition='name'
                     ),
                     publisher=dict(
                         type='str',
-                        disposition='null'
+                        disposition='publisher'
                     ),
                     product=dict(
                         type='str',
-                        disposition='null'
+                        disposition='product'
                     )
                 )
             ),
             v_cp_us=dict(
                 type='dict',
-                disposition='null',
+                disposition='/v_cp_us',
                 options=dict(
                     min=dict(
                         type='integer',
-                        disposition='null'
+                        disposition='min'
                     ),
                     max=dict(
                         type='integer',
-                        disposition='null'
+                        disposition='max'
                     )
                 )
             ),
             memory=dict(
                 type='dict',
-                disposition='null',
+                disposition='/memory',
                 options=dict(
                     min=dict(
                         type='integer',
-                        disposition='null'
+                        disposition='min'
                     ),
                     max=dict(
                         type='integer',
-                        disposition='null'
+                        disposition='max'
                     )
                 )
             ),
@@ -170,21 +170,6 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
         self.resource_group_name = None
         self.gallery_name = None
         self.gallery_image_name = None
-        self.location = None
-        self.tags = None
-        self.description = None
-        self.eula = None
-        self.privacy_statement_uri = None
-        self.release_note_uri = None
-        self.os_type = None
-        self.os_state = None
-        self.hyper_vgeneration = None
-        self.end_of_life_date = None
-        self.identifier = None
-        self.disallowed = None
-        self.purchase_plan = None
-        self.v_cp_us = None
-        self.memory = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -198,13 +183,17 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -218,6 +207,8 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -239,10 +230,10 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.galleryimages.create_or_update(resource_group_name=self.resource_group_name,
-                                                                       gallery_name=self.gallery_name,
-                                                                       gallery_image_name=self.gallery_image_name,
-                                                                       location=self.location)
+            response = self.mgmt_client.gallery_images.create_or_update(resource_group_name=self.resource_group_name,
+                                                                        gallery_name=self.gallery_name,
+                                                                        gallery_image_name=self.gallery_image_name,
+                                                                        parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -252,9 +243,9 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.galleryimages.delete(resource_group_name=self.resource_group_name,
-                                                             gallery_name=self.gallery_name,
-                                                             gallery_image_name=self.gallery_image_name)
+            response = self.mgmt_client.gallery_images.delete(resource_group_name=self.resource_group_name,
+                                                              gallery_name=self.gallery_name,
+                                                              gallery_image_name=self.gallery_image_name)
         except CloudError as e:
             self.log('Error attempting to delete the GalleryImage instance.')
             self.fail('Error deleting the GalleryImage instance: {0}'.format(str(e)))
@@ -264,9 +255,9 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.galleryimages.get(resource_group_name=self.resource_group_name,
-                                                          gallery_name=self.gallery_name,
-                                                          gallery_image_name=self.gallery_image_name)
+            response = self.mgmt_client.gallery_images.get(resource_group_name=self.resource_group_name,
+                                                           gallery_name=self.gallery_name,
+                                                           gallery_image_name=self.gallery_image_name)
         except CloudError as e:
             return False
         return response.as_dict()

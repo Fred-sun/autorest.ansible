@@ -38,70 +38,70 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_extension_name=dict(
                 type='str'
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             force_update_tag=dict(
                 type='str',
-                disposition='null'
+                disposition='/force_update_tag'
             ),
             publisher=dict(
                 type='str',
-                disposition='null'
+                disposition='/publisher'
             ),
             type=dict(
                 type='str',
-                disposition='null'
+                disposition='/type'
             ),
             type_handler_version=dict(
                 type='str',
-                disposition='null'
+                disposition='/type_handler_version'
             ),
             auto_upgrade_minor_version=dict(
                 type='bool',
-                disposition='null'
+                disposition='/auto_upgrade_minor_version'
             ),
             enable_automatic_upgrade=dict(
                 type='bool',
-                disposition='null'
+                disposition='/enable_automatic_upgrade'
             ),
             settings=dict(
                 type='any',
-                disposition='null'
+                disposition='/settings'
             ),
             protected_settings=dict(
                 type='any',
-                disposition='null'
+                disposition='/protected_settings'
             ),
             name=dict(
                 type='str',
-                disposition='null'
+                disposition='/name'
             ),
             virtual_machine_extension_instance_view_type=dict(
                 type='str',
-                disposition='null'
+                disposition='/virtual_machine_extension_instance_view_type'
             ),
             virtual_machine_extension_instance_view_type_handler_version_type_handler_version=dict(
                 type='str',
-                disposition='null'
+                disposition='/virtual_machine_extension_instance_view_type_handler_version_type_handler_version'
             ),
             substatuses=dict(
                 type='list',
-                disposition='null'
+                disposition='/substatuses'
             ),
             statuses=dict(
                 type='list',
-                disposition='null'
+                disposition='/statuses'
             ),
             expand=dict(
                 type='str'
@@ -116,21 +116,6 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
         self.resource_group_name = None
         self.vm_name = None
         self.vm_extension_name = None
-        self.location = None
-        self.tags = None
-        self.force_update_tag = None
-        self.publisher = None
-        self.type = None
-        self.type_handler_version = None
-        self.auto_upgrade_minor_version = None
-        self.enable_automatic_upgrade = None
-        self.settings = None
-        self.protected_settings = None
-        self.name = None
-        self.virtual_machine_extension_instance_view_type = None
-        self.virtual_machine_extension_instance_view_type_handler_version_type_handler_version = None
-        self.substatuses = None
-        self.statuses = None
         self.expand = None
         self.body = {}
 
@@ -145,13 +130,17 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -165,6 +154,8 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -186,10 +177,10 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtualmachineextensions.create_or_update(resource_group_name=self.resource_group_name,
-                                                                                  vm_name=self.vm_name,
-                                                                                  vm_extension_name=self.vm_extension_name,
-                                                                                  location=self.location)
+            response = self.mgmt_client.virtual_machine_extensions.create_or_update(resource_group_name=self.resource_group_name,
+                                                                                    vm_name=self.vm_name,
+                                                                                    vm_extension_name=self.vm_extension_name,
+                                                                                    parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -199,9 +190,9 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.virtualmachineextensions.delete(resource_group_name=self.resource_group_name,
-                                                                        vm_name=self.vm_name,
-                                                                        vm_extension_name=self.vm_extension_name)
+            response = self.mgmt_client.virtual_machine_extensions.delete(resource_group_name=self.resource_group_name,
+                                                                          vm_name=self.vm_name,
+                                                                          vm_extension_name=self.vm_extension_name)
         except CloudError as e:
             self.log('Error attempting to delete the VirtualMachineExtension instance.')
             self.fail('Error deleting the VirtualMachineExtension instance: {0}'.format(str(e)))
@@ -211,9 +202,10 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.virtualmachineextensions.get(resource_group_name=self.resource_group_name,
-                                                                     vm_name=self.vm_name,
-                                                                     vm_extension_name=self.vm_extension_name)
+            response = self.mgmt_client.virtual_machine_extensions.get(resource_group_name=self.resource_group_name,
+                                                                       vm_name=self.vm_name,
+                                                                       vm_extension_name=self.vm_extension_name,
+                                                                       expand=self.expand)
         except CloudError as e:
             return False
         return response.as_dict()

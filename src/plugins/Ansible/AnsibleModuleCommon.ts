@@ -3,12 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { AnsibleCodeModel } from "../Common/AnsibleCodeModel"
-
 // import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
-import { Indent, ToSnakeCase } from "../../utils/helper";
-
-import * as yaml from "node-yaml";
+import {Indent, ToSnakeCase} from "../../utils/helper";
 import {Module} from "../Common/Module";
 import {ModuleOption, ModuleOptionKind} from "../Common/ModuleOption";
 import {ModuleMethod} from "../Common/ModuleMethod";
@@ -162,7 +158,7 @@ export function AppendInfoModuleLogic(output: string[], module: Module)
 
 
 
-        output.push("            self.results['" + module.ModuleOperationName +"'] = [self.format_item(self." + m.Name.toLowerCase() + "())]");
+        output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
 
         // output.push("            self.results['" + module.ModuleOperationName +"'] = self.format_item(self." + m.Name.toLowerCase() + "())");
 
@@ -403,7 +399,7 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
             }
             else
             {
-                argSpec.push(prefix + "    required=" + option.Required);
+                argSpec.push(prefix + "    required=True");
             }
         }
         if (option.ExampleValue && (typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/'))
@@ -481,7 +477,7 @@ export function ModuleTopLevelOptionsVariables(options: ModuleOption[], useSdk: 
 
     for (let option of options)
     {
-        if (!useSdk && option.Kind == ModuleOptionKind.MODULE_OPTION_BODY)
+        if (option.Kind == ModuleOptionKind.MODULE_OPTION_BODY)
             continue;
         if (option.DispositionSdk == "*")
         {
@@ -512,38 +508,33 @@ export function ModuleGenerateApiCall(output: string[], indent: string, module: 
 
     if (method != null)
     {
-        for (var p of method.RequiredOptions)
+        for (let option of method.Options)
         {
-            var o: ModuleOption = null;
 
-            for (var i = 0; i < module.ModuleOptions.length; i++)
-            {
-                if (module.ModuleOptions[i].NameSwagger == p)
-                {
-                    o = module.ModuleOptions[i];
-                    break;
-                }
-            }
+            if (option.Kind == ModuleOptionKind.MODULE_OPTION_BODY)
+                continue;
 
-            let optionName: string = (o != null) ? o.NameAnsible : p;
-
-            // XXX - this is a hack, can we unhack it?
-            if (optionName.endsWith("_parameters") || optionName == "parameters")
-                optionName = "body";
+            // // XXX - this is a hack, can we unhack it?
+            // if (optionName.endsWith("_parameters") || optionName == "parameters")
+            //     optionName = "body";
 
             if (line.endsWith("("))
             {
-                line += ToSnakeCase(p) + "=self." + optionName;
+                line += option.NameAnsible + "=self." + option.NameAnsible;
             }
             else
             {
                 line += ",";
                 output.push(line);
-                line = indent + ToSnakeCase(p) + "=self." + optionName;
+                line = indent + option.NameAnsible + "=self." + option.NameAnsible;
             }
         }
+        if (method.HasBody){
+            line += ",";
+            output.push(line);
+            line = indent + "parameters" + "=self.body";
+        }
     }
-
     line += ")";
     output.push(line);
 

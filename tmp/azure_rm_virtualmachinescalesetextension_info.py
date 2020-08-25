@@ -33,11 +33,11 @@ class AzureRMVirtualMachineScaleSetExtensionInfo(AzureRMModuleBase):
         self.module_arg_spec = dict(
             resource_group_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vm_scale_set_name=dict(
                 type='str',
-                required=true
+                required=True
             ),
             vmss_extension_name=dict(
                 type='str'
@@ -72,44 +72,51 @@ class AzureRMVirtualMachineScaleSetExtensionInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    base_url=self._cloud_environment.endpoints.resource_manager)
 
         if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None and
             self.vmss_extension_name is not None and
             self.expand is not None):
-            self.results['virtualmachinescalesetextensions'] = [self.format_item(self.get())]
+            self.results['virtual_machine_scale_set_extensions'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
-            self.results['virtualmachinescalesetextensions'] = [self.format_item(self.list())]
+            self.results['virtual_machine_scale_set_extensions'] = self.format_item(self.list())
         return self.results
 
     def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesetextensions.get(resource_group_name=self.resource_group_name,
-                                                                             vm_scale_set_name=self.vm_scale_set_name,
-                                                                             vmss_extension_name=self.vmss_extension_name)
+            response = self.mgmt_client.virtual_machine_scale_set_extensions.get(resource_group_name=self.resource_group_name,
+                                                                                 vm_scale_set_name=self.vm_scale_set_name,
+                                                                                 vmss_extension_name=self.vmss_extension_name,
+                                                                                 expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtualmachinescalesetextensions.list(resource_group_name=self.resource_group_name,
-                                                                              vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_set_extensions.list(resource_group_name=self.resource_group_name,
+                                                                                  vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
-        return response.as_dict()
+        return response
 
     def format_item(self, item):
-        return item
+        if hasattr(item, 'as_dict'):
+            return [item.as_dict()]
+        else:
+            result = []
+            items = list(item)
+            for tmp in items:
+               result.append(tmp.as_dict())
+            return result
 
 
 def main():

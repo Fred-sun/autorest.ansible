@@ -44,104 +44,104 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
             ),
             location=dict(
                 type='str',
-                disposition='null'
+                disposition='/location'
             ),
             orchestrator_profile=dict(
                 type='dict',
-                disposition='null',
+                disposition='/orchestrator_profile',
                 options=dict(
                     orchestrator_type=dict(
                         type='sealed-choice',
-                        disposition='null',
-                        required=true
+                        disposition='orchestrator_type',
+                        required=True
                     )
                 )
             ),
             custom_profile=dict(
                 type='dict',
-                disposition='null',
+                disposition='/custom_profile',
                 options=dict(
                     orchestrator=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='orchestrator',
+                        required=True
                     )
                 )
             ),
             service_principal_profile=dict(
                 type='dict',
-                disposition='null',
+                disposition='/service_principal_profile',
                 options=dict(
                     client_id=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='client_id',
+                        required=True
                     ),
                     secret=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='secret',
+                        required=True
                     )
                 )
             ),
             master_profile=dict(
                 type='dict',
-                disposition='null',
+                disposition='/master_profile',
                 options=dict(
                     count=dict(
                         type='choice',
-                        disposition='null'
+                        disposition='count'
                     ),
                     dns_prefix=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='dns_prefix',
+                        required=True
                     ),
                     fqdn=dict(
                         type='str',
                         updatable=False,
-                        disposition='null'
+                        disposition='fqdn'
                     )
                 )
             ),
             agent_pool_profiles=dict(
                 type='list',
-                disposition='null'
+                disposition='/agent_pool_profiles'
             ),
             windows_profile=dict(
                 type='dict',
-                disposition='null',
+                disposition='/windows_profile',
                 options=dict(
                     admin_username=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='admin_username',
+                        required=True
                     ),
                     admin_password=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='admin_password',
+                        required=True
                     )
                 )
             ),
             linux_profile=dict(
                 type='dict',
-                disposition='null',
+                disposition='/linux_profile',
                 options=dict(
                     admin_username=dict(
                         type='str',
-                        disposition='null',
-                        required=true
+                        disposition='admin_username',
+                        required=True
                     ),
                     ssh=dict(
                         type='dict',
-                        disposition='null',
-                        required=true,
+                        disposition='ssh',
+                        required=True,
                         options=dict(
                             public_keys=dict(
                                 type='list',
-                                disposition='null',
-                                required=true
+                                disposition='public_keys',
+                                required=True
                             )
                         )
                     )
@@ -149,22 +149,22 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
             ),
             diagnostics_profile=dict(
                 type='dict',
-                disposition='null',
+                disposition='/diagnostics_profile',
                 options=dict(
                     vm_diagnostics=dict(
                         type='dict',
-                        disposition='null',
-                        required=true,
+                        disposition='vm_diagnostics',
+                        required=True,
                         options=dict(
                             enabled=dict(
                                 type='bool',
-                                disposition='null',
-                                required=true
+                                disposition='enabled',
+                                required=True
                             ),
                             storage_uri=dict(
                                 type='str',
                                 updatable=False,
-                                disposition='null'
+                                disposition='storage_uri'
                             )
                         )
                     )
@@ -179,16 +179,6 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.container_service_name = None
-        self.location = None
-        self.tags = None
-        self.orchestrator_profile = None
-        self.custom_profile = None
-        self.service_principal_profile = None
-        self.master_profile = None
-        self.agent_pool_profiles = None
-        self.windows_profile = None
-        self.linux_profile = None
-        self.diagnostics_profile = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -202,13 +192,17 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
-            setattr(self, key, kwargs[key])
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+            elif kwargs[key] is not None:
+                self.body[key] = kwargs[key]
 
+        self.inflate_parameters(self.module_arg_spec, self.body, 0)
 
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(GenericRestClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager)
 
         old_response = self.get_resource()
@@ -222,6 +216,8 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
             else:
                 modifiers = {}
                 self.create_compare_modifiers(self.module_arg_spec, '', modifiers)
+                self.results['modifiers'] = modifiers
+                self.results['compare'] = []
                 if not self.default_compare(modifiers, self.body, old_response, '', self.results):
                     self.to_do = Actions.Update
 
@@ -243,9 +239,9 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.containerservices.create_or_update(resource_group_name=self.resource_group_name,
-                                                                           container_service_name=self.container_service_name,
-                                                                           location=self.location)
+            response = self.mgmt_client.container_services.create_or_update(resource_group_name=self.resource_group_name,
+                                                                            container_service_name=self.container_service_name,
+                                                                            parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -255,8 +251,8 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.containerservices.delete(resource_group_name=self.resource_group_name,
-                                                                 container_service_name=self.container_service_name)
+            response = self.mgmt_client.container_services.delete(resource_group_name=self.resource_group_name,
+                                                                  container_service_name=self.container_service_name)
         except CloudError as e:
             self.log('Error attempting to delete the ContainerService instance.')
             self.fail('Error deleting the ContainerService instance: {0}'.format(str(e)))
@@ -266,8 +262,8 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
     def get_resource(self):
         found = False
         try:
-            response = self.mgmt_client.containerservices.get(resource_group_name=self.resource_group_name,
-                                                              container_service_name=self.container_service_name)
+            response = self.mgmt_client.container_services.get(resource_group_name=self.resource_group_name,
+                                                               container_service_name=self.container_service_name)
         except CloudError as e:
             return False
         return response.as_dict()
