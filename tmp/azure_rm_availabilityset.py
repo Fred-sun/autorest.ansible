@@ -251,9 +251,14 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.availability_sets.create_or_update(resource_group_name=self.resource_group_name,
-                                                                           availability_set_name=self.availability_set_name,
-                                                                           parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.availability_sets.create(resource_group_name=self.resource_group_name,
+                                                                     availability_set_name=self.availability_set_name,
+                                                                     parameters=self.body)
+            else:
+                response = self.mgmt_client.availability_sets.update(resource_group_name=self.resource_group_name,
+                                                                     availability_set_name=self.availability_set_name,
+                                                                     parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

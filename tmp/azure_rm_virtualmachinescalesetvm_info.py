@@ -13,6 +13,58 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachinescalesetvm_info
+version_added: '2.9'
+short_description: Get VirtualMachineScaleSetVM info.
+description:
+  - Get info of VirtualMachineScaleSetVM.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  vm_scale_set_name:
+    description:
+      - The name of the VM scale set.
+    type: str
+  instance_id:
+    description:
+      - The instance ID of the virtual machine.
+    type: str
+  expand:
+    description:
+      - >-
+        The expand expression to apply to the operation. Allowed values are
+        'instanceView'.
+    type: str
+  virtual_machine_scale_set_name:
+    description:
+      - The name of the VM scale set.
+    type: str
+  filter:
+    description:
+      - >-
+        The filter to apply to the operation. Allowed values are
+        'startswith(instanceView/statuses/code, 'PowerState') eq true',
+        'properties/latestModelApplied eq true', 'properties/latestModelApplied
+        eq false'.
+    type: str
+  select:
+    description:
+      - >-
+        The list parameters. Allowed values are 'instanceView',
+        'instanceView/statuses'.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -87,36 +139,21 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None and
             self.instance_id is not None):
-            self.results['virtual_machine_scale_set_vms'] = self.format_item(self.getinstanceview())
-        elif (self.resource_group_name is not None and
-              self.vm_scale_set_name is not None and
-              self.instance_id is not None and
-              self.expand is not None):
             self.results['virtual_machine_scale_set_vms'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
-              self.virtual_machine_scale_set_name is not None and
-              self.filter is not None and
-              self.select is not None and
-              self.expand is not None):
+              self.vm_scale_set_name is not None and
+              self.instance_id is not None):
+            self.results['virtual_machine_scale_set_vms'] = self.format_item(self.getinstanceview())
+        elif (self.resource_group_name is not None and
+              self.virtual_machine_scale_set_name is not None):
             self.results['virtual_machine_scale_set_vms'] = self.format_item(self.list())
         return self.results
-
-    def getinstanceview(self):
-        response = None
-
-        try:
-            response = self.mgmt_client.virtual_machine_scale_set_vms.get_instance_view(resource_group_name=self.resource_group_name,
-                                                                                        vm_scale_set_name=self.vm_scale_set_name,
-                                                                                        instance_id=self.instance_id)
-        except CloudError as e:
-            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
-
-        return response
 
     def get(self):
         response = None
@@ -126,6 +163,18 @@ class AzureRMVirtualMachineScaleSetVMInfo(AzureRMModuleBase):
                                                                           vm_scale_set_name=self.vm_scale_set_name,
                                                                           instance_id=self.instance_id,
                                                                           expand=self.expand)
+        except CloudError as e:
+            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
+
+        return response
+
+    def getinstanceview(self):
+        response = None
+
+        try:
+            response = self.mgmt_client.virtual_machine_scale_set_vms.get_instance_view(resource_group_name=self.resource_group_name,
+                                                                                        vm_scale_set_name=self.vm_scale_set_name,
+                                                                                        instance_id=self.instance_id)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

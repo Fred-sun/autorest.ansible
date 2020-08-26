@@ -206,7 +206,6 @@ export function GenerateModuleSdk(module: Module) : string[] {
     output.push("");
     output.push("    def get_resource(self):");
     //output.push("        # self.log('Checking if the " + module.ObjectName + " instance {0} is present'.format(self." + module.ModuleResourceName + "))");
-    output.push("        found = False");
     output.push("        try:");
 
     ModuleGenerateApiCall(output, "            ", module, "Get");

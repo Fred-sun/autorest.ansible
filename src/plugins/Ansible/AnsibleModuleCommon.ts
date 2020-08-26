@@ -106,19 +106,19 @@ export function AppendModuleDocumentation(output: string[], module: Module, isIn
 //     output.push("");
 // }
 //
-// export function AppendModuleReturnDoc(output: string[], module: Module, isInfoModule: boolean)
-// {
-//     output.push("RETURN = '''");
-//
-//     let doc: any = isInfoModule ? ModuleInfoReturnResponseFields(module) : ModuleReturnResponseFields(module);
-//
-//     yaml.dump(doc).split(/\r?\n/).forEach(element => {
-//         output.push(element);
-//     });
-//
-//     output.push("'''");
-//
-// }
+export function AppendModuleReturnDoc(output: string[], module: Module, isInfoModule: boolean)
+{
+    output.push("RETURN = '''");
+
+    let doc: any = isInfoModule ? ModuleInfoReturnResponseFields(module) : ModuleReturnResponseFields(module);
+
+    yaml.dump(doc).split(/\r?\n/).forEach(element => {
+        output.push(element);
+    });
+
+    output.push("'''");
+
+}
 
 export function AppendModuleArgSpec(output: string[], module: Module, mainModule: boolean, useSdk: boolean)
 {
@@ -436,7 +436,10 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
             argSpec.push(line + "')");
 
         }
-
+        if (option.Type == 'list'){
+            argSpec.push(argSpec.pop() + ",");
+            argSpec.push(prefix + "    elements='" + option.ElementType+"'");
+        }
         if (haveSuboptions(option))
         {
 
@@ -483,21 +486,22 @@ export function ModuleTopLevelOptionsVariables(options: ModuleOption[], useSdk: 
     {
         if (option.Kind == ModuleOptionKind.MODULE_OPTION_BODY)
             continue;
-        if (option.DispositionSdk == "*")
-        {
-            variables.push("self." + option.NameAnsible + " = None");
-        }
-        else if (option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
-        {
-            variables.push("self." + option.NameAnsible + " = dict()");
-        }
-        else
-        {
-            // XXX - right now just supporting 2 levels
-            //string[] path = option.Disposition.Split(":");
-            //string variable = "self." + path[0] + "['" + option.NameAlt + "'] = dict()";
-            //variables.push(variable);
-        }
+        variables.push("self." + option.NameAnsible + " = None");
+        // if (option.DispositionSdk == "*")
+        // {
+        //     variables.push("self." + option.NameAnsible + " = None");
+        // }
+        // else if (option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
+        // {
+        //     variables.push("self." + option.NameAnsible + " = dict()");
+        // }
+        // else
+        // {
+        //     // XXX - right now just supporting 2 levels
+        //     //string[] path = option.Disposition.Split(":");
+        //     //string variable = "self." + path[0] + "['" + option.NameAlt + "'] = dict()";
+        //     //variables.push(variable);
+        // }
     }
 
     return variables;
@@ -536,7 +540,7 @@ export function ModuleGenerateApiCall(output: string[], indent: string, module: 
         if (method.HasBody){
             line += ",";
             output.push(line);
-            line = indent + "parameters" + "=self.body";
+            line = indent + method.ParameterName + "=self.body";
         }
     }
     line += ")";

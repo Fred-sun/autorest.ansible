@@ -514,9 +514,14 @@ class AzureRMDisk(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.disks.create_or_update(resource_group_name=self.resource_group_name,
-                                                               disk_name=self.disk_name,
-                                                               parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.disks.create(resource_group_name=self.resource_group_name,
+                                                         disk_name=self.disk_name,
+                                                         disk=self.body)
+            else:
+                response = self.mgmt_client.disks.update(resource_group_name=self.resource_group_name,
+                                                         disk_name=self.disk_name,
+                                                         disk=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

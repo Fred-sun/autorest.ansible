@@ -24,6 +24,7 @@ options:
   resource_provider_namespace:
     description:
       - The namespace of the resource provider.
+    required: true
     type: str
   expand:
     description:
@@ -71,7 +72,8 @@ class AzureRMProviderOperationsMetadata(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_provider_namespace=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             expand=dict(
                 type='str',
@@ -147,7 +149,10 @@ class AzureRMProviderOperationsMetadata(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.provider_operations_metadata.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.provider_operations_metadata.create()
+            else:
+                response = self.mgmt_client.provider_operations_metadata.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -165,7 +170,6 @@ class AzureRMProviderOperationsMetadata(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.provider_operations_metadata.get(resource_provider_namespace=self.resource_provider_namespace,
                                                                          expand=self.expand)

@@ -13,6 +13,45 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachine_info
+version_added: '2.9'
+short_description: Get VirtualMachine info.
+description:
+  - Get info of VirtualMachine.
+options:
+  location:
+    description:
+      - >-
+        The location for which virtual machines under the subscription are
+        queried.
+    type: str
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  vm_name:
+    description:
+      - The name of the virtual machine.
+    type: str
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: constant
+  status_only:
+    description:
+      - >-
+        statusOnly=true enables fetching run time status of all Virtual Machines
+        in the subscription.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -74,25 +113,37 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.resource_group_name is not None and
             self.vm_name is not None):
+            self.results['virtual_machines'] = self.format_item(self.get())
+        elif (self.resource_group_name is not None and
+              self.vm_name is not None):
             self.results['virtual_machines'] = self.format_item(self.instanceview())
         elif (self.resource_group_name is not None and
               self.vm_name is not None):
             self.results['virtual_machines'] = self.format_item(self.listavailablesize())
-        elif (self.resource_group_name is not None and
-              self.vm_name is not None and
-              self.expand is not None):
-            self.results['virtual_machines'] = self.format_item(self.get())
-        elif (self.resource_group_name is not None):
-            self.results['virtual_machines'] = self.format_item(self.list())
         elif (self.location is not None):
             self.results['virtual_machines'] = self.format_item(self.listbylocation())
-        elif (self.status_only is not None):
+        elif (self.resource_group_name is not None):
+            self.results['virtual_machines'] = self.format_item(self.list())
+        else:
             self.results['virtual_machines'] = self.format_item(self.listall())
         return self.results
+
+    def get(self):
+        response = None
+
+        try:
+            response = self.mgmt_client.virtual_machines.get(resource_group_name=self.resource_group_name,
+                                                             vm_name=self.vm_name,
+                                                             expand=self.expand)
+        except CloudError as e:
+            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
+
+        return response
 
     def instanceview(self):
         response = None
@@ -116,13 +167,11 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
 
         return response
 
-    def get(self):
+    def listbylocation(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machines.get(resource_group_name=self.resource_group_name,
-                                                             vm_name=self.vm_name,
-                                                             expand=self.expand)
+            response = self.mgmt_client.virtual_machines.list_by_location(location=self.location)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
@@ -133,16 +182,6 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
 
         try:
             response = self.mgmt_client.virtual_machines.list(resource_group_name=self.resource_group_name)
-        except CloudError as e:
-            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
-
-        return response
-
-    def listbylocation(self):
-        response = None
-
-        try:
-            response = self.mgmt_client.virtual_machines.list_by_location(location=self.location)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

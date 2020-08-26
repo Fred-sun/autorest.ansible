@@ -13,6 +13,31 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_containerservice_info
+version_added: '2.9'
+short_description: Get ContainerService info.
+description:
+  - Get info of ContainerService.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  container_service_name:
+    description:
+      - >-
+        The name of the container service in the specified subscription and
+        resource group.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -62,7 +87,8 @@ class AzureRMContainerServiceInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2017-01-31')
 
         if (self.resource_group_name is not None and
             self.container_service_name is not None):

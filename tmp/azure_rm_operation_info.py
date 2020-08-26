@@ -13,6 +13,21 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_operation_info
+version_added: '2.9'
+short_description: Get Operation info.
+description:
+  - Get info of Operation.
+options: {}
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -54,7 +69,8 @@ class AzureRMOperationInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         else:
             self.results['operations'] = self.format_item(self.list())

@@ -13,6 +13,33 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_diskaccesse_info
+version_added: '2.9'
+short_description: Get DiskAccesse info.
+description:
+  - Get info of DiskAccesse.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  disk_access_name:
+    description:
+      - >-
+        The name of the disk access resource that is being created. The name
+        can't be changed after the disk encryption set is created. Supported
+        characters for the name are a-z, A-Z, 0-9 and _. The maximum name length
+        is 80 characters.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -62,30 +89,20 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-05-01')
 
         if (self.resource_group_name is not None and
             self.disk_access_name is not None):
-            self.results['disk_accesses'] = self.format_item(self.getprivatelinkresource())
+            self.results['disk_accesses'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.disk_access_name is not None):
-            self.results['disk_accesses'] = self.format_item(self.get())
+            self.results['disk_accesses'] = self.format_item(self.getprivatelinkresource())
         elif (self.resource_group_name is not None):
             self.results['disk_accesses'] = self.format_item(self.listbyresourcegroup())
         else:
             self.results['disk_accesses'] = self.format_item(self.list())
         return self.results
-
-    def getprivatelinkresource(self):
-        response = None
-
-        try:
-            response = self.mgmt_client.disk_accesses.get_private_link_resource(resource_group_name=self.resource_group_name,
-                                                                                disk_access_name=self.disk_access_name)
-        except CloudError as e:
-            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
-
-        return response
 
     def get(self):
         response = None
@@ -93,6 +110,17 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
         try:
             response = self.mgmt_client.disk_accesses.get(resource_group_name=self.resource_group_name,
                                                           disk_access_name=self.disk_access_name)
+        except CloudError as e:
+            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
+
+        return response
+
+    def getprivatelinkresource(self):
+        response = None
+
+        try:
+            response = self.mgmt_client.disk_accesses.get_private_link_resource(resource_group_name=self.resource_group_name,
+                                                                                disk_access_name=self.disk_access_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

@@ -293,11 +293,18 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.gallery_application_versions.create_or_update(resource_group_name=self.resource_group_name,
-                                                                                      gallery_name=self.gallery_name,
-                                                                                      gallery_application_name=self.gallery_application_name,
-                                                                                      gallery_application_version_name=self.gallery_application_version_name,
-                                                                                      parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.gallery_application_versions.create(resource_group_name=self.resource_group_name,
+                                                                                gallery_name=self.gallery_name,
+                                                                                gallery_application_name=self.gallery_application_name,
+                                                                                gallery_application_version_name=self.gallery_application_version_name,
+                                                                                gallery_application_version=self.body)
+            else:
+                response = self.mgmt_client.gallery_application_versions.update(resource_group_name=self.resource_group_name,
+                                                                                gallery_name=self.gallery_name,
+                                                                                gallery_application_name=self.gallery_application_name,
+                                                                                gallery_application_version_name=self.gallery_application_version_name,
+                                                                                gallery_application_version=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

@@ -21,27 +21,6 @@ short_description: Manage Azure Permission instance.
 description:
   - 'Create, update and delete instance of Azure Permission.'
 options:
-  resource_group_name:
-    description:
-      - The name of the resource group.
-    required: true
-    type: str
-  resource_provider_namespace:
-    description:
-      - The namespace of the resource provider.
-    type: str
-  parent_resource_path:
-    description:
-      - The parent resource identity.
-    type: str
-  resource_type:
-    description:
-      - The resource type of the resource.
-    type: str
-  resource_name:
-    description:
-      - The name of the resource to get the permissions for.
-    type: str
   state:
     description:
       - Assert the state of the Permission.
@@ -82,22 +61,7 @@ class Actions:
 class AzureRMPermission(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            resource_group_name=dict(
-                type='str',
-                required=True
-            ),
-            resource_provider_namespace=dict(
-                type='str'
-            ),
-            parent_resource_path=dict(
-                type='str'
-            ),
-            resource_type=dict(
-                type='str'
-            ),
-            resource_name=dict(
-                type='str'
-            ),
+            undefined,
             state=dict(
                 type='str',
                 default='present',
@@ -105,11 +69,6 @@ class AzureRMPermission(AzureRMModuleBaseExt):
             )
         )
 
-        self.resource_group_name = None
-        self.resource_provider_namespace = None
-        self.parent_resource_path = None
-        self.resource_type = None
-        self.resource_name = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -171,7 +130,10 @@ class AzureRMPermission(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.permissions.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.permissions.create()
+            else:
+                response = self.mgmt_client.permissions.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -189,7 +151,6 @@ class AzureRMPermission(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.permissions.get()
         except CloudError as e:

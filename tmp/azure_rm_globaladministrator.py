@@ -130,7 +130,10 @@ class AzureRMGlobalAdministrator(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.global_administrator.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.global_administrator.create()
+            else:
+                response = self.mgmt_client.global_administrator.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -148,7 +151,6 @@ class AzureRMGlobalAdministrator(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.global_administrator.get()
         except CloudError as e:

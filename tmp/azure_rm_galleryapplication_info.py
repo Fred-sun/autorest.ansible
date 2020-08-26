@@ -13,6 +13,37 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_galleryapplication_info
+version_added: '2.9'
+short_description: Get GalleryApplication info.
+description:
+  - Get info of GalleryApplication.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  gallery_name:
+    description:
+      - >-
+        The name of the Shared Application Gallery from which the Application
+        Definitions are to be retrieved.
+    required: true
+    type: str
+  gallery_application_name:
+    description:
+      - The name of the gallery Application Definition to be retrieved.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -68,7 +99,8 @@ class AzureRMGalleryApplicationInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2019-12-01')
 
         if (self.resource_group_name is not None and
             self.gallery_name is not None and

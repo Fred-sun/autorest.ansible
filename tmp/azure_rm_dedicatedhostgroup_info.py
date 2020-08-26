@@ -13,6 +13,36 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_dedicatedhostgroup_info
+version_added: '2.9'
+short_description: Get DedicatedHostGroup info.
+description:
+  - Get info of DedicatedHostGroup.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  host_group_name:
+    description:
+      - The name of the dedicated host group.
+    type: str
+  expand:
+    description:
+      - >-
+        The expand expression to apply on the operation. The response shows the
+        list of instance view of the dedicated hosts under the dedicated host
+        group.
+    type: constant
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -66,11 +96,11 @@ class AzureRMDedicatedHostGroupInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.resource_group_name is not None and
-            self.host_group_name is not None and
-            self.expand is not None):
+            self.host_group_name is not None):
             self.results['dedicated_host_groups'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
             self.results['dedicated_host_groups'] = self.format_item(self.listbyresourcegroup())

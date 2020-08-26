@@ -13,6 +13,29 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_gallery_info
+version_added: '2.9'
+short_description: Get Gallery info.
+description:
+  - Get info of Gallery.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  gallery_name:
+    description:
+      - The name of the Shared Image Gallery.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -62,7 +85,8 @@ class AzureRMGalleryInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2019-12-01')
 
         if (self.resource_group_name is not None and
             self.gallery_name is not None):

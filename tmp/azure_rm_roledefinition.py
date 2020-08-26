@@ -24,10 +24,12 @@ options:
   scope:
     description:
       - The scope of the role definition.
+    required: true
     type: str
   role_definition_id:
     description:
       - The ID of the role definition to delete.
+    required: true
     type: str
   role_name:
     description:
@@ -45,27 +47,27 @@ options:
     description:
       - Role definition permissions.
     type: list
-    suboptions: {}
+    suboptions:
+      actions:
+        description:
+          - Allowed actions.
+        type: list
+      not_actions:
+        description:
+          - Denied actions.
+        type: list
+      data_actions:
+        description:
+          - Allowed Data actions.
+        type: list
+      not_data_actions:
+        description:
+          - Denied Data actions.
+        type: list
   assignable_scopes:
     description:
       - Role definition assignable scopes.
     type: list
-    suboptions: {}
-  filter:
-    description:
-      - >-
-        The filter to apply on the operation. Use atScopeAndBelow filter to
-        search below the given scope as well.
-    type: str
-  role_id:
-    description:
-      - >-
-        The fully qualified role definition ID. Use the format,
-        /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}
-        for subscription level role definitions, or
-        /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}
-        for tenant level role definitions.
-    type: str
   state:
     description:
       - Assert the state of the RoleDefinition.
@@ -107,10 +109,12 @@ class AzureRMRoleDefinition(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             scope=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             role_definition_id=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             role_name=dict(
                 type='str',
@@ -127,20 +131,34 @@ class AzureRMRoleDefinition(AzureRMModuleBaseExt):
             permissions=dict(
                 type='list',
                 disposition='/permissions',
+                elements='dict',
                 options=dict(
+                    actions=dict(
+                        type='list',
+                        disposition='actions',
+                        elements='str'
+                    ),
+                    not_actions=dict(
+                        type='list',
+                        disposition='not_actions',
+                        elements='str'
+                    ),
+                    data_actions=dict(
+                        type='list',
+                        disposition='data_actions',
+                        elements='str'
+                    ),
+                    not_data_actions=dict(
+                        type='list',
+                        disposition='not_data_actions',
+                        elements='str'
+                    )
                 )
             ),
             assignable_scopes=dict(
                 type='list',
                 disposition='/assignable_scopes',
-                options=dict(
-                )
-            ),
-            filter=dict(
-                type='str'
-            ),
-            role_id=dict(
-                type='str'
+                elements='str'
             ),
             state=dict(
                 type='str',
@@ -151,8 +169,6 @@ class AzureRMRoleDefinition(AzureRMModuleBaseExt):
 
         self.scope = None
         self.role_definition_id = None
-        self.filter = None
-        self.role_id = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -216,7 +232,7 @@ class AzureRMRoleDefinition(AzureRMModuleBaseExt):
         try:
             response = self.mgmt_client.role_definitions.create_or_update(scope=self.scope,
                                                                           role_definition_id=self.role_definition_id,
-                                                                          parameters=self.body)
+                                                                          role_definition=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -235,7 +251,6 @@ class AzureRMRoleDefinition(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.role_definitions.get(scope=self.scope,
                                                              role_definition_id=self.role_definition_id)

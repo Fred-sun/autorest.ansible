@@ -303,11 +303,18 @@ class AzureRMVirtualMachineScaleSetVMExtension(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtual_machine_scale_set_vmextensions.create_or_update(resource_group_name=self.resource_group_name,
-                                                                                                vm_scale_set_name=self.vm_scale_set_name,
-                                                                                                instance_id=self.instance_id,
-                                                                                                vm_extension_name=self.vm_extension_name,
-                                                                                                parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.virtual_machine_scale_set_vmextensions.create(resource_group_name=self.resource_group_name,
+                                                                                          vm_scale_set_name=self.vm_scale_set_name,
+                                                                                          instance_id=self.instance_id,
+                                                                                          vm_extension_name=self.vm_extension_name,
+                                                                                          extension_parameters=self.body)
+            else:
+                response = self.mgmt_client.virtual_machine_scale_set_vmextensions.update(resource_group_name=self.resource_group_name,
+                                                                                          vm_scale_set_name=self.vm_scale_set_name,
+                                                                                          instance_id=self.instance_id,
+                                                                                          vm_extension_name=self.vm_extension_name,
+                                                                                          extension_parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

@@ -13,6 +13,54 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachineimage_info
+version_added: '2.9'
+short_description: Get VirtualMachineImage info.
+description:
+  - Get info of VirtualMachineImage.
+options:
+  location:
+    description:
+      - The name of a supported Azure region.
+    required: true
+    type: str
+  publisher_name:
+    description:
+      - A valid image publisher.
+    type: str
+  offer:
+    description:
+      - A valid image publisher offer.
+    type: str
+  skus:
+    description:
+      - A valid image SKU.
+    type: str
+  version:
+    description:
+      - A valid image SKU version.
+    type: str
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: str
+  top:
+    description:
+      - undefined
+    type: integer
+  orderby:
+    description:
+      - undefined
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -87,7 +135,8 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.location is not None and
             self.publisher_name is not None and
@@ -98,10 +147,7 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         elif (self.location is not None and
               self.publisher_name is not None and
               self.offer is not None and
-              self.skus is not None and
-              self.expand is not None and
-              self.top is not None and
-              self.orderby is not None):
+              self.skus is not None):
             self.results['virtual_machine_images'] = self.format_item(self.list())
         elif (self.location is not None and
               self.publisher_name is not None and

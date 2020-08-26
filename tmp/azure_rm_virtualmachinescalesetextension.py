@@ -262,10 +262,16 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtual_machine_scale_set_extensions.create_or_update(resource_group_name=self.resource_group_name,
-                                                                                              vm_scale_set_name=self.vm_scale_set_name,
-                                                                                              vmss_extension_name=self.vmss_extension_name,
-                                                                                              parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.virtual_machine_scale_set_extensions.create(resource_group_name=self.resource_group_name,
+                                                                                        vm_scale_set_name=self.vm_scale_set_name,
+                                                                                        vmss_extension_name=self.vmss_extension_name,
+                                                                                        extension_parameters=self.body)
+            else:
+                response = self.mgmt_client.virtual_machine_scale_set_extensions.update(resource_group_name=self.resource_group_name,
+                                                                                        vm_scale_set_name=self.vm_scale_set_name,
+                                                                                        vmss_extension_name=self.vmss_extension_name,
+                                                                                        extension_parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

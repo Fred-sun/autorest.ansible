@@ -245,10 +245,16 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.dedicated_hosts.create_or_update(resource_group_name=self.resource_group_name,
-                                                                         host_group_name=self.host_group_name,
-                                                                         host_name=self.host_name,
-                                                                         parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.dedicated_hosts.create(resource_group_name=self.resource_group_name,
+                                                                   host_group_name=self.host_group_name,
+                                                                   host_name=self.host_name,
+                                                                   parameters=self.body)
+            else:
+                response = self.mgmt_client.dedicated_hosts.update(resource_group_name=self.resource_group_name,
+                                                                   host_group_name=self.host_group_name,
+                                                                   host_name=self.host_name,
+                                                                   parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

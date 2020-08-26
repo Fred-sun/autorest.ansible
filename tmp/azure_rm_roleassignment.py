@@ -21,41 +21,15 @@ short_description: Manage Azure RoleAssignment instance.
 description:
   - 'Create, update and delete instance of Azure RoleAssignment.'
 options:
-  resource_group_name:
-    description:
-      - The name of the resource group.
-    type: str
-  resource_provider_namespace:
-    description:
-      - The namespace of the resource provider.
-    type: str
-  parent_resource_path:
-    description:
-      - The parent resource identity.
-    type: str
-  resource_type:
-    description:
-      - The resource type of the resource.
-    type: str
-  resource_name:
-    description:
-      - The name of the resource to get role assignments for.
-    type: str
-  filter:
-    description:
-      - >-
-        The filter to apply on the operation. Use $filter=atScope() to return
-        all role assignments at or above the scope. Use $filter=principalId eq
-        {id} to return all role assignments at, above or below the scope for the
-        specified principal.
-    type: str
   scope:
     description:
       - The scope of the role assignment to delete.
+    required: true
     type: str
   role_assignment_name:
     description:
       - The name of the role assignment to delete.
+    required: true
     type: str
   role_definition_id:
     description:
@@ -87,10 +61,6 @@ options:
   condition_version:
     description:
       - Version of the condition
-    type: str
-  role_id:
-    description:
-      - The ID of the role assignment to delete.
     type: str
   state:
     description:
@@ -132,29 +102,13 @@ class Actions:
 class AzureRMRoleAssignment(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            resource_group_name=dict(
-                type='str'
-            ),
-            resource_provider_namespace=dict(
-                type='str'
-            ),
-            parent_resource_path=dict(
-                type='str'
-            ),
-            resource_type=dict(
-                type='str'
-            ),
-            resource_name=dict(
-                type='str'
-            ),
-            filter=dict(
-                type='str'
-            ),
             scope=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             role_assignment_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             role_definition_id=dict(
                 type='str',
@@ -184,9 +138,6 @@ class AzureRMRoleAssignment(AzureRMModuleBaseExt):
                 type='str',
                 disposition='/condition_version'
             ),
-            role_id=dict(
-                type='str'
-            ),
             state=dict(
                 type='str',
                 default='present',
@@ -194,15 +145,8 @@ class AzureRMRoleAssignment(AzureRMModuleBaseExt):
             )
         )
 
-        self.resource_group_name = None
-        self.resource_provider_namespace = None
-        self.parent_resource_path = None
-        self.resource_type = None
-        self.resource_name = None
-        self.filter = None
         self.scope = None
         self.role_assignment_name = None
-        self.role_id = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -264,7 +208,12 @@ class AzureRMRoleAssignment(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.role_assignments.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.role_assignments.create(scope=self.scope,
+                                                                    role_assignment_name=self.role_assignment_name,
+                                                                    parameters=self.body)
+            else:
+                response = self.mgmt_client.role_assignments.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -283,7 +232,6 @@ class AzureRMRoleAssignment(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.role_assignments.get(scope=self.scope,
                                                              role_assignment_name=self.role_assignment_name)

@@ -13,6 +13,29 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachinescaleset_info
+version_added: '2.9'
+short_description: Get VirtualMachineScaleSet info.
+description:
+  - Get info of VirtualMachineScaleSet.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  vm_scale_set_name:
+    description:
+      - The name of the VM scale set.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -62,11 +85,12 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None):
-            self.results['virtual_machine_scale_sets'] = self.format_item(self.getosupgradehistory())
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
             self.results['virtual_machine_scale_sets'] = self.format_item(self.getinstanceview())
@@ -75,19 +99,19 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
             self.results['virtual_machine_scale_sets'] = self.format_item(self.listsku())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
-            self.results['virtual_machine_scale_sets'] = self.format_item(self.get())
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.getosupgradehistory())
         elif (self.resource_group_name is not None):
             self.results['virtual_machine_scale_sets'] = self.format_item(self.list())
         else:
             self.results['virtual_machine_scale_sets'] = self.format_item(self.listall())
         return self.results
 
-    def getosupgradehistory(self):
+    def get(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_scale_sets.get_os_upgrade_history(resource_group_name=self.resource_group_name,
-                                                                                          vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.get(resource_group_name=self.resource_group_name,
+                                                                       vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
@@ -115,12 +139,12 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
 
         return response
 
-    def get(self):
+    def getosupgradehistory(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_scale_sets.get(resource_group_name=self.resource_group_name,
-                                                                       vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.get_os_upgrade_history(resource_group_name=self.resource_group_name,
+                                                                                          vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

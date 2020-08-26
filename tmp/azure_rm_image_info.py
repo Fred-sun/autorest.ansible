@@ -13,6 +13,33 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_image_info
+version_added: '2.9'
+short_description: Get Image info.
+description:
+  - Get info of Image.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  image_name:
+    description:
+      - The name of the image.
+    type: str
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -66,11 +93,11 @@ class AzureRMImageInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.resource_group_name is not None and
-            self.image_name is not None and
-            self.expand is not None):
+            self.image_name is not None):
             self.results['images'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
             self.results['images'] = self.format_item(self.listbyresourcegroup())

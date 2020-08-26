@@ -13,6 +13,32 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_snapshot_info
+version_added: '2.9'
+short_description: Get Snapshot info.
+description:
+  - Get info of Snapshot.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  snapshot_name:
+    description:
+      - >-
+        The name of the snapshot that is being created. The name can't be
+        changed after the snapshot is created. Supported characters for the name
+        are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -62,7 +88,8 @@ class AzureRMSnapshotInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-05-01')
 
         if (self.resource_group_name is not None and
             self.snapshot_name is not None):

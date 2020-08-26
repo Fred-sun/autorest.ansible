@@ -13,6 +13,35 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_proximityplacementgroup_info
+version_added: '2.9'
+short_description: Get ProximityPlacementGroup info.
+description:
+  - Get info of ProximityPlacementGroup.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    type: str
+  proximity_placement_group_name:
+    description:
+      - The name of the proximity placement group.
+    type: str
+  include_colocation_status:
+    description:
+      - >-
+        includeColocationStatus=true enables fetching the colocation status of
+        all the resources in the proximity placement group.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -66,11 +95,11 @@ class AzureRMProximityPlacementGroupInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.resource_group_name is not None and
-            self.proximity_placement_group_name is not None and
-            self.include_colocation_status is not None):
+            self.proximity_placement_group_name is not None):
             self.results['proximity_placement_groups'] = self.format_item(self.get())
         elif (self.resource_group_name is not None):
             self.results['proximity_placement_groups'] = self.format_item(self.listbyresourcegroup())

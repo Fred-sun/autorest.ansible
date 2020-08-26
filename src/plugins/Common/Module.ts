@@ -3,13 +3,117 @@ import {ModuleMethod} from "./ModuleMethod";
 import {ToSnakeCase} from "../../utils/helper";
 
 export class Module {
-    constructor(swaggerName:string, isInfoModule:boolean) {
-        this.SwaggerName = swaggerName;
+    // constructor(swaggerName:string, isInfoModule:boolean) {
+    //     this.SwaggerName = swaggerName;
+    //     this.IsInfoModule = isInfoModule;
+    //     this.ObjectName = this.GetObjectName();
+    //     this.ModuleClassName = this.GetModuleClassName();
+    //     this.ModuleName = this.GetModuleName();
+    //     this.ModuleOperationName = ToSnakeCase(swaggerName);
+    // }
+    constructor(swaggerModule: any, isInfoModule:boolean) {
         this.IsInfoModule = isInfoModule;
-        this.ObjectName = this.GetObjectName();
-        this.ModuleClassName = this.GetModuleClassName();
-        this.ModuleName = this.GetModuleName();
-        this.ModuleOperationName = ToSnakeCase(swaggerName);
+        this.Init(swaggerModule);
+    }
+    private Init(swaggerModule: any){
+        this.SwaggerName = swaggerModule["$key"];
+        this.GetObjectName(swaggerModule["$key"]);
+        this.GetModuleClassName();
+        this.GetModuleName();
+        this.ModuleOperationName = ToSnakeCase(swaggerModule["$key"]);
+        this.LoadMethods(swaggerModule.operations);
+        if (!this.IsInfoModule)
+            this.GetBaseCRUDUrl();
+        this.GetSpecOptions();
+        this.ModuleApiVersion = swaggerModule.operations[0].apiVersions[0].version;
+    }
+    private GetSpecOptions(){
+        for (let method of this.ModuleMethods){
+            for (let option of method.Options){
+                if (!this.ModuleOptionExist(option.Name))
+                    this.ModuleOptions.push(option);
+            }
+        }
+        for (let modelOption of this.ModuleOptions){
+            modelOption.Required = true;
+            for (let method of this.ModuleMethods){
+                let contains = false;
+                for (let methodOption of method.Options){
+                    if (methodOption.Name == modelOption.Name){
+                        contains = true;
+                        break
+                    }
+
+                }
+                if (!contains) {
+                    modelOption.Required = false;
+                    break;
+                }
+            }
+        }
+    }
+    private GetBaseCRUDUrl(){
+        for (let method of this.ModuleMethods){
+            let httpMethod = method.HttpMethod;
+            if (httpMethod == 'put' || httpMethod == 'patch' || httpMethod == 'delete'){
+                this.BasicURL = method.Url;
+                return;
+            }
+        }
+    }
+    private LoadMethods(swaggerMethods:any){
+        for (let swaggerMethod of swaggerMethods){
+            let moduleMethod = new ModuleMethod(swaggerMethod);
+            if (this.IsInfoModule && moduleMethod.HttpMethod != 'get' )
+                continue;
+            if (!this.IsInfoModule && moduleMethod.Name != 'CreateOrUpdate' && moduleMethod.Name != 'Create'
+                && moduleMethod.Name != 'Update' && moduleMethod.Name != 'Delete' && moduleMethod.Name != 'Get' )
+                continue;
+            this.ModuleMethods.push(moduleMethod);
+        }
+    }
+    private GetModuleClassName(){
+        if (this.IsInfoModule)
+            this.ModuleClassName =  "AzureRM" + this.ObjectName +"Info";
+        else
+            this.ModuleClassName =  "AzureRM" + this.ObjectName;
+    }
+
+    private GetModuleName(){
+        if (this.IsInfoModule)
+            this.ModuleName =  "azure_rm_"+this.ObjectName.toLowerCase()+"_info";
+        else
+            this.ModuleName =  "azure_rm_"+this.ObjectName.toLowerCase();
+    }
+    private GetObjectName(swaggerName: any)
+    {
+        // XXX - handle following rules
+        // Nat --> NAT
+        // I P --> IP
+        // Sql --> SQL
+
+        let name: string = swaggerName;
+
+        if (name.endsWith("ies"))
+        {
+            name = name.substring(0, name.length - 3) + "y";
+        }
+        else if (name.toLowerCase().endsWith("xes"))
+        {
+            name = name.substring(0, name.length - 2);
+        }
+        else if (name.endsWith('s'))
+        {
+            name = name.substring(0, name.length - 1);
+        }
+        this.ObjectName = name;
+    }
+    private ModuleOptionExist(name: string):boolean{
+        for (let option of this.ModuleOptions){
+            if (option.Name == name)
+                return true;
+        }
+        return false;
     }
     public SwaggerName: string = null;
     public ModuleName: string = null;
@@ -32,37 +136,7 @@ export class Module {
     public ObjectNamePythonized: string = null;
     public ModuleResponseFields: ModuleOption[] = [];
     public IsInfoModule: boolean = false;
-    public HasCreateOrUpdate(): boolean{
-        return true;
-    }
 
-    public HasResourceGroup(): boolean{
-        return false;
-    }
-    public GetObjectName(): string
-    {
-        // XXX - handle following rules
-        // Nat --> NAT
-        // I P --> IP
-        // Sql --> SQL
-
-        let name: string = this.SwaggerName;
-
-        if (name.endsWith("ies"))
-        {
-            name = name.substring(0, name.length - 3) + "y";
-        }
-        else if (name.toLowerCase().endsWith("xes"))
-        {
-            name = name.substring(0, name.length - 2);
-        }
-        else if (name.endsWith('s'))
-        {
-            name = name.substring(0, name.length - 1);
-        }
-
-        return name;
-    }
 
     public GetMethod(methodName:string): ModuleMethod{
         for (let method of this.ModuleMethods){
@@ -82,25 +156,16 @@ export class Module {
         }
         return null;
     }
-    public GetModuleClassName(){
-        if (this.IsInfoModule)
-            return "AzureRM" + this.ObjectName +"Info";
-        else
-            return "AzureRM" + this.ObjectName;
-    }
 
-    public GetModuleName(){
-        if (this.IsInfoModule)
-            return "azure_rm_"+this.ObjectName.toLowerCase()+"_info";
-        else
-            return "azure_rm_"+this.ObjectName.toLowerCase();
-    }
-
-    public ModuleOptionExist(name: string):boolean{
-        for (let option of this.ModuleOptions){
-            if (option.Name == name)
+    public HasCreateOrUpdate(): boolean{
+        for (let method of this.ModuleMethods){
+            if (method.Name == "CreateOrUpdate")
                 return true;
         }
+        return false;
+    }
+
+    public HasResourceGroup(): boolean{
         return false;
     }
 }

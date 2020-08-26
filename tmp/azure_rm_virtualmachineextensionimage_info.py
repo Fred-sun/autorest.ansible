@@ -13,6 +13,51 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachineextensionimage_info
+version_added: '2.9'
+short_description: Get VirtualMachineExtensionImage info.
+description:
+  - Get info of VirtualMachineExtensionImage.
+options:
+  location:
+    description:
+      - The name of a supported Azure region.
+    required: true
+    type: str
+  publisher_name:
+    description:
+      - undefined
+    required: true
+    type: str
+  type:
+    description:
+      - undefined
+    type: str
+  version:
+    description:
+      - undefined
+    type: str
+  filter:
+    description:
+      - The filter to apply on the operation.
+    type: str
+  top:
+    description:
+      - undefined
+    type: integer
+  orderby:
+    description:
+      - undefined
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -84,7 +129,8 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.location is not None and
             self.publisher_name is not None and
@@ -93,10 +139,7 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
             self.results['virtual_machine_extension_images'] = self.format_item(self.get())
         elif (self.location is not None and
               self.publisher_name is not None and
-              self.type is not None and
-              self.filter is not None and
-              self.top is not None and
-              self.orderby is not None):
+              self.type is not None):
             self.results['virtual_machine_extension_images'] = self.format_item(self.listversion())
         elif (self.location is not None and
               self.publisher_name is not None):

@@ -398,9 +398,14 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.container_services.create_or_update(resource_group_name=self.resource_group_name,
-                                                                            container_service_name=self.container_service_name,
-                                                                            parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.container_services.create(resource_group_name=self.resource_group_name,
+                                                                      container_service_name=self.container_service_name,
+                                                                      parameters=self.body)
+            else:
+                response = self.mgmt_client.container_services.update(resource_group_name=self.resource_group_name,
+                                                                      container_service_name=self.container_service_name,
+                                                                      parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

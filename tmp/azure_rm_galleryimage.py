@@ -397,10 +397,16 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.gallery_images.create_or_update(resource_group_name=self.resource_group_name,
-                                                                        gallery_name=self.gallery_name,
-                                                                        gallery_image_name=self.gallery_image_name,
-                                                                        parameters=self.body)
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.gallery_images.create(resource_group_name=self.resource_group_name,
+                                                                  gallery_name=self.gallery_name,
+                                                                  gallery_image_name=self.gallery_image_name,
+                                                                  gallery_image=self.body)
+            else:
+                response = self.mgmt_client.gallery_images.update(resource_group_name=self.resource_group_name,
+                                                                  gallery_name=self.gallery_name,
+                                                                  gallery_image_name=self.gallery_image_name,
+                                                                  gallery_image=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

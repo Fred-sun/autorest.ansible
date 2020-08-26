@@ -13,6 +13,39 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_virtualmachinescalesetextension_info
+version_added: '2.9'
+short_description: Get VirtualMachineScaleSetExtension info.
+description:
+  - Get info of VirtualMachineScaleSetExtension.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  vm_scale_set_name:
+    description:
+      - The name of the VM scale set containing the extension.
+    required: true
+    type: str
+  vmss_extension_name:
+    description:
+      - The name of the VM scale set extension.
+    type: str
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: str
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -72,12 +105,12 @@ class AzureRMVirtualMachineScaleSetExtensionInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2020-06-01')
 
         if (self.resource_group_name is not None and
             self.vm_scale_set_name is not None and
-            self.vmss_extension_name is not None and
-            self.expand is not None):
+            self.vmss_extension_name is not None):
             self.results['virtual_machine_scale_set_extensions'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):

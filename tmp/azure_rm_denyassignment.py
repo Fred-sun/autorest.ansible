@@ -21,50 +21,15 @@ short_description: Manage Azure DenyAssignment instance.
 description:
   - 'Create, update and delete instance of Azure DenyAssignment.'
 options:
-  resource_group_name:
-    description:
-      - The name of the resource group.
-    type: str
-  resource_provider_namespace:
-    description:
-      - The namespace of the resource provider.
-    type: str
-  parent_resource_path:
-    description:
-      - The parent resource identity.
-    type: str
-  resource_type:
-    description:
-      - The resource type of the resource.
-    type: str
-  resource_name:
-    description:
-      - The name of the resource to get deny assignments for.
-    type: str
-  filter:
-    description:
-      - >-
-        The filter to apply on the operation. Use $filter=atScope() to return
-        all deny assignments at or above the scope. Use
-        $filter=denyAssignmentName eq '{name}' to search deny assignments by
-        name at specified scope. Use $filter=principalId eq '{id}' to return all
-        deny assignments at, above and below the scope for the specified
-        principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-        deny assignments at, above and below the scope for the specified
-        principal. This filter is different from the principalId filter as it
-        returns not only those deny assignments that contain the specified
-        principal is the Principals list but also those deny assignments that
-        contain the specified principal is the ExcludePrincipals list.
-        Additionally, when gdprExportPrincipalId filter is used, only the deny
-        assignment name and description properties are returned.
-    type: str
   scope:
     description:
       - The scope of the deny assignment.
+    required: true
     type: str
   deny_assignment_id:
     description:
       - The ID of the deny assignment to get.
+    required: true
     type: str
   state:
     description:
@@ -106,29 +71,13 @@ class Actions:
 class AzureRMDenyAssignment(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            resource_group_name=dict(
-                type='str'
-            ),
-            resource_provider_namespace=dict(
-                type='str'
-            ),
-            parent_resource_path=dict(
-                type='str'
-            ),
-            resource_type=dict(
-                type='str'
-            ),
-            resource_name=dict(
-                type='str'
-            ),
-            filter=dict(
-                type='str'
-            ),
             scope=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             deny_assignment_id=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             state=dict(
                 type='str',
@@ -137,12 +86,6 @@ class AzureRMDenyAssignment(AzureRMModuleBaseExt):
             )
         )
 
-        self.resource_group_name = None
-        self.resource_provider_namespace = None
-        self.parent_resource_path = None
-        self.resource_type = None
-        self.resource_name = None
-        self.filter = None
         self.scope = None
         self.deny_assignment_id = None
         self.body = {}
@@ -206,7 +149,10 @@ class AzureRMDenyAssignment(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.deny_assignments.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.deny_assignments.create()
+            else:
+                response = self.mgmt_client.deny_assignments.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -224,7 +170,6 @@ class AzureRMDenyAssignment(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.deny_assignments.get(scope=self.scope,
                                                              deny_assignment_id=self.deny_assignment_id)

@@ -13,6 +13,48 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'supported_by': 'community'}
 
 
+DOCUMENTATION = '''
+---
+module: azure_rm_galleryapplicationversion_info
+version_added: '2.9'
+short_description: Get GalleryApplicationVersion info.
+description:
+  - Get info of GalleryApplicationVersion.
+options:
+  resource_group_name:
+    description:
+      - The name of the resource group.
+    required: true
+    type: str
+  gallery_name:
+    description:
+      - >-
+        The name of the Shared Application Gallery in which the Application
+        Definition resides.
+    required: true
+    type: str
+  gallery_application_name:
+    description:
+      - >-
+        The name of the gallery Application Definition in which the Application
+        Version resides.
+    required: true
+    type: str
+  gallery_application_version_name:
+    description:
+      - The name of the gallery Application Version to be retrieved.
+    type: str
+  expand:
+    description:
+      - The expand expression to apply on the operation.
+    type: choice
+extends_documentation_fragment:
+  - azure
+author:
+  - GuopengLin (@t-glin)
+
+'''
+
 
 import time
 import json
@@ -77,13 +119,13 @@ class AzureRMGalleryApplicationVersionInfo(AzureRMModuleBase):
             setattr(self, key, kwargs[key])
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
-                                                    base_url=self._cloud_environment.endpoints.resource_manager)
+                                                    base_url=self._cloud_environment.endpoints.resource_manager,
+                                                    api_version='2019-12-01')
 
         if (self.resource_group_name is not None and
             self.gallery_name is not None and
             self.gallery_application_name is not None and
-            self.gallery_application_version_name is not None and
-            self.expand is not None):
+            self.gallery_application_version_name is not None):
             self.results['gallery_application_versions'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.gallery_name is not None and
