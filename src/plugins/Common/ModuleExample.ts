@@ -1,5 +1,4 @@
 import {ModuleMethod} from "./ModuleMethod";
-import {ModuleExampleParameter} from "./ModuleExampleParameter";
 import {ToSnakeCase} from "../../utils/helper";
 
 export class ModuleExample {
