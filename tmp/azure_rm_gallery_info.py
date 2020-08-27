@@ -36,6 +36,138 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Get a gallery.
+      azure_rm_gallery_info: 
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: List galleries in a resource group.
+      azure_rm_gallery_info: 
+        resource_group_name: myResourceGroup
+        
+
+    - name: List galleries in a subscription.
+      azure_rm_gallery_info: 
+        {}
+        
+
+'''
+
+RETURN = '''
+galleries:
+  description: >-
+    A list of dict results where the key is the name of the Gallery and the
+    values are the facts for that Gallery.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    description:
+      description:
+        - >-
+          The description of this Shared Image Gallery resource. This property
+          is updatable.
+      returned: always
+      type: str
+      sample: null
+    identifier:
+      description:
+        - Describes the gallery unique name.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        unique_name:
+          description:
+            - >-
+              The unique name of the Shared Image Gallery. This name is
+              generated automatically by Azure.
+          returned: always
+          type: str
+          sample: null
+    provisioning_state:
+      description:
+        - 'The provisioning state, which only appears in the response.'
+      returned: always
+      type: choice
+      sample: null
+    value:
+      description:
+        - A list of galleries.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        description:
+          description:
+            - >-
+              The description of this Shared Image Gallery resource. This
+              property is updatable.
+          returned: always
+          type: str
+          sample: null
+        identifier:
+          description:
+            - Describes the gallery unique name.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            unique_name:
+              description:
+                - >-
+                  The unique name of the Shared Image Gallery. This name is
+                  generated automatically by Azure.
+              returned: always
+              type: str
+              sample: null
+        provisioning_state:
+          description:
+            - 'The provisioning state, which only appears in the response.'
+          returned: always
+          type: choice
+          sample: null
+    next_link:
+      description:
+        - >-
+          The uri to fetch the next page of galleries. Call ListNext() with this
+          to fetch the next page of galleries.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

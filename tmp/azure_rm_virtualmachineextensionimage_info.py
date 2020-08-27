@@ -58,6 +58,86 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+virtual_machine_extension_images:
+  description: >-
+    A list of dict results where the key is the name of the
+    VirtualMachineExtensionImage and the values are the facts for that
+    VirtualMachineExtensionImage.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    operating_system:
+      description:
+        - The operating system this extension supports.
+      returned: always
+      type: str
+      sample: null
+    compute_role:
+      description:
+        - The type of role (IaaS or PaaS) this extension supports.
+      returned: always
+      type: str
+      sample: null
+    handler_schema:
+      description:
+        - >-
+          The schema defined by publisher, where extension consumers should
+          provide settings in a matching schema.
+      returned: always
+      type: str
+      sample: null
+    vm_scale_set_enabled:
+      description:
+        - >-
+          Whether the extension can be used on xRP VMScaleSets. By default
+          existing extensions are usable on scalesets, but there might be cases
+          where a publisher wants to explicitly indicate the extension is only
+          enabled for CRP VMs but not VMSS.
+      returned: always
+      type: bool
+      sample: null
+    supports_multiple_extensions:
+      description:
+        - Whether the handler can support multiple extensions.
+      returned: always
+      type: bool
+      sample: null
+
+'''
 
 import time
 import json

@@ -38,6 +38,237 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+virtual_machine_scale_set_rolling_upgrades:
+  description: >-
+    A list of dict results where the key is the name of the
+    VirtualMachineScaleSetRollingUpgrade and the values are the facts for that
+    VirtualMachineScaleSetRollingUpgrade.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    policy:
+      description:
+        - The rolling upgrade policies applied for this upgrade.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        max_batch_instance_percent:
+          description:
+            - >-
+              The maximum percent of total virtual machine instances that will
+              be upgraded simultaneously by the rolling upgrade in one batch. As
+              this is a maximum, unhealthy instances in previous or future
+              batches can cause the percentage of instances in a batch to
+              decrease to ensure higher reliability. The default value for this
+              parameter is 20%.
+          returned: always
+          type: integer
+          sample: null
+        max_unhealthy_instance_percent:
+          description:
+            - >-
+              The maximum percentage of the total virtual machine instances in
+              the scale set that can be simultaneously unhealthy, either as a
+              result of being upgraded, or by being found in an unhealthy state
+              by the virtual machine health checks before the rolling upgrade
+              aborts. This constraint will be checked prior to starting any
+              batch. The default value for this parameter is 20%.
+          returned: always
+          type: integer
+          sample: null
+        max_unhealthy_upgraded_instance_percent:
+          description:
+            - >-
+              The maximum percentage of upgraded virtual machine instances that
+              can be found to be in an unhealthy state. This check will happen
+              after each batch is upgraded. If this percentage is ever exceeded,
+              the rolling update aborts. The default value for this parameter is
+              20%.
+          returned: always
+          type: integer
+          sample: null
+        pause_time_between_batches:
+          description:
+            - >-
+              The wait time between completing the update for all virtual
+              machines in one batch and starting the next batch. The time
+              duration should be specified in ISO 8601 format. The default value
+              is 0 seconds (PT0S).
+          returned: always
+          type: str
+          sample: null
+    running_status:
+      description:
+        - Information about the current running state of the overall upgrade.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        code:
+          description:
+            - Code indicating the current status of the upgrade.
+          returned: always
+          type: sealed-choice
+          sample: null
+        start_time:
+          description:
+            - Start time of the upgrade.
+          returned: always
+          type: str
+          sample: null
+        last_action:
+          description:
+            - The last action performed on the rolling upgrade.
+          returned: always
+          type: sealed-choice
+          sample: null
+        last_action_time:
+          description:
+            - Last action time of the upgrade.
+          returned: always
+          type: str
+          sample: null
+    progress:
+      description:
+        - >-
+          Information about the number of virtual machine instances in each
+          upgrade state.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        successful_instance_count:
+          description:
+            - The number of instances that have been successfully upgraded.
+          returned: always
+          type: integer
+          sample: null
+        failed_instance_count:
+          description:
+            - >-
+              The number of instances that have failed to be upgraded
+              successfully.
+          returned: always
+          type: integer
+          sample: null
+        in_progress_instance_count:
+          description:
+            - The number of instances that are currently being upgraded.
+          returned: always
+          type: integer
+          sample: null
+        pending_instance_count:
+          description:
+            - The number of instances that have not yet begun to be upgraded.
+          returned: always
+          type: integer
+          sample: null
+    error:
+      description:
+        - 'Error details for this upgrade, if there are any.'
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        details:
+          description:
+            - The Api error details
+          returned: always
+          type: list
+          sample: null
+          contains:
+            code:
+              description:
+                - The error code.
+              returned: always
+              type: str
+              sample: null
+            target:
+              description:
+                - The target of the particular error.
+              returned: always
+              type: str
+              sample: null
+            message:
+              description:
+                - The error message.
+              returned: always
+              type: str
+              sample: null
+        innererror:
+          description:
+            - The Api inner error
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            exceptiontype:
+              description:
+                - The exception type.
+              returned: always
+              type: str
+              sample: null
+            errordetail:
+              description:
+                - The internal error message or exception dump.
+              returned: always
+              type: str
+              sample: null
+        code:
+          description:
+            - The error code.
+          returned: always
+          type: str
+          sample: null
+        target:
+          description:
+            - The target of the particular error.
+          returned: always
+          type: str
+          sample: null
+        message:
+          description:
+            - The error message.
+          returned: always
+          type: str
+          sample: null
+
+'''
 
 import time
 import json

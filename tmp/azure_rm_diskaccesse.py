@@ -24,6 +24,7 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   disk_access_name:
     description:
@@ -32,6 +33,7 @@ options:
         can't be changed after the disk encryption set is created. Supported
         characters for the name are a-z, A-Z, 0-9 and _. The maximum name length
         is 80 characters.
+    required: true
     type: str
   location:
     description:
@@ -54,6 +56,155 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create a disk access resource.
+      azure_rm_diskaccesse: 
+        disk_access_name: myDiskAccess
+        resource_group_name: myResourceGroup
+        
+
+    - name: Update a disk access resource.
+      azure_rm_diskaccesse: 
+        disk_access_name: myDiskAccess
+        resource_group_name: myResourceGroup
+        
+
+    - name: Delete a disk access resource.
+      azure_rm_diskaccesse: 
+        disk_access_name: myDiskAccess
+        resource_group_name: myResourceGroup
+        
+
+    - name: Create a disk access resource.
+      azure_rm_diskaccesse: 
+        disk_access_name: myDiskAccess
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+private_endpoint_connections:
+  description:
+    - >-
+      A readonly collection of private endpoint connections created on the disk.
+      Currently only one endpoint connection is supported.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    id:
+      description:
+        - private endpoint connection Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - private endpoint connection name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - private endpoint connection type
+      returned: always
+      type: str
+      sample: null
+    private_endpoint:
+      description:
+        - The resource of private end point.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        id:
+          description:
+            - The ARM identifier for Private Endpoint
+          returned: always
+          type: str
+          sample: null
+    private_link_service_connection_state:
+      description:
+        - >-
+          A collection of information about the state of the connection between
+          DiskAccess and Virtual Network.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        status:
+          description:
+            - >-
+              Indicates whether the connection has been
+              Approved/Rejected/Removed by the owner of the service.
+          returned: always
+          type: choice
+          sample: null
+        description:
+          description:
+            - The reason for approval/rejection of the connection.
+          returned: always
+          type: str
+          sample: null
+        actions_required:
+          description:
+            - >-
+              A message indicating if changes on the service provider require
+              any updates on the consumer.
+          returned: always
+          type: str
+          sample: null
+    provisioning_state:
+      description:
+        - The provisioning state of the private endpoint connection resource.
+      returned: always
+      type: choice
+      sample: null
+provisioning_state:
+  description:
+    - The disk access resource provisioning state.
+  returned: always
+  type: str
+  sample: null
+time_created:
+  description:
+    - The time when the disk access was created.
+  returned: always
+  type: str
+  sample: null
+
+'''
 
 import time
 import json
@@ -78,10 +229,12 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             disk_access_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -157,14 +310,9 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.disk_accesses.create(resource_group_name=self.resource_group_name,
-                                                                 disk_access_name=self.disk_access_name,
-                                                                 disk_access=self.body)
-            else:
-                response = self.mgmt_client.disk_accesses.update(resource_group_name=self.resource_group_name,
-                                                                 disk_access_name=self.disk_access_name,
-                                                                 disk_access=self.body)
+            response = self.mgmt_client.disk_accesses.create_or_update(resource_group_name=self.resource_group_name,
+                                                                       disk_access_name=self.disk_access_name,
+                                                                       disk_access=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -183,7 +331,6 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.disk_accesses.get(resource_group_name=self.resource_group_name,
                                                           disk_access_name=self.disk_access_name)

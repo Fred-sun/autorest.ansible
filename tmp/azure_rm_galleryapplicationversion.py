@@ -38,6 +38,12 @@ options:
       - >-
         The name of the gallery Application Definition in which the Application
         Version is to be created.
+      - >-
+        The name of the gallery Application Definition in which the Application
+        Version is to be updated.
+      - >-
+        The name of the gallery Application Definition in which the Application
+        Version resides.
     required: true
     type: str
   gallery_application_version_name:
@@ -47,6 +53,14 @@ options:
         follow semantic version name pattern: The allowed characters are digit
         and period. Digits must be within the range of a 32-bit integer. Format:
         :code:`<MajorVersion>`.:code:`<MinorVersion>`.:code:`<Patch>`
+      - >-
+        The name of the gallery Application Version to be updated. Needs to
+        follow semantic version name pattern: The allowed characters are digit
+        and period. Digits must be within the range of a 32-bit integer. Format:
+        :code:`<MajorVersion>`.:code:`<MinorVersion>`.:code:`<Patch>`
+      - The name of the gallery Application Version to be retrieved.
+      - The name of the gallery Application Version to be deleted.
+    required: true
     type: str
   location:
     description:
@@ -58,6 +72,56 @@ options:
         The target regions where the Image Version is going to be replicated to.
         This property is updatable.
     type: list
+    suboptions:
+      name:
+        description:
+          - The name of the region.
+        required: true
+        type: str
+      regional_replica_count:
+        description:
+          - >-
+            The number of replicas of the Image Version to be created per
+            region. This property is updatable.
+        type: integer
+      storage_account_type:
+        description:
+          - >-
+            Specifies the storage account type to be used to store the image.
+            This property is not updatable.
+        type: choice
+      encryption:
+        description:
+          - >-
+            Optional. Allows users to provide customer managed keys for
+            encrypting the OS and data disks in the gallery artifact.
+        type: dict
+        suboptions:
+          os_disk_image:
+            description:
+              - This is the disk image encryption base class.
+            type: dict
+            suboptions:
+              disk_encryption_set_id:
+                description:
+                  - >-
+                    A relative URI containing the resource ID of the disk
+                    encryption set.
+                type: str
+          data_disk_images:
+            description:
+              - A list of encryption specifications for data disk images.
+            type: list
+            suboptions:
+              lun:
+                description:
+                  - >-
+                    This property specifies the logical unit number of the data
+                    disk. This value is used to identify data disks within the
+                    Virtual Machine and therefore must be unique for each data
+                    disk attached to the Virtual Machine.
+                required: true
+                type: integer
   replica_count:
     description:
       - >-
@@ -131,6 +195,274 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create or update a simple gallery Application Version.
+      azure_rm_galleryapplicationversion: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_application_version_name: 1.0.0
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Update a simple gallery Application Version.
+      azure_rm_galleryapplicationversion: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_application_version_name: 1.0.0
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Delete a gallery Application Version.
+      azure_rm_galleryapplicationversion: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_application_version_name: 1.0.0
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Create or update a simple gallery Application Version.
+      azure_rm_galleryapplicationversion: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_application_version_name: 1.0.0
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+provisioning_state:
+  description:
+    - 'The provisioning state, which only appears in the response.'
+  returned: always
+  type: choice
+  sample: null
+replication_status:
+  description:
+    - This is the replication status of the gallery Image Version.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    aggregated_state:
+      description:
+        - >-
+          This is the aggregated replication status based on all the regional
+          replication status flags.
+      returned: always
+      type: choice
+      sample: null
+    summary:
+      description:
+        - This is a summary of replication status for each region.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        region:
+          description:
+            - >-
+              The region to which the gallery Image Version is being replicated
+              to.
+          returned: always
+          type: str
+          sample: null
+        state:
+          description:
+            - This is the regional replication state.
+          returned: always
+          type: choice
+          sample: null
+        details:
+          description:
+            - The details of the replication status.
+          returned: always
+          type: str
+          sample: null
+        progress:
+          description:
+            - It indicates progress of the replication job.
+          returned: always
+          type: integer
+          sample: null
+target_regions:
+  description:
+    - >-
+      The target regions where the Image Version is going to be replicated to.
+      This property is updatable.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    name:
+      description:
+        - The name of the region.
+      returned: always
+      type: str
+      sample: null
+    regional_replica_count:
+      description:
+        - >-
+          The number of replicas of the Image Version to be created per region.
+          This property is updatable.
+      returned: always
+      type: integer
+      sample: null
+    storage_account_type:
+      description:
+        - >-
+          Specifies the storage account type to be used to store the image. This
+          property is not updatable.
+      returned: always
+      type: choice
+      sample: null
+    encryption:
+      description:
+        - >-
+          Optional. Allows users to provide customer managed keys for encrypting
+          the OS and data disks in the gallery artifact.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        os_disk_image:
+          description:
+            - This is the disk image encryption base class.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            disk_encryption_set_id:
+              description:
+                - >-
+                  A relative URI containing the resource ID of the disk
+                  encryption set.
+              returned: always
+              type: str
+              sample: null
+        data_disk_images:
+          description:
+            - A list of encryption specifications for data disk images.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            lun:
+              description:
+                - >-
+                  This property specifies the logical unit number of the data
+                  disk. This value is used to identify data disks within the
+                  Virtual Machine and therefore must be unique for each data
+                  disk attached to the Virtual Machine.
+              returned: always
+              type: integer
+              sample: null
+replica_count:
+  description:
+    - >-
+      The number of replicas of the Image Version to be created per region. This
+      property would take effect for a region when regionalReplicaCount is not
+      specified. This property is updatable.
+  returned: always
+  type: integer
+  sample: null
+exclude_from_latest:
+  description:
+    - >-
+      If set to true, Virtual Machines deployed from the latest version of the
+      Image Definition won't use this Image Version.
+  returned: always
+  type: bool
+  sample: null
+published_date:
+  description:
+    - The timestamp for when the gallery Image Version is published.
+  returned: always
+  type: str
+  sample: null
+end_of_life_date:
+  description:
+    - >-
+      The end of life date of the gallery Image Version. This property can be
+      used for decommissioning purposes. This property is updatable.
+  returned: always
+  type: str
+  sample: null
+storage_account_type:
+  description:
+    - >-
+      Specifies the storage account type to be used to store the image. This
+      property is not updatable.
+  returned: always
+  type: choice
+  sample: null
+source:
+  description:
+    - The source image from which the Image Version is going to be created.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    file_name:
+      description:
+        - Required. The fileName of the artifact.
+      returned: always
+      type: str
+      sample: null
+    media_link:
+      description:
+        - >-
+          Required. The mediaLink of the artifact, must be a readable storage
+          blob.
+      returned: always
+      type: str
+      sample: null
+content_type:
+  description:
+    - >-
+      Optional. May be used to help process this file. The type of file
+      contained in the source, e.g. zip, json, etc.
+  returned: always
+  type: str
+  sample: null
+enable_health_check:
+  description:
+    - Optional. Whether or not this application reports health.
+  returned: always
+  type: bool
+  sample: null
+
+'''
 
 import time
 import json
@@ -167,7 +499,8 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
                 required=True
             ),
             gallery_application_version_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -175,7 +508,51 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
             ),
             target_regions=dict(
                 type='list',
-                disposition='/target_regions'
+                disposition='/target_regions',
+                elements='dict',
+                options=dict(
+                    name=dict(
+                        type='str',
+                        disposition='name',
+                        required=True
+                    ),
+                    regional_replica_count=dict(
+                        type='integer',
+                        disposition='regional_replica_count'
+                    ),
+                    storage_account_type=dict(
+                        type='choice',
+                        disposition='storage_account_type'
+                    ),
+                    encryption=dict(
+                        type='dict',
+                        disposition='encryption',
+                        options=dict(
+                            os_disk_image=dict(
+                                type='dict',
+                                disposition='os_disk_image',
+                                options=dict(
+                                    disk_encryption_set_id=dict(
+                                        type='str',
+                                        disposition='disk_encryption_set_id'
+                                    )
+                                )
+                            ),
+                            data_disk_images=dict(
+                                type='list',
+                                disposition='data_disk_images',
+                                elements='dict',
+                                options=dict(
+                                    lun=dict(
+                                        type='integer',
+                                        disposition='lun',
+                                        required=True
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             ),
             replica_count=dict(
                 type='integer',
@@ -293,18 +670,11 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.gallery_application_versions.create(resource_group_name=self.resource_group_name,
-                                                                                gallery_name=self.gallery_name,
-                                                                                gallery_application_name=self.gallery_application_name,
-                                                                                gallery_application_version_name=self.gallery_application_version_name,
-                                                                                gallery_application_version=self.body)
-            else:
-                response = self.mgmt_client.gallery_application_versions.update(resource_group_name=self.resource_group_name,
-                                                                                gallery_name=self.gallery_name,
-                                                                                gallery_application_name=self.gallery_application_name,
-                                                                                gallery_application_version_name=self.gallery_application_version_name,
-                                                                                gallery_application_version=self.body)
+            response = self.mgmt_client.gallery_application_versions.create_or_update(resource_group_name=self.resource_group_name,
+                                                                                      gallery_name=self.gallery_name,
+                                                                                      gallery_application_name=self.gallery_application_name,
+                                                                                      gallery_application_version_name=self.gallery_application_version_name,
+                                                                                      gallery_application_version=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -325,7 +695,6 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.gallery_application_versions.get(resource_group_name=self.resource_group_name,
                                                                          gallery_name=self.gallery_name,

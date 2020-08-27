@@ -105,7 +105,36 @@ export function AppendModuleDocumentation(output: string[], module: Module, isIn
 //     output.push("'''");
 //     output.push("");
 // }
+
+export function AppendModuleExamples(output: string[], module: Module, isCollection: boolean){
+    output.push("EXAMPLES = '''");
+    for (let example of module.ModuleExamples){
+        output.push("    - name: "+example.Name);
+        output.push("      " + module.ModuleName + ": ");
+        yaml.dump(example.Value).split('\n').forEach(element => {
+            output.push("        "+element);
+        });
+        output.push("");
+    }
+    output.push("'''");
+    output.push("");
+}
+
+// export function AppendParameter(output: string[], indent: string, name: string, content: any){
+//     if (typeof content == 'object'){
+//         if (content instanceof Array){
 //
+//         }else {
+//             for (let subName in content)
+//                 AppendParameter(output,indent+"    ", subName, content[subName]);
+//         }
+//     }
+//     else {
+//         output.push(indent+name+": "+content);
+//     }
+//
+// }
+
 export function AppendModuleReturnDoc(output: string[], module: Module, isInfoModule: boolean)
 {
     output.push("RETURN = '''");
@@ -522,10 +551,6 @@ export function ModuleGenerateApiCall(output: string[], indent: string, module: 
             if (option.Kind == ModuleOptionKind.MODULE_OPTION_BODY)
                 continue;
 
-            // // XXX - this is a hack, can we unhack it?
-            // if (optionName.endsWith("_parameters") || optionName == "parameters")
-            //     optionName = "body";
-
             if (line.endsWith("("))
             {
                 line += option.NameAnsible + "=self." + option.NameAnsible;
@@ -549,30 +574,7 @@ export function ModuleGenerateApiCall(output: string[], indent: string, module: 
     return output;
 }
 
-// export function GetFixUrlStatements(model: AnsibleCodeModel): string[]
-// {
-//     let ss: string[] = [];
-//     let url = model.ModuleUrl;
-//
-//     let parts: string[] = url.split('{{');
-//
-//     for (let part of parts)
-//     {
-//         if (! part.startsWith('/'))
-//         {
-//             let last: boolean = (part == parts[parts.length - 1]);
-//             part = part.split('}}')[0];
-//             let variable = part.trim();
-//             if (last && variable.endsWith("_name"))
-//             {
-//                 variable = "name";
-//             }
-//             ss.push("self.url = self.url.replace('{{" + part + "}}', self." + variable + ")");
-//         }
-//     }
-//
-//     return ss;
-// }
+
 
 export function GetFixUrlStatements(baseUrl: string): string[]
 {
@@ -583,23 +585,6 @@ export function GetFixUrlStatements(baseUrl: string): string[]
     while ((result = reg.exec(url)) != null){
             ss.push("self.url = self.url.replace('{" + result[1] + "}', self." + ToSnakeCase(result[1]) + ")");
     }
-
-    // let parts: string[] = url.split('{{');
-    //
-    // for (let part of parts)
-    // {
-    //     if (! part.startsWith('/'))
-    //     {
-    //         let last: boolean = (part == parts[parts.length - 1]);
-    //         part = part.split('}}')[0];
-    //         let variable = part.trim();
-    //         if (last && variable.endsWith("_name"))
-    //         {
-    //             variable = "name";
-    //         }
-    //         ss.push("self.url = self.url.replace('{{" + part + "}}', self." + variable + ")");
-    //     }
-    // }
 
     return ss;
 }
@@ -618,10 +603,11 @@ function ModuleInfoReturnResponseFields(module: Module):  any
     help[module.ModuleOperationName]['returned'] = 'always';
     help[module.ModuleOperationName]['type'] = 'complex';
     help[module.ModuleOperationName]['contains'] = {};
-    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"] = {};
-    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['description'] = "The key is the name of the server that the values relate to.";
-    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['type'] = 'complex';
-    help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['contains'] = GetHelpFromResponseFields(module, module.ModuleResponseFields, "                ");
+    help[module.ModuleOperationName]['contains'] = GetHelpFromResponseFields(module, module.ModuleResponseFields, "                ");
+    // help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"] = {};
+    // help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['description'] = "The key is the name of the server that the values relate to.";
+    // help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['type'] = 'complex';
+    // help[module.ModuleOperationName]['contains'][module.ObjectNamePythonized + "_name"]['contains'] = GetHelpFromResponseFields(module, module.ModuleResponseFields, "                ");
     return help;
 }
 
@@ -629,7 +615,6 @@ function GetHelpFromResponseFields(module: Module, fields: ModuleOption[], paddi
 {
     //let help: string[] = [];
     let help: any = {}
-
     if (fields != null)
     {
         for (let field of fields)

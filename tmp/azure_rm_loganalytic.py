@@ -21,47 +21,6 @@ short_description: Manage Azure LogAnalytic instance.
 description:
   - 'Create, update and delete instance of Azure LogAnalytic.'
 options:
-  location:
-    description:
-      - The location upon which virtual-machine-sizes is queried.
-    required: true
-    type: str
-  blob_container_sas_uri:
-    description:
-      - >-
-        SAS Uri of the logging blob container to which LogAnalytics Api writes
-        output logs to.
-    required: true
-    type: str
-  from_time:
-    description:
-      - From time of the query
-    required: true
-    type: str
-  to_time:
-    description:
-      - To time of the query
-    required: true
-    type: str
-  group_by_throttle_policy:
-    description:
-      - Group query result by Throttle Policy applied.
-    required: true
-    type: bool
-  group_by_operation_name:
-    description:
-      - Group query result by Operation Name.
-    required: true
-    type: bool
-  group_by_resource_name:
-    description:
-      - Group query result by Resource Name.
-    required: true
-    type: bool
-  interval_length:
-    description:
-      - Interval value in minutes used to create LogAnalytics call rate logs.
-    type: sealed-choice
   state:
     description:
       - Assert the state of the LogAnalytic.
@@ -79,6 +38,13 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+{}
+
+'''
 
 import time
 import json
@@ -102,44 +68,7 @@ class Actions:
 class AzureRMLogAnalytic(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            location=dict(
-                type='str',
-                required=True
-            ),
-            blob_container_sas_uri=dict(
-                type='str',
-                disposition='/blob_container_sas_uri',
-                required=True
-            ),
-            from_time=dict(
-                type='str',
-                disposition='/from_time',
-                required=True
-            ),
-            to_time=dict(
-                type='str',
-                disposition='/to_time',
-                required=True
-            ),
-            group_by_throttle_policy=dict(
-                type='bool',
-                disposition='/group_by_throttle_policy',
-                required=True
-            ),
-            group_by_operation_name=dict(
-                type='bool',
-                disposition='/group_by_operation_name',
-                required=True
-            ),
-            group_by_resource_name=dict(
-                type='bool',
-                disposition='/group_by_resource_name',
-                required=True
-            ),
-            interval_length=dict(
-                type='sealed-choice',
-                disposition='/interval_length'
-            ),
+            undefined,
             state=dict(
                 type='str',
                 default='present',
@@ -147,7 +76,6 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
             )
         )
 
-        self.location = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -209,7 +137,10 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.log_analytics.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.log_analytics.create()
+            else:
+                response = self.mgmt_client.log_analytics.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -227,7 +158,6 @@ class AzureRMLogAnalytic(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.log_analytics.get()
         except CloudError as e:

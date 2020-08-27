@@ -33,6 +33,68 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+virtual_machine_sizes:
+  description: >-
+    A list of dict results where the key is the name of the VirtualMachineSize
+    and the values are the facts for that VirtualMachineSize.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - The list of virtual machine sizes.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        name:
+          description:
+            - The name of the virtual machine size.
+          returned: always
+          type: str
+          sample: null
+        number_of_cores:
+          description:
+            - The number of cores supported by the virtual machine size.
+          returned: always
+          type: integer
+          sample: null
+        os_disk_size_in_mb:
+          description:
+            - 'The OS disk size, in MB, allowed by the virtual machine size.'
+          returned: always
+          type: integer
+          sample: null
+        resource_disk_size_in_mb:
+          description:
+            - >-
+              The resource disk size, in MB, allowed by the virtual machine
+              size.
+          returned: always
+          type: integer
+          sample: null
+        memory_in_mb:
+          description:
+            - >-
+              The amount of memory, in MB, supported by the virtual machine
+              size.
+          returned: always
+          type: integer
+          sample: null
+        max_data_disk_count:
+          description:
+            - >-
+              The maximum number of data disks that can be attached to the
+              virtual machine size.
+          returned: always
+          type: integer
+          sample: null
+
+'''
 
 import time
 import json

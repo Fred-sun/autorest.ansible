@@ -38,6 +38,13 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+{}
+
+'''
 
 import time
 import json
@@ -130,7 +137,10 @@ class AzureRMOperation(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.operations.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.operations.create()
+            else:
+                response = self.mgmt_client.operations.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -148,7 +158,6 @@ class AzureRMOperation(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.operations.get()
         except CloudError as e:

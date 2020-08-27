@@ -24,11 +24,22 @@ options:
   scope:
     description:
       - The scope of the role assignment to delete.
+      - >-
+        The scope of the role assignment to create. The scope can be any REST
+        resource instance. For example, use '/subscriptions/{subscription-id}/'
+        for a subscription,
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}'
+        for a resource group, and
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+        for a resource.
+      - The scope of the role assignment.
     required: true
     type: str
   role_assignment_name:
     description:
       - The name of the role assignment to delete.
+      - The name of the role assignment to create. It can be any valid GUID.
+      - The name of the role assignment to get.
     required: true
     type: str
   role_definition_id:
@@ -79,6 +90,88 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: GetConfigurations
+      azure_rm_roleassignment: 
+        role_assignment_name: roleAssignmentName
+        scope: scope
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - The role assignment ID.
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - The role assignment name.
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - The role assignment type.
+  returned: always
+  type: str
+  sample: null
+scope:
+  description:
+    - The role assignment scope.
+  returned: always
+  type: str
+  sample: null
+role_definition_id:
+  description:
+    - The role definition ID.
+  returned: always
+  type: str
+  sample: null
+principal_id:
+  description:
+    - The principal ID.
+  returned: always
+  type: str
+  sample: null
+principal_type:
+  description:
+    - The principal type of the assigned principal ID.
+  returned: always
+  type: choice
+  sample: null
+can_delegate:
+  description:
+    - The Delegation flag for the role assignment
+  returned: always
+  type: bool
+  sample: null
+description:
+  description:
+    - Description of role assignment
+  returned: always
+  type: str
+  sample: null
+condition:
+  description:
+    - >-
+      The conditions on the role assignment. This limits the resources it can be
+      assigned to. e.g.:
+      @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+      StringEqualsIgnoreCase 'foo_storage_container'
+  returned: always
+  type: str
+  sample: null
+condition_version:
+  description:
+    - Version of the condition. Currently accepted values are '1.0' or '2.0'
+  returned: always
+  type: str
+  sample: null
+
+'''
 
 import time
 import json

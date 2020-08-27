@@ -52,6 +52,401 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Get VirtualMachineScaleSet VM extension.
+      azure_rm_virtualmachinescalesetvmextension_info: 
+        instance_id: '0'
+        resource_group_name: myResourceGroup
+        vm_extension_name: myVMExtension
+        vm_scale_set_name: myvmScaleSet
+        
+
+    - name: List extensions in Vmss instance.
+      azure_rm_virtualmachinescalesetvmextension_info: 
+        instance_id: '0'
+        resource_group_name: myResourceGroup
+        vm_scale_set_name: myvmScaleSet
+        
+
+'''
+
+RETURN = '''
+virtual_machine_scale_set_vmextensions:
+  description: >-
+    A list of dict results where the key is the name of the
+    VirtualMachineScaleSetVMExtension and the values are the facts for that
+    VirtualMachineScaleSetVMExtension.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    force_update_tag:
+      description:
+        - >-
+          How the extension handler should be forced to update even if the
+          extension configuration has not changed.
+      returned: always
+      type: str
+      sample: null
+    publisher:
+      description:
+        - The name of the extension handler publisher.
+      returned: always
+      type: str
+      sample: null
+    type_properties_type:
+      description:
+        - >-
+          Specifies the type of the extension; an example is
+          "CustomScriptExtension".
+      returned: always
+      type: str
+      sample: null
+    type_handler_version_properties_type_handler_version:
+      description:
+        - Specifies the version of the script handler.
+      returned: always
+      type: str
+      sample: null
+    auto_upgrade_minor_version:
+      description:
+        - >-
+          Indicates whether the extension should use a newer minor version if
+          one is available at deployment time. Once deployed, however, the
+          extension will not upgrade minor versions unless redeployed, even with
+          this property set to true.
+      returned: always
+      type: bool
+      sample: null
+    enable_automatic_upgrade:
+      description:
+        - >-
+          Indicates whether the extension should be automatically upgraded by
+          the platform if there is a newer version of the extension available.
+      returned: always
+      type: bool
+      sample: null
+    settings:
+      description:
+        - Json formatted public settings for the extension.
+      returned: always
+      type: any
+      sample: null
+    protected_settings:
+      description:
+        - >-
+          The extension can contain either protectedSettings or
+          protectedSettingsFromKeyVault or no protected settings at all.
+      returned: always
+      type: any
+      sample: null
+    provisioning_state:
+      description:
+        - 'The provisioning state, which only appears in the response.'
+      returned: always
+      type: str
+      sample: null
+    name_properties_instance_view_name:
+      description:
+        - The virtual machine extension name.
+      returned: always
+      type: str
+      sample: null
+    type_properties_instance_view_type:
+      description:
+        - >-
+          Specifies the type of the extension; an example is
+          "CustomScriptExtension".
+      returned: always
+      type: str
+      sample: null
+    type_handler_version_properties_instance_view_type_handler_version:
+      description:
+        - Specifies the version of the script handler.
+      returned: always
+      type: str
+      sample: null
+    substatuses:
+      description:
+        - The resource status information.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        code:
+          description:
+            - The status code.
+          returned: always
+          type: str
+          sample: null
+        level:
+          description:
+            - The level code.
+          returned: always
+          type: sealed-choice
+          sample: null
+        display_status:
+          description:
+            - The short localizable label for the status.
+          returned: always
+          type: str
+          sample: null
+        message:
+          description:
+            - >-
+              The detailed status message, including for alerts and error
+              messages.
+          returned: always
+          type: str
+          sample: null
+        time:
+          description:
+            - The time of the status.
+          returned: always
+          type: str
+          sample: null
+    statuses:
+      description:
+        - The resource status information.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        code:
+          description:
+            - The status code.
+          returned: always
+          type: str
+          sample: null
+        level:
+          description:
+            - The level code.
+          returned: always
+          type: sealed-choice
+          sample: null
+        display_status:
+          description:
+            - The short localizable label for the status.
+          returned: always
+          type: str
+          sample: null
+        message:
+          description:
+            - >-
+              The detailed status message, including for alerts and error
+              messages.
+          returned: always
+          type: str
+          sample: null
+        time:
+          description:
+            - The time of the status.
+          returned: always
+          type: str
+          sample: null
+    value:
+      description:
+        - The list of extensions
+      returned: always
+      type: list
+      sample: null
+      contains:
+        force_update_tag:
+          description:
+            - >-
+              How the extension handler should be forced to update even if the
+              extension configuration has not changed.
+          returned: always
+          type: str
+          sample: null
+        publisher:
+          description:
+            - The name of the extension handler publisher.
+          returned: always
+          type: str
+          sample: null
+        type_properties_type:
+          description:
+            - >-
+              Specifies the type of the extension; an example is
+              "CustomScriptExtension".
+          returned: always
+          type: str
+          sample: null
+        type_handler_version_properties_type_handler_version:
+          description:
+            - Specifies the version of the script handler.
+          returned: always
+          type: str
+          sample: null
+        auto_upgrade_minor_version:
+          description:
+            - >-
+              Indicates whether the extension should use a newer minor version
+              if one is available at deployment time. Once deployed, however,
+              the extension will not upgrade minor versions unless redeployed,
+              even with this property set to true.
+          returned: always
+          type: bool
+          sample: null
+        enable_automatic_upgrade:
+          description:
+            - >-
+              Indicates whether the extension should be automatically upgraded
+              by the platform if there is a newer version of the extension
+              available.
+          returned: always
+          type: bool
+          sample: null
+        settings:
+          description:
+            - Json formatted public settings for the extension.
+          returned: always
+          type: any
+          sample: null
+        protected_settings:
+          description:
+            - >-
+              The extension can contain either protectedSettings or
+              protectedSettingsFromKeyVault or no protected settings at all.
+          returned: always
+          type: any
+          sample: null
+        provisioning_state:
+          description:
+            - 'The provisioning state, which only appears in the response.'
+          returned: always
+          type: str
+          sample: null
+        name_properties_instance_view_name:
+          description:
+            - The virtual machine extension name.
+          returned: always
+          type: str
+          sample: null
+        type_properties_instance_view_type:
+          description:
+            - >-
+              Specifies the type of the extension; an example is
+              "CustomScriptExtension".
+          returned: always
+          type: str
+          sample: null
+        type_handler_version_properties_instance_view_type_handler_version:
+          description:
+            - Specifies the version of the script handler.
+          returned: always
+          type: str
+          sample: null
+        substatuses:
+          description:
+            - The resource status information.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            code:
+              description:
+                - The status code.
+              returned: always
+              type: str
+              sample: null
+            level:
+              description:
+                - The level code.
+              returned: always
+              type: sealed-choice
+              sample: null
+            display_status:
+              description:
+                - The short localizable label for the status.
+              returned: always
+              type: str
+              sample: null
+            message:
+              description:
+                - >-
+                  The detailed status message, including for alerts and error
+                  messages.
+              returned: always
+              type: str
+              sample: null
+            time:
+              description:
+                - The time of the status.
+              returned: always
+              type: str
+              sample: null
+        statuses:
+          description:
+            - The resource status information.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            code:
+              description:
+                - The status code.
+              returned: always
+              type: str
+              sample: null
+            level:
+              description:
+                - The level code.
+              returned: always
+              type: sealed-choice
+              sample: null
+            display_status:
+              description:
+                - The short localizable label for the status.
+              returned: always
+              type: str
+              sample: null
+            message:
+              description:
+                - >-
+                  The detailed status message, including for alerts and error
+                  messages.
+              returned: always
+              type: str
+              sample: null
+            time:
+              description:
+                - The time of the status.
+              returned: always
+              type: str
+              sample: null
+
+'''
 
 import time
 import json

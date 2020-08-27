@@ -24,10 +24,12 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   host_group_name:
     description:
       - The name of the dedicated host group.
+    required: true
     type: str
   location:
     description:
@@ -79,6 +81,135 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create or update a dedicated host group.
+      azure_rm_dedicatedhostgroup: 
+        host_group_name: myDedicatedHostGroup
+        resource_group_name: myResourceGroup
+        location: westus
+        properties:
+          platform_fault_domain_count: 3
+          support_automatic_placement: true
+        tags:
+          department: finance
+        zones:
+          - '1'
+        
+
+    - name: Create or update a dedicated host group.
+      azure_rm_dedicatedhostgroup: 
+        host_group_name: myDedicatedHostGroup
+        resource_group_name: myResourceGroup
+        location: westus
+        properties:
+          platform_fault_domain_count: 3
+          support_automatic_placement: true
+        tags:
+          department: finance
+        zones:
+          - '1'
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+zones:
+  description:
+    - >-
+      Availability Zone to use for this host group. Only single zone is
+      supported. The zone can be assigned only during creation. If not provided,
+      the group supports all zones in the region. If provided, enforces each
+      host in the group to be in the same zone.
+  returned: always
+  type: list
+  sample: null
+platform_fault_domain_count:
+  description:
+    - Number of fault domains that the host group can span.
+  returned: always
+  type: integer
+  sample: null
+hosts:
+  description:
+    - A list of references to all dedicated hosts in the dedicated host group.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+instance_view:
+  description:
+    - >-
+      The dedicated host group instance view, which has the list of instance
+      view of the dedicated hosts under the dedicated host group.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    hosts:
+      description:
+        - >-
+          List of instance view of the dedicated hosts under the dedicated host
+          group.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        name:
+          description:
+            - The name of the dedicated host.
+          returned: always
+          type: str
+          sample: null
+support_automatic_placement:
+  description:
+    - >-
+      Specifies whether virtual machines or virtual machine scale sets can be
+      placed automatically on the dedicated host group. Automatic placement
+      means resources are allocated on dedicated hosts, that are chosen by
+      Azure, under the dedicated host group. The value is defaulted to 'true'
+      when not provided. :code:`<br>`:code:`<br>`Minimum api-version:
+      2020-06-01.
+  returned: always
+  type: bool
+  sample: null
+
+'''
 
 import time
 import json
@@ -103,10 +234,12 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             host_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -114,7 +247,8 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
             ),
             zones=dict(
                 type='list',
-                disposition='/zones'
+                disposition='/zones',
+                elements='str'
             ),
             platform_fault_domain_count=dict(
                 type='integer',
@@ -198,14 +332,9 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.dedicated_host_groups.create(resource_group_name=self.resource_group_name,
-                                                                         host_group_name=self.host_group_name,
-                                                                         parameters=self.body)
-            else:
-                response = self.mgmt_client.dedicated_host_groups.update(resource_group_name=self.resource_group_name,
-                                                                         host_group_name=self.host_group_name,
-                                                                         parameters=self.body)
+            response = self.mgmt_client.dedicated_host_groups.create_or_update(resource_group_name=self.resource_group_name,
+                                                                               host_group_name=self.host_group_name,
+                                                                               parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -224,7 +353,6 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.dedicated_host_groups.get(resource_group_name=self.resource_group_name,
                                                                   host_group_name=self.host_group_name,

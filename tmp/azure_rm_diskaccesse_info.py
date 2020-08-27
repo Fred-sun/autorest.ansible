@@ -40,6 +40,276 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Get information about a disk access resource with private endpoints.
+      azure_rm_diskaccesse_info: 
+        disk_access_name: myDiskAccess
+        resource_group_name: myResourceGroup
+        
+
+    - name: Get information about a disk access resource.
+      azure_rm_diskaccesse_info: 
+        disk_access_name: myDiskAccess
+        resource_group_name: myResourceGroup
+        
+
+    - name: List all disk access resources in a resource group.
+      azure_rm_diskaccesse_info: 
+        resource_group_name: myResourceGroup
+        
+
+    - name: List all disk access resources in a subscription.
+      azure_rm_diskaccesse_info: 
+        {}
+        
+
+    - name: List all possible private link resources under disk access resource.
+      azure_rm_diskaccesse_info: 
+        disk_access_name: myDiskAccess
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+disk_accesses:
+  description: >-
+    A list of dict results where the key is the name of the DiskAccesse and the
+    values are the facts for that DiskAccesse.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    private_endpoint_connections:
+      description:
+        - >-
+          A readonly collection of private endpoint connections created on the
+          disk. Currently only one endpoint connection is supported.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - private endpoint connection Id
+          returned: always
+          type: str
+          sample: null
+        name:
+          description:
+            - private endpoint connection name
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - private endpoint connection type
+          returned: always
+          type: str
+          sample: null
+        private_endpoint:
+          description:
+            - The resource of private end point.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            id:
+              description:
+                - The ARM identifier for Private Endpoint
+              returned: always
+              type: str
+              sample: null
+        private_link_service_connection_state:
+          description:
+            - >-
+              A collection of information about the state of the connection
+              between DiskAccess and Virtual Network.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            status:
+              description:
+                - >-
+                  Indicates whether the connection has been
+                  Approved/Rejected/Removed by the owner of the service.
+              returned: always
+              type: choice
+              sample: null
+            description:
+              description:
+                - The reason for approval/rejection of the connection.
+              returned: always
+              type: str
+              sample: null
+            actions_required:
+              description:
+                - >-
+                  A message indicating if changes on the service provider
+                  require any updates on the consumer.
+              returned: always
+              type: str
+              sample: null
+        provisioning_state:
+          description:
+            - >-
+              The provisioning state of the private endpoint connection
+              resource.
+          returned: always
+          type: choice
+          sample: null
+    provisioning_state:
+      description:
+        - The disk access resource provisioning state.
+      returned: always
+      type: str
+      sample: null
+    time_created:
+      description:
+        - The time when the disk access was created.
+      returned: always
+      type: str
+      sample: null
+    value:
+      description:
+        - |-
+          A list of disk access resources.
+          Array of private link resources
+      returned: always
+      type: list
+      sample: null
+      contains:
+        private_endpoint_connections:
+          description:
+            - >-
+              A readonly collection of private endpoint connections created on
+              the disk. Currently only one endpoint connection is supported.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            id:
+              description:
+                - private endpoint connection Id
+              returned: always
+              type: str
+              sample: null
+            name:
+              description:
+                - private endpoint connection name
+              returned: always
+              type: str
+              sample: null
+            type:
+              description:
+                - private endpoint connection type
+              returned: always
+              type: str
+              sample: null
+            private_endpoint:
+              description:
+                - The resource of private end point.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                id:
+                  description:
+                    - The ARM identifier for Private Endpoint
+                  returned: always
+                  type: str
+                  sample: null
+            private_link_service_connection_state:
+              description:
+                - >-
+                  A collection of information about the state of the connection
+                  between DiskAccess and Virtual Network.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                status:
+                  description:
+                    - >-
+                      Indicates whether the connection has been
+                      Approved/Rejected/Removed by the owner of the service.
+                  returned: always
+                  type: choice
+                  sample: null
+                description:
+                  description:
+                    - The reason for approval/rejection of the connection.
+                  returned: always
+                  type: str
+                  sample: null
+                actions_required:
+                  description:
+                    - >-
+                      A message indicating if changes on the service provider
+                      require any updates on the consumer.
+                  returned: always
+                  type: str
+                  sample: null
+            provisioning_state:
+              description:
+                - >-
+                  The provisioning state of the private endpoint connection
+                  resource.
+              returned: always
+              type: choice
+              sample: null
+        provisioning_state:
+          description:
+            - The disk access resource provisioning state.
+          returned: always
+          type: str
+          sample: null
+        time_created:
+          description:
+            - The time when the disk access was created.
+          returned: always
+          type: str
+          sample: null
+    next_link:
+      description:
+        - >-
+          The uri to fetch the next page of disk access resources. Call
+          ListNext() with this to fetch the next page of disk access resources.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

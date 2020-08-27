@@ -21,11 +21,6 @@ short_description: Manage Azure VirtualMachineSize instance.
 description:
   - 'Create, update and delete instance of Azure VirtualMachineSize.'
 options:
-  location:
-    description:
-      - The location upon which virtual-machine-sizes is queried.
-    required: true
-    type: str
   state:
     description:
       - Assert the state of the VirtualMachineSize.
@@ -43,6 +38,13 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+{}
+
+'''
 
 import time
 import json
@@ -66,10 +68,7 @@ class Actions:
 class AzureRMVirtualMachineSize(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            location=dict(
-                type='str',
-                required=True
-            ),
+            undefined,
             state=dict(
                 type='str',
                 default='present',
@@ -77,7 +76,6 @@ class AzureRMVirtualMachineSize(AzureRMModuleBaseExt):
             )
         )
 
-        self.location = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -139,7 +137,10 @@ class AzureRMVirtualMachineSize(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtual_machine_sizes.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.virtual_machine_sizes.create()
+            else:
+                response = self.mgmt_client.virtual_machine_sizes.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -157,7 +158,6 @@ class AzureRMVirtualMachineSize(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.virtual_machine_sizes.get()
         except CloudError as e:

@@ -38,6 +38,9 @@ options:
       - >-
         The name of the gallery Application Definition in which the Application
         Version resides.
+      - >-
+        The name of the Shared Application Gallery Application Definition from
+        which the Application Versions are to be listed.
     required: true
     type: str
   gallery_application_version_name:
@@ -55,6 +58,493 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Get a gallery Application Version with replication status.
+      azure_rm_galleryapplicationversion_info: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_application_version_name: 1.0.0
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Get a gallery Application Version.
+      azure_rm_galleryapplicationversion_info: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_application_version_name: 1.0.0
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: List gallery Application Versions in a gallery Application Definition.
+      azure_rm_galleryapplicationversion_info: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+gallery_application_versions:
+  description: >-
+    A list of dict results where the key is the name of the
+    GalleryApplicationVersion and the values are the facts for that
+    GalleryApplicationVersion.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    provisioning_state:
+      description:
+        - 'The provisioning state, which only appears in the response.'
+      returned: always
+      type: choice
+      sample: null
+    replication_status:
+      description:
+        - This is the replication status of the gallery Image Version.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        aggregated_state:
+          description:
+            - >-
+              This is the aggregated replication status based on all the
+              regional replication status flags.
+          returned: always
+          type: choice
+          sample: null
+        summary:
+          description:
+            - This is a summary of replication status for each region.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            region:
+              description:
+                - >-
+                  The region to which the gallery Image Version is being
+                  replicated to.
+              returned: always
+              type: str
+              sample: null
+            state:
+              description:
+                - This is the regional replication state.
+              returned: always
+              type: choice
+              sample: null
+            details:
+              description:
+                - The details of the replication status.
+              returned: always
+              type: str
+              sample: null
+            progress:
+              description:
+                - It indicates progress of the replication job.
+              returned: always
+              type: integer
+              sample: null
+    target_regions:
+      description:
+        - >-
+          The target regions where the Image Version is going to be replicated
+          to. This property is updatable.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        name:
+          description:
+            - The name of the region.
+          returned: always
+          type: str
+          sample: null
+        regional_replica_count:
+          description:
+            - >-
+              The number of replicas of the Image Version to be created per
+              region. This property is updatable.
+          returned: always
+          type: integer
+          sample: null
+        storage_account_type:
+          description:
+            - >-
+              Specifies the storage account type to be used to store the image.
+              This property is not updatable.
+          returned: always
+          type: choice
+          sample: null
+        encryption:
+          description:
+            - >-
+              Optional. Allows users to provide customer managed keys for
+              encrypting the OS and data disks in the gallery artifact.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            os_disk_image:
+              description:
+                - This is the disk image encryption base class.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                disk_encryption_set_id:
+                  description:
+                    - >-
+                      A relative URI containing the resource ID of the disk
+                      encryption set.
+                  returned: always
+                  type: str
+                  sample: null
+            data_disk_images:
+              description:
+                - A list of encryption specifications for data disk images.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                lun:
+                  description:
+                    - >-
+                      This property specifies the logical unit number of the
+                      data disk. This value is used to identify data disks
+                      within the Virtual Machine and therefore must be unique
+                      for each data disk attached to the Virtual Machine.
+                  returned: always
+                  type: integer
+                  sample: null
+    replica_count:
+      description:
+        - >-
+          The number of replicas of the Image Version to be created per region.
+          This property would take effect for a region when regionalReplicaCount
+          is not specified. This property is updatable.
+      returned: always
+      type: integer
+      sample: null
+    exclude_from_latest:
+      description:
+        - >-
+          If set to true, Virtual Machines deployed from the latest version of
+          the Image Definition won't use this Image Version.
+      returned: always
+      type: bool
+      sample: null
+    published_date:
+      description:
+        - The timestamp for when the gallery Image Version is published.
+      returned: always
+      type: str
+      sample: null
+    end_of_life_date:
+      description:
+        - >-
+          The end of life date of the gallery Image Version. This property can
+          be used for decommissioning purposes. This property is updatable.
+      returned: always
+      type: str
+      sample: null
+    storage_account_type:
+      description:
+        - >-
+          Specifies the storage account type to be used to store the image. This
+          property is not updatable.
+      returned: always
+      type: choice
+      sample: null
+    source:
+      description:
+        - The source image from which the Image Version is going to be created.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        file_name:
+          description:
+            - Required. The fileName of the artifact.
+          returned: always
+          type: str
+          sample: null
+        media_link:
+          description:
+            - >-
+              Required. The mediaLink of the artifact, must be a readable
+              storage blob.
+          returned: always
+          type: str
+          sample: null
+    content_type:
+      description:
+        - >-
+          Optional. May be used to help process this file. The type of file
+          contained in the source, e.g. zip, json, etc.
+      returned: always
+      type: str
+      sample: null
+    enable_health_check:
+      description:
+        - Optional. Whether or not this application reports health.
+      returned: always
+      type: bool
+      sample: null
+    value:
+      description:
+        - A list of gallery Application Versions.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        provisioning_state:
+          description:
+            - 'The provisioning state, which only appears in the response.'
+          returned: always
+          type: choice
+          sample: null
+        replication_status:
+          description:
+            - This is the replication status of the gallery Image Version.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            aggregated_state:
+              description:
+                - >-
+                  This is the aggregated replication status based on all the
+                  regional replication status flags.
+              returned: always
+              type: choice
+              sample: null
+            summary:
+              description:
+                - This is a summary of replication status for each region.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                region:
+                  description:
+                    - >-
+                      The region to which the gallery Image Version is being
+                      replicated to.
+                  returned: always
+                  type: str
+                  sample: null
+                state:
+                  description:
+                    - This is the regional replication state.
+                  returned: always
+                  type: choice
+                  sample: null
+                details:
+                  description:
+                    - The details of the replication status.
+                  returned: always
+                  type: str
+                  sample: null
+                progress:
+                  description:
+                    - It indicates progress of the replication job.
+                  returned: always
+                  type: integer
+                  sample: null
+        target_regions:
+          description:
+            - >-
+              The target regions where the Image Version is going to be
+              replicated to. This property is updatable.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            name:
+              description:
+                - The name of the region.
+              returned: always
+              type: str
+              sample: null
+            regional_replica_count:
+              description:
+                - >-
+                  The number of replicas of the Image Version to be created per
+                  region. This property is updatable.
+              returned: always
+              type: integer
+              sample: null
+            storage_account_type:
+              description:
+                - >-
+                  Specifies the storage account type to be used to store the
+                  image. This property is not updatable.
+              returned: always
+              type: choice
+              sample: null
+            encryption:
+              description:
+                - >-
+                  Optional. Allows users to provide customer managed keys for
+                  encrypting the OS and data disks in the gallery artifact.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                os_disk_image:
+                  description:
+                    - This is the disk image encryption base class.
+                  returned: always
+                  type: dict
+                  sample: null
+                  contains:
+                    disk_encryption_set_id:
+                      description:
+                        - >-
+                          A relative URI containing the resource ID of the disk
+                          encryption set.
+                      returned: always
+                      type: str
+                      sample: null
+                data_disk_images:
+                  description:
+                    - A list of encryption specifications for data disk images.
+                  returned: always
+                  type: list
+                  sample: null
+                  contains:
+                    lun:
+                      description:
+                        - >-
+                          This property specifies the logical unit number of the
+                          data disk. This value is used to identify data disks
+                          within the Virtual Machine and therefore must be
+                          unique for each data disk attached to the Virtual
+                          Machine.
+                      returned: always
+                      type: integer
+                      sample: null
+        replica_count:
+          description:
+            - >-
+              The number of replicas of the Image Version to be created per
+              region. This property would take effect for a region when
+              regionalReplicaCount is not specified. This property is updatable.
+          returned: always
+          type: integer
+          sample: null
+        exclude_from_latest:
+          description:
+            - >-
+              If set to true, Virtual Machines deployed from the latest version
+              of the Image Definition won't use this Image Version.
+          returned: always
+          type: bool
+          sample: null
+        published_date:
+          description:
+            - The timestamp for when the gallery Image Version is published.
+          returned: always
+          type: str
+          sample: null
+        end_of_life_date:
+          description:
+            - >-
+              The end of life date of the gallery Image Version. This property
+              can be used for decommissioning purposes. This property is
+              updatable.
+          returned: always
+          type: str
+          sample: null
+        storage_account_type:
+          description:
+            - >-
+              Specifies the storage account type to be used to store the image.
+              This property is not updatable.
+          returned: always
+          type: choice
+          sample: null
+        source:
+          description:
+            - >-
+              The source image from which the Image Version is going to be
+              created.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            file_name:
+              description:
+                - Required. The fileName of the artifact.
+              returned: always
+              type: str
+              sample: null
+            media_link:
+              description:
+                - >-
+                  Required. The mediaLink of the artifact, must be a readable
+                  storage blob.
+              returned: always
+              type: str
+              sample: null
+        content_type:
+          description:
+            - >-
+              Optional. May be used to help process this file. The type of file
+              contained in the source, e.g. zip, json, etc.
+          returned: always
+          type: str
+          sample: null
+        enable_health_check:
+          description:
+            - Optional. Whether or not this application reports health.
+          returned: always
+          type: bool
+          sample: null
+    next_link:
+      description:
+        - >-
+          The uri to fetch the next page of gallery Application Versions. Call
+          ListNext() with this to fetch the next page of gallery Application
+          Versions.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

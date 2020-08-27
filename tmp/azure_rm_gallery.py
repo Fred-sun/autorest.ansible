@@ -24,6 +24,7 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   gallery_name:
     description:
@@ -31,6 +32,8 @@ options:
         The name of the Shared Image Gallery. The allowed characters are
         alphabets and numbers with dots and periods allowed in the middle. The
         maximum length is 80 characters.
+      - The name of the Shared Image Gallery to be deleted.
+    required: true
     type: str
   location:
     description:
@@ -70,6 +73,103 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create or update a simple gallery.
+      azure_rm_gallery: 
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          description: This is the gallery description.
+        
+
+    - name: Update a simple gallery.
+      azure_rm_gallery: 
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        properties:
+          description: This is the gallery description.
+        
+
+    - name: Delete a gallery.
+      azure_rm_gallery: 
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Create or update a simple gallery.
+      azure_rm_gallery: 
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          description: This is the gallery description.
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+description:
+  description:
+    - >-
+      The description of this Shared Image Gallery resource. This property is
+      updatable.
+  returned: always
+  type: str
+  sample: null
+identifier:
+  description:
+    - Describes the gallery unique name.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    unique_name:
+      description:
+        - >-
+          The unique name of the Shared Image Gallery. This name is generated
+          automatically by Azure.
+      returned: always
+      type: str
+      sample: null
+provisioning_state:
+  description:
+    - 'The provisioning state, which only appears in the response.'
+  returned: always
+  type: choice
+  sample: null
+
+'''
 
 import time
 import json
@@ -94,10 +194,12 @@ class AzureRMGallery(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             gallery_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -188,14 +290,9 @@ class AzureRMGallery(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.galleries.create(resource_group_name=self.resource_group_name,
-                                                             gallery_name=self.gallery_name,
-                                                             gallery=self.body)
-            else:
-                response = self.mgmt_client.galleries.update(resource_group_name=self.resource_group_name,
-                                                             gallery_name=self.gallery_name,
-                                                             gallery=self.body)
+            response = self.mgmt_client.galleries.create_or_update(resource_group_name=self.resource_group_name,
+                                                                   gallery_name=self.gallery_name,
+                                                                   gallery=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -214,7 +311,6 @@ class AzureRMGallery(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.galleries.get(resource_group_name=self.resource_group_name,
                                                       gallery_name=self.gallery_name)

@@ -24,10 +24,12 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   proximity_placement_group_name:
     description:
       - The name of the proximity placement group.
+    required: true
     type: str
   location:
     description:
@@ -91,6 +93,271 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create or Update a proximity placement group.
+      azure_rm_proximityplacementgroup: 
+        proximity_placement_group_name: myProximityPlacementGroup
+        resource_group_name: myResourceGroup
+        location: westus
+        properties:
+          proximity_placement_group_type: Standard
+        
+
+    - name: Create a proximity placement group.
+      azure_rm_proximityplacementgroup: 
+        proximity_placement_group_name: myProximityPlacementGroup
+        resource_group_name: myResourceGroup
+        tags:
+          additional_prop1: string
+        
+
+    - name: Create a proximity placement group.
+      azure_rm_proximityplacementgroup: 
+        proximity_placement_group_name: myProximityPlacementGroup
+        resource_group_name: myResourceGroup
+        
+
+    - name: Create or Update a proximity placement group.
+      azure_rm_proximityplacementgroup: 
+        proximity_placement_group_name: myProximityPlacementGroup
+        resource_group_name: myResourceGroup
+        location: westus
+        properties:
+          proximity_placement_group_type: Standard
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+proximity_placement_group_type:
+  description:
+    - >-
+      Specifies the type of the proximity placement group.
+      :code:`<br>`:code:`<br>` Possible values are: :code:`<br>`:code:`<br>`
+      **Standard** : Co-locate resources within an Azure region or Availability
+      Zone. :code:`<br>`:code:`<br>` **Ultra** : For future use.
+  returned: always
+  type: choice
+  sample: null
+virtual_machines:
+  description:
+    - >-
+      A list of references to all virtual machines in the proximity placement
+      group.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    colocation_status:
+      description:
+        - >-
+          Describes colocation status of a resource in the Proximity Placement
+          Group.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        code:
+          description:
+            - The status code.
+          returned: always
+          type: str
+          sample: null
+        level:
+          description:
+            - The level code.
+          returned: always
+          type: sealed-choice
+          sample: null
+        display_status:
+          description:
+            - The short localizable label for the status.
+          returned: always
+          type: str
+          sample: null
+        message:
+          description:
+            - >-
+              The detailed status message, including for alerts and error
+              messages.
+          returned: always
+          type: str
+          sample: null
+        time:
+          description:
+            - The time of the status.
+          returned: always
+          type: str
+          sample: null
+virtual_machine_scale_sets:
+  description:
+    - >-
+      A list of references to all virtual machine scale sets in the proximity
+      placement group.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    colocation_status:
+      description:
+        - >-
+          Describes colocation status of a resource in the Proximity Placement
+          Group.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        code:
+          description:
+            - The status code.
+          returned: always
+          type: str
+          sample: null
+        level:
+          description:
+            - The level code.
+          returned: always
+          type: sealed-choice
+          sample: null
+        display_status:
+          description:
+            - The short localizable label for the status.
+          returned: always
+          type: str
+          sample: null
+        message:
+          description:
+            - >-
+              The detailed status message, including for alerts and error
+              messages.
+          returned: always
+          type: str
+          sample: null
+        time:
+          description:
+            - The time of the status.
+          returned: always
+          type: str
+          sample: null
+availability_sets:
+  description:
+    - >-
+      A list of references to all availability sets in the proximity placement
+      group.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    colocation_status:
+      description:
+        - >-
+          Describes colocation status of a resource in the Proximity Placement
+          Group.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        code:
+          description:
+            - The status code.
+          returned: always
+          type: str
+          sample: null
+        level:
+          description:
+            - The level code.
+          returned: always
+          type: sealed-choice
+          sample: null
+        display_status:
+          description:
+            - The short localizable label for the status.
+          returned: always
+          type: str
+          sample: null
+        message:
+          description:
+            - >-
+              The detailed status message, including for alerts and error
+              messages.
+          returned: always
+          type: str
+          sample: null
+        time:
+          description:
+            - The time of the status.
+          returned: always
+          type: str
+          sample: null
+colocation_status:
+  description:
+    - Describes colocation status of the Proximity Placement Group.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    code:
+      description:
+        - The status code.
+      returned: always
+      type: str
+      sample: null
+    level:
+      description:
+        - The level code.
+      returned: always
+      type: sealed-choice
+      sample: null
+    display_status:
+      description:
+        - The short localizable label for the status.
+      returned: always
+      type: str
+      sample: null
+    message:
+      description:
+        - 'The detailed status message, including for alerts and error messages.'
+      returned: always
+      type: str
+      sample: null
+    time:
+      description:
+        - The time of the status.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json
@@ -115,10 +382,12 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             proximity_placement_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -228,14 +497,9 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.proximity_placement_groups.create(resource_group_name=self.resource_group_name,
-                                                                              proximity_placement_group_name=self.proximity_placement_group_name,
-                                                                              parameters=self.body)
-            else:
-                response = self.mgmt_client.proximity_placement_groups.update(resource_group_name=self.resource_group_name,
-                                                                              proximity_placement_group_name=self.proximity_placement_group_name,
-                                                                              parameters=self.body)
+            response = self.mgmt_client.proximity_placement_groups.create_or_update(resource_group_name=self.resource_group_name,
+                                                                                    proximity_placement_group_name=self.proximity_placement_group_name,
+                                                                                    parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -254,7 +518,6 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.proximity_placement_groups.get(resource_group_name=self.resource_group_name,
                                                                        proximity_placement_group_name=self.proximity_placement_group_name,

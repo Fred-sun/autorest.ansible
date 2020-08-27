@@ -1,6 +1,7 @@
 import {ModuleOption} from "./ModuleOption";
 import {ModuleMethod} from "./ModuleMethod";
 import {ToSnakeCase} from "../../utils/helper";
+import {ModuleExample} from "./ModuleExample";
 
 export class Module {
     // constructor(swaggerName:string, isInfoModule:boolean) {
@@ -18,6 +19,7 @@ export class Module {
     private Init(swaggerModule: any){
         this.SwaggerName = swaggerModule["$key"];
         this.GetObjectName(swaggerModule["$key"]);
+        this.ObjectNamePythonized = ToSnakeCase(this.ObjectName);
         this.GetModuleClassName();
         this.GetModuleName();
         this.ModuleOperationName = ToSnakeCase(swaggerModule["$key"]);
@@ -25,12 +27,65 @@ export class Module {
         if (!this.IsInfoModule)
             this.GetBaseCRUDUrl();
         this.GetSpecOptions();
+        this.GetResponseFields();
+        this.LoadExamples();
         this.ModuleApiVersion = swaggerModule.operations[0].apiVersions[0].version;
     }
+
+    private LoadExamples(){
+        for (let method of this.ModuleMethods){
+            if (method.Name == "Get" && !this.IsInfoModule)
+                continue;
+            if (method.SwaggerMethod.extensions != null && method.SwaggerMethod.extensions['x-ms-examples'] != null){
+                let examples = method.SwaggerMethod.extensions['x-ms-examples'];
+                for (let name in examples){
+                    if (!this.HasExample(name)){
+                        let moduleExample = new ModuleExample(name, examples[name] ,method);
+                        this.ModuleExamples.push(moduleExample);
+                    }
+                }
+            }
+        }
+    }
+
+    private HasExample(name: string){
+        for (let example of this.ModuleExamples)
+            if (example.Name == name)
+                return true;
+        return false;
+    }
+
+    private GetResponseFields(){
+        for (let method of this.ModuleMethods){
+            for (let option of method.ResponseOptions){
+                let moduleOption = this.GetResponseOption(option.Name);
+                if (moduleOption != null){
+                    if (moduleOption.Documentation.indexOf(option.Documentation) == -1)
+                        moduleOption.Documentation = moduleOption.Documentation + "\n" + option.Documentation;
+                }
+                else
+                    this.ModuleResponseFields.push(option);
+            }
+        }
+    }
+
+    private GetResponseOption(name:string){
+        for (let option of this.ModuleResponseFields){
+            if (option.Name == name)
+                return option;
+        }
+        return null;
+    }
+
     private GetSpecOptions(){
         for (let method of this.ModuleMethods){
             for (let option of method.Options){
-                if (!this.ModuleOptionExist(option.Name))
+                let moduleOption = this.GetModuleOption(option.Name);
+                if (moduleOption != null){
+                    if (moduleOption.Documentation.indexOf(option.Documentation) == -1)
+                        moduleOption.Documentation = moduleOption.Documentation + "\n" + option.Documentation;
+                }
+                else
                     this.ModuleOptions.push(option);
             }
         }
@@ -108,12 +163,12 @@ export class Module {
         }
         this.ObjectName = name;
     }
-    private ModuleOptionExist(name: string):boolean{
+    private GetModuleOption(name: string):ModuleOption{
         for (let option of this.ModuleOptions){
             if (option.Name == name)
-                return true;
+                return option;
         }
-        return false;
+        return null;
     }
     public SwaggerName: string = null;
     public ModuleName: string = null;
@@ -132,11 +187,10 @@ export class Module {
     public NeedsDeleteBeforeUpdate: boolean = false;
     public NeedsForceUpdate: boolean;
     public ModuleOperationName: string = null;
-    public ModuleUrl: string = null;
     public ObjectNamePythonized: string = null;
     public ModuleResponseFields: ModuleOption[] = [];
     public IsInfoModule: boolean = false;
-
+    public ModuleExamples: ModuleExample[] = [];
 
     public GetMethod(methodName:string): ModuleMethod{
         for (let method of this.ModuleMethods){

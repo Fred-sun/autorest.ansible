@@ -24,10 +24,12 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   ssh_public_key_name:
     description:
       - The name of the SSH public key.
+    required: true
     type: str
   location:
     description:
@@ -59,6 +61,62 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create a new SSH public key resource.
+      azure_rm_sshpublickey: 
+        resource_group_name: myResourceGroup
+        ssh_public_key_name: mySshPublicKeyName
+        location: westus
+        properties:
+          public_key: '{ssh-rsa public key}'
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+public_key:
+  description:
+    - >-
+      SSH public key used to authenticate to a virtual machine through ssh. If
+      this property is not initially provided when the resource is created, the
+      publicKey property will be populated when generateKeyPair is called. If
+      the public key is provided upon resource creation, the provided public key
+      needs to be at least 2048-bit and in ssh-rsa format.
+  returned: always
+  type: str
+  sample: null
+
+'''
 
 import time
 import json
@@ -83,10 +141,12 @@ class AzureRMSshPublicKey(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             ssh_public_key_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -166,7 +226,14 @@ class AzureRMSshPublicKey(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.ssh_public_keys.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.ssh_public_keys.create(resource_group_name=self.resource_group_name,
+                                                                   ssh_public_key_name=self.ssh_public_key_name,
+                                                                   parameters=self.body)
+            else:
+                response = self.mgmt_client.ssh_public_keys.update(resource_group_name=self.resource_group_name,
+                                                                   ssh_public_key_name=self.ssh_public_key_name,
+                                                                   parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -185,7 +252,6 @@ class AzureRMSshPublicKey(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.ssh_public_keys.get(resource_group_name=self.resource_group_name,
                                                             ssh_public_key_name=self.ssh_public_key_name)

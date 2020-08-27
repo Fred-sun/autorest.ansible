@@ -37,6 +37,296 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: GetConfigurations
+      azure_rm_provideroperationsmetadata_info: 
+        resource_provider_namespace: resourceProviderNamespace
+        
+
+'''
+
+RETURN = '''
+provider_operations_metadata:
+  description: >-
+    A list of dict results where the key is the name of the
+    ProviderOperationsMetadata and the values are the facts for that
+    ProviderOperationsMetadata.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - The provider id.
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The provider name.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - The provider type.
+      returned: always
+      type: str
+      sample: null
+    display_name:
+      description:
+        - The provider display name.
+      returned: always
+      type: str
+      sample: null
+    resource_types:
+      description:
+        - The provider resource types
+      returned: always
+      type: list
+      sample: null
+      contains:
+        name:
+          description:
+            - The resource type name.
+          returned: always
+          type: str
+          sample: null
+        display_name:
+          description:
+            - The resource type display name.
+          returned: always
+          type: str
+          sample: null
+        operations:
+          description:
+            - The resource type operations.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            name:
+              description:
+                - The operation name.
+              returned: always
+              type: str
+              sample: null
+            display_name:
+              description:
+                - The operation display name.
+              returned: always
+              type: str
+              sample: null
+            description:
+              description:
+                - The operation description.
+              returned: always
+              type: str
+              sample: null
+            origin:
+              description:
+                - The operation origin.
+              returned: always
+              type: str
+              sample: null
+            properties:
+              description:
+                - The operation properties.
+              returned: always
+              type: any
+              sample: null
+            is_data_action:
+              description:
+                - The dataAction flag to specify the operation type.
+              returned: always
+              type: bool
+              sample: null
+    operations:
+      description:
+        - The provider operations.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        name:
+          description:
+            - The operation name.
+          returned: always
+          type: str
+          sample: null
+        display_name:
+          description:
+            - The operation display name.
+          returned: always
+          type: str
+          sample: null
+        description:
+          description:
+            - The operation description.
+          returned: always
+          type: str
+          sample: null
+        origin:
+          description:
+            - The operation origin.
+          returned: always
+          type: str
+          sample: null
+        properties:
+          description:
+            - The operation properties.
+          returned: always
+          type: any
+          sample: null
+        is_data_action:
+          description:
+            - The dataAction flag to specify the operation type.
+          returned: always
+          type: bool
+          sample: null
+    value:
+      description:
+        - The list of providers.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - The provider id.
+          returned: always
+          type: str
+          sample: null
+        name:
+          description:
+            - The provider name.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - The provider type.
+          returned: always
+          type: str
+          sample: null
+        display_name:
+          description:
+            - The provider display name.
+          returned: always
+          type: str
+          sample: null
+        resource_types:
+          description:
+            - The provider resource types
+          returned: always
+          type: list
+          sample: null
+          contains:
+            name:
+              description:
+                - The resource type name.
+              returned: always
+              type: str
+              sample: null
+            display_name:
+              description:
+                - The resource type display name.
+              returned: always
+              type: str
+              sample: null
+            operations:
+              description:
+                - The resource type operations.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                name:
+                  description:
+                    - The operation name.
+                  returned: always
+                  type: str
+                  sample: null
+                display_name:
+                  description:
+                    - The operation display name.
+                  returned: always
+                  type: str
+                  sample: null
+                description:
+                  description:
+                    - The operation description.
+                  returned: always
+                  type: str
+                  sample: null
+                origin:
+                  description:
+                    - The operation origin.
+                  returned: always
+                  type: str
+                  sample: null
+                properties:
+                  description:
+                    - The operation properties.
+                  returned: always
+                  type: any
+                  sample: null
+                is_data_action:
+                  description:
+                    - The dataAction flag to specify the operation type.
+                  returned: always
+                  type: bool
+                  sample: null
+        operations:
+          description:
+            - The provider operations.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            name:
+              description:
+                - The operation name.
+              returned: always
+              type: str
+              sample: null
+            display_name:
+              description:
+                - The operation display name.
+              returned: always
+              type: str
+              sample: null
+            description:
+              description:
+                - The operation description.
+              returned: always
+              type: str
+              sample: null
+            origin:
+              description:
+                - The operation origin.
+              returned: always
+              type: str
+              sample: null
+            properties:
+              description:
+                - The operation properties.
+              returned: always
+              type: any
+              sample: null
+            is_data_action:
+              description:
+                - The dataAction flag to specify the operation type.
+              returned: always
+              type: bool
+              sample: null
+    next_link:
+      description:
+        - The URL to use for getting the next set of results.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

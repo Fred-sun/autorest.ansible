@@ -28,6 +28,62 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+operations:
+  description: >-
+    A list of dict results where the key is the name of the Operation and the
+    values are the facts for that Operation.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - The list of compute operations
+      returned: always
+      type: list
+      sample: null
+      contains:
+        origin:
+          description:
+            - The origin of the compute operation.
+          returned: always
+          type: str
+          sample: null
+        name:
+          description:
+            - The name of the compute operation.
+          returned: always
+          type: str
+          sample: null
+        operation:
+          description:
+            - The display name of the compute operation.
+          returned: always
+          type: str
+          sample: null
+        resource:
+          description:
+            - The display name of the resource the operation applies to.
+          returned: always
+          type: str
+          sample: null
+        description:
+          description:
+            - The description of the operation.
+          returned: always
+          type: str
+          sample: null
+        provider:
+          description:
+            - The resource provider for the operation.
+          returned: always
+          type: str
+          sample: null
+
+'''
 
 import time
 import json

@@ -31,6 +31,9 @@ options:
       - >-
         The name of the Shared Application Gallery from which the Application
         Definitions are to be retrieved.
+      - >-
+        The name of the Shared Application Gallery from which Application
+        Definitions are to be listed.
     required: true
     type: str
   gallery_application_name:
@@ -44,6 +47,168 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Get a gallery Application.
+      azure_rm_galleryapplication_info: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: List gallery Applications in a gallery.
+      azure_rm_galleryapplication_info: 
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+gallery_applications:
+  description: >-
+    A list of dict results where the key is the name of the GalleryApplication
+    and the values are the facts for that GalleryApplication.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    description:
+      description:
+        - >-
+          The description of this gallery Application Definition resource. This
+          property is updatable.
+      returned: always
+      type: str
+      sample: null
+    eula:
+      description:
+        - The Eula agreement for the gallery Application Definition.
+      returned: always
+      type: str
+      sample: null
+    privacy_statement_uri:
+      description:
+        - The privacy statement uri.
+      returned: always
+      type: str
+      sample: null
+    release_note_uri:
+      description:
+        - The release note uri.
+      returned: always
+      type: str
+      sample: null
+    end_of_life_date:
+      description:
+        - >-
+          The end of life date of the gallery Application Definition. This
+          property can be used for decommissioning purposes. This property is
+          updatable.
+      returned: always
+      type: str
+      sample: null
+    supported_os_type:
+      description:
+        - >-
+          This property allows you to specify the supported type of the OS that
+          application is built for. :code:`<br>`:code:`<br>` Possible values
+          are: :code:`<br>`:code:`<br>` **Windows** :code:`<br>`:code:`<br>`
+          **Linux**
+      returned: always
+      type: sealed-choice
+      sample: null
+    value:
+      description:
+        - A list of Gallery Applications.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        description:
+          description:
+            - >-
+              The description of this gallery Application Definition resource.
+              This property is updatable.
+          returned: always
+          type: str
+          sample: null
+        eula:
+          description:
+            - The Eula agreement for the gallery Application Definition.
+          returned: always
+          type: str
+          sample: null
+        privacy_statement_uri:
+          description:
+            - The privacy statement uri.
+          returned: always
+          type: str
+          sample: null
+        release_note_uri:
+          description:
+            - The release note uri.
+          returned: always
+          type: str
+          sample: null
+        end_of_life_date:
+          description:
+            - >-
+              The end of life date of the gallery Application Definition. This
+              property can be used for decommissioning purposes. This property
+              is updatable.
+          returned: always
+          type: str
+          sample: null
+        supported_os_type:
+          description:
+            - >-
+              This property allows you to specify the supported type of the OS
+              that application is built for. :code:`<br>`:code:`<br>` Possible
+              values are: :code:`<br>`:code:`<br>` **Windows**
+              :code:`<br>`:code:`<br>` **Linux**
+          returned: always
+          type: sealed-choice
+          sample: null
+    next_link:
+      description:
+        - >-
+          The uri to fetch the next page of Application Definitions in the
+          Application Gallery. Call ListNext() with this to fetch the next page
+          of gallery Application Definitions.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

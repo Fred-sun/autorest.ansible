@@ -8,10 +8,10 @@ import {
     ModuleTopLevelOptionsVariables,
     AppendModuleHeader,
     AppendModuleDocumentation,
-    // AppendModuleExamples,
+    AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
-    // AppendModuleReturnDoc,
+    AppendModuleReturnDoc,
     ModuleGenerateApiCall,
     AppendInfoModuleLogic
 } from "./AnsibleModuleCommon"
@@ -22,8 +22,8 @@ export function GenerateModuleSdkInfo(module: Module) : string[] {
 
     AppendModuleHeader(output);
     AppendModuleDocumentation(output, module, true, false);
-    // AppendModuleExamples(output, module, false);
-    // AppendModuleReturnDoc(output, module, true);
+    AppendModuleExamples(output, module, false);
+    AppendModuleReturnDoc(output, module, true);
 
     output.push("");
     output.push("import time");

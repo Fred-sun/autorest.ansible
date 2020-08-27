@@ -38,6 +38,13 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+{}
+
+'''
 
 import time
 import json

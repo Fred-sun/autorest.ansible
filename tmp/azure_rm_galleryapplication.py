@@ -31,6 +31,15 @@ options:
       - >-
         The name of the Shared Application Gallery in which the Application
         Definition is to be created.
+      - >-
+        The name of the Shared Application Gallery in which the Application
+        Definition is to be updated.
+      - >-
+        The name of the Shared Application Gallery from which the Application
+        Definitions are to be retrieved.
+      - >-
+        The name of the Shared Application Gallery in which the Application
+        Definition is to be deleted.
     required: true
     type: str
   gallery_application_name:
@@ -39,6 +48,13 @@ options:
         The name of the gallery Application Definition to be created or updated.
         The allowed characters are alphabets and numbers with dots, dashes, and
         periods allowed in the middle. The maximum length is 80 characters.
+      - >-
+        The name of the gallery Application Definition to be updated. The
+        allowed characters are alphabets and numbers with dots, dashes, and
+        periods allowed in the middle. The maximum length is 80 characters.
+      - The name of the gallery Application Definition to be retrieved.
+      - The name of the gallery Application Definition to be deleted.
+    required: true
     type: str
   location:
     description:
@@ -93,6 +109,113 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create or update a simple gallery Application.
+      azure_rm_galleryapplication: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Update a simple gallery Application.
+      azure_rm_galleryapplication: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Delete a gallery Application.
+      azure_rm_galleryapplication: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Create or update a simple gallery Application.
+      azure_rm_galleryapplication: 
+        gallery_application_name: myGalleryApplicationName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+description:
+  description:
+    - >-
+      The description of this gallery Application Definition resource. This
+      property is updatable.
+  returned: always
+  type: str
+  sample: null
+eula:
+  description:
+    - The Eula agreement for the gallery Application Definition.
+  returned: always
+  type: str
+  sample: null
+privacy_statement_uri:
+  description:
+    - The privacy statement uri.
+  returned: always
+  type: str
+  sample: null
+release_note_uri:
+  description:
+    - The release note uri.
+  returned: always
+  type: str
+  sample: null
+end_of_life_date:
+  description:
+    - >-
+      The end of life date of the gallery Application Definition. This property
+      can be used for decommissioning purposes. This property is updatable.
+  returned: always
+  type: str
+  sample: null
+supported_os_type:
+  description:
+    - >-
+      This property allows you to specify the supported type of the OS that
+      application is built for. :code:`<br>`:code:`<br>` Possible values are:
+      :code:`<br>`:code:`<br>` **Windows** :code:`<br>`:code:`<br>` **Linux**
+  returned: always
+  type: sealed-choice
+  sample: null
+
+'''
 
 import time
 import json
@@ -125,7 +248,8 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
                 required=True
             ),
             gallery_application_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -226,16 +350,10 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.gallery_applications.create(resource_group_name=self.resource_group_name,
-                                                                        gallery_name=self.gallery_name,
-                                                                        gallery_application_name=self.gallery_application_name,
-                                                                        gallery_application=self.body)
-            else:
-                response = self.mgmt_client.gallery_applications.update(resource_group_name=self.resource_group_name,
-                                                                        gallery_name=self.gallery_name,
-                                                                        gallery_application_name=self.gallery_application_name,
-                                                                        gallery_application=self.body)
+            response = self.mgmt_client.gallery_applications.create_or_update(resource_group_name=self.resource_group_name,
+                                                                              gallery_name=self.gallery_name,
+                                                                              gallery_application_name=self.gallery_application_name,
+                                                                              gallery_application=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -255,7 +373,6 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.gallery_applications.get(resource_group_name=self.resource_group_name,
                                                                  gallery_name=self.gallery_name,

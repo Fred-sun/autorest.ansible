@@ -18,6 +18,13 @@ export class ModuleMethod {
             this.LoadOption(swaggerMethod.requests[0].parameters);
         }else
             this.HasBody = false;
+        if (swaggerMethod.responses[0].schema != null){
+            if (swaggerMethod.responses[0].schema.parents != null && swaggerMethod.responses[0].schema.parents.all != null)
+                this.LoadResponseOption(swaggerMethod.responses[0].schema.parents.all[0].properties);
+            if (swaggerMethod.responses[0].schema.properties != null)
+                this.LoadResponseOption(swaggerMethod.responses[0].schema.properties);
+        }
+
 
     }
 
@@ -36,13 +43,28 @@ export class ModuleMethod {
             }
         }
     }
+
+    private LoadResponseOption(parameters: any){
+        for (let parameter of parameters){
+            let option = new ModuleOption(parameter, null);
+            this.ResponseOptions.push(option);
+        }
+    }
+
     private IsAnsibleIgnoredOption(name: string) : boolean
     {
         let ignoreOptions = new Set(['Apiversion','SubscriptionId', 'ApiVersion','subscriptionId', 'content_type','ContentType']);
         return name.indexOf('$') != -1 || name.indexOf('_') != -1 || ignoreOptions.has(name);
     }
-    public Name: string = null;
 
+    public GetOption(name: string){
+        for (let option of this.Options){
+            if (option.Name == name)
+                return option;
+        }
+        return null;
+    }
+    public Name: string = null;
     public Options: ModuleOption[] = [];
     public RequiredOptions: ModuleOption[] = [];
     public ResponseOptions: ModuleOption[] = [];

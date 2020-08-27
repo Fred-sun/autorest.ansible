@@ -24,6 +24,7 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   disk_name:
     description:
@@ -31,6 +32,7 @@ options:
         The name of the managed disk that is being created. The name can't be
         changed after the disk is created. Supported characters for the name are
         a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+    required: true
     type: str
   location:
     description:
@@ -43,6 +45,7 @@ options:
   os_type:
     description:
       - The Operating System type.
+      - the Operating System type.
     type: sealed-choice
   hyper_vgeneration:
     description:
@@ -150,6 +153,9 @@ options:
       - >-
         Encryption settings collection used for Azure Disk Encryption, can
         contain multiple encryption settings per disk or snapshot.
+      - >-
+        Encryption settings collection used be Azure Disk Encryption, can
+        contain multiple encryption settings per disk or snapshot.
     type: dict
     suboptions:
       enabled:
@@ -166,6 +172,44 @@ options:
         description:
           - 'A collection of encryption settings, one for each disk volume.'
         type: list
+        suboptions:
+          disk_encryption_key:
+            description:
+              - Key Vault Secret Url and vault id of the disk encryption key
+            type: dict
+            suboptions:
+              source_vault:
+                description:
+                  - Resource id of the KeyVault containing the key or secret
+                required: true
+                type: dict
+                suboptions:
+                  id:
+                    description:
+                      - Resource Id
+                    type: str
+              secret_url:
+                description:
+                  - Url pointing to a key or secret in KeyVault
+                required: true
+                type: str
+          key_encryption_key:
+            description:
+              - >-
+                Key Vault Key Url and vault id of the key encryption key.
+                KeyEncryptionKey is optional and when provided is used to unwrap
+                the disk encryption key.
+            type: dict
+            suboptions:
+              key_url:
+                description:
+                  - Url pointing to a key or secret in KeyVault
+                required: true
+                type: str
+              id:
+                description:
+                  - Resource Id
+                type: str
       encryption_settings_version:
         description:
           - >-
@@ -237,14 +281,6 @@ options:
     description:
       - The sku name.
     type: choice
-  access:
-    description:
-      - undefined
-    type: choice
-  duration_in_seconds:
-    description:
-      - Time duration in seconds until the SAS access expires.
-    type: integer
   state:
     description:
       - Assert the state of the Disk.
@@ -260,6 +296,651 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create a managed disk and associate with disk access resource.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Empty
+          disk_access_id: >-
+            /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/{existing-diskAccess-name}
+          disk_size_gb: 200
+          network_access_policy: AllowPrivate
+        
+
+    - name: Create a managed disk and associate with disk encryption set.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Empty
+          disk_size_gb: 200
+          encryption:
+            disk_encryption_set_id: >-
+              /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}
+        
+
+    - name: Create a managed disk by copying a snapshot.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Copy
+            source_resource_id: >-
+              subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot
+        
+
+    - name: Create a managed disk by importing an unmanaged blob from a different subscription.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Import
+            source_uri: 'https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd'
+            storage_account_id: >-
+              subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount
+        
+
+    - name: Create a managed disk by importing an unmanaged blob from the same subscription.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Import
+            source_uri: 'https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd'
+        
+
+    - name: Create a managed disk from a platform image.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: FromImage
+            image_reference:
+              id: >-
+                /Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/uswest/Publishers/Microsoft/ArtifactTypes/VMImage/Offers/{offer}
+          os_type: Windows
+        
+
+    - name: Create a managed disk from an existing managed disk in the same or different subscription.
+      azure_rm_disk: 
+        disk_name: myDisk2
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Copy
+            source_resource_id: >-
+              subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk1
+        
+
+    - name: Create a managed upload disk.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Upload
+            upload_size_bytes: 10737418752
+        
+
+    - name: Create an empty managed disk.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Empty
+          disk_size_gb: 200
+        
+
+    - name: Update managed disk to remove disk access resource association.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        properties:
+          network_access_policy: AllowAll
+        
+
+    - name: Create a managed disk and associate with disk access resource.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Empty
+          disk_access_id: >-
+            /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/{existing-diskAccess-name}
+          disk_size_gb: 200
+          network_access_policy: AllowPrivate
+        
+
+    - name: Create a managed disk and associate with disk encryption set.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Empty
+          disk_size_gb: 200
+          encryption:
+            disk_encryption_set_id: >-
+              /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}
+        
+
+    - name: Create a managed disk by copying a snapshot.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Copy
+            source_resource_id: >-
+              subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot
+        
+
+    - name: Create a managed disk by importing an unmanaged blob from a different subscription.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Import
+            source_uri: 'https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd'
+            storage_account_id: >-
+              subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount
+        
+
+    - name: Create a managed disk by importing an unmanaged blob from the same subscription.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Import
+            source_uri: 'https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd'
+        
+
+    - name: Create a managed disk from a platform image.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: FromImage
+            image_reference:
+              id: >-
+                /Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/uswest/Publishers/Microsoft/ArtifactTypes/VMImage/Offers/{offer}
+          os_type: Windows
+        
+
+    - name: Create a managed disk from an existing managed disk in the same or different subscription.
+      azure_rm_disk: 
+        disk_name: myDisk2
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Copy
+            source_resource_id: >-
+              subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk1
+        
+
+    - name: Create a managed upload disk.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Upload
+            upload_size_bytes: 10737418752
+        
+
+    - name: Create an empty managed disk.
+      azure_rm_disk: 
+        disk_name: myDisk
+        resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          creation_data:
+            create_option: Empty
+          disk_size_gb: 200
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+managed_by:
+  description:
+    - A relative URI containing the ID of the VM that has the disk attached.
+  returned: always
+  type: str
+  sample: null
+managed_by_extended:
+  description:
+    - >-
+      List of relative URIs containing the IDs of the VMs that have the disk
+      attached. maxShares should be set to a value greater than one for disks to
+      allow attaching them to multiple VMs.
+  returned: always
+  type: list
+  sample: null
+zones:
+  description:
+    - The Logical zone list for Disk.
+  returned: always
+  type: list
+  sample: null
+time_created:
+  description:
+    - The time when the disk was created.
+  returned: always
+  type: str
+  sample: null
+os_type:
+  description:
+    - The Operating System type.
+  returned: always
+  type: sealed-choice
+  sample: null
+hyper_vgeneration:
+  description:
+    - >-
+      The hypervisor generation of the Virtual Machine. Applicable to OS disks
+      only.
+  returned: always
+  type: choice
+  sample: null
+creation_data:
+  description:
+    - >-
+      Disk source information. CreationData information cannot be changed after
+      the disk has been created.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    create_option:
+      description:
+        - This enumerates the possible sources of a disk's creation.
+      returned: always
+      type: choice
+      sample: null
+    storage_account_id:
+      description:
+        - >-
+          Required if createOption is Import. The Azure Resource Manager
+          identifier of the storage account containing the blob to import as a
+          disk.
+      returned: always
+      type: str
+      sample: null
+    image_reference:
+      description:
+        - Disk source information.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        id:
+          description:
+            - >-
+              A relative uri containing either a Platform Image Repository or
+              user image reference.
+          returned: always
+          type: str
+          sample: null
+        lun:
+          description:
+            - >-
+              If the disk is created from an image's data disk, this is an index
+              that indicates which of the data disks in the image to use. For OS
+              disks, this field is null.
+          returned: always
+          type: integer
+          sample: null
+    gallery_image_reference:
+      description:
+        - >-
+          Required if creating from a Gallery Image. The id of the
+          ImageDiskReference will be the ARM id of the shared galley image
+          version from which to create a disk.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        id:
+          description:
+            - >-
+              A relative uri containing either a Platform Image Repository or
+              user image reference.
+          returned: always
+          type: str
+          sample: null
+        lun:
+          description:
+            - >-
+              If the disk is created from an image's data disk, this is an index
+              that indicates which of the data disks in the image to use. For OS
+              disks, this field is null.
+          returned: always
+          type: integer
+          sample: null
+    source_uri:
+      description:
+        - >-
+          If createOption is Import, this is the URI of a blob to be imported
+          into a managed disk.
+      returned: always
+      type: str
+      sample: null
+    source_resource_id:
+      description:
+        - >-
+          If createOption is Copy, this is the ARM id of the source snapshot or
+          disk.
+      returned: always
+      type: str
+      sample: null
+    source_unique_id:
+      description:
+        - >-
+          If this field is set, this is the unique id identifying the source of
+          this resource.
+      returned: always
+      type: str
+      sample: null
+    upload_size_bytes:
+      description:
+        - >-
+          If createOption is Upload, this is the size of the contents of the
+          upload including the VHD footer. This value should be between 20972032
+          (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32
+          TiB + 512 bytes for the VHD footer).
+      returned: always
+      type: integer
+      sample: null
+disk_size_gb:
+  description:
+    - >-
+      If creationData.createOption is Empty, this field is mandatory and it
+      indicates the size of the disk to create. If this field is present for
+      updates or creation with other options, it indicates a resize. Resizes are
+      only allowed if the disk is not attached to a running VM, and can only
+      increase the disk's size.
+  returned: always
+  type: integer
+  sample: null
+disk_size_bytes:
+  description:
+    - The size of the disk in bytes. This field is read only.
+  returned: always
+  type: integer
+  sample: null
+unique_id:
+  description:
+    - Unique Guid identifying the resource.
+  returned: always
+  type: str
+  sample: null
+encryption_settings_collection:
+  description:
+    - >-
+      Encryption settings collection used for Azure Disk Encryption, can contain
+      multiple encryption settings per disk or snapshot.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    enabled:
+      description:
+        - >-
+          Set this flag to true and provide DiskEncryptionKey and optional
+          KeyEncryptionKey to enable encryption. Set this flag to false and
+          remove DiskEncryptionKey and KeyEncryptionKey to disable encryption.
+          If EncryptionSettings is null in the request object, the existing
+          settings remain unchanged.
+      returned: always
+      type: bool
+      sample: null
+    encryption_settings:
+      description:
+        - 'A collection of encryption settings, one for each disk volume.'
+      returned: always
+      type: list
+      sample: null
+      contains:
+        disk_encryption_key:
+          description:
+            - Key Vault Secret Url and vault id of the disk encryption key
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            source_vault:
+              description:
+                - Resource id of the KeyVault containing the key or secret
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                id:
+                  description:
+                    - Resource Id
+                  returned: always
+                  type: str
+                  sample: null
+            secret_url:
+              description:
+                - Url pointing to a key or secret in KeyVault
+              returned: always
+              type: str
+              sample: null
+        key_encryption_key:
+          description:
+            - >-
+              Key Vault Key Url and vault id of the key encryption key.
+              KeyEncryptionKey is optional and when provided is used to unwrap
+              the disk encryption key.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            key_url:
+              description:
+                - Url pointing to a key or secret in KeyVault
+              returned: always
+              type: str
+              sample: null
+            id:
+              description:
+                - Resource Id
+              returned: always
+              type: str
+              sample: null
+    encryption_settings_version:
+      description:
+        - >-
+          Describes what type of encryption is used for the disks. Once this
+          field is set, it cannot be overwritten. '1.0' corresponds to Azure
+          Disk Encryption with AAD app.'1.1' corresponds to Azure Disk
+          Encryption.
+      returned: always
+      type: str
+      sample: null
+provisioning_state:
+  description:
+    - The disk provisioning state.
+  returned: always
+  type: str
+  sample: null
+disk_iops_read_write:
+  description:
+    - >-
+      The number of IOPS allowed for this disk; only settable for UltraSSD
+      disks. One operation can transfer between 4k and 256k bytes.
+  returned: always
+  type: integer
+  sample: null
+disk_mbps_read_write:
+  description:
+    - >-
+      The bandwidth allowed for this disk; only settable for UltraSSD disks.
+      MBps means millions of bytes per second - MB here uses the ISO notation,
+      of powers of 10.
+  returned: always
+  type: integer
+  sample: null
+disk_iops_read_only:
+  description:
+    - >-
+      The total number of IOPS that will be allowed across all VMs mounting the
+      shared disk as ReadOnly. One operation can transfer between 4k and 256k
+      bytes.
+  returned: always
+  type: integer
+  sample: null
+disk_mbps_read_only:
+  description:
+    - >-
+      The total throughput (MBps) that will be allowed across all VMs mounting
+      the shared disk as ReadOnly. MBps means millions of bytes per second - MB
+      here uses the ISO notation, of powers of 10.
+  returned: always
+  type: integer
+  sample: null
+disk_state:
+  description:
+    - The state of the disk.
+  returned: always
+  type: choice
+  sample: null
+encryption:
+  description:
+    - >-
+      Encryption property can be used to encrypt data at rest with customer
+      managed keys or platform managed keys.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    disk_encryption_set_id:
+      description:
+        - >-
+          ResourceId of the disk encryption set to use for enabling encryption
+          at rest.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - The type of key used to encrypt the data of the disk.
+      returned: always
+      type: choice
+      sample: null
+max_shares:
+  description:
+    - >-
+      The maximum number of VMs that can attach to the disk at the same time.
+      Value greater than one indicates a disk that can be mounted on multiple
+      VMs at the same time.
+  returned: always
+  type: integer
+  sample: null
+share_info:
+  description:
+    - >-
+      Details of the list of all VMs that have the disk attached. maxShares
+      should be set to a value greater than one for disks to allow attaching
+      them to multiple VMs.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    vm_uri:
+      description:
+        - A relative URI containing the ID of the VM that has the disk attached.
+      returned: always
+      type: str
+      sample: null
+network_access_policy:
+  description:
+    - Policy for accessing the disk via network.
+  returned: always
+  type: choice
+  sample: null
+disk_access_id:
+  description:
+    - ARM id of the DiskAccess resource for using private endpoints on disks.
+  returned: always
+  type: str
+  sample: null
+name_sku_name:
+  description:
+    - The sku name.
+  returned: always
+  type: choice
+  sample: null
+tier:
+  description:
+    - The sku tier.
+  returned: always
+  type: str
+  sample: null
+
+'''
 
 import time
 import json
@@ -284,10 +965,12 @@ class AzureRMDisk(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             disk_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -295,7 +978,8 @@ class AzureRMDisk(AzureRMModuleBaseExt):
             ),
             zones=dict(
                 type='list',
-                disposition='/zones'
+                disposition='/zones',
+                elements='str'
             ),
             os_type=dict(
                 type='sealed-choice',
@@ -382,7 +1066,47 @@ class AzureRMDisk(AzureRMModuleBaseExt):
                     ),
                     encryption_settings=dict(
                         type='list',
-                        disposition='encryption_settings'
+                        disposition='encryption_settings',
+                        elements='dict',
+                        options=dict(
+                            disk_encryption_key=dict(
+                                type='dict',
+                                disposition='disk_encryption_key',
+                                options=dict(
+                                    source_vault=dict(
+                                        type='dict',
+                                        disposition='source_vault',
+                                        required=True,
+                                        options=dict(
+                                            id=dict(
+                                                type='str',
+                                                disposition='id'
+                                            )
+                                        )
+                                    ),
+                                    secret_url=dict(
+                                        type='str',
+                                        disposition='secret_url',
+                                        required=True
+                                    )
+                                )
+                            ),
+                            key_encryption_key=dict(
+                                type='dict',
+                                disposition='key_encryption_key',
+                                options=dict(
+                                    key_url=dict(
+                                        type='str',
+                                        disposition='key_url',
+                                        required=True
+                                    ),
+                                    id=dict(
+                                        type='str',
+                                        disposition='id'
+                                    )
+                                )
+                            )
+                        )
                     ),
                     encryption_settings_version=dict(
                         type='str',
@@ -435,14 +1159,6 @@ class AzureRMDisk(AzureRMModuleBaseExt):
             name=dict(
                 type='choice',
                 disposition='/name'
-            ),
-            access=dict(
-                type='choice',
-                disposition='/access'
-            ),
-            duration_in_seconds=dict(
-                type='integer',
-                disposition='/duration_in_seconds'
             ),
             state=dict(
                 type='str',
@@ -514,14 +1230,9 @@ class AzureRMDisk(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.disks.create(resource_group_name=self.resource_group_name,
-                                                         disk_name=self.disk_name,
-                                                         disk=self.body)
-            else:
-                response = self.mgmt_client.disks.update(resource_group_name=self.resource_group_name,
-                                                         disk_name=self.disk_name,
-                                                         disk=self.body)
+            response = self.mgmt_client.disks.create_or_update(resource_group_name=self.resource_group_name,
+                                                               disk_name=self.disk_name,
+                                                               disk=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -540,7 +1251,6 @@ class AzureRMDisk(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.disks.get(resource_group_name=self.resource_group_name,
                                                   disk_name=self.disk_name)

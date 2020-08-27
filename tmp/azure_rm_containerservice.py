@@ -24,12 +24,14 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   container_service_name:
     description:
       - >-
         The name of the container service in the specified subscription and
         resource group.
+    required: true
     type: str
   location:
     description:
@@ -96,6 +98,36 @@ options:
     description:
       - Properties of the agent pool.
     type: list
+    suboptions:
+      name:
+        description:
+          - >-
+            Unique name of the agent pool profile in the context of the
+            subscription and resource group.
+        required: true
+        type: str
+      count:
+        description:
+          - >-
+            Number of agents (VMs) to host docker containers. Allowed values
+            must be in the range of 1 to 100 (inclusive). The default value is
+            1.
+        required: true
+        type: integer
+      vm_size:
+        description:
+          - Size of agent VMs.
+        required: true
+        type: choice
+      dns_prefix:
+        description:
+          - DNS prefix to be used to create the FQDN for the agent pool.
+        required: true
+        type: str
+      fqdn:
+        description:
+          - FQDN for the agent pool.
+        type: str
   windows_profile:
     description:
       - Properties of Windows VMs.
@@ -134,6 +166,15 @@ options:
                 Linux-based VMs.
             required: true
             type: list
+            suboptions:
+              key_data:
+                description:
+                  - >-
+                    Certificate public key used to authenticate with VMs through
+                    SSH. The certificate must be in PEM format with or without
+                    headers.
+                required: true
+                type: str
   diagnostics_profile:
     description:
       - Properties of the diagnostic agent.
@@ -171,6 +212,275 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create/Update Container Service
+      azure_rm_containerservice: 
+        container_service_name: acs1
+        resource_group_name: rg1
+        location: location1
+        
+
+    - name: Delete Container Service
+      azure_rm_containerservice: 
+        container_service_name: acs1
+        resource_group_name: rg1
+        
+
+    - name: Create/Update Container Service
+      azure_rm_containerservice: 
+        container_service_name: acs1
+        resource_group_name: rg1
+        location: location1
+        
+
+    - name: Create/Update Container Service
+      azure_rm_containerservice: 
+        container_service_name: acs1
+        resource_group_name: rg1
+        location: location1
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+provisioning_state:
+  description:
+    - >-
+      the current deployment or provisioning state, which only appears in the
+      response.
+  returned: always
+  type: str
+  sample: null
+orchestrator_profile:
+  description:
+    - Properties of the orchestrator.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    orchestrator_type:
+      description:
+        - >-
+          The orchestrator to use to manage container service cluster resources.
+          Valid values are Swarm, DCOS, and Custom.
+      returned: always
+      type: sealed-choice
+      sample: null
+custom_profile:
+  description:
+    - Properties for custom clusters.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    orchestrator:
+      description:
+        - The name of the custom orchestrator to use.
+      returned: always
+      type: str
+      sample: null
+service_principal_profile:
+  description:
+    - Properties for cluster service principals.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    client_id:
+      description:
+        - The ID for the service principal.
+      returned: always
+      type: str
+      sample: null
+    secret:
+      description:
+        - The secret password associated with the service principal.
+      returned: always
+      type: str
+      sample: null
+master_profile:
+  description:
+    - Properties of master agents.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    count:
+      description:
+        - >-
+          Number of masters (VMs) in the container service cluster. Allowed
+          values are 1, 3, and 5. The default value is 1.
+      returned: always
+      type: choice
+      sample: null
+    dns_prefix:
+      description:
+        - DNS prefix to be used to create the FQDN for master.
+      returned: always
+      type: str
+      sample: null
+    fqdn:
+      description:
+        - FQDN for the master.
+      returned: always
+      type: str
+      sample: null
+agent_pool_profiles:
+  description:
+    - Properties of the agent pool.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    name:
+      description:
+        - >-
+          Unique name of the agent pool profile in the context of the
+          subscription and resource group.
+      returned: always
+      type: str
+      sample: null
+    count:
+      description:
+        - >-
+          Number of agents (VMs) to host docker containers. Allowed values must
+          be in the range of 1 to 100 (inclusive). The default value is 1.
+      returned: always
+      type: integer
+      sample: null
+    vm_size:
+      description:
+        - Size of agent VMs.
+      returned: always
+      type: choice
+      sample: null
+    dns_prefix:
+      description:
+        - DNS prefix to be used to create the FQDN for the agent pool.
+      returned: always
+      type: str
+      sample: null
+    fqdn:
+      description:
+        - FQDN for the agent pool.
+      returned: always
+      type: str
+      sample: null
+windows_profile:
+  description:
+    - Properties of Windows VMs.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    admin_username:
+      description:
+        - The administrator username to use for Windows VMs.
+      returned: always
+      type: str
+      sample: null
+    admin_password:
+      description:
+        - The administrator password to use for Windows VMs.
+      returned: always
+      type: str
+      sample: null
+linux_profile:
+  description:
+    - Properties of Linux VMs.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    admin_username:
+      description:
+        - The administrator username to use for Linux VMs.
+      returned: always
+      type: str
+      sample: null
+    ssh:
+      description:
+        - The ssh key configuration for Linux VMs.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        public_keys:
+          description:
+            - >-
+              the list of SSH public keys used to authenticate with Linux-based
+              VMs.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            key_data:
+              description:
+                - >-
+                  Certificate public key used to authenticate with VMs through
+                  SSH. The certificate must be in PEM format with or without
+                  headers.
+              returned: always
+              type: str
+              sample: null
+diagnostics_profile:
+  description:
+    - Properties of the diagnostic agent.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    vm_diagnostics:
+      description:
+        - Profile for the container service VM diagnostic agent.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        enabled:
+          description:
+            - Whether the VM diagnostic agent is provisioned on the VM.
+          returned: always
+          type: bool
+          sample: null
+        storage_uri:
+          description:
+            - The URI of the storage account where diagnostics are stored.
+          returned: always
+          type: str
+          sample: null
+
+'''
 
 import time
 import json
@@ -195,10 +505,12 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             container_service_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -264,7 +576,35 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
             ),
             agent_pool_profiles=dict(
                 type='list',
-                disposition='/agent_pool_profiles'
+                disposition='/agent_pool_profiles',
+                elements='dict',
+                options=dict(
+                    name=dict(
+                        type='str',
+                        disposition='name',
+                        required=True
+                    ),
+                    count=dict(
+                        type='integer',
+                        disposition='count',
+                        required=True
+                    ),
+                    vm_size=dict(
+                        type='choice',
+                        disposition='vm_size',
+                        required=True
+                    ),
+                    dns_prefix=dict(
+                        type='str',
+                        disposition='dns_prefix',
+                        required=True
+                    ),
+                    fqdn=dict(
+                        type='str',
+                        updatable=False,
+                        disposition='fqdn'
+                    )
+                )
             ),
             windows_profile=dict(
                 type='dict',
@@ -299,7 +639,15 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                             public_keys=dict(
                                 type='list',
                                 disposition='public_keys',
-                                required=True
+                                required=True,
+                                elements='dict',
+                                options=dict(
+                                    key_data=dict(
+                                        type='str',
+                                        disposition='key_data',
+                                        required=True
+                                    )
+                                )
                             )
                         )
                     )
@@ -398,14 +746,9 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.container_services.create(resource_group_name=self.resource_group_name,
-                                                                      container_service_name=self.container_service_name,
-                                                                      parameters=self.body)
-            else:
-                response = self.mgmt_client.container_services.update(resource_group_name=self.resource_group_name,
-                                                                      container_service_name=self.container_service_name,
-                                                                      parameters=self.body)
+            response = self.mgmt_client.container_services.create_or_update(resource_group_name=self.resource_group_name,
+                                                                            container_service_name=self.container_service_name,
+                                                                            parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -424,7 +767,6 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.container_services.get(resource_group_name=self.resource_group_name,
                                                                container_service_name=self.container_service_name)

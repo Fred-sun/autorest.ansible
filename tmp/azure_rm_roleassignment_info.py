@@ -52,6 +52,7 @@ options:
   scope:
     description:
       - The scope of the role assignment.
+      - The scope of the role assignments.
     type: str
   role_assignment_name:
     description:
@@ -68,6 +69,183 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: GetConfigurations
+      azure_rm_roleassignment_info: 
+        parent_resource_path: parentResourcePath
+        resource_group_name: rgname
+        resource_name: resourceName
+        resource_provider_namespace: resourceProviderNamespace
+        resource_type: resourceType
+        
+
+'''
+
+RETURN = '''
+role_assignments:
+  description: >-
+    A list of dict results where the key is the name of the RoleAssignment and
+    the values are the facts for that RoleAssignment.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - Role assignment list.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - The role assignment ID.
+          returned: always
+          type: str
+          sample: null
+        name:
+          description:
+            - The role assignment name.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - The role assignment type.
+          returned: always
+          type: str
+          sample: null
+        scope:
+          description:
+            - The role assignment scope.
+          returned: always
+          type: str
+          sample: null
+        role_definition_id:
+          description:
+            - The role definition ID.
+          returned: always
+          type: str
+          sample: null
+        principal_id:
+          description:
+            - The principal ID.
+          returned: always
+          type: str
+          sample: null
+        principal_type:
+          description:
+            - The principal type of the assigned principal ID.
+          returned: always
+          type: choice
+          sample: null
+        can_delegate:
+          description:
+            - The Delegation flag for the role assignment
+          returned: always
+          type: bool
+          sample: null
+        description:
+          description:
+            - Description of role assignment
+          returned: always
+          type: str
+          sample: null
+        condition:
+          description:
+            - >-
+              The conditions on the role assignment. This limits the resources
+              it can be assigned to. e.g.:
+              @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+              StringEqualsIgnoreCase 'foo_storage_container'
+          returned: always
+          type: str
+          sample: null
+        condition_version:
+          description:
+            - >-
+              Version of the condition. Currently accepted values are '1.0' or
+              '2.0'
+          returned: always
+          type: str
+          sample: null
+    next_link:
+      description:
+        - The URL to use for getting the next set of results.
+      returned: always
+      type: str
+      sample: null
+    id:
+      description:
+        - The role assignment ID.
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The role assignment name.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - The role assignment type.
+      returned: always
+      type: str
+      sample: null
+    scope:
+      description:
+        - The role assignment scope.
+      returned: always
+      type: str
+      sample: null
+    role_definition_id:
+      description:
+        - The role definition ID.
+      returned: always
+      type: str
+      sample: null
+    principal_id:
+      description:
+        - The principal ID.
+      returned: always
+      type: str
+      sample: null
+    principal_type:
+      description:
+        - The principal type of the assigned principal ID.
+      returned: always
+      type: choice
+      sample: null
+    can_delegate:
+      description:
+        - The Delegation flag for the role assignment
+      returned: always
+      type: bool
+      sample: null
+    description:
+      description:
+        - Description of role assignment
+      returned: always
+      type: str
+      sample: null
+    condition:
+      description:
+        - >-
+          The conditions on the role assignment. This limits the resources it
+          can be assigned to. e.g.:
+          @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+          StringEqualsIgnoreCase 'foo_storage_container'
+      returned: always
+      type: str
+      sample: null
+    condition_version:
+      description:
+        - Version of the condition. Currently accepted values are '1.0' or '2.0'
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

@@ -36,6 +36,94 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Get an ssh public key.
+      azure_rm_sshpublickey_info: 
+        resource_group_name: myResourceGroup
+        ssh_public_key_name: mySshPublicKeyName
+        
+
+'''
+
+RETURN = '''
+ssh_public_keys:
+  description: >-
+    A list of dict results where the key is the name of the SshPublicKey and the
+    values are the facts for that SshPublicKey.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - The list of SSH public keys
+      returned: always
+      type: list
+      sample: null
+      contains:
+        public_key:
+          description:
+            - >-
+              SSH public key used to authenticate to a virtual machine through
+              ssh. If this property is not initially provided when the resource
+              is created, the publicKey property will be populated when
+              generateKeyPair is called. If the public key is provided upon
+              resource creation, the provided public key needs to be at least
+              2048-bit and in ssh-rsa format.
+          returned: always
+          type: str
+          sample: null
+    next_link:
+      description:
+        - >-
+          The URI to fetch the next page of SSH public keys. Call ListNext()
+          with this URI to fetch the next page of SSH public keys.
+      returned: always
+      type: str
+      sample: null
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    public_key:
+      description:
+        - >-
+          SSH public key used to authenticate to a virtual machine through ssh.
+          If this property is not initially provided when the resource is
+          created, the publicKey property will be populated when generateKeyPair
+          is called. If the public key is provided upon resource creation, the
+          provided public key needs to be at least 2048-bit and in ssh-rsa
+          format.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

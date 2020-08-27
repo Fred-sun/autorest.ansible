@@ -9,10 +9,10 @@ import {
     ModuleTopLevelOptionsVariables,
     AppendModuleHeader,
     AppendModuleDocumentation,
-    // AppendModuleExamples,
+    AppendModuleExamples,
     AppendMain,
     AppendModuleArgSpec,
-    // AppendModuleReturnDoc,
+    AppendModuleReturnDoc,
     ModuleGenerateApiCall
 } from "./AnsibleModuleCommon"
 import { Indent } from "../../utils/helper";
@@ -24,8 +24,8 @@ export function GenerateModuleSdk(module: Module) : string[] {
 
     AppendModuleHeader(output);
     AppendModuleDocumentation(output, module, false, false);
-    // AppendModuleExamples(output, module, false);
-    // AppendModuleReturnDoc(output, module, false);
+    AppendModuleExamples(output, module, false);
+    AppendModuleReturnDoc(output, module, false);
 
     output.push("");
     output.push("import time");

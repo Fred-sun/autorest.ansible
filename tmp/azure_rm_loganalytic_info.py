@@ -28,6 +28,19 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+log_analytics:
+  description: >-
+    A list of dict results where the key is the name of the LogAnalytic and the
+    values are the facts for that LogAnalytic.
+  returned: always
+  type: complex
+  contains: {}
+
+'''
 
 import time
 import json

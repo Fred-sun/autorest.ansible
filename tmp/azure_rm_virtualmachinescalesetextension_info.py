@@ -46,6 +46,217 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+virtual_machine_scale_set_extensions:
+  description: >-
+    A list of dict results where the key is the name of the
+    VirtualMachineScaleSetExtension and the values are the facts for that
+    VirtualMachineScaleSetExtension.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The name of the extension.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    force_update_tag:
+      description:
+        - >-
+          If a value is provided and is different from the previous value, the
+          extension handler will be forced to update even if the extension
+          configuration has not changed.
+      returned: always
+      type: str
+      sample: null
+    publisher:
+      description:
+        - The name of the extension handler publisher.
+      returned: always
+      type: str
+      sample: null
+    type_properties_type:
+      description:
+        - >-
+          Specifies the type of the extension; an example is
+          "CustomScriptExtension".
+      returned: always
+      type: str
+      sample: null
+    type_handler_version:
+      description:
+        - Specifies the version of the script handler.
+      returned: always
+      type: str
+      sample: null
+    auto_upgrade_minor_version:
+      description:
+        - >-
+          Indicates whether the extension should use a newer minor version if
+          one is available at deployment time. Once deployed, however, the
+          extension will not upgrade minor versions unless redeployed, even with
+          this property set to true.
+      returned: always
+      type: bool
+      sample: null
+    enable_automatic_upgrade:
+      description:
+        - >-
+          Indicates whether the extension should be automatically upgraded by
+          the platform if there is a newer version of the extension available.
+      returned: always
+      type: bool
+      sample: null
+    settings:
+      description:
+        - Json formatted public settings for the extension.
+      returned: always
+      type: any
+      sample: null
+    protected_settings:
+      description:
+        - >-
+          The extension can contain either protectedSettings or
+          protectedSettingsFromKeyVault or no protected settings at all.
+      returned: always
+      type: any
+      sample: null
+    provisioning_state:
+      description:
+        - 'The provisioning state, which only appears in the response.'
+      returned: always
+      type: str
+      sample: null
+    provision_after_extensions:
+      description:
+        - >-
+          Collection of extension names after which this extension needs to be
+          provisioned.
+      returned: always
+      type: list
+      sample: null
+    value:
+      description:
+        - The list of VM scale set extensions.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        name:
+          description:
+            - The name of the extension.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - Resource type
+          returned: always
+          type: str
+          sample: null
+        force_update_tag:
+          description:
+            - >-
+              If a value is provided and is different from the previous value,
+              the extension handler will be forced to update even if the
+              extension configuration has not changed.
+          returned: always
+          type: str
+          sample: null
+        publisher:
+          description:
+            - The name of the extension handler publisher.
+          returned: always
+          type: str
+          sample: null
+        type_properties_type:
+          description:
+            - >-
+              Specifies the type of the extension; an example is
+              "CustomScriptExtension".
+          returned: always
+          type: str
+          sample: null
+        type_handler_version:
+          description:
+            - Specifies the version of the script handler.
+          returned: always
+          type: str
+          sample: null
+        auto_upgrade_minor_version:
+          description:
+            - >-
+              Indicates whether the extension should use a newer minor version
+              if one is available at deployment time. Once deployed, however,
+              the extension will not upgrade minor versions unless redeployed,
+              even with this property set to true.
+          returned: always
+          type: bool
+          sample: null
+        enable_automatic_upgrade:
+          description:
+            - >-
+              Indicates whether the extension should be automatically upgraded
+              by the platform if there is a newer version of the extension
+              available.
+          returned: always
+          type: bool
+          sample: null
+        settings:
+          description:
+            - Json formatted public settings for the extension.
+          returned: always
+          type: any
+          sample: null
+        protected_settings:
+          description:
+            - >-
+              The extension can contain either protectedSettings or
+              protectedSettingsFromKeyVault or no protected settings at all.
+          returned: always
+          type: any
+          sample: null
+        provisioning_state:
+          description:
+            - 'The provisioning state, which only appears in the response.'
+          returned: always
+          type: str
+          sample: null
+        provision_after_extensions:
+          description:
+            - >-
+              Collection of extension names after which this extension needs to
+              be provisioned.
+          returned: always
+          type: list
+          sample: null
+    next_link:
+      description:
+        - >-
+          The uri to fetch the next page of VM scale set extensions. Call
+          ListNext() with this to fetch the next page of VM scale set
+          extensions.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

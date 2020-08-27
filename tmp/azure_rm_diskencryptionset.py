@@ -24,6 +24,7 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   disk_encryption_set_name:
     description:
@@ -32,6 +33,7 @@ options:
         can't be changed after the disk encryption set is created. Supported
         characters for the name are a-z, A-Z, 0-9 and _. The maximum name length
         is 80 characters.
+    required: true
     type: str
   location:
     description:
@@ -88,6 +90,138 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create a disk encryption set.
+      azure_rm_diskencryptionset: 
+        disk_encryption_set_name: myDiskEncryptionSet
+        resource_group_name: myResourceGroup
+        
+
+    - name: Update a disk encryption set.
+      azure_rm_diskencryptionset: 
+        disk_encryption_set_name: myDiskEncryptionSet
+        resource_group_name: myResourceGroup
+        
+
+    - name: Delete a disk encryption set.
+      azure_rm_diskencryptionset: 
+        disk_encryption_set_name: myDiskEncryptionSet
+        resource_group_name: myResourceGroup
+        
+
+    - name: Create a disk encryption set.
+      azure_rm_diskencryptionset: 
+        disk_encryption_set_name: myDiskEncryptionSet
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+encryption_type:
+  description:
+    - The type of key used to encrypt the data of the disk.
+  returned: always
+  type: choice
+  sample: null
+previous_keys:
+  description:
+    - >-
+      A readonly collection of key vault keys previously used by this disk
+      encryption set while a key rotation is in progress. It will be empty if
+      there is no ongoing key rotation.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    key_url:
+      description:
+        - Url pointing to a key or secret in KeyVault
+      returned: always
+      type: str
+      sample: null
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+provisioning_state:
+  description:
+    - The disk encryption set provisioning state.
+  returned: always
+  type: str
+  sample: null
+key_url:
+  description:
+    - Url pointing to a key or secret in KeyVault
+  returned: always
+  type: str
+  sample: null
+id_properties_active_key_source_vault_id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+type_identity_type:
+  description:
+    - >-
+      The type of Managed Identity used by the DiskEncryptionSet. Only
+      SystemAssigned is supported.
+  returned: always
+  type: choice
+  sample: null
+principal_id:
+  description:
+    - >-
+      The object id of the Managed Identity Resource. This will be sent to the
+      RP from ARM via the x-ms-identity-principal-id header in the PUT request
+      if the resource has a systemAssigned(implicit) identity
+  returned: always
+  type: str
+  sample: null
+tenant_id:
+  description:
+    - >-
+      The tenant id of the Managed Identity Resource. This will be sent to the
+      RP from ARM via the x-ms-client-tenant-id header in the PUT request if the
+      resource has a systemAssigned(implicit) identity
+  returned: always
+  type: str
+  sample: null
+
+'''
 
 import time
 import json
@@ -112,10 +246,12 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             disk_encryption_set_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -222,14 +358,9 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.disk_encryption_sets.create(resource_group_name=self.resource_group_name,
-                                                                        disk_encryption_set_name=self.disk_encryption_set_name,
-                                                                        disk_encryption_set=self.body)
-            else:
-                response = self.mgmt_client.disk_encryption_sets.update(resource_group_name=self.resource_group_name,
-                                                                        disk_encryption_set_name=self.disk_encryption_set_name,
-                                                                        disk_encryption_set=self.body)
+            response = self.mgmt_client.disk_encryption_sets.create_or_update(resource_group_name=self.resource_group_name,
+                                                                              disk_encryption_set_name=self.disk_encryption_set_name,
+                                                                              disk_encryption_set=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -248,7 +379,6 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.disk_encryption_sets.get(resource_group_name=self.resource_group_name,
                                                                  disk_encryption_set_name=self.disk_encryption_set_name)

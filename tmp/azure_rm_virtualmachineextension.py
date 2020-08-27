@@ -31,11 +31,15 @@ options:
       - >-
         The name of the virtual machine where the extension should be created or
         updated.
+      - The name of the virtual machine where the extension should be updated.
+      - The name of the virtual machine where the extension should be deleted.
+      - The name of the virtual machine containing the extension.
     required: true
     type: str
   vm_extension_name:
     description:
       - The name of the virtual machine extension.
+    required: true
     type: str
   location:
     description:
@@ -103,10 +107,56 @@ options:
     description:
       - The resource status information.
     type: list
+    suboptions:
+      code:
+        description:
+          - The status code.
+        type: str
+      level:
+        description:
+          - The level code.
+        type: sealed-choice
+      display_status:
+        description:
+          - The short localizable label for the status.
+        type: str
+      message:
+        description:
+          - >-
+            The detailed status message, including for alerts and error
+            messages.
+        type: str
+      time:
+        description:
+          - The time of the status.
+        type: str
   statuses:
     description:
       - The resource status information.
     type: list
+    suboptions:
+      code:
+        description:
+          - The status code.
+        type: str
+      level:
+        description:
+          - The level code.
+        type: sealed-choice
+      display_status:
+        description:
+          - The short localizable label for the status.
+        type: str
+      message:
+        description:
+          - >-
+            The detailed status message, including for alerts and error
+            messages.
+        type: str
+      time:
+        description:
+          - The time of the status.
+        type: str
   expand:
     description:
       - The expand expression to apply on the operation.
@@ -128,6 +178,202 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+force_update_tag:
+  description:
+    - >-
+      How the extension handler should be forced to update even if the extension
+      configuration has not changed.
+  returned: always
+  type: str
+  sample: null
+publisher:
+  description:
+    - The name of the extension handler publisher.
+  returned: always
+  type: str
+  sample: null
+type_properties_type:
+  description:
+    - >-
+      Specifies the type of the extension; an example is
+      "CustomScriptExtension".
+  returned: always
+  type: str
+  sample: null
+type_handler_version_properties_type_handler_version:
+  description:
+    - Specifies the version of the script handler.
+  returned: always
+  type: str
+  sample: null
+auto_upgrade_minor_version:
+  description:
+    - >-
+      Indicates whether the extension should use a newer minor version if one is
+      available at deployment time. Once deployed, however, the extension will
+      not upgrade minor versions unless redeployed, even with this property set
+      to true.
+  returned: always
+  type: bool
+  sample: null
+enable_automatic_upgrade:
+  description:
+    - >-
+      Indicates whether the extension should be automatically upgraded by the
+      platform if there is a newer version of the extension available.
+  returned: always
+  type: bool
+  sample: null
+settings:
+  description:
+    - Json formatted public settings for the extension.
+  returned: always
+  type: any
+  sample: null
+protected_settings:
+  description:
+    - >-
+      The extension can contain either protectedSettings or
+      protectedSettingsFromKeyVault or no protected settings at all.
+  returned: always
+  type: any
+  sample: null
+provisioning_state:
+  description:
+    - 'The provisioning state, which only appears in the response.'
+  returned: always
+  type: str
+  sample: null
+name_properties_instance_view_name:
+  description:
+    - The virtual machine extension name.
+  returned: always
+  type: str
+  sample: null
+type_properties_instance_view_type:
+  description:
+    - >-
+      Specifies the type of the extension; an example is
+      "CustomScriptExtension".
+  returned: always
+  type: str
+  sample: null
+type_handler_version_properties_instance_view_type_handler_version:
+  description:
+    - Specifies the version of the script handler.
+  returned: always
+  type: str
+  sample: null
+substatuses:
+  description:
+    - The resource status information.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    code:
+      description:
+        - The status code.
+      returned: always
+      type: str
+      sample: null
+    level:
+      description:
+        - The level code.
+      returned: always
+      type: sealed-choice
+      sample: null
+    display_status:
+      description:
+        - The short localizable label for the status.
+      returned: always
+      type: str
+      sample: null
+    message:
+      description:
+        - 'The detailed status message, including for alerts and error messages.'
+      returned: always
+      type: str
+      sample: null
+    time:
+      description:
+        - The time of the status.
+      returned: always
+      type: str
+      sample: null
+statuses:
+  description:
+    - The resource status information.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    code:
+      description:
+        - The status code.
+      returned: always
+      type: str
+      sample: null
+    level:
+      description:
+        - The level code.
+      returned: always
+      type: sealed-choice
+      sample: null
+    display_status:
+      description:
+        - The short localizable label for the status.
+      returned: always
+      type: str
+      sample: null
+    message:
+      description:
+        - 'The detailed status message, including for alerts and error messages.'
+      returned: always
+      type: str
+      sample: null
+    time:
+      description:
+        - The time of the status.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json
@@ -160,7 +406,8 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
                 required=True
             ),
             vm_extension_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -212,11 +459,57 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
             ),
             substatuses=dict(
                 type='list',
-                disposition='/substatuses'
+                disposition='/substatuses',
+                elements='dict',
+                options=dict(
+                    code=dict(
+                        type='str',
+                        disposition='code'
+                    ),
+                    level=dict(
+                        type='sealed-choice',
+                        disposition='level'
+                    ),
+                    display_status=dict(
+                        type='str',
+                        disposition='display_status'
+                    ),
+                    message=dict(
+                        type='str',
+                        disposition='message'
+                    ),
+                    time=dict(
+                        type='str',
+                        disposition='time'
+                    )
+                )
             ),
             statuses=dict(
                 type='list',
-                disposition='/statuses'
+                disposition='/statuses',
+                elements='dict',
+                options=dict(
+                    code=dict(
+                        type='str',
+                        disposition='code'
+                    ),
+                    level=dict(
+                        type='sealed-choice',
+                        disposition='level'
+                    ),
+                    display_status=dict(
+                        type='str',
+                        disposition='display_status'
+                    ),
+                    message=dict(
+                        type='str',
+                        disposition='message'
+                    ),
+                    time=dict(
+                        type='str',
+                        disposition='time'
+                    )
+                )
             ),
             expand=dict(
                 type='str'
@@ -293,16 +586,10 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.virtual_machine_extensions.create(resource_group_name=self.resource_group_name,
-                                                                              vm_name=self.vm_name,
-                                                                              vm_extension_name=self.vm_extension_name,
-                                                                              extension_parameters=self.body)
-            else:
-                response = self.mgmt_client.virtual_machine_extensions.update(resource_group_name=self.resource_group_name,
-                                                                              vm_name=self.vm_name,
-                                                                              vm_extension_name=self.vm_extension_name,
-                                                                              extension_parameters=self.body)
+            response = self.mgmt_client.virtual_machine_extensions.create_or_update(resource_group_name=self.resource_group_name,
+                                                                                    vm_name=self.vm_name,
+                                                                                    vm_extension_name=self.vm_extension_name,
+                                                                                    extension_parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -322,7 +609,6 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.virtual_machine_extensions.get(resource_group_name=self.resource_group_name,
                                                                        vm_name=self.vm_name,

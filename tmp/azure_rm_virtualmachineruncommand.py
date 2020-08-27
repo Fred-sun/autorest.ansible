@@ -29,6 +29,7 @@ options:
   command_id:
     description:
       - The command id.
+    required: true
     type: str
   state:
     description:
@@ -47,6 +48,79 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+schema:
+  description:
+    - The VM run command schema.
+  returned: always
+  type: str
+  sample: null
+id:
+  description:
+    - The VM run command id.
+  returned: always
+  type: str
+  sample: null
+os_type:
+  description:
+    - The Operating System type.
+  returned: always
+  type: sealed-choice
+  sample: null
+label:
+  description:
+    - The VM run command label.
+  returned: always
+  type: str
+  sample: null
+description:
+  description:
+    - The VM run command description.
+  returned: always
+  type: str
+  sample: null
+script:
+  description:
+    - The script to be executed.
+  returned: always
+  type: list
+  sample: null
+parameters:
+  description:
+    - The parameters used by the script.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    name:
+      description:
+        - The run command parameter name.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - The run command parameter type.
+      returned: always
+      type: str
+      sample: null
+    default_value:
+      description:
+        - The run command parameter default value.
+      returned: always
+      type: str
+      sample: null
+    required:
+      description:
+        - The run command parameter required.
+      returned: always
+      type: bool
+      sample: null
+
+'''
 
 import time
 import json
@@ -75,7 +149,8 @@ class AzureRMVirtualMachineRunCommand(AzureRMModuleBaseExt):
                 required=True
             ),
             command_id=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             state=dict(
                 type='str',
@@ -147,7 +222,10 @@ class AzureRMVirtualMachineRunCommand(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtual_machine_run_commands.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.virtual_machine_run_commands.create()
+            else:
+                response = self.mgmt_client.virtual_machine_run_commands.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -165,7 +243,6 @@ class AzureRMVirtualMachineRunCommand(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.virtual_machine_run_commands.get(location=self.location,
                                                                          command_id=self.command_id)

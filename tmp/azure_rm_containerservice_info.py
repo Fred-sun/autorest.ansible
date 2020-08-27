@@ -38,6 +38,494 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: List Container Services
+      azure_rm_containerservice_info: 
+        {}
+        
+
+    - name: Get Container Service
+      azure_rm_containerservice_info: 
+        container_service_name: acs1
+        resource_group_name: rg1
+        
+
+    - name: List Container Services by Resource Group
+      azure_rm_containerservice_info: 
+        resource_group_name: rg1
+        
+
+'''
+
+RETURN = '''
+container_services:
+  description: >-
+    A list of dict results where the key is the name of the ContainerService and
+    the values are the facts for that ContainerService.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - the list of container services.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        provisioning_state:
+          description:
+            - >-
+              the current deployment or provisioning state, which only appears
+              in the response.
+          returned: always
+          type: str
+          sample: null
+        orchestrator_profile:
+          description:
+            - Properties of the orchestrator.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            orchestrator_type:
+              description:
+                - >-
+                  The orchestrator to use to manage container service cluster
+                  resources. Valid values are Swarm, DCOS, and Custom.
+              returned: always
+              type: sealed-choice
+              sample: null
+        custom_profile:
+          description:
+            - Properties for custom clusters.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            orchestrator:
+              description:
+                - The name of the custom orchestrator to use.
+              returned: always
+              type: str
+              sample: null
+        service_principal_profile:
+          description:
+            - Properties for cluster service principals.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            client_id:
+              description:
+                - The ID for the service principal.
+              returned: always
+              type: str
+              sample: null
+            secret:
+              description:
+                - The secret password associated with the service principal.
+              returned: always
+              type: str
+              sample: null
+        master_profile:
+          description:
+            - Properties of master agents.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            count:
+              description:
+                - >-
+                  Number of masters (VMs) in the container service cluster.
+                  Allowed values are 1, 3, and 5. The default value is 1.
+              returned: always
+              type: choice
+              sample: null
+            dns_prefix:
+              description:
+                - DNS prefix to be used to create the FQDN for master.
+              returned: always
+              type: str
+              sample: null
+            fqdn:
+              description:
+                - FQDN for the master.
+              returned: always
+              type: str
+              sample: null
+        agent_pool_profiles:
+          description:
+            - Properties of the agent pool.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            name:
+              description:
+                - >-
+                  Unique name of the agent pool profile in the context of the
+                  subscription and resource group.
+              returned: always
+              type: str
+              sample: null
+            count:
+              description:
+                - >-
+                  Number of agents (VMs) to host docker containers. Allowed
+                  values must be in the range of 1 to 100 (inclusive). The
+                  default value is 1.
+              returned: always
+              type: integer
+              sample: null
+            vm_size:
+              description:
+                - Size of agent VMs.
+              returned: always
+              type: choice
+              sample: null
+            dns_prefix:
+              description:
+                - DNS prefix to be used to create the FQDN for the agent pool.
+              returned: always
+              type: str
+              sample: null
+            fqdn:
+              description:
+                - FQDN for the agent pool.
+              returned: always
+              type: str
+              sample: null
+        windows_profile:
+          description:
+            - Properties of Windows VMs.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            admin_username:
+              description:
+                - The administrator username to use for Windows VMs.
+              returned: always
+              type: str
+              sample: null
+            admin_password:
+              description:
+                - The administrator password to use for Windows VMs.
+              returned: always
+              type: str
+              sample: null
+        linux_profile:
+          description:
+            - Properties of Linux VMs.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            admin_username:
+              description:
+                - The administrator username to use for Linux VMs.
+              returned: always
+              type: str
+              sample: null
+            ssh:
+              description:
+                - The ssh key configuration for Linux VMs.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                public_keys:
+                  description:
+                    - >-
+                      the list of SSH public keys used to authenticate with
+                      Linux-based VMs.
+                  returned: always
+                  type: list
+                  sample: null
+                  contains:
+                    key_data:
+                      description:
+                        - >-
+                          Certificate public key used to authenticate with VMs
+                          through SSH. The certificate must be in PEM format
+                          with or without headers.
+                      returned: always
+                      type: str
+                      sample: null
+        diagnostics_profile:
+          description:
+            - Properties of the diagnostic agent.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            vm_diagnostics:
+              description:
+                - Profile for the container service VM diagnostic agent.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                enabled:
+                  description:
+                    - Whether the VM diagnostic agent is provisioned on the VM.
+                  returned: always
+                  type: bool
+                  sample: null
+                storage_uri:
+                  description:
+                    - >-
+                      The URI of the storage account where diagnostics are
+                      stored.
+                  returned: always
+                  type: str
+                  sample: null
+    next_link:
+      description:
+        - The URL to get the next set of container service results.
+      returned: always
+      type: str
+      sample: null
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    provisioning_state:
+      description:
+        - >-
+          the current deployment or provisioning state, which only appears in
+          the response.
+      returned: always
+      type: str
+      sample: null
+    orchestrator_profile:
+      description:
+        - Properties of the orchestrator.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        orchestrator_type:
+          description:
+            - >-
+              The orchestrator to use to manage container service cluster
+              resources. Valid values are Swarm, DCOS, and Custom.
+          returned: always
+          type: sealed-choice
+          sample: null
+    custom_profile:
+      description:
+        - Properties for custom clusters.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        orchestrator:
+          description:
+            - The name of the custom orchestrator to use.
+          returned: always
+          type: str
+          sample: null
+    service_principal_profile:
+      description:
+        - Properties for cluster service principals.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        client_id:
+          description:
+            - The ID for the service principal.
+          returned: always
+          type: str
+          sample: null
+        secret:
+          description:
+            - The secret password associated with the service principal.
+          returned: always
+          type: str
+          sample: null
+    master_profile:
+      description:
+        - Properties of master agents.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        count:
+          description:
+            - >-
+              Number of masters (VMs) in the container service cluster. Allowed
+              values are 1, 3, and 5. The default value is 1.
+          returned: always
+          type: choice
+          sample: null
+        dns_prefix:
+          description:
+            - DNS prefix to be used to create the FQDN for master.
+          returned: always
+          type: str
+          sample: null
+        fqdn:
+          description:
+            - FQDN for the master.
+          returned: always
+          type: str
+          sample: null
+    agent_pool_profiles:
+      description:
+        - Properties of the agent pool.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        name:
+          description:
+            - >-
+              Unique name of the agent pool profile in the context of the
+              subscription and resource group.
+          returned: always
+          type: str
+          sample: null
+        count:
+          description:
+            - >-
+              Number of agents (VMs) to host docker containers. Allowed values
+              must be in the range of 1 to 100 (inclusive). The default value is
+              1.
+          returned: always
+          type: integer
+          sample: null
+        vm_size:
+          description:
+            - Size of agent VMs.
+          returned: always
+          type: choice
+          sample: null
+        dns_prefix:
+          description:
+            - DNS prefix to be used to create the FQDN for the agent pool.
+          returned: always
+          type: str
+          sample: null
+        fqdn:
+          description:
+            - FQDN for the agent pool.
+          returned: always
+          type: str
+          sample: null
+    windows_profile:
+      description:
+        - Properties of Windows VMs.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        admin_username:
+          description:
+            - The administrator username to use for Windows VMs.
+          returned: always
+          type: str
+          sample: null
+        admin_password:
+          description:
+            - The administrator password to use for Windows VMs.
+          returned: always
+          type: str
+          sample: null
+    linux_profile:
+      description:
+        - Properties of Linux VMs.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        admin_username:
+          description:
+            - The administrator username to use for Linux VMs.
+          returned: always
+          type: str
+          sample: null
+        ssh:
+          description:
+            - The ssh key configuration for Linux VMs.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            public_keys:
+              description:
+                - >-
+                  the list of SSH public keys used to authenticate with
+                  Linux-based VMs.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                key_data:
+                  description:
+                    - >-
+                      Certificate public key used to authenticate with VMs
+                      through SSH. The certificate must be in PEM format with or
+                      without headers.
+                  returned: always
+                  type: str
+                  sample: null
+    diagnostics_profile:
+      description:
+        - Properties of the diagnostic agent.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        vm_diagnostics:
+          description:
+            - Profile for the container service VM diagnostic agent.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            enabled:
+              description:
+                - Whether the VM diagnostic agent is provisioned on the VM.
+              returned: always
+              type: bool
+              sample: null
+            storage_uri:
+              description:
+                - The URI of the storage account where diagnostics are stored.
+              returned: always
+              type: str
+              sample: null
+
+'''
 
 import time
 import json

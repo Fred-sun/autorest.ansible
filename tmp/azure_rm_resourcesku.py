@@ -21,13 +21,6 @@ short_description: Manage Azure ResourceSku instance.
 description:
   - 'Create, update and delete instance of Azure ResourceSku.'
 options:
-  filter:
-    description:
-      - >-
-        The filter to apply on the operation. Only **location** filter is
-        supported currently.
-    required: true
-    type: str
   state:
     description:
       - Assert the state of the ResourceSku.
@@ -45,6 +38,13 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+{}
+
+'''
 
 import time
 import json
@@ -68,10 +68,7 @@ class Actions:
 class AzureRMResourceSku(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            filter=dict(
-                type='str',
-                required=True
-            ),
+            undefined,
             state=dict(
                 type='str',
                 default='present',
@@ -79,7 +76,6 @@ class AzureRMResourceSku(AzureRMModuleBaseExt):
             )
         )
 
-        self.filter = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -141,7 +137,10 @@ class AzureRMResourceSku(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.resource_skus.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.resource_skus.create()
+            else:
+                response = self.mgmt_client.resource_skus.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -159,7 +158,6 @@ class AzureRMResourceSku(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.resource_skus.get()
         except CloudError as e:

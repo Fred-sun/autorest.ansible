@@ -31,6 +31,15 @@ options:
       - >-
         The name of the Shared Image Gallery in which the Image Definition is to
         be created.
+      - >-
+        The name of the Shared Image Gallery in which the Image Definition is to
+        be updated.
+      - >-
+        The name of the Shared Image Gallery from which the Image Definitions
+        are to be retrieved.
+      - >-
+        The name of the Shared Image Gallery in which the Image Definition is to
+        be deleted.
     required: true
     type: str
   gallery_image_name:
@@ -39,6 +48,13 @@ options:
         The name of the gallery Image Definition to be created or updated. The
         allowed characters are alphabets and numbers with dots, dashes, and
         periods allowed in the middle. The maximum length is 80 characters.
+      - >-
+        The name of the gallery Image Definition to be updated. The allowed
+        characters are alphabets and numbers with dots, dashes, and periods
+        allowed in the middle. The maximum length is 80 characters.
+      - The name of the gallery Image Definition to be retrieved.
+      - The name of the gallery Image Definition to be deleted.
+    required: true
     type: str
   location:
     description:
@@ -179,6 +195,239 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create or update a simple gallery image.
+      azure_rm_galleryimage: 
+        gallery_image_name: myGalleryImageName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Update a simple gallery image.
+      azure_rm_galleryimage: 
+        gallery_image_name: myGalleryImageName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Delete a gallery image.
+      azure_rm_galleryimage: 
+        gallery_image_name: myGalleryImageName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+    - name: Create or update a simple gallery image.
+      azure_rm_galleryimage: 
+        gallery_image_name: myGalleryImageName
+        gallery_name: myGalleryName
+        resource_group_name: myResourceGroup
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+description:
+  description:
+    - >-
+      The description of this gallery Image Definition resource. This property
+      is updatable.
+  returned: always
+  type: str
+  sample: null
+eula:
+  description:
+    - The Eula agreement for the gallery Image Definition.
+  returned: always
+  type: str
+  sample: null
+privacy_statement_uri:
+  description:
+    - The privacy statement uri.
+  returned: always
+  type: str
+  sample: null
+release_note_uri:
+  description:
+    - The release note uri.
+  returned: always
+  type: str
+  sample: null
+os_type:
+  description:
+    - >-
+      This property allows you to specify the type of the OS that is included in
+      the disk when creating a VM from a managed image. :code:`<br>`:code:`<br>`
+      Possible values are: :code:`<br>`:code:`<br>` **Windows**
+      :code:`<br>`:code:`<br>` **Linux**
+  returned: always
+  type: sealed-choice
+  sample: null
+os_state:
+  description:
+    - >-
+      This property allows the user to specify whether the virtual machines
+      created under this image are 'Generalized' or 'Specialized'.
+  returned: always
+  type: sealed-choice
+  sample: null
+hyper_vgeneration:
+  description:
+    - >-
+      The hypervisor generation of the Virtual Machine. Applicable to OS disks
+      only.
+  returned: always
+  type: choice
+  sample: null
+end_of_life_date:
+  description:
+    - >-
+      The end of life date of the gallery Image Definition. This property can be
+      used for decommissioning purposes. This property is updatable.
+  returned: always
+  type: str
+  sample: null
+identifier:
+  description:
+    - This is the gallery Image Definition identifier.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    publisher:
+      description:
+        - The name of the gallery Image Definition publisher.
+      returned: always
+      type: str
+      sample: null
+    offer:
+      description:
+        - The name of the gallery Image Definition offer.
+      returned: always
+      type: str
+      sample: null
+    sku:
+      description:
+        - The name of the gallery Image Definition SKU.
+      returned: always
+      type: str
+      sample: null
+disallowed:
+  description:
+    - Describes the disallowed disk types.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    disk_types:
+      description:
+        - A list of disk types.
+      returned: always
+      type: list
+      sample: null
+purchase_plan:
+  description:
+    - >-
+      Describes the gallery Image Definition purchase plan. This is used by
+      marketplace images.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    name:
+      description:
+        - The plan ID.
+      returned: always
+      type: str
+      sample: null
+    publisher:
+      description:
+        - The publisher ID.
+      returned: always
+      type: str
+      sample: null
+    product:
+      description:
+        - The product ID.
+      returned: always
+      type: str
+      sample: null
+provisioning_state:
+  description:
+    - 'The provisioning state, which only appears in the response.'
+  returned: always
+  type: choice
+  sample: null
+v_cp_us:
+  description:
+    - Describes the resource range.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    min:
+      description:
+        - The minimum number of the resource.
+      returned: always
+      type: integer
+      sample: null
+    max:
+      description:
+        - The maximum number of the resource.
+      returned: always
+      type: integer
+      sample: null
+memory:
+  description:
+    - Describes the resource range.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    min:
+      description:
+        - The minimum number of the resource.
+      returned: always
+      type: integer
+      sample: null
+    max:
+      description:
+        - The maximum number of the resource.
+      returned: always
+      type: integer
+      sample: null
+
+'''
 
 import time
 import json
@@ -211,7 +460,8 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
                 required=True
             ),
             gallery_image_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -276,7 +526,8 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
                 options=dict(
                     disk_types=dict(
                         type='list',
-                        disposition='disk_types'
+                        disposition='disk_types',
+                        elements='str'
                     )
                 )
             ),
@@ -397,16 +648,10 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.gallery_images.create(resource_group_name=self.resource_group_name,
-                                                                  gallery_name=self.gallery_name,
-                                                                  gallery_image_name=self.gallery_image_name,
-                                                                  gallery_image=self.body)
-            else:
-                response = self.mgmt_client.gallery_images.update(resource_group_name=self.resource_group_name,
-                                                                  gallery_name=self.gallery_name,
-                                                                  gallery_image_name=self.gallery_image_name,
-                                                                  gallery_image=self.body)
+            response = self.mgmt_client.gallery_images.create_or_update(resource_group_name=self.resource_group_name,
+                                                                        gallery_name=self.gallery_name,
+                                                                        gallery_image_name=self.gallery_image_name,
+                                                                        gallery_image=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -426,7 +671,6 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.gallery_images.get(resource_group_name=self.resource_group_name,
                                                            gallery_name=self.gallery_name,

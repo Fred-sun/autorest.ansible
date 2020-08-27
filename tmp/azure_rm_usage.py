@@ -21,11 +21,6 @@ short_description: Manage Azure Usage instance.
 description:
   - 'Create, update and delete instance of Azure Usage.'
 options:
-  location:
-    description:
-      - The location for which resource usage is queried.
-    required: true
-    type: str
   state:
     description:
       - Assert the state of the Usage.
@@ -41,6 +36,13 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+{}
+
+'''
 
 import time
 import json
@@ -64,10 +66,7 @@ class Actions:
 class AzureRMUsage(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            location=dict(
-                type='str',
-                required=True
-            ),
+            undefined,
             state=dict(
                 type='str',
                 default='present',
@@ -75,7 +74,6 @@ class AzureRMUsage(AzureRMModuleBaseExt):
             )
         )
 
-        self.location = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -137,7 +135,10 @@ class AzureRMUsage(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.usage.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.usage.create()
+            else:
+                response = self.mgmt_client.usage.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -155,7 +156,6 @@ class AzureRMUsage(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.usage.get()
         except CloudError as e:

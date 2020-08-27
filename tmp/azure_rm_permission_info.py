@@ -49,6 +49,61 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: GetConfigurations
+      azure_rm_permission_info: 
+        resource_group_name: rgname
+        
+
+'''
+
+RETURN = '''
+permissions:
+  description: >-
+    A list of dict results where the key is the name of the Permission and the
+    values are the facts for that Permission.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - An array of permissions.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        actions:
+          description:
+            - Allowed actions.
+          returned: always
+          type: list
+          sample: null
+        not_actions:
+          description:
+            - Denied actions.
+          returned: always
+          type: list
+          sample: null
+        data_actions:
+          description:
+            - Allowed Data actions.
+          returned: always
+          type: list
+          sample: null
+        not_data_actions:
+          description:
+            - Denied Data actions.
+          returned: always
+          type: list
+          sample: null
+    next_link:
+      description:
+        - The URL to use for getting the next set of results.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

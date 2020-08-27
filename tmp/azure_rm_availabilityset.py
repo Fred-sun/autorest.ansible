@@ -24,10 +24,12 @@ options:
   resource_group_name:
     description:
       - The name of the resource group.
+    required: true
     type: str
   availability_set_name:
     description:
       - The name of the availability set.
+    required: true
     type: str
   location:
     description:
@@ -69,6 +71,11 @@ options:
     description:
       - A list of references to all virtual machines in the availability set.
     type: list
+    suboptions:
+      id:
+        description:
+          - Resource Id
+        type: str
   proximity_placement_group:
     description:
       - >-
@@ -81,12 +88,6 @@ options:
         description:
           - Resource Id
         type: str
-  expand:
-    description:
-      - >-
-        The expand expression to apply to the operation. Allowed values are
-        'instanceView'.
-    type: str
   state:
     description:
       - Assert the state of the AvailabilitySet.
@@ -104,6 +105,172 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: Create an availability set.
+      azure_rm_availabilityset: 
+        availability_set_name: myAvailabilitySet
+        resource_group_name: myResourceGroup
+        location: westus
+        properties:
+          platform_fault_domain_count: 2
+          platform_update_domain_count: 20
+        
+
+    - name: Create an availability set.
+      azure_rm_availabilityset: 
+        availability_set_name: myAvailabilitySet
+        resource_group_name: myResourceGroup
+        location: westus
+        properties:
+          platform_fault_domain_count: 2
+          platform_update_domain_count: 20
+        
+
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+sku:
+  description:
+    - >-
+      Sku of the availability set, only name is required to be set. See
+      AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for
+      virtual machines with managed disks and 'Classic' for virtual machines
+      with unmanaged disks. Default value is 'Classic'.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    name:
+      description:
+        - The sku name.
+      returned: always
+      type: str
+      sample: null
+    tier:
+      description:
+        - >-
+          Specifies the tier of virtual machines in a scale set.:code:`<br
+          />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
+          **Standard**\ :code:`<br />`:code:`<br />` **Basic**
+      returned: always
+      type: str
+      sample: null
+    capacity:
+      description:
+        - Specifies the number of virtual machines in the scale set.
+      returned: always
+      type: integer
+      sample: null
+platform_update_domain_count:
+  description:
+    - Update Domain count.
+  returned: always
+  type: integer
+  sample: null
+platform_fault_domain_count:
+  description:
+    - Fault Domain count.
+  returned: always
+  type: integer
+  sample: null
+virtual_machines:
+  description:
+    - A list of references to all virtual machines in the availability set.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+proximity_placement_group:
+  description:
+    - >-
+      Specifies information about the proximity placement group that the
+      availability set should be assigned to. :code:`<br>`:code:`<br>`Minimum
+      api-version: 2018-04-01.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+statuses:
+  description:
+    - The resource status information.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    code:
+      description:
+        - The status code.
+      returned: always
+      type: str
+      sample: null
+    level:
+      description:
+        - The level code.
+      returned: always
+      type: sealed-choice
+      sample: null
+    display_status:
+      description:
+        - The short localizable label for the status.
+      returned: always
+      type: str
+      sample: null
+    message:
+      description:
+        - 'The detailed status message, including for alerts and error messages.'
+      returned: always
+      type: str
+      sample: null
+    time:
+      description:
+        - The time of the status.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json
@@ -128,10 +295,12 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             resource_group_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             availability_set_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             location=dict(
                 type='str',
@@ -165,7 +334,14 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
             ),
             virtual_machines=dict(
                 type='list',
-                disposition='/virtual_machines'
+                disposition='/virtual_machines',
+                elements='dict',
+                options=dict(
+                    id=dict(
+                        type='str',
+                        disposition='id'
+                    )
+                )
             ),
             proximity_placement_group=dict(
                 type='dict',
@@ -177,9 +353,6 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
                     )
                 )
             ),
-            expand=dict(
-                type='str'
-            ),
             state=dict(
                 type='str',
                 default='present',
@@ -189,7 +362,6 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
 
         self.resource_group_name = None
         self.availability_set_name = None
-        self.expand = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -251,14 +423,9 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.availability_sets.create(resource_group_name=self.resource_group_name,
-                                                                     availability_set_name=self.availability_set_name,
-                                                                     parameters=self.body)
-            else:
-                response = self.mgmt_client.availability_sets.update(resource_group_name=self.resource_group_name,
-                                                                     availability_set_name=self.availability_set_name,
-                                                                     parameters=self.body)
+            response = self.mgmt_client.availability_sets.create_or_update(resource_group_name=self.resource_group_name,
+                                                                           availability_set_name=self.availability_set_name,
+                                                                           parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -277,7 +444,6 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.availability_sets.get(resource_group_name=self.resource_group_name,
                                                               availability_set_name=self.availability_set_name)

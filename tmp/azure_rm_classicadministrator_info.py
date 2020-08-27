@@ -28,6 +28,67 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: GetConfigurations
+      azure_rm_classicadministrator_info: 
+        {}
+        
+
+'''
+
+RETURN = '''
+classic_administrators:
+  description: >-
+    A list of dict results where the key is the name of the ClassicAdministrator
+    and the values are the facts for that ClassicAdministrator.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - An array of administrators.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - The ID of the administrator.
+          returned: always
+          type: str
+          sample: null
+        name:
+          description:
+            - The name of the administrator.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - The type of the administrator.
+          returned: always
+          type: str
+          sample: null
+        email_address:
+          description:
+            - The email address of the administrator.
+          returned: always
+          type: str
+          sample: null
+        role:
+          description:
+            - The role of the administrator.
+          returned: always
+          type: str
+          sample: null
+    next_link:
+      description:
+        - The URL to use for getting the next set of results.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

@@ -42,6 +42,298 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: List availability sets in a subscription.
+      azure_rm_availabilityset_info: 
+        {}
+        
+
+'''
+
+RETURN = '''
+availability_sets:
+  description: >-
+    A list of dict results where the key is the name of the AvailabilitySet and
+    the values are the facts for that AvailabilitySet.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - Resource name
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - Resource type
+      returned: always
+      type: str
+      sample: null
+    location:
+      description:
+        - Resource location
+      returned: always
+      type: str
+      sample: null
+    tags:
+      description:
+        - Resource tags
+      returned: always
+      type: dictionary
+      sample: null
+    sku:
+      description:
+        - >-
+          Sku of the availability set, only name is required to be set. See
+          AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for
+          virtual machines with managed disks and 'Classic' for virtual machines
+          with unmanaged disks. Default value is 'Classic'.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        name:
+          description:
+            - The sku name.
+          returned: always
+          type: str
+          sample: null
+        tier:
+          description:
+            - >-
+              Specifies the tier of virtual machines in a scale set.:code:`<br
+              />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
+              **Standard**\ :code:`<br />`:code:`<br />` **Basic**
+          returned: always
+          type: str
+          sample: null
+        capacity:
+          description:
+            - Specifies the number of virtual machines in the scale set.
+          returned: always
+          type: integer
+          sample: null
+    platform_update_domain_count:
+      description:
+        - Update Domain count.
+      returned: always
+      type: integer
+      sample: null
+    platform_fault_domain_count:
+      description:
+        - Fault Domain count.
+      returned: always
+      type: integer
+      sample: null
+    virtual_machines:
+      description:
+        - A list of references to all virtual machines in the availability set.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - Resource Id
+          returned: always
+          type: str
+          sample: null
+    proximity_placement_group:
+      description:
+        - >-
+          Specifies information about the proximity placement group that the
+          availability set should be assigned to.
+          :code:`<br>`:code:`<br>`Minimum api-version: 2018-04-01.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        id:
+          description:
+            - Resource Id
+          returned: always
+          type: str
+          sample: null
+    statuses:
+      description:
+        - The resource status information.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        code:
+          description:
+            - The status code.
+          returned: always
+          type: str
+          sample: null
+        level:
+          description:
+            - The level code.
+          returned: always
+          type: sealed-choice
+          sample: null
+        display_status:
+          description:
+            - The short localizable label for the status.
+          returned: always
+          type: str
+          sample: null
+        message:
+          description:
+            - >-
+              The detailed status message, including for alerts and error
+              messages.
+          returned: always
+          type: str
+          sample: null
+        time:
+          description:
+            - The time of the status.
+          returned: always
+          type: str
+          sample: null
+    value:
+      description:
+        - |-
+          The list of availability sets
+          The list of virtual machine sizes.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        sku:
+          description:
+            - >-
+              Sku of the availability set, only name is required to be set. See
+              AvailabilitySetSkuTypes for possible set of values. Use 'Aligned'
+              for virtual machines with managed disks and 'Classic' for virtual
+              machines with unmanaged disks. Default value is 'Classic'.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            name:
+              description:
+                - The sku name.
+              returned: always
+              type: str
+              sample: null
+            tier:
+              description:
+                - >-
+                  Specifies the tier of virtual machines in a scale
+                  set.:code:`<br />`:code:`<br />` Possible Values::code:`<br
+                  />`:code:`<br />` **Standard**\ :code:`<br />`:code:`<br />`
+                  **Basic**
+              returned: always
+              type: str
+              sample: null
+            capacity:
+              description:
+                - Specifies the number of virtual machines in the scale set.
+              returned: always
+              type: integer
+              sample: null
+        platform_update_domain_count:
+          description:
+            - Update Domain count.
+          returned: always
+          type: integer
+          sample: null
+        platform_fault_domain_count:
+          description:
+            - Fault Domain count.
+          returned: always
+          type: integer
+          sample: null
+        virtual_machines:
+          description:
+            - >-
+              A list of references to all virtual machines in the availability
+              set.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            id:
+              description:
+                - Resource Id
+              returned: always
+              type: str
+              sample: null
+        proximity_placement_group:
+          description:
+            - >-
+              Specifies information about the proximity placement group that the
+              availability set should be assigned to.
+              :code:`<br>`:code:`<br>`Minimum api-version: 2018-04-01.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            id:
+              description:
+                - Resource Id
+              returned: always
+              type: str
+              sample: null
+        statuses:
+          description:
+            - The resource status information.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            code:
+              description:
+                - The status code.
+              returned: always
+              type: str
+              sample: null
+            level:
+              description:
+                - The level code.
+              returned: always
+              type: sealed-choice
+              sample: null
+            display_status:
+              description:
+                - The short localizable label for the status.
+              returned: always
+              type: str
+              sample: null
+            message:
+              description:
+                - >-
+                  The detailed status message, including for alerts and error
+                  messages.
+              returned: always
+              type: str
+              sample: null
+            time:
+              description:
+                - The time of the status.
+              returned: always
+              type: str
+              sample: null
+    next_link:
+      description:
+        - >-
+          The URI to fetch the next page of AvailabilitySets. Call ListNext()
+          with this URI to fetch the next page of AvailabilitySets.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

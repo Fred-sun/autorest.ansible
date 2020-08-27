@@ -33,6 +33,72 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+usage:
+  description: >-
+    A list of dict results where the key is the name of the Usage and the values
+    are the facts for that Usage.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - The list of compute resource usages.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        unit:
+          description:
+            - An enum describing the unit of usage measurement.
+          returned: always
+          type: constant
+          sample: null
+        current_value:
+          description:
+            - The current usage of the resource.
+          returned: always
+          type: integer
+          sample: null
+        limit:
+          description:
+            - The maximum permitted usage of the resource.
+          returned: always
+          type: integer
+          sample: null
+        name:
+          description:
+            - The name of the type of usage.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            value:
+              description:
+                - The name of the resource.
+              returned: always
+              type: str
+              sample: null
+            localized_value:
+              description:
+                - The localized name of the resource.
+              returned: always
+              type: str
+              sample: null
+    next_link:
+      description:
+        - >-
+          The URI to fetch the next page of compute resource usage information.
+          Call ListNext() with this to fetch the next page of compute resource
+          usage information.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json

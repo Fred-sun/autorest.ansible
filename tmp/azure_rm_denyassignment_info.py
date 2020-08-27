@@ -61,10 +61,17 @@ options:
   scope:
     description:
       - The scope of the deny assignment.
+      - The scope of the deny assignments.
     type: str
   deny_assignment_id:
     description:
       - The ID of the deny assignment to get.
+      - >-
+        The fully qualified deny assignment ID. For example, use the format,
+        /subscriptions/{guid}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}
+        for subscription level deny assignments, or
+        /providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}
+        for tenant level deny assignments.
     type: str
 extends_documentation_fragment:
   - azure
@@ -73,6 +80,333 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: GetConfigurations
+      azure_rm_denyassignment_info: 
+        parent_resource_path: parentResourcePath
+        resource_group_name: rgname
+        resource_name: resourceName
+        resource_provider_namespace: resourceProviderNamespace
+        resource_type: resourceType
+        
+
+'''
+
+RETURN = '''
+deny_assignments:
+  description: >-
+    A list of dict results where the key is the name of the DenyAssignment and
+    the values are the facts for that DenyAssignment.
+  returned: always
+  type: complex
+  contains:
+    value:
+      description:
+        - Deny assignment list.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - The deny assignment ID.
+          returned: always
+          type: str
+          sample: null
+        name:
+          description:
+            - The deny assignment name.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - The deny assignment type.
+          returned: always
+          type: str
+          sample: null
+        deny_assignment_name:
+          description:
+            - The display name of the deny assignment.
+          returned: always
+          type: str
+          sample: null
+        description:
+          description:
+            - The description of the deny assignment.
+          returned: always
+          type: str
+          sample: null
+        permissions:
+          description:
+            - An array of permissions that are denied by the deny assignment.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            actions:
+              description:
+                - Actions to which the deny assignment does not grant access.
+              returned: always
+              type: list
+              sample: null
+            not_actions:
+              description:
+                - >-
+                  Actions to exclude from that the deny assignment does not
+                  grant access.
+              returned: always
+              type: list
+              sample: null
+            data_actions:
+              description:
+                - >-
+                  Data actions to which the deny assignment does not grant
+                  access.
+              returned: always
+              type: list
+              sample: null
+            not_data_actions:
+              description:
+                - >-
+                  Data actions to exclude from that the deny assignment does not
+                  grant access.
+              returned: always
+              type: list
+              sample: null
+        scope:
+          description:
+            - The deny assignment scope.
+          returned: always
+          type: str
+          sample: null
+        do_not_apply_to_child_scopes:
+          description:
+            - >-
+              Determines if the deny assignment applies to child scopes. Default
+              value is false.
+          returned: always
+          type: bool
+          sample: null
+        principals:
+          description:
+            - Array of principals to which the deny assignment applies.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            id:
+              description:
+                - >-
+                  Object ID of the Azure AD principal (user, group, or service
+                  principal) to which the deny assignment applies. An empty guid
+                  '00000000-0000-0000-0000-000000000000' as principal id and
+                  principal type as 'Everyone' represents all users, groups and
+                  service principals.
+              returned: always
+              type: str
+              sample: null
+            type:
+              description:
+                - >-
+                  Type of object represented by principal id (user, group, or
+                  service principal). An empty guid
+                  '00000000-0000-0000-0000-000000000000' as principal id and
+                  principal type as 'Everyone' represents all users, groups and
+                  service principals.
+              returned: always
+              type: str
+              sample: null
+        exclude_principals:
+          description:
+            - Array of principals to which the deny assignment does not apply.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            id:
+              description:
+                - >-
+                  Object ID of the Azure AD principal (user, group, or service
+                  principal) to which the deny assignment applies. An empty guid
+                  '00000000-0000-0000-0000-000000000000' as principal id and
+                  principal type as 'Everyone' represents all users, groups and
+                  service principals.
+              returned: always
+              type: str
+              sample: null
+            type:
+              description:
+                - >-
+                  Type of object represented by principal id (user, group, or
+                  service principal). An empty guid
+                  '00000000-0000-0000-0000-000000000000' as principal id and
+                  principal type as 'Everyone' represents all users, groups and
+                  service principals.
+              returned: always
+              type: str
+              sample: null
+        is_system_protected:
+          description:
+            - >-
+              Specifies whether this deny assignment was created by Azure and
+              cannot be edited or deleted.
+          returned: always
+          type: bool
+          sample: null
+    next_link:
+      description:
+        - The URL to use for getting the next set of results.
+      returned: always
+      type: str
+      sample: null
+    id:
+      description:
+        - The deny assignment ID.
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The deny assignment name.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - The deny assignment type.
+      returned: always
+      type: str
+      sample: null
+    deny_assignment_name:
+      description:
+        - The display name of the deny assignment.
+      returned: always
+      type: str
+      sample: null
+    description:
+      description:
+        - The description of the deny assignment.
+      returned: always
+      type: str
+      sample: null
+    permissions:
+      description:
+        - An array of permissions that are denied by the deny assignment.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        actions:
+          description:
+            - Actions to which the deny assignment does not grant access.
+          returned: always
+          type: list
+          sample: null
+        not_actions:
+          description:
+            - >-
+              Actions to exclude from that the deny assignment does not grant
+              access.
+          returned: always
+          type: list
+          sample: null
+        data_actions:
+          description:
+            - Data actions to which the deny assignment does not grant access.
+          returned: always
+          type: list
+          sample: null
+        not_data_actions:
+          description:
+            - >-
+              Data actions to exclude from that the deny assignment does not
+              grant access.
+          returned: always
+          type: list
+          sample: null
+    scope:
+      description:
+        - The deny assignment scope.
+      returned: always
+      type: str
+      sample: null
+    do_not_apply_to_child_scopes:
+      description:
+        - >-
+          Determines if the deny assignment applies to child scopes. Default
+          value is false.
+      returned: always
+      type: bool
+      sample: null
+    principals:
+      description:
+        - Array of principals to which the deny assignment applies.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - >-
+              Object ID of the Azure AD principal (user, group, or service
+              principal) to which the deny assignment applies. An empty guid
+              '00000000-0000-0000-0000-000000000000' as principal id and
+              principal type as 'Everyone' represents all users, groups and
+              service principals.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - >-
+              Type of object represented by principal id (user, group, or
+              service principal). An empty guid
+              '00000000-0000-0000-0000-000000000000' as principal id and
+              principal type as 'Everyone' represents all users, groups and
+              service principals.
+          returned: always
+          type: str
+          sample: null
+    exclude_principals:
+      description:
+        - Array of principals to which the deny assignment does not apply.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - >-
+              Object ID of the Azure AD principal (user, group, or service
+              principal) to which the deny assignment applies. An empty guid
+              '00000000-0000-0000-0000-000000000000' as principal id and
+              principal type as 'Everyone' represents all users, groups and
+              service principals.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - >-
+              Type of object represented by principal id (user, group, or
+              service principal). An empty guid
+              '00000000-0000-0000-0000-000000000000' as principal id and
+              principal type as 'Everyone' represents all users, groups and
+              service principals.
+          returned: always
+          type: str
+          sample: null
+    is_system_protected:
+      description:
+        - >-
+          Specifies whether this deny assignment was created by Azure and cannot
+          be edited or deleted.
+      returned: always
+      type: bool
+      sample: null
+
+'''
 
 import time
 import json

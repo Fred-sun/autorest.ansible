@@ -31,11 +31,15 @@ options:
       - >-
         The name of the VM scale set where the extension should be create or
         updated.
+      - The name of the VM scale set where the extension should be updated.
+      - The name of the VM scale set where the extension should be deleted.
+      - The name of the VM scale set containing the extension.
     required: true
     type: str
   vmss_extension_name:
     description:
       - The name of the VM scale set extension.
+    required: true
     type: str
   name:
     description:
@@ -113,6 +117,105 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - The name of the extension.
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+force_update_tag:
+  description:
+    - >-
+      If a value is provided and is different from the previous value, the
+      extension handler will be forced to update even if the extension
+      configuration has not changed.
+  returned: always
+  type: str
+  sample: null
+publisher:
+  description:
+    - The name of the extension handler publisher.
+  returned: always
+  type: str
+  sample: null
+type_properties_type:
+  description:
+    - >-
+      Specifies the type of the extension; an example is
+      "CustomScriptExtension".
+  returned: always
+  type: str
+  sample: null
+type_handler_version:
+  description:
+    - Specifies the version of the script handler.
+  returned: always
+  type: str
+  sample: null
+auto_upgrade_minor_version:
+  description:
+    - >-
+      Indicates whether the extension should use a newer minor version if one is
+      available at deployment time. Once deployed, however, the extension will
+      not upgrade minor versions unless redeployed, even with this property set
+      to true.
+  returned: always
+  type: bool
+  sample: null
+enable_automatic_upgrade:
+  description:
+    - >-
+      Indicates whether the extension should be automatically upgraded by the
+      platform if there is a newer version of the extension available.
+  returned: always
+  type: bool
+  sample: null
+settings:
+  description:
+    - Json formatted public settings for the extension.
+  returned: always
+  type: any
+  sample: null
+protected_settings:
+  description:
+    - >-
+      The extension can contain either protectedSettings or
+      protectedSettingsFromKeyVault or no protected settings at all.
+  returned: always
+  type: any
+  sample: null
+provisioning_state:
+  description:
+    - 'The provisioning state, which only appears in the response.'
+  returned: always
+  type: str
+  sample: null
+provision_after_extensions:
+  description:
+    - >-
+      Collection of extension names after which this extension needs to be
+      provisioned.
+  returned: always
+  type: list
+  sample: null
+
+'''
 
 import time
 import json
@@ -145,7 +248,8 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
                 required=True
             ),
             vmss_extension_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             name=dict(
                 type='str',
@@ -185,7 +289,8 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
             ),
             provision_after_extensions=dict(
                 type='list',
-                disposition='/provision_after_extensions'
+                disposition='/provision_after_extensions',
+                elements='str'
             ),
             expand=dict(
                 type='str'
@@ -262,16 +367,10 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            if self.to_do == Actions.Create:
-                response = self.mgmt_client.virtual_machine_scale_set_extensions.create(resource_group_name=self.resource_group_name,
-                                                                                        vm_scale_set_name=self.vm_scale_set_name,
-                                                                                        vmss_extension_name=self.vmss_extension_name,
-                                                                                        extension_parameters=self.body)
-            else:
-                response = self.mgmt_client.virtual_machine_scale_set_extensions.update(resource_group_name=self.resource_group_name,
-                                                                                        vm_scale_set_name=self.vm_scale_set_name,
-                                                                                        vmss_extension_name=self.vmss_extension_name,
-                                                                                        extension_parameters=self.body)
+            response = self.mgmt_client.virtual_machine_scale_set_extensions.create_or_update(resource_group_name=self.resource_group_name,
+                                                                                              vm_scale_set_name=self.vm_scale_set_name,
+                                                                                              vmss_extension_name=self.vmss_extension_name,
+                                                                                              extension_parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -291,7 +390,6 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.virtual_machine_scale_set_extensions.get(resource_group_name=self.resource_group_name,
                                                                                  vm_scale_set_name=self.vm_scale_set_name,

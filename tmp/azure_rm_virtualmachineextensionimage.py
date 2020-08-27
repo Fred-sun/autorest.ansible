@@ -34,22 +34,12 @@ options:
   type:
     description:
       - undefined
+    required: true
     type: str
   version:
     description:
       - undefined
-    type: str
-  filter:
-    description:
-      - The filter to apply on the operation.
-    type: str
-  top:
-    description:
-      - undefined
-    type: integer
-  orderby:
-    description:
-      - undefined
+    required: true
     type: str
   state:
     description:
@@ -68,6 +58,78 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - Resource name
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - Resource type
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - Resource location
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - Resource tags
+  returned: always
+  type: dictionary
+  sample: null
+operating_system:
+  description:
+    - The operating system this extension supports.
+  returned: always
+  type: str
+  sample: null
+compute_role:
+  description:
+    - The type of role (IaaS or PaaS) this extension supports.
+  returned: always
+  type: str
+  sample: null
+handler_schema:
+  description:
+    - >-
+      The schema defined by publisher, where extension consumers should provide
+      settings in a matching schema.
+  returned: always
+  type: str
+  sample: null
+vm_scale_set_enabled:
+  description:
+    - >-
+      Whether the extension can be used on xRP VMScaleSets. By default existing
+      extensions are usable on scalesets, but there might be cases where a
+      publisher wants to explicitly indicate the extension is only enabled for
+      CRP VMs but not VMSS.
+  returned: always
+  type: bool
+  sample: null
+supports_multiple_extensions:
+  description:
+    - Whether the handler can support multiple extensions.
+  returned: always
+  type: bool
+  sample: null
+
+'''
 
 import time
 import json
@@ -100,19 +162,12 @@ class AzureRMVirtualMachineExtensionImage(AzureRMModuleBaseExt):
                 required=True
             ),
             type=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             version=dict(
-                type='str'
-            ),
-            filter=dict(
-                type='str'
-            ),
-            top=dict(
-                type='integer'
-            ),
-            orderby=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             state=dict(
                 type='str',
@@ -125,9 +180,6 @@ class AzureRMVirtualMachineExtensionImage(AzureRMModuleBaseExt):
         self.publisher_name = None
         self.type = None
         self.version = None
-        self.filter = None
-        self.top = None
-        self.orderby = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -189,7 +241,10 @@ class AzureRMVirtualMachineExtensionImage(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtual_machine_extension_images.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.virtual_machine_extension_images.create()
+            else:
+                response = self.mgmt_client.virtual_machine_extension_images.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -207,7 +262,6 @@ class AzureRMVirtualMachineExtensionImage(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.virtual_machine_extension_images.get(location=self.location,
                                                                              publisher_name=self.publisher_name,

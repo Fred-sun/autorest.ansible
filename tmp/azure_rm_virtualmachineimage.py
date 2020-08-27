@@ -29,30 +29,22 @@ options:
   publisher_name:
     description:
       - A valid image publisher.
+    required: true
     type: str
   offer:
     description:
       - A valid image publisher offer.
+    required: true
     type: str
   skus:
     description:
       - A valid image SKU.
+    required: true
     type: str
   version:
     description:
       - A valid image SKU version.
-    type: str
-  expand:
-    description:
-      - The expand expression to apply on the operation.
-    type: str
-  top:
-    description:
-      - undefined
-    type: integer
-  orderby:
-    description:
-      - undefined
+    required: true
     type: str
   state:
     description:
@@ -71,6 +63,126 @@ author:
 
 '''
 
+EXAMPLES = '''
+'''
+
+RETURN = '''
+name:
+  description:
+    - The name of the resource.
+  returned: always
+  type: str
+  sample: null
+location:
+  description:
+    - The supported Azure location of the resource.
+  returned: always
+  type: str
+  sample: null
+tags:
+  description:
+    - >-
+      Specifies the tags that are assigned to the virtual machine. For more
+      information about using tags, see `Using tags to organize your Azure
+      resources
+      <https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md>`_.
+  returned: always
+  type: dictionary
+  sample: null
+plan:
+  description:
+    - >-
+      Used for establishing the purchase context of any 3rd Party artifact
+      through MarketPlace.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    publisher:
+      description:
+        - The publisher ID.
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The plan ID.
+      returned: always
+      type: str
+      sample: null
+    product:
+      description:
+        - >-
+          Specifies the product of the image from the marketplace. This is the
+          same value as Offer under the imageReference element.
+      returned: always
+      type: str
+      sample: null
+os_disk_image:
+  description:
+    - Contains the os disk image information.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    operating_system:
+      description:
+        - The operating system of the osDiskImage.
+      returned: always
+      type: sealed-choice
+      sample: null
+data_disk_images:
+  description:
+    - ''
+  returned: always
+  type: list
+  sample: null
+  contains:
+    lun:
+      description:
+        - >-
+          Specifies the logical unit number of the data disk. This value is used
+          to identify data disks within the VM and therefore must be unique for
+          each data disk attached to a VM.
+      returned: always
+      type: integer
+      sample: null
+automatic_os_upgrade_properties:
+  description:
+    - Describes automatic OS upgrade properties on the image.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    automatic_os_upgrade_supported:
+      description:
+        - Specifies whether automatic OS upgrade is supported on the image.
+      returned: always
+      type: bool
+      sample: null
+hyper_vgeneration:
+  description:
+    - Specifies the HyperVGeneration Type
+  returned: always
+  type: choice
+  sample: null
+disallowed:
+  description:
+    - >-
+      Specifies disallowed configuration for the VirtualMachine created from the
+      image
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    vm_disk_type:
+      description:
+        - VM disk types which are disallowed.
+      returned: always
+      type: choice
+      sample: null
+
+'''
 
 import time
 import json
@@ -99,25 +211,20 @@ class AzureRMVirtualMachineImage(AzureRMModuleBaseExt):
                 required=True
             ),
             publisher_name=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             offer=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             skus=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             version=dict(
-                type='str'
-            ),
-            expand=dict(
-                type='str'
-            ),
-            top=dict(
-                type='integer'
-            ),
-            orderby=dict(
-                type='str'
+                type='str',
+                required=True
             ),
             state=dict(
                 type='str',
@@ -131,9 +238,6 @@ class AzureRMVirtualMachineImage(AzureRMModuleBaseExt):
         self.offer = None
         self.skus = None
         self.version = None
-        self.expand = None
-        self.top = None
-        self.orderby = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -195,7 +299,10 @@ class AzureRMVirtualMachineImage(AzureRMModuleBaseExt):
 
     def create_update_resource(self):
         try:
-            response = self.mgmt_client.virtual_machine_images.create_or_update()
+            if self.to_do == Actions.Create:
+                response = self.mgmt_client.virtual_machine_images.create()
+            else:
+                response = self.mgmt_client.virtual_machine_images.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -213,7 +320,6 @@ class AzureRMVirtualMachineImage(AzureRMModuleBaseExt):
         return True
 
     def get_resource(self):
-        found = False
         try:
             response = self.mgmt_client.virtual_machine_images.get(location=self.location,
                                                                    publisher_name=self.publisher_name,

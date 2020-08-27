@@ -51,6 +51,184 @@ author:
 
 '''
 
+EXAMPLES = '''
+    - name: GetConfigurations
+      azure_rm_roledefinition_info: 
+        role_definition_id: roleDefinitionId
+        scope: scope
+        
+
+'''
+
+RETURN = '''
+role_definitions:
+  description: >-
+    A list of dict results where the key is the name of the RoleDefinition and
+    the values are the facts for that RoleDefinition.
+  returned: always
+  type: complex
+  contains:
+    id:
+      description:
+        - The role definition ID.
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The role definition name.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - The role definition type.
+      returned: always
+      type: str
+      sample: null
+    role_name:
+      description:
+        - The role name.
+      returned: always
+      type: str
+      sample: null
+    description:
+      description:
+        - The role definition description.
+      returned: always
+      type: str
+      sample: null
+    role_type:
+      description:
+        - The role type.
+      returned: always
+      type: str
+      sample: null
+    permissions:
+      description:
+        - Role definition permissions.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        actions:
+          description:
+            - Allowed actions.
+          returned: always
+          type: list
+          sample: null
+        not_actions:
+          description:
+            - Denied actions.
+          returned: always
+          type: list
+          sample: null
+        data_actions:
+          description:
+            - Allowed Data actions.
+          returned: always
+          type: list
+          sample: null
+        not_data_actions:
+          description:
+            - Denied Data actions.
+          returned: always
+          type: list
+          sample: null
+    assignable_scopes:
+      description:
+        - Role definition assignable scopes.
+      returned: always
+      type: list
+      sample: null
+    value:
+      description:
+        - Role definition list.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        id:
+          description:
+            - The role definition ID.
+          returned: always
+          type: str
+          sample: null
+        name:
+          description:
+            - The role definition name.
+          returned: always
+          type: str
+          sample: null
+        type:
+          description:
+            - The role definition type.
+          returned: always
+          type: str
+          sample: null
+        role_name:
+          description:
+            - The role name.
+          returned: always
+          type: str
+          sample: null
+        description:
+          description:
+            - The role definition description.
+          returned: always
+          type: str
+          sample: null
+        role_type:
+          description:
+            - The role type.
+          returned: always
+          type: str
+          sample: null
+        permissions:
+          description:
+            - Role definition permissions.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            actions:
+              description:
+                - Allowed actions.
+              returned: always
+              type: list
+              sample: null
+            not_actions:
+              description:
+                - Denied actions.
+              returned: always
+              type: list
+              sample: null
+            data_actions:
+              description:
+                - Allowed Data actions.
+              returned: always
+              type: list
+              sample: null
+            not_data_actions:
+              description:
+                - Denied Data actions.
+              returned: always
+              type: list
+              sample: null
+        assignable_scopes:
+          description:
+            - Role definition assignable scopes.
+          returned: always
+          type: list
+          sample: null
+    next_link:
+      description:
+        - The URL to use for getting the next set of results.
+      returned: always
+      type: str
+      sample: null
+
+'''
 
 import time
 import json
