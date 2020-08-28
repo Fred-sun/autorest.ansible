@@ -111,27 +111,6 @@ disks:
       returned: always
       type: list
       sample: null
-    sku:
-      description:
-        - >-
-          The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS,
-          or UltraSSD_LRS.
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        name:
-          description:
-            - The sku name.
-          returned: always
-          type: choice
-          sample: null
-        tier:
-          description:
-            - The sku tier.
-          returned: always
-          type: str
-          sample: null
     zones:
       description:
         - The Logical zone list for Disk.
@@ -353,22 +332,15 @@ disks:
               type: dict
               sample: null
               contains:
-                source_vault:
-                  description:
-                    - Resource id of the KeyVault containing the key or secret
-                  returned: always
-                  type: dict
-                  sample: null
-                  contains:
-                    id:
-                      description:
-                        - Resource Id
-                      returned: always
-                      type: str
-                      sample: null
                 key_url:
                   description:
                     - Url pointing to a key or secret in KeyVault
+                  returned: always
+                  type: str
+                  sample: null
+                id:
+                  description:
+                    - Resource Id
                   returned: always
                   type: str
                   sample: null
@@ -493,6 +465,18 @@ disks:
       returned: always
       type: str
       sample: null
+    name_sku_name:
+      description:
+        - The sku name.
+      returned: always
+      type: choice
+      sample: null
+    tier:
+      description:
+        - The sku tier.
+      returned: always
+      type: str
+      sample: null
     value:
       description:
         - A list of disks.
@@ -517,27 +501,6 @@ disks:
           returned: always
           type: list
           sample: null
-        sku:
-          description:
-            - >-
-              The disks sku name. Can be Standard_LRS, Premium_LRS,
-              StandardSSD_LRS, or UltraSSD_LRS.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            name:
-              description:
-                - The sku name.
-              returned: always
-              type: choice
-              sample: null
-            tier:
-              description:
-                - The sku tier.
-              returned: always
-              type: str
-              sample: null
         zones:
           description:
             - The Logical zone list for Disk.
@@ -763,24 +726,15 @@ disks:
                   type: dict
                   sample: null
                   contains:
-                    source_vault:
-                      description:
-                        - >-
-                          Resource id of the KeyVault containing the key or
-                          secret
-                      returned: always
-                      type: dict
-                      sample: null
-                      contains:
-                        id:
-                          description:
-                            - Resource Id
-                          returned: always
-                          type: str
-                          sample: null
                     key_url:
                       description:
                         - Url pointing to a key or secret in KeyVault
+                      returned: always
+                      type: str
+                      sample: null
+                    id:
+                      description:
+                        - Resource Id
                       returned: always
                       type: str
                       sample: null
@@ -903,6 +857,18 @@ disks:
             - >-
               ARM id of the DiskAccess resource for using private endpoints on
               disks.
+          returned: always
+          type: str
+          sample: null
+        name_sku_name:
+          description:
+            - The sku name.
+          returned: always
+          type: choice
+          sample: null
+        tier:
+          description:
+            - The sku tier.
           returned: always
           type: str
           sample: null

@@ -56,47 +56,42 @@ options:
       - The name of the gallery Application Definition to be deleted.
     required: true
     type: str
-  gallery_application:
+  location:
+    description:
+      - Resource location
+    type: str
+  description:
     description:
       - >-
-        Parameters supplied to the create or update gallery Application
-        operation.
-      - Parameters supplied to the update gallery Application operation.
-    type: dict
-    suboptions:
-      description:
-        description:
-          - >-
-            The description of this gallery Application Definition resource.
-            This property is updatable.
-        type: str
-      eula:
-        description:
-          - The Eula agreement for the gallery Application Definition.
-        type: str
-      privacy_statement_uri:
-        description:
-          - The privacy statement uri.
-        type: str
-      release_note_uri:
-        description:
-          - The release note uri.
-        type: str
-      end_of_life_date:
-        description:
-          - >-
-            The end of life date of the gallery Application Definition. This
-            property can be used for decommissioning purposes. This property is
-            updatable.
-        type: str
-      supported_os_type:
-        description:
-          - >-
-            This property allows you to specify the supported type of the OS
-            that application is built for. :code:`<br>`:code:`<br>` Possible
-            values are: :code:`<br>`:code:`<br>` **Windows**
-            :code:`<br>`:code:`<br>` **Linux**
-        type: sealed-choice
+        The description of this gallery Application Definition resource. This
+        property is updatable.
+    type: str
+  eula:
+    description:
+      - The Eula agreement for the gallery Application Definition.
+    type: str
+  privacy_statement_uri:
+    description:
+      - The privacy statement uri.
+    type: str
+  release_note_uri:
+    description:
+      - The release note uri.
+    type: str
+  end_of_life_date:
+    description:
+      - >-
+        The end of life date of the gallery Application Definition. This
+        property can be used for decommissioning purposes. This property is
+        updatable.
+    type: str
+  supported_os_type:
+    description:
+      - >-
+        This property allows you to specify the supported type of the OS that
+        application is built for. :code:`<br>`:code:`<br>` Possible values are:
+        :code:`<br>`:code:`<br>` **Windows** :code:`<br>`:code:`<br>` **Linux**
+    type: sealed-choice
   state:
     description:
       - Assert the state of the GalleryApplication.
@@ -117,14 +112,6 @@ author:
 EXAMPLES = '''
     - name: Create or update a simple gallery Application.
       azure_rm_galleryapplication: 
-        gallery_application:
-          location: West US
-          properties:
-            description: This is the gallery application description.
-            eula: This is the gallery application EULA.
-            privacy_statement_uri: 'myPrivacyStatementUri}'
-            release_note_uri: myReleaseNoteUri
-            supported_ostype: Windows
         gallery_application_name: myGalleryApplicationName
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
@@ -132,13 +119,6 @@ EXAMPLES = '''
 
     - name: Update a simple gallery Application.
       azure_rm_galleryapplication: 
-        gallery_application:
-          properties:
-            description: This is the gallery application description.
-            eula: This is the gallery application EULA.
-            privacy_statement_uri: 'myPrivacyStatementUri}'
-            release_note_uri: myReleaseNoteUri
-            supported_ostype: Windows
         gallery_application_name: myGalleryApplicationName
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
@@ -264,35 +244,33 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            gallery_application=dict(
-                type='dict',
-                disposition='/gallery_application',
-                options=dict(
-                    description=dict(
-                        type='str',
-                        disposition='description'
-                    ),
-                    eula=dict(
-                        type='str',
-                        disposition='eula'
-                    ),
-                    privacy_statement_uri=dict(
-                        type='str',
-                        disposition='privacy_statement_uri'
-                    ),
-                    release_note_uri=dict(
-                        type='str',
-                        disposition='release_note_uri'
-                    ),
-                    end_of_life_date=dict(
-                        type='str',
-                        disposition='end_of_life_date'
-                    ),
-                    supported_os_type=dict(
-                        type='sealed-choice',
-                        disposition='supported_os_type'
-                    )
-                )
+            location=dict(
+                type='str',
+                disposition='/location'
+            ),
+            description=dict(
+                type='str',
+                disposition='/description'
+            ),
+            eula=dict(
+                type='str',
+                disposition='/eula'
+            ),
+            privacy_statement_uri=dict(
+                type='str',
+                disposition='/privacy_statement_uri'
+            ),
+            release_note_uri=dict(
+                type='str',
+                disposition='/release_note_uri'
+            ),
+            end_of_life_date=dict(
+                type='str',
+                disposition='/end_of_life_date'
+            ),
+            supported_os_type=dict(
+                type='sealed-choice',
+                disposition='/supported_os_type'
             ),
             state=dict(
                 type='str',
@@ -368,7 +346,7 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
             response = self.mgmt_client.gallery_applications.create_or_update(resource_group_name=self.resource_group_name,
                                                                               gallery_name=self.gallery_name,
                                                                               gallery_application_name=self.gallery_application_name,
-                                                                              parameters=self.body)
+                                                                              gallery_application=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

@@ -35,97 +35,43 @@ options:
         is 80 characters.
     required: true
     type: str
-  disk_encryption_set:
+  location:
+    description:
+      - Resource location
+    type: str
+  encryption_type:
+    description:
+      - The type of key used to encrypt the data of the disk.
+    type: choice
+  key_url:
+    description:
+      - Url pointing to a key or secret in KeyVault
+    type: str
+  id:
+    description:
+      - Resource Id
+    type: str
+  type:
     description:
       - >-
-        disk encryption set object supplied in the body of the Put disk
-        encryption set operation.
+        The type of Managed Identity used by the DiskEncryptionSet. Only
+        SystemAssigned is supported.
+    type: choice
+  active_key:
+    description:
       - >-
-        disk encryption set object supplied in the body of the Patch disk
-        encryption set operation.
+        Key Vault Key Url and vault id of KeK, KeK is optional and when provided
+        is used to unwrap the encryptionKey
     type: dict
     suboptions:
-      identity:
+      key_url:
         description:
-          - >-
-            The managed identity for the disk encryption set. It should be given
-            permission on the key vault before it can be used to encrypt disks.
-        type: dict
-        suboptions:
-          type:
-            description:
-              - >-
-                The type of Managed Identity used by the DiskEncryptionSet. Only
-                SystemAssigned is supported.
-            type: choice
-          principal_id:
-            description:
-              - >-
-                The object id of the Managed Identity Resource. This will be
-                sent to the RP from ARM via the x-ms-identity-principal-id
-                header in the PUT request if the resource has a
-                systemAssigned(implicit) identity
-            type: str
-          tenant_id:
-            description:
-              - >-
-                The tenant id of the Managed Identity Resource. This will be
-                sent to the RP from ARM via the x-ms-client-tenant-id header in
-                the PUT request if the resource has a systemAssigned(implicit)
-                identity
-            type: str
-      encryption_type:
+          - Url pointing to a key or secret in KeyVault
+        required: true
+        type: str
+      id:
         description:
-          - The type of key used to encrypt the data of the disk.
-        type: choice
-      active_key:
-        description:
-          - >-
-            The key vault key which is currently used by this disk encryption
-            set.
-        type: dict
-        suboptions:
-          source_vault:
-            description:
-              - Resource id of the KeyVault containing the key or secret
-            required: true
-            type: dict
-            suboptions:
-              id:
-                description:
-                  - Resource Id
-                type: str
-          key_url:
-            description:
-              - Url pointing to a key or secret in KeyVault
-            required: true
-            type: str
-      previous_keys:
-        description:
-          - >-
-            A readonly collection of key vault keys previously used by this disk
-            encryption set while a key rotation is in progress. It will be empty
-            if there is no ongoing key rotation.
-        type: list
-        suboptions:
-          source_vault:
-            description:
-              - Resource id of the KeyVault containing the key or secret
-            required: true
-            type: dict
-            suboptions:
-              id:
-                description:
-                  - Resource Id
-                type: str
-          key_url:
-            description:
-              - Url pointing to a key or secret in KeyVault
-            required: true
-            type: str
-      provisioning_state:
-        description:
-          - The disk encryption set provisioning state.
+          - Resource Id
         type: str
   state:
     description:
@@ -147,32 +93,12 @@ author:
 EXAMPLES = '''
     - name: Create a disk encryption set.
       azure_rm_diskencryptionset: 
-        disk_encryption_set:
-          identity:
-            type: SystemAssigned
-          location: West US
-          properties:
-            active_key:
-              key_url: 'https://myvmvault.vault-int.azure-int.net/keys/{key}'
-              source_vault:
-                id: >-
-                  /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
         disk_encryption_set_name: myDiskEncryptionSet
         resource_group_name: myResourceGroup
         
 
     - name: Update a disk encryption set.
       azure_rm_diskencryptionset: 
-        disk_encryption_set:
-          properties:
-            active_key:
-              key_url: 'https://myvmvault.vault-int.azure-int.net/keys/{key}'
-              source_vault:
-                id: >-
-                  /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
-          tags:
-            department: Development
-            project: Encryption
         disk_encryption_set_name: myDiskEncryptionSet
         resource_group_name: myResourceGroup
         
@@ -216,73 +142,12 @@ tags:
   returned: always
   type: dictionary
   sample: null
-identity:
-  description:
-    - >-
-      The managed identity for the disk encryption set. It should be given
-      permission on the key vault before it can be used to encrypt disks.
-  returned: always
-  type: dict
-  sample: null
-  contains:
-    type:
-      description:
-        - >-
-          The type of Managed Identity used by the DiskEncryptionSet. Only
-          SystemAssigned is supported.
-      returned: always
-      type: choice
-      sample: null
-    principal_id:
-      description:
-        - >-
-          The object id of the Managed Identity Resource. This will be sent to
-          the RP from ARM via the x-ms-identity-principal-id header in the PUT
-          request if the resource has a systemAssigned(implicit) identity
-      returned: always
-      type: str
-      sample: null
-    tenant_id:
-      description:
-        - >-
-          The tenant id of the Managed Identity Resource. This will be sent to
-          the RP from ARM via the x-ms-client-tenant-id header in the PUT
-          request if the resource has a systemAssigned(implicit) identity
-      returned: always
-      type: str
-      sample: null
 encryption_type:
   description:
     - The type of key used to encrypt the data of the disk.
   returned: always
   type: choice
   sample: null
-active_key:
-  description:
-    - The key vault key which is currently used by this disk encryption set.
-  returned: always
-  type: dict
-  sample: null
-  contains:
-    source_vault:
-      description:
-        - Resource id of the KeyVault containing the key or secret
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        id:
-          description:
-            - Resource Id
-          returned: always
-          type: str
-          sample: null
-    key_url:
-      description:
-        - Url pointing to a key or secret in KeyVault
-      returned: always
-      type: str
-      sample: null
 previous_keys:
   description:
     - >-
@@ -293,28 +158,59 @@ previous_keys:
   type: list
   sample: null
   contains:
-    source_vault:
-      description:
-        - Resource id of the KeyVault containing the key or secret
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        id:
-          description:
-            - Resource Id
-          returned: always
-          type: str
-          sample: null
     key_url:
       description:
         - Url pointing to a key or secret in KeyVault
       returned: always
       type: str
       sample: null
+    id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
 provisioning_state:
   description:
     - The disk encryption set provisioning state.
+  returned: always
+  type: str
+  sample: null
+key_url:
+  description:
+    - Url pointing to a key or secret in KeyVault
+  returned: always
+  type: str
+  sample: null
+id_properties_active_key_source_vault_id:
+  description:
+    - Resource Id
+  returned: always
+  type: str
+  sample: null
+type_identity_type:
+  description:
+    - >-
+      The type of Managed Identity used by the DiskEncryptionSet. Only
+      SystemAssigned is supported.
+  returned: always
+  type: choice
+  sample: null
+principal_id:
+  description:
+    - >-
+      The object id of the Managed Identity Resource. This will be sent to the
+      RP from ARM via the x-ms-identity-principal-id header in the PUT request
+      if the resource has a systemAssigned(implicit) identity
+  returned: always
+  type: str
+  sample: null
+tenant_id:
+  description:
+    - >-
+      The tenant id of the Managed Identity Resource. This will be sent to the
+      RP from ARM via the x-ms-client-tenant-id header in the PUT request if the
+      resource has a systemAssigned(implicit) identity
   returned: always
   type: str
   sample: null
@@ -351,80 +247,38 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            disk_encryption_set=dict(
+            location=dict(
+                type='str',
+                disposition='/location'
+            ),
+            encryption_type=dict(
+                type='choice',
+                disposition='/encryption_type'
+            ),
+            key_url=dict(
+                type='str',
+                disposition='/key_url'
+            ),
+            id=dict(
+                type='str',
+                disposition='/id'
+            ),
+            type=dict(
+                type='choice',
+                disposition='/type'
+            ),
+            active_key=dict(
                 type='dict',
-                disposition='/disk_encryption_set',
+                disposition='/active_key',
                 options=dict(
-                    identity=dict(
-                        type='dict',
-                        disposition='identity',
-                        options=dict(
-                            type=dict(
-                                type='choice',
-                                disposition='type'
-                            ),
-                            principal_id=dict(
-                                type='str',
-                                disposition='principal_id'
-                            ),
-                            tenant_id=dict(
-                                type='str',
-                                disposition='tenant_id'
-                            )
-                        )
-                    ),
-                    encryption_type=dict(
-                        type='choice',
-                        disposition='encryption_type'
-                    ),
-                    active_key=dict(
-                        type='dict',
-                        disposition='active_key',
-                        options=dict(
-                            source_vault=dict(
-                                type='dict',
-                                disposition='source_vault',
-                                required=True,
-                                options=dict(
-                                    id=dict(
-                                        type='str',
-                                        disposition='id'
-                                    )
-                                )
-                            ),
-                            key_url=dict(
-                                type='str',
-                                disposition='key_url',
-                                required=True
-                            )
-                        )
-                    ),
-                    previous_keys=dict(
-                        type='list',
-                        disposition='previous_keys',
-                        elements='dict',
-                        options=dict(
-                            source_vault=dict(
-                                type='dict',
-                                disposition='source_vault',
-                                required=True,
-                                options=dict(
-                                    id=dict(
-                                        type='str',
-                                        disposition='id'
-                                    )
-                                )
-                            ),
-                            key_url=dict(
-                                type='str',
-                                disposition='key_url',
-                                required=True
-                            )
-                        )
-                    ),
-                    provisioning_state=dict(
+                    key_url=dict(
                         type='str',
-                        disposition='provisioning_state'
+                        disposition='key_url',
+                        required=True
+                    ),
+                    id=dict(
+                        type='str',
+                        disposition='id'
                     )
                 )
             ),
@@ -500,7 +354,7 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
         try:
             response = self.mgmt_client.disk_encryption_sets.create_or_update(resource_group_name=self.resource_group_name,
                                                                               disk_encryption_set_name=self.disk_encryption_set_name,
-                                                                              parameters=self.body)
+                                                                              disk_encryption_set=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
