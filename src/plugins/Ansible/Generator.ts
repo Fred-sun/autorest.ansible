@@ -44,7 +44,7 @@ export async function processRequest(host: Host) {
             Info(f);
             WriteFile(f, files[f]);
         }
-        // host.WriteFile("model4.yaml",serialize(session.model));
+        host.WriteFile("model4.yaml",serialize(session.model));
     } catch (E) {
         if (debug) {
             console.error(`${__filename} - FAILURE  ${JSON.stringify(E)} ${E.stack}`);
