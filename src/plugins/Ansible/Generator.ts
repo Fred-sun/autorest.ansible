@@ -99,7 +99,7 @@ export async function processRequest(host: Host) {
         let files = [];
         files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleSdk);
         for (let f in files) {
-           WriteFile(f, files[f].join('\r\n'));
+           WriteFile(f, files[f]);
         }
         // host.WriteFile("model4.yaml",serialize(session.model));
         // let str : string[] = [];
