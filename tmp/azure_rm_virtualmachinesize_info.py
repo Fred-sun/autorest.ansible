@@ -15,12 +15,17 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: azure_rm_operation_info
+module: azure_rm_virtualmachinesize_info
 version_added: '2.9'
-short_description: Get Operation info.
+short_description: Get VirtualMachineSize info.
 description:
-  - Get info of Operation.
-options: {}
+  - Get info of VirtualMachineSize.
+options:
+  location:
+    description:
+      - The location upon which virtual-machine-sizes is queried.
+    required: true
+    type: str
 extends_documentation_fragment:
   - azure
 author:
@@ -32,55 +37,61 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-operations:
+virtual_machine_sizes:
   description: >-
-    A list of dict results where the key is the name of the Operation and the
-    values are the facts for that Operation.
+    A list of dict results where the key is the name of the VirtualMachineSize
+    and the values are the facts for that VirtualMachineSize.
   returned: always
   type: complex
   contains:
     value:
       description:
-        - The list of compute operations
+        - The list of virtual machine sizes.
       returned: always
       type: list
       sample: null
       contains:
-        origin:
-          description:
-            - The origin of the compute operation.
-          returned: always
-          type: str
-          sample: null
         name:
           description:
-            - The name of the compute operation.
+            - The name of the virtual machine size.
           returned: always
           type: str
           sample: null
-        operation:
+        number_of_cores:
           description:
-            - The display name of the compute operation.
+            - The number of cores supported by the virtual machine size.
           returned: always
-          type: str
+          type: integer
           sample: null
-        resource:
+        os_disk_size_in_mb:
           description:
-            - The display name of the resource the operation applies to.
+            - 'The OS disk size, in MB, allowed by the virtual machine size.'
           returned: always
-          type: str
+          type: integer
           sample: null
-        description:
+        resource_disk_size_in_mb:
           description:
-            - The description of the operation.
+            - >-
+              The resource disk size, in MB, allowed by the virtual machine
+              size.
           returned: always
-          type: str
+          type: integer
           sample: null
-        provider:
+        memory_in_mb:
           description:
-            - The resource provider for the operation.
+            - >-
+              The amount of memory, in MB, supported by the virtual machine
+              size.
           returned: always
-          type: str
+          type: integer
+          sample: null
+        max_data_disk_count:
+          description:
+            - >-
+              The maximum number of data disks that can be attached to the
+              virtual machine size.
+          returned: always
+          type: integer
           sample: null
 
 '''
@@ -99,11 +110,16 @@ except ImportError:
     pass
 
 
-class AzureRMOperationInfo(AzureRMModuleBase):
+class AzureRMVirtualMachineSizeInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
+            location=dict(
+                type='str',
+                required=True
+            )
         )
 
+        self.location = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -117,7 +133,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
         self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
         self.mgmt_client = None
-        super(AzureRMOperationInfo, self).__init__(self.module_arg_spec, supports_tags=True)
+        super(AzureRMVirtualMachineSizeInfo, self).__init__(self.module_arg_spec, supports_tags=True)
 
     def exec_module(self, **kwargs):
 
@@ -128,15 +144,15 @@ class AzureRMOperationInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
                                                     api_version='2020-06-01')
 
-        else:
-            self.results['operations'] = self.format_item(self.list())
+        if (self.location is not None):
+            self.results['virtual_machine_sizes'] = self.format_item(self.list())
         return self.results
 
     def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.operations.list()
+            response = self.mgmt_client.virtual_machine_sizes.list(location=self.location)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
@@ -154,7 +170,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
 
 
 def main():
-    AzureRMOperationInfo()
+    AzureRMVirtualMachineSizeInfo()
 
 
 if __name__ == '__main__':

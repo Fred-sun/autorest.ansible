@@ -15,11 +15,11 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: azure_rm_operation_info
+module: azure_rm_loganalytic_info
 version_added: '2.9'
-short_description: Get Operation info.
+short_description: Get LogAnalytic info.
 description:
-  - Get info of Operation.
+  - Get info of LogAnalytic.
 options: {}
 extends_documentation_fragment:
   - azure
@@ -32,56 +32,13 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-operations:
+log_analytics:
   description: >-
-    A list of dict results where the key is the name of the Operation and the
-    values are the facts for that Operation.
+    A list of dict results where the key is the name of the LogAnalytic and the
+    values are the facts for that LogAnalytic.
   returned: always
   type: complex
-  contains:
-    value:
-      description:
-        - The list of compute operations
-      returned: always
-      type: list
-      sample: null
-      contains:
-        origin:
-          description:
-            - The origin of the compute operation.
-          returned: always
-          type: str
-          sample: null
-        name:
-          description:
-            - The name of the compute operation.
-          returned: always
-          type: str
-          sample: null
-        operation:
-          description:
-            - The display name of the compute operation.
-          returned: always
-          type: str
-          sample: null
-        resource:
-          description:
-            - The display name of the resource the operation applies to.
-          returned: always
-          type: str
-          sample: null
-        description:
-          description:
-            - The description of the operation.
-          returned: always
-          type: str
-          sample: null
-        provider:
-          description:
-            - The resource provider for the operation.
-          returned: always
-          type: str
-          sample: null
+  contains: {}
 
 '''
 
@@ -99,7 +56,7 @@ except ImportError:
     pass
 
 
-class AzureRMOperationInfo(AzureRMModuleBase):
+class AzureRMLogAnalyticInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
         )
@@ -117,7 +74,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
         self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
         self.mgmt_client = None
-        super(AzureRMOperationInfo, self).__init__(self.module_arg_spec, supports_tags=True)
+        super(AzureRMLogAnalyticInfo, self).__init__(self.module_arg_spec, supports_tags=True)
 
     def exec_module(self, **kwargs):
 
@@ -128,19 +85,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
                                                     api_version='2020-06-01')
 
-        else:
-            self.results['operations'] = self.format_item(self.list())
         return self.results
-
-    def list(self):
-        response = None
-
-        try:
-            response = self.mgmt_client.operations.list()
-        except CloudError as e:
-            self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
-
-        return response
 
     def format_item(self, item):
         if hasattr(item, 'as_dict'):
@@ -154,7 +99,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
 
 
 def main():
-    AzureRMOperationInfo()
+    AzureRMLogAnalyticInfo()
 
 
 if __name__ == '__main__':

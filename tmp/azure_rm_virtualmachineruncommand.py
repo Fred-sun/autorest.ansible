@@ -15,16 +15,28 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: azure_rm_usage
+module: azure_rm_virtualmachineruncommand
 version_added: '2.9'
-short_description: Manage Azure Usage instance.
+short_description: Manage Azure VirtualMachineRunCommand instance.
 description:
-  - 'Create, update and delete instance of Azure Usage.'
+  - 'Create, update and delete instance of Azure VirtualMachineRunCommand.'
 options:
+  location:
+    description:
+      - The location upon which run commands is queried.
+    required: true
+    type: str
+  command_id:
+    description:
+      - The command id.
+    required: true
+    type: str
   state:
     description:
-      - Assert the state of the Usage.
-      - Use C(present) to create or update an Usage and C(absent) to delete it.
+      - Assert the state of the VirtualMachineRunCommand.
+      - >-
+        Use C(present) to create or update an VirtualMachineRunCommand and
+        C(absent) to delete it.
     default: present
     choices:
       - absent
@@ -40,7 +52,73 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-{}
+schema:
+  description:
+    - The VM run command schema.
+  returned: always
+  type: str
+  sample: null
+id:
+  description:
+    - The VM run command id.
+  returned: always
+  type: str
+  sample: null
+os_type:
+  description:
+    - The Operating System type.
+  returned: always
+  type: sealed-choice
+  sample: null
+label:
+  description:
+    - The VM run command label.
+  returned: always
+  type: str
+  sample: null
+description:
+  description:
+    - The VM run command description.
+  returned: always
+  type: str
+  sample: null
+script:
+  description:
+    - The script to be executed.
+  returned: always
+  type: list
+  sample: null
+parameters:
+  description:
+    - The parameters used by the script.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    name:
+      description:
+        - The run command parameter name.
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - The run command parameter type.
+      returned: always
+      type: str
+      sample: null
+    default_value:
+      description:
+        - The run command parameter default value.
+      returned: always
+      type: str
+      sample: null
+    required:
+      description:
+        - The run command parameter required.
+      returned: always
+      type: bool
+      sample: null
 
 '''
 
@@ -63,10 +141,17 @@ class Actions:
     NoAction, Create, Update, Delete = range(4)
 
 
-class AzureRMUsage(AzureRMModuleBaseExt):
+class AzureRMVirtualMachineRunCommand(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            undefined,
+            location=dict(
+                type='str',
+                required=True
+            ),
+            command_id=dict(
+                type='str',
+                required=True
+            ),
             state=dict(
                 type='str',
                 default='present',
@@ -74,6 +159,8 @@ class AzureRMUsage(AzureRMModuleBaseExt):
             )
         )
 
+        self.location = None
+        self.command_id = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -81,9 +168,9 @@ class AzureRMUsage(AzureRMModuleBaseExt):
         self.state = None
         self.to_do = Actions.NoAction
 
-        super(AzureRMUsage, self).__init__(derived_arg_spec=self.module_arg_spec,
-                                           supports_check_mode=True,
-                                           supports_tags=True)
+        super(AzureRMVirtualMachineRunCommand, self).__init__(derived_arg_spec=self.module_arg_spec,
+                                                              supports_check_mode=True,
+                                                              supports_tags=True)
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
@@ -136,35 +223,36 @@ class AzureRMUsage(AzureRMModuleBaseExt):
     def create_update_resource(self):
         try:
             if self.to_do == Actions.Create:
-                response = self.mgmt_client.usage.create()
+                response = self.mgmt_client.virtual_machine_run_commands.create()
             else:
-                response = self.mgmt_client.usage.update()
+                response = self.mgmt_client.virtual_machine_run_commands.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
-            self.log('Error attempting to create the Usage instance.')
-            self.fail('Error creating the Usage instance: {0}'.format(str(exc)))
+            self.log('Error attempting to create the VirtualMachineRunCommand instance.')
+            self.fail('Error creating the VirtualMachineRunCommand instance: {0}'.format(str(exc)))
         return response.as_dict()
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.usage.delete()
+            response = self.mgmt_client.virtual_machine_run_commands.delete()
         except CloudError as e:
-            self.log('Error attempting to delete the Usage instance.')
-            self.fail('Error deleting the Usage instance: {0}'.format(str(e)))
+            self.log('Error attempting to delete the VirtualMachineRunCommand instance.')
+            self.fail('Error deleting the VirtualMachineRunCommand instance: {0}'.format(str(e)))
 
         return True
 
     def get_resource(self):
         try:
-            response = self.mgmt_client.usage.get()
+            response = self.mgmt_client.virtual_machine_run_commands.get(location=self.location,
+                                                                         command_id=self.command_id)
         except CloudError as e:
             return False
         return response.as_dict()
 
 
 def main():
-    AzureRMUsage()
+    AzureRMVirtualMachineRunCommand()
 
 
 if __name__ == '__main__':

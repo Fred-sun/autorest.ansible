@@ -23,7 +23,7 @@ description:
 options:
   location:
     description:
-      - The location of the Azure Storage resource.
+      - The location for which resource usage is queried.
     required: true
     type: str
 extends_documentation_fragment:
@@ -34,15 +34,10 @@ author:
 '''
 
 EXAMPLES = '''
-    - name: UsageList
-      azure_rm_usage_info: 
-        location: eastus2(stage)
-        
-
 '''
 
 RETURN = '''
-usages:
+usage:
   description: >-
     A list of dict results where the key is the name of the Usage and the values
     are the facts for that Usage.
@@ -51,52 +46,57 @@ usages:
   contains:
     value:
       description:
-        - Gets or sets the list of Storage Resource Usages.
+        - The list of compute resource usages.
       returned: always
       type: list
       sample: null
       contains:
         unit:
           description:
-            - Gets the unit of measurement.
+            - An enum describing the unit of usage measurement.
           returned: always
-          type: sealed-choice
+          type: constant
           sample: null
         current_value:
           description:
-            - >-
-              Gets the current count of the allocated resources in the
-              subscription.
+            - The current usage of the resource.
           returned: always
           type: integer
           sample: null
         limit:
           description:
-            - >-
-              Gets the maximum count of the resources that can be allocated in
-              the subscription.
+            - The maximum permitted usage of the resource.
           returned: always
           type: integer
           sample: null
         name:
           description:
-            - Gets the name of the type of usage.
+            - The name of the type of usage.
           returned: always
           type: dict
           sample: null
           contains:
             value:
               description:
-                - Gets a string describing the resource name.
+                - The name of the resource.
               returned: always
               type: str
               sample: null
             localized_value:
               description:
-                - Gets a localized string describing the resource name.
+                - The localized name of the resource.
               returned: always
               type: str
               sample: null
+    next_link:
+      description:
+        - >-
+          The URI to fetch the next page of compute resource usage information.
+          Call ListNext() with this to fetch the next page of compute resource
+          usage information.
+      returned: always
+      type: str
+      sample: null
 
 '''
 
@@ -106,7 +106,7 @@ from ansible.module_utils.azure_rm_common import AzureRMModuleBase
 from copy import deepcopy
 try:
     from msrestazure.azure_exceptions import CloudError
-    from azure.mgmt.storage import StorageManagementClient
+    from azure.mgmt.compute import ComputeManagementClient
     from msrestazure.azure_operation import AzureOperationPoller
     from msrest.polling import LROPoller
 except ImportError:
@@ -132,7 +132,7 @@ class AzureRMUsageInfo(AzureRMModuleBase):
         self.status_code = [200]
 
         self.query_parameters = {}
-        self.query_parameters['api-version'] = '2019-06-01'
+        self.query_parameters['api-version'] = '2020-06-01'
         self.header_parameters = {}
         self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
@@ -144,19 +144,19 @@ class AzureRMUsageInfo(AzureRMModuleBase):
         for key in self.module_arg_spec:
             setattr(self, key, kwargs[key])
 
-        self.mgmt_client = self.get_mgmt_svc_client(StorageManagementClient,
+        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2019-06-01')
+                                                    api_version='2020-06-01')
 
         if (self.location is not None):
-            self.results['usages'] = self.format_item(self.listbylocation())
+            self.results['usage'] = self.format_item(self.list())
         return self.results
 
-    def listbylocation(self):
+    def list(self):
         response = None
 
         try:
-            response = self.mgmt_client.usages.list_by_location(location=self.location)
+            response = self.mgmt_client.usage.list(location=self.location)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

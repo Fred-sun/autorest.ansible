@@ -15,16 +15,18 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: azure_rm_usage
+module: azure_rm_resourcesku
 version_added: '2.9'
-short_description: Manage Azure Usage instance.
+short_description: Manage Azure ResourceSku instance.
 description:
-  - 'Create, update and delete instance of Azure Usage.'
+  - 'Create, update and delete instance of Azure ResourceSku.'
 options:
   state:
     description:
-      - Assert the state of the Usage.
-      - Use C(present) to create or update an Usage and C(absent) to delete it.
+      - Assert the state of the ResourceSku.
+      - >-
+        Use C(present) to create or update an ResourceSku and C(absent) to
+        delete it.
     default: present
     choices:
       - absent
@@ -63,7 +65,7 @@ class Actions:
     NoAction, Create, Update, Delete = range(4)
 
 
-class AzureRMUsage(AzureRMModuleBaseExt):
+class AzureRMResourceSku(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             undefined,
@@ -81,9 +83,9 @@ class AzureRMUsage(AzureRMModuleBaseExt):
         self.state = None
         self.to_do = Actions.NoAction
 
-        super(AzureRMUsage, self).__init__(derived_arg_spec=self.module_arg_spec,
-                                           supports_check_mode=True,
-                                           supports_tags=True)
+        super(AzureRMResourceSku, self).__init__(derived_arg_spec=self.module_arg_spec,
+                                                 supports_check_mode=True,
+                                                 supports_tags=True)
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
@@ -99,7 +101,7 @@ class AzureRMUsage(AzureRMModuleBaseExt):
 
         self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    api_version='2019-04-01')
 
         old_response = self.get_resource()
 
@@ -136,35 +138,35 @@ class AzureRMUsage(AzureRMModuleBaseExt):
     def create_update_resource(self):
         try:
             if self.to_do == Actions.Create:
-                response = self.mgmt_client.usage.create()
+                response = self.mgmt_client.resource_skus.create()
             else:
-                response = self.mgmt_client.usage.update()
+                response = self.mgmt_client.resource_skus.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
-            self.log('Error attempting to create the Usage instance.')
-            self.fail('Error creating the Usage instance: {0}'.format(str(exc)))
+            self.log('Error attempting to create the ResourceSku instance.')
+            self.fail('Error creating the ResourceSku instance: {0}'.format(str(exc)))
         return response.as_dict()
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.usage.delete()
+            response = self.mgmt_client.resource_skus.delete()
         except CloudError as e:
-            self.log('Error attempting to delete the Usage instance.')
-            self.fail('Error deleting the Usage instance: {0}'.format(str(e)))
+            self.log('Error attempting to delete the ResourceSku instance.')
+            self.fail('Error deleting the ResourceSku instance: {0}'.format(str(e)))
 
         return True
 
     def get_resource(self):
         try:
-            response = self.mgmt_client.usage.get()
+            response = self.mgmt_client.resource_skus.get()
         except CloudError as e:
             return False
         return response.as_dict()
 
 
 def main():
-    AzureRMUsage()
+    AzureRMResourceSku()
 
 
 if __name__ == '__main__':
