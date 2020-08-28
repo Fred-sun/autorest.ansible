@@ -309,79 +309,65 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
             ),
             disk_access=dict(
                 type='dict',
-                updatable=False,
                 disposition='/disk_access',
                 options=dict(
                     private_endpoint_connections=dict(
                         type='list',
-                        updatable=False,
                         disposition='private_endpoint_connections',
                         elements='dict',
                         options=dict(
                             id=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='id'
                             ),
                             name=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='name'
                             ),
                             type=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='type'
                             ),
                             private_endpoint=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='private_endpoint',
                                 options=dict(
                                     id=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='id'
                                     )
                                 )
                             ),
                             private_link_service_connection_state=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='private_link_service_connection_state',
                                 options=dict(
                                     status=dict(
                                         type='choice',
-                                        updatable=False,
                                         disposition='status'
                                     ),
                                     description=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='description'
                                     ),
                                     actions_required=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='actions_required'
                                     )
                                 )
                             ),
                             provisioning_state=dict(
                                 type='choice',
-                                updatable=False,
                                 disposition='provisioning_state'
                             )
                         )
                     ),
                     provisioning_state=dict(
                         type='str',
-                        updatable=False,
                         disposition='provisioning_state'
                     ),
                     time_created=dict(
                         type='str',
-                        updatable=False,
                         disposition='time_created'
                     )
                 )

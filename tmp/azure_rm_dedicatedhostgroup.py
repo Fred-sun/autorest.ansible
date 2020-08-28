@@ -269,47 +269,39 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
-                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     zones=dict(
                         type='list',
-                        updatable=False,
                         disposition='zones',
                         elements='str'
                     ),
                     platform_fault_domain_count=dict(
                         type='integer',
-                        updatable=False,
                         disposition='platform_fault_domain_count'
                     ),
                     hosts=dict(
                         type='list',
-                        updatable=False,
                         disposition='hosts',
                         elements='dict',
                         options=dict(
                             id=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='id'
                             )
                         )
                     ),
                     instance_view=dict(
                         type='dict',
-                        updatable=False,
                         disposition='instance_view',
                         options=dict(
                             hosts=dict(
                                 type='list',
-                                updatable=False,
                                 disposition='hosts',
                                 elements='dict',
                                 options=dict(
                                     name=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='name'
                                     )
                                 )
@@ -318,7 +310,6 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
                     ),
                     support_automatic_placement=dict(
                         type='bool',
-                        updatable=False,
                         disposition='support_automatic_placement'
                     )
                 )

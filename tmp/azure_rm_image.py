@@ -598,40 +598,33 @@ class AzureRMImage(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
-                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     source_virtual_machine=dict(
                         type='dict',
-                        updatable=False,
                         disposition='source_virtual_machine',
                         options=dict(
                             id=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='id'
                             )
                         )
                     ),
                     storage_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='storage_profile',
                         options=dict(
                             os_disk=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='os_disk',
                                 options=dict(
                                     os_type=dict(
                                         type='sealed-choice',
-                                        updatable=False,
                                         disposition='os_type',
                                         required=True
                                     ),
                                     os_state=dict(
                                         type='sealed-choice',
-                                        updatable=False,
                                         disposition='os_state',
                                         required=True
                                     )
@@ -639,13 +632,11 @@ class AzureRMImage(AzureRMModuleBaseExt):
                             ),
                             data_disks=dict(
                                 type='list',
-                                updatable=False,
                                 disposition='data_disks',
                                 elements='dict',
                                 options=dict(
                                     lun=dict(
                                         type='integer',
-                                        updatable=False,
                                         disposition='lun',
                                         required=True
                                     )
@@ -653,19 +644,16 @@ class AzureRMImage(AzureRMModuleBaseExt):
                             ),
                             zone_resilient=dict(
                                 type='bool',
-                                updatable=False,
                                 disposition='zone_resilient'
                             )
                         )
                     ),
                     provisioning_state=dict(
                         type='str',
-                        updatable=False,
                         disposition='provisioning_state'
                     ),
                     hyper_vgeneration=dict(
                         type='choice',
-                        updatable=False,
                         disposition='hyper_vgeneration'
                     )
                 )

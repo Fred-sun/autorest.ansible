@@ -511,22 +511,18 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
-                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     provisioning_state=dict(
                         type='str',
-                        updatable=False,
                         disposition='provisioning_state'
                     ),
                     orchestrator_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='orchestrator_profile',
                         options=dict(
                             orchestrator_type=dict(
                                 type='sealed-choice',
-                                updatable=False,
                                 disposition='orchestrator_type',
                                 required=True
                             )
@@ -534,12 +530,10 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                     ),
                     custom_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='custom_profile',
                         options=dict(
                             orchestrator=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='orchestrator',
                                 required=True
                             )
@@ -547,18 +541,15 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                     ),
                     service_principal_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='service_principal_profile',
                         options=dict(
                             client_id=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='client_id',
                                 required=True
                             ),
                             secret=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='secret',
                                 required=True
                             )
@@ -566,78 +557,65 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                     ),
                     master_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='master_profile',
                         options=dict(
                             count=dict(
                                 type='choice',
-                                updatable=False,
                                 disposition='count'
                             ),
                             dns_prefix=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='dns_prefix',
                                 required=True
                             ),
                             fqdn=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='fqdn'
                             )
                         )
                     ),
                     agent_pool_profiles=dict(
                         type='list',
-                        updatable=False,
                         disposition='agent_pool_profiles',
                         elements='dict',
                         options=dict(
                             name=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='name',
                                 required=True
                             ),
                             count=dict(
                                 type='integer',
-                                updatable=False,
                                 disposition='count',
                                 required=True
                             ),
                             vm_size=dict(
                                 type='choice',
-                                updatable=False,
                                 disposition='vm_size',
                                 required=True
                             ),
                             dns_prefix=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='dns_prefix',
                                 required=True
                             ),
                             fqdn=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='fqdn'
                             )
                         )
                     ),
                     windows_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='windows_profile',
                         options=dict(
                             admin_username=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='admin_username',
                                 required=True
                             ),
                             admin_password=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='admin_password',
                                 required=True
                             )
@@ -645,31 +623,26 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                     ),
                     linux_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='linux_profile',
                         options=dict(
                             admin_username=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='admin_username',
                                 required=True
                             ),
                             ssh=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='ssh',
                                 required=True,
                                 options=dict(
                                     public_keys=dict(
                                         type='list',
-                                        updatable=False,
                                         disposition='public_keys',
                                         required=True,
                                         elements='dict',
                                         options=dict(
                                             key_data=dict(
                                                 type='str',
-                                                updatable=False,
                                                 disposition='key_data',
                                                 required=True
                                             )
@@ -681,24 +654,20 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                     ),
                     diagnostics_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='diagnostics_profile',
                         options=dict(
                             vm_diagnostics=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='vm_diagnostics',
                                 required=True,
                                 options=dict(
                                     enabled=dict(
                                         type='bool',
-                                        updatable=False,
                                         disposition='enabled',
                                         required=True
                                     ),
                                     storage_uri=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='storage_uri'
                                     )
                                 )

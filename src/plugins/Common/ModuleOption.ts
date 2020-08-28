@@ -134,7 +134,7 @@ export class ModuleOption {
     public DispositionSdk: string = null;
     public EnumValues: Dictionary<any>[];
     public Comparison: string = null;
-    public Updatable: boolean;
+    public Updatable: boolean = true;
     public DispositionRest: string = null;
     public NamePythonSdk: string = null;
     public Kind:ModuleOptionKind;

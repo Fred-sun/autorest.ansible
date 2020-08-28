@@ -289,7 +289,8 @@ EXAMPLES = '''
           properties:
             publishing_profile:
               target_regions:
-                - encryption:
+                - name: West US
+                  encryption:
                     data_disk_images:
                       - disk_encryption_set_id: >-
                           /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet
@@ -300,7 +301,6 @@ EXAMPLES = '''
                     os_disk_image:
                       disk_encryption_set_id: >-
                         /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet
-                  name: West US
                   regional_replica_count: 1
                 - name: East US
                   regional_replica_count: 2
@@ -322,7 +322,8 @@ EXAMPLES = '''
           properties:
             publishing_profile:
               target_regions:
-                - encryption:
+                - name: West US
+                  encryption:
                     data_disk_images:
                       - disk_encryption_set_id: >-
                           /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet
@@ -330,7 +331,6 @@ EXAMPLES = '''
                     os_disk_image:
                       disk_encryption_set_id: >-
                         /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet
-                  name: West US
                   regional_replica_count: 1
                 - name: East US
                   regional_replica_count: 2
@@ -704,62 +704,51 @@ class AzureRMGalleryImageVersion(AzureRMModuleBaseExt):
             ),
             gallery_image_version=dict(
                 type='dict',
-                updatable=False,
                 disposition='/gallery_image_version',
                 options=dict(
                     publishing_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='publishing_profile',
                         options=dict(
                             target_regions=dict(
                                 type='list',
-                                updatable=False,
                                 disposition='target_regions',
                                 elements='dict',
                                 options=dict(
                                     name=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='name',
                                         required=True
                                     ),
                                     regional_replica_count=dict(
                                         type='integer',
-                                        updatable=False,
                                         disposition='regional_replica_count'
                                     ),
                                     storage_account_type=dict(
                                         type='choice',
-                                        updatable=False,
                                         disposition='storage_account_type'
                                     ),
                                     encryption=dict(
                                         type='dict',
-                                        updatable=False,
                                         disposition='encryption',
                                         options=dict(
                                             os_disk_image=dict(
                                                 type='dict',
-                                                updatable=False,
                                                 disposition='os_disk_image',
                                                 options=dict(
                                                     disk_encryption_set_id=dict(
                                                         type='str',
-                                                        updatable=False,
                                                         disposition='disk_encryption_set_id'
                                                     )
                                                 )
                                             ),
                                             data_disk_images=dict(
                                                 type='list',
-                                                updatable=False,
                                                 disposition='data_disk_images',
                                                 elements='dict',
                                                 options=dict(
                                                     lun=dict(
                                                         type='integer',
-                                                        updatable=False,
                                                         disposition='lun',
                                                         required=True
                                                     )
@@ -771,76 +760,62 @@ class AzureRMGalleryImageVersion(AzureRMModuleBaseExt):
                             ),
                             replica_count=dict(
                                 type='integer',
-                                updatable=False,
                                 disposition='replica_count'
                             ),
                             exclude_from_latest=dict(
                                 type='bool',
-                                updatable=False,
                                 disposition='exclude_from_latest'
                             ),
                             published_date=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='published_date'
                             ),
                             end_of_life_date=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='end_of_life_date'
                             ),
                             storage_account_type=dict(
                                 type='choice',
-                                updatable=False,
                                 disposition='storage_account_type'
                             )
                         )
                     ),
                     provisioning_state=dict(
                         type='choice',
-                        updatable=False,
                         disposition='provisioning_state'
                     ),
                     storage_profile=dict(
                         type='dict',
-                        updatable=False,
                         disposition='storage_profile',
                         options=dict(
                             source=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='source',
                                 options=dict(
                                     id=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='id'
                                     )
                                 )
                             ),
                             os_disk_image=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='os_disk_image',
                                 options=dict(
                                     size_in_gb=dict(
                                         type='integer',
-                                        updatable=False,
                                         disposition='size_in_gb'
                                     ),
                                     host_caching=dict(
                                         type='sealed-choice',
-                                        updatable=False,
                                         disposition='host_caching'
                                     ),
                                     source=dict(
                                         type='dict',
-                                        updatable=False,
                                         disposition='source',
                                         options=dict(
                                             id=dict(
                                                 type='str',
-                                                updatable=False,
                                                 disposition='id'
                                             )
                                         )
@@ -849,13 +824,11 @@ class AzureRMGalleryImageVersion(AzureRMModuleBaseExt):
                             ),
                             data_disk_images=dict(
                                 type='list',
-                                updatable=False,
                                 disposition='data_disk_images',
                                 elements='dict',
                                 options=dict(
                                     lun=dict(
                                         type='integer',
-                                        updatable=False,
                                         disposition='lun',
                                         required=True
                                     )
@@ -865,38 +838,31 @@ class AzureRMGalleryImageVersion(AzureRMModuleBaseExt):
                     ),
                     replication_status=dict(
                         type='dict',
-                        updatable=False,
                         disposition='replication_status',
                         options=dict(
                             aggregated_state=dict(
                                 type='choice',
-                                updatable=False,
                                 disposition='aggregated_state'
                             ),
                             summary=dict(
                                 type='list',
-                                updatable=False,
                                 disposition='summary',
                                 elements='dict',
                                 options=dict(
                                     region=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='region'
                                     ),
                                     state=dict(
                                         type='choice',
-                                        updatable=False,
                                         disposition='state'
                                     ),
                                     details=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='details'
                                     ),
                                     progress=dict(
                                         type='integer',
-                                        updatable=False,
                                         disposition='progress'
                                     )
                                 )

@@ -353,57 +353,47 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
             ),
             disk_encryption_set=dict(
                 type='dict',
-                updatable=False,
                 disposition='/disk_encryption_set',
                 options=dict(
                     identity=dict(
                         type='dict',
-                        updatable=False,
                         disposition='identity',
                         options=dict(
                             type=dict(
                                 type='choice',
-                                updatable=False,
                                 disposition='type'
                             ),
                             principal_id=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='principal_id'
                             ),
                             tenant_id=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='tenant_id'
                             )
                         )
                     ),
                     encryption_type=dict(
                         type='choice',
-                        updatable=False,
                         disposition='encryption_type'
                     ),
                     active_key=dict(
                         type='dict',
-                        updatable=False,
                         disposition='active_key',
                         options=dict(
                             source_vault=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='source_vault',
                                 required=True,
                                 options=dict(
                                     id=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='id'
                                     )
                                 )
                             ),
                             key_url=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='key_url',
                                 required=True
                             )
@@ -411,26 +401,22 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
                     ),
                     previous_keys=dict(
                         type='list',
-                        updatable=False,
                         disposition='previous_keys',
                         elements='dict',
                         options=dict(
                             source_vault=dict(
                                 type='dict',
-                                updatable=False,
                                 disposition='source_vault',
                                 required=True,
                                 options=dict(
                                     id=dict(
                                         type='str',
-                                        updatable=False,
                                         disposition='id'
                                     )
                                 )
                             ),
                             key_url=dict(
                                 type='str',
-                                updatable=False,
                                 disposition='key_url',
                                 required=True
                             )
@@ -438,7 +424,6 @@ class AzureRMDiskEncryptionSet(AzureRMModuleBaseExt):
                     ),
                     provisioning_state=dict(
                         type='str',
-                        updatable=False,
                         disposition='provisioning_state'
                     )
                 )
