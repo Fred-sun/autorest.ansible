@@ -735,6 +735,7 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                     ),
                     source_unique_id=dict(
                         type='str',
+                        updatable=False,
                         disposition='source_unique_id'
                     ),
                     upload_size_bytes=dict(

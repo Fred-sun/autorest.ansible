@@ -38,7 +38,7 @@ export class ModuleOption {
         this.IncludeInDocumentation = true;
         this.IncludeInArgSpec = true;
         this.ReadOnly = swaggerOption.readOnly == undefined ? false: swaggerOption.readOnly;
-        // this.Updatable = swaggerOption.readOnly == undefined ? true: !swaggerOption.readOnly;
+         this.Updatable = swaggerOption.readOnly == undefined ? true: !swaggerOption.readOnly;
         this.LoadSchema(swaggerOption.schema);
         this.LoadProtocal(swaggerOption.protocol);
     }

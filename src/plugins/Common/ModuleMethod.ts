@@ -37,8 +37,6 @@ export class ModuleMethod {
             if (this.IsAnsibleIgnoredOption(option.Name)){
                 continue;
             }
-            if (option.Name =='uniqueName')
-                console.log(this.Name);
             if (option.ReadOnly)
                 continue;
             this.Options.push(option);

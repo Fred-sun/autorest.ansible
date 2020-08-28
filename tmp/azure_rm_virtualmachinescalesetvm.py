@@ -3455,6 +3455,7 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             exact_version=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='exact_version'
                             )
                         )
@@ -3675,10 +3676,12 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             disk_iops_read_write=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='disk_iops_read_write'
                             ),
                             disk_mbps_read_write=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='disk_mbps_read_write'
                             )
                         )

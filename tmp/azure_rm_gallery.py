@@ -206,6 +206,7 @@ class AzureRMGallery(AzureRMModuleBaseExt):
                 options=dict(
                     unique_name=dict(
                         type='str',
+                        updatable=False,
                         disposition='unique_name'
                     )
                 )

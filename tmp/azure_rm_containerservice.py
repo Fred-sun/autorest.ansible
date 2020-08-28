@@ -555,6 +555,7 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                     ),
                     fqdn=dict(
                         type='str',
+                        updatable=False,
                         disposition='fqdn'
                     )
                 )
@@ -586,6 +587,7 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                     ),
                     fqdn=dict(
                         type='str',
+                        updatable=False,
                         disposition='fqdn'
                     )
                 )
@@ -653,6 +655,7 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                             ),
                             storage_uri=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='storage_uri'
                             )
                         )
