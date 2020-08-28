@@ -91,7 +91,10 @@ export async function processRequest(host: Host) {
     const debug = await host.GetValue('debug') || false;
     function WriteFile(path: string, rows: string[])
     {
-        host.WriteFile(path, rows.join("\r\n"));
+        if (rows != undefined){
+            host.WriteFile(path, rows.join("\r\n"));
+        }
+
     }
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
@@ -100,7 +103,8 @@ export async function processRequest(host: Host) {
         let files = {};
         files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleSdk);
         for (let f in files) {
-           host.WriteFile(f, files[f]);
+            WriteFile(f, files[f]);
+           // host.WriteFile(f, files[f]);
         }
         // host.WriteFile("model4.yaml",serialize(session.model));
         // let str : string[] = [];
