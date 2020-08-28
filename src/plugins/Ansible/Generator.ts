@@ -89,14 +89,17 @@ import {ArtifactType} from "../../test";
 
 export async function processRequest(host: Host) {
     const debug = await host.GetValue('debug') || false;
-
+    function WriteFile(path: string, rows: string[])
+    {
+        host.WriteFile(path, rows.join('\r\n'));
+    }
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
         let codeModel = new AnsibleCodeModel(session.model);
         let files = [];
         files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleSdk);
         for (let f in files) {
-            host.WriteFile(f, files[f].join('\r\n'));
+           WriteFile(f, files[f].join('\r\n'));
         }
         // host.WriteFile("model4.yaml",serialize(session.model));
         // let str : string[] = [];
