@@ -14,7 +14,7 @@ import { GenerateModuleRestInfo } from "./AnsibleModuleRestInfo";
 import { GenerateModuleSdk } from "./AnsibleModuleSdk";
 import { GenerateModuleSdkInfo } from "./AnsibleModuleSdkInfo";
 
-import {Host, startSession} from "@azure-tools/autorest-extension-base";
+import {Channel, Host, startSession} from "@azure-tools/autorest-extension-base";
 import {CodeModel, codeModelSchema} from "@azure-tools/codemodel";
 import {EOL} from "os";
 import {GenerateAll} from "./AnsibleGenerator";
@@ -96,6 +96,12 @@ export async function processRequest(host: Host) {
         }
 
     }
+    function Info(message: string) {
+        host.Message({
+            Channel: Channel.Information,
+            Text: message
+        });
+    }
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
         let codeModel = new AnsibleCodeModel(session.model);
@@ -103,7 +109,9 @@ export async function processRequest(host: Host) {
         let files = {};
         files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleSdk);
         for (let f in files) {
-            WriteFile(f, files[f]);
+            Info(f);
+            Info(typeof files[f]);
+            // WriteFile(f, files[f]);
            // host.WriteFile(f, files[f]);
         }
         // host.WriteFile("model4.yaml",serialize(session.model));
