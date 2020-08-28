@@ -204,14 +204,17 @@ class AzureRMGallery(AzureRMModuleBaseExt):
             ),
             gallery=dict(
                 type='dict',
+                updatable=False,
                 disposition='/gallery',
                 options=dict(
                     description=dict(
                         type='str',
+                        updatable=False,
                         disposition='description'
                     ),
                     identifier=dict(
                         type='dict',
+                        updatable=False,
                         disposition='identifier',
                         options=dict(
                             unique_name=dict(

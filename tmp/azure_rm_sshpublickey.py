@@ -157,10 +157,12 @@ class AzureRMSshPublicKey(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     public_key=dict(
                         type='str',
+                        updatable=False,
                         disposition='public_key'
                     )
                 )

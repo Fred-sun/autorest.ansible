@@ -433,38 +433,47 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
             ),
             extension_parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/extension_parameters',
                 options=dict(
                     force_update_tag=dict(
                         type='str',
+                        updatable=False,
                         disposition='force_update_tag'
                     ),
                     publisher=dict(
                         type='str',
+                        updatable=False,
                         disposition='publisher'
                     ),
                     type_properties_type=dict(
                         type='str',
+                        updatable=False,
                         disposition='type_properties_type'
                     ),
                     type_handler_version=dict(
                         type='str',
+                        updatable=False,
                         disposition='type_handler_version'
                     ),
                     auto_upgrade_minor_version=dict(
                         type='bool',
+                        updatable=False,
                         disposition='auto_upgrade_minor_version'
                     ),
                     enable_automatic_upgrade=dict(
                         type='bool',
+                        updatable=False,
                         disposition='enable_automatic_upgrade'
                     ),
                     settings=dict(
                         type='any',
+                        updatable=False,
                         disposition='settings'
                     ),
                     protected_settings=dict(
                         type='any',
+                        updatable=False,
                         disposition='protected_settings'
                     ),
                     provisioning_state=dict(
@@ -474,70 +483,86 @@ class AzureRMVirtualMachineExtension(AzureRMModuleBaseExt):
                     ),
                     instance_view=dict(
                         type='dict',
+                        updatable=False,
                         disposition='instance_view',
                         options=dict(
                             name=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='name'
                             ),
                             type=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='type'
                             ),
                             type_handler_version=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='type_handler_version'
                             ),
                             substatuses=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='substatuses',
                                 elements='dict',
                                 options=dict(
                                     code=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='code'
                                     ),
                                     level=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='level'
                                     ),
                                     display_status=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='display_status'
                                     ),
                                     message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='message'
                                     ),
                                     time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time'
                                     )
                                 )
                             ),
                             statuses=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='statuses',
                                 elements='dict',
                                 options=dict(
                                     code=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='code'
                                     ),
                                     level=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='level'
                                     ),
                                     display_status=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='display_status'
                                     ),
                                     message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='message'
                                     ),
                                     time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time'
                                     )
                                 )

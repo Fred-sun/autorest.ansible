@@ -390,24 +390,29 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
             ),
             gallery_application_version=dict(
                 type='dict',
+                updatable=False,
                 disposition='/gallery_application_version',
                 options=dict(
                     publishing_profile=dict(
                         type='dict',
+                        updatable=False,
                         disposition='publishing_profile',
                         options=dict(
                             source=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='source',
                                 required=True,
                                 options=dict(
                                     file_name=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='file_name',
                                         required=True
                                     ),
                                     media_link=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='media_link',
                                         required=True
                                     )
@@ -415,10 +420,12 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
                             ),
                             content_type=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='content_type'
                             ),
                             enable_health_check=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='enable_health_check'
                             )
                         )

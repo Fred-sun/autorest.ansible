@@ -4040,6 +4040,7 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     instance_id=dict(
@@ -4054,36 +4055,44 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                         options=dict(
                             name=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='name'
                             ),
                             tier=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='tier'
                             ),
                             capacity=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='capacity'
                             )
                         )
                     ),
                     plan=dict(
                         type='dict',
+                        updatable=False,
                         disposition='plan',
                         options=dict(
                             name=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='name'
                             ),
                             publisher=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='publisher'
                             ),
                             product=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='product'
                             ),
                             promotion_code=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='promotion_code'
                             )
                         )
@@ -4096,34 +4105,42 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                         options=dict(
                             force_update_tag=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='force_update_tag'
                             ),
                             publisher=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='publisher'
                             ),
                             type_properties_type=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='type_properties_type'
                             ),
                             type_handler_version=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='type_handler_version'
                             ),
                             auto_upgrade_minor_version=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='auto_upgrade_minor_version'
                             ),
                             enable_automatic_upgrade=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='enable_automatic_upgrade'
                             ),
                             settings=dict(
                                 type='any',
+                                updatable=False,
                                 disposition='settings'
                             ),
                             protected_settings=dict(
                                 type='any',
+                                updatable=False,
                                 disposition='protected_settings'
                             ),
                             provisioning_state=dict(
@@ -4133,70 +4150,86 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             instance_view=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='instance_view',
                                 options=dict(
                                     name=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='name'
                                     ),
                                     type=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='type'
                                     ),
                                     type_handler_version=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='type_handler_version'
                                     ),
                                     substatuses=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='substatuses',
                                         elements='dict',
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
                                     ),
                                     statuses=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='statuses',
                                         elements='dict',
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
@@ -4228,59 +4261,73 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                         options=dict(
                             platform_update_domain=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='platform_update_domain'
                             ),
                             platform_fault_domain=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='platform_fault_domain'
                             ),
                             rdp_thumb_print=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='rdp_thumb_print'
                             ),
                             vm_agent=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='vm_agent',
                                 options=dict(
                                     vm_agent_version=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='vm_agent_version'
                                     ),
                                     extension_handlers=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='extension_handlers',
                                         elements='dict',
                                         options=dict(
                                             type=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='type'
                                             ),
                                             type_handler_version=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='type_handler_version'
                                             ),
                                             status=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='status',
                                                 options=dict(
                                                     code=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='code'
                                                     ),
                                                     level=dict(
                                                         type='sealed-choice',
+                                                        updatable=False,
                                                         disposition='level'
                                                     ),
                                                     display_status=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='display_status'
                                                     ),
                                                     message=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='message'
                                                     ),
                                                     time=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='time'
                                                     )
                                                 )
@@ -4289,27 +4336,33 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                     ),
                                     statuses=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='statuses',
                                         elements='dict',
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
@@ -4318,68 +4371,83 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             maintenance_redeploy_status=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='maintenance_redeploy_status',
                                 options=dict(
                                     is_customer_initiated_maintenance_allowed=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='is_customer_initiated_maintenance_allowed'
                                     ),
                                     pre_maintenance_window_start_time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='pre_maintenance_window_start_time'
                                     ),
                                     pre_maintenance_window_end_time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='pre_maintenance_window_end_time'
                                     ),
                                     maintenance_window_start_time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='maintenance_window_start_time'
                                     ),
                                     maintenance_window_end_time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='maintenance_window_end_time'
                                     ),
                                     last_operation_result_code=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='last_operation_result_code'
                                     ),
                                     last_operation_message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='last_operation_message'
                                     )
                                 )
                             ),
                             disks=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='disks',
                                 elements='dict',
                                 options=dict(
                                     name=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='name'
                                     ),
                                     encryption_settings=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='encryption_settings',
                                         elements='dict',
                                         options=dict(
                                             disk_encryption_key=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='disk_encryption_key',
                                                 options=dict(
                                                     secret_url=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='secret_url',
                                                         required=True
                                                     ),
                                                     source_vault=dict(
                                                         type='dict',
+                                                        updatable=False,
                                                         disposition='source_vault',
                                                         required=True,
                                                         options=dict(
                                                             id=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='id'
                                                             )
                                                         )
@@ -4388,20 +4456,24 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                             ),
                                             key_encryption_key=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='key_encryption_key',
                                                 options=dict(
                                                     key_url=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='key_url',
                                                         required=True
                                                     ),
                                                     source_vault=dict(
                                                         type='dict',
+                                                        updatable=False,
                                                         disposition='source_vault',
                                                         required=True,
                                                         options=dict(
                                                             id=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='id'
                                                             )
                                                         )
@@ -4410,33 +4482,40 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                             ),
                                             enabled=dict(
                                                 type='bool',
+                                                updatable=False,
                                                 disposition='enabled'
                                             )
                                         )
                                     ),
                                     statuses=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='statuses',
                                         elements='dict',
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
@@ -4445,71 +4524,87 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             extensions=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='extensions',
                                 elements='dict',
                                 options=dict(
                                     name=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='name'
                                     ),
                                     type=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='type'
                                     ),
                                     type_handler_version=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='type_handler_version'
                                     ),
                                     substatuses=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='substatuses',
                                         elements='dict',
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
                                     ),
                                     statuses=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='statuses',
                                         elements='dict',
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
@@ -4528,22 +4623,27 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
@@ -4552,6 +4652,7 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             boot_diagnostics=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='boot_diagnostics',
                                 options=dict(
                                     console_screenshot_blob_uri=dict(
@@ -4571,22 +4672,27 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                         options=dict(
                                             code=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='code'
                                             ),
                                             level=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='level'
                                             ),
                                             display_status=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='display_status'
                                             ),
                                             message=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='message'
                                             ),
                                             time=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='time'
                                             )
                                         )
@@ -4595,27 +4701,33 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             statuses=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='statuses',
                                 elements='dict',
                                 options=dict(
                                     code=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='code'
                                     ),
                                     level=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='level'
                                     ),
                                     display_status=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='display_status'
                                     ),
                                     message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='message'
                                     ),
                                     time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time'
                                     )
                                 )
@@ -4627,42 +4739,51 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             placement_group_id=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='placement_group_id'
                             )
                         )
                     ),
                     hardware_profile=dict(
                         type='dict',
+                        updatable=False,
                         disposition='hardware_profile',
                         options=dict(
                             vm_size=dict(
                                 type='choice',
+                                updatable=False,
                                 disposition='vm_size'
                             )
                         )
                     ),
                     storage_profile=dict(
                         type='dict',
+                        updatable=False,
                         disposition='storage_profile',
                         options=dict(
                             image_reference=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='image_reference',
                                 options=dict(
                                     publisher=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='publisher'
                                     ),
                                     offer=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='offer'
                                     ),
                                     sku=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='sku'
                                     ),
                                     version=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='version'
                                     ),
                                     exact_version=dict(
@@ -4674,32 +4795,39 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             os_disk=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='os_disk',
                                 options=dict(
                                     os_type=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='os_type'
                                     ),
                                     encryption_settings=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='encryption_settings',
                                         options=dict(
                                             disk_encryption_key=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='disk_encryption_key',
                                                 options=dict(
                                                     secret_url=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='secret_url',
                                                         required=True
                                                     ),
                                                     source_vault=dict(
                                                         type='dict',
+                                                        updatable=False,
                                                         disposition='source_vault',
                                                         required=True,
                                                         options=dict(
                                                             id=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='id'
                                                             )
                                                         )
@@ -4708,20 +4836,24 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                             ),
                                             key_encryption_key=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='key_encryption_key',
                                                 options=dict(
                                                     key_url=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='key_url',
                                                         required=True
                                                     ),
                                                     source_vault=dict(
                                                         type='dict',
+                                                        updatable=False,
                                                         disposition='source_vault',
                                                         required=True,
                                                         options=dict(
                                                             id=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='id'
                                                             )
                                                         )
@@ -4730,79 +4862,96 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                             ),
                                             enabled=dict(
                                                 type='bool',
+                                                updatable=False,
                                                 disposition='enabled'
                                             )
                                         )
                                     ),
                                     name=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='name'
                                     ),
                                     vhd=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='vhd',
                                         options=dict(
                                             uri=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='uri'
                                             )
                                         )
                                     ),
                                     image=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='image',
                                         options=dict(
                                             uri=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='uri'
                                             )
                                         )
                                     ),
                                     caching=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='caching'
                                     ),
                                     write_accelerator_enabled=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='write_accelerator_enabled'
                                     ),
                                     diff_disk_settings=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='diff_disk_settings',
                                         options=dict(
                                             option=dict(
                                                 type='choice',
+                                                updatable=False,
                                                 disposition='option'
                                             ),
                                             placement=dict(
                                                 type='choice',
+                                                updatable=False,
                                                 disposition='placement'
                                             )
                                         )
                                     ),
                                     create_option=dict(
                                         type='choice',
+                                        updatable=False,
                                         disposition='create_option',
                                         required=True
                                     ),
                                     disk_size_gb=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='disk_size_gb'
                                     ),
                                     managed_disk=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='managed_disk',
                                         options=dict(
                                             storage_account_type=dict(
                                                 type='choice',
+                                                updatable=False,
                                                 disposition='storage_account_type'
                                             ),
                                             disk_encryption_set=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='disk_encryption_set',
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
@@ -4813,69 +4962,84 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             data_disks=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='data_disks',
                                 elements='dict',
                                 options=dict(
                                     lun=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='lun',
                                         required=True
                                     ),
                                     name=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='name'
                                     ),
                                     vhd=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='vhd',
                                         options=dict(
                                             uri=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='uri'
                                             )
                                         )
                                     ),
                                     image=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='image',
                                         options=dict(
                                             uri=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='uri'
                                             )
                                         )
                                     ),
                                     caching=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='caching'
                                     ),
                                     write_accelerator_enabled=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='write_accelerator_enabled'
                                     ),
                                     create_option=dict(
                                         type='choice',
+                                        updatable=False,
                                         disposition='create_option',
                                         required=True
                                     ),
                                     disk_size_gb=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='disk_size_gb'
                                     ),
                                     managed_disk=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='managed_disk',
                                         options=dict(
                                             storage_account_type=dict(
                                                 type='choice',
+                                                updatable=False,
                                                 disposition='storage_account_type'
                                             ),
                                             disk_encryption_set=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='disk_encryption_set',
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
@@ -4884,6 +5048,7 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                     ),
                                     to_be_detached=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='to_be_detached'
                                     ),
                                     disk_iops_read_write=dict(
@@ -4902,98 +5067,120 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                     ),
                     additional_capabilities=dict(
                         type='dict',
+                        updatable=False,
                         disposition='additional_capabilities',
                         options=dict(
                             ultra_ssd_enabled=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='ultra_ssd_enabled'
                             )
                         )
                     ),
                     os_profile=dict(
                         type='dict',
+                        updatable=False,
                         disposition='os_profile',
                         options=dict(
                             computer_name=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='computer_name'
                             ),
                             admin_username=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='admin_username'
                             ),
                             admin_password=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='admin_password'
                             ),
                             custom_data=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='custom_data'
                             ),
                             windows_configuration=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='windows_configuration',
                                 options=dict(
                                     provision_vm_agent=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='provision_vm_agent'
                                     ),
                                     enable_automatic_updates=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='enable_automatic_updates'
                                     ),
                                     time_zone=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time_zone'
                                     ),
                                     additional_unattend_content=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='additional_unattend_content',
                                         elements='dict',
                                         options=dict(
                                             pass_name=dict(
                                                 type='constant',
+                                                updatable=False,
                                                 disposition='pass_name'
                                             ),
                                             component_name=dict(
                                                 type='constant',
+                                                updatable=False,
                                                 disposition='component_name'
                                             ),
                                             setting_name=dict(
                                                 type='sealed-choice',
+                                                updatable=False,
                                                 disposition='setting_name'
                                             ),
                                             content=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='content'
                                             )
                                         )
                                     ),
                                     patch_settings=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='patch_settings',
                                         options=dict(
                                             patch_mode=dict(
                                                 type='choice',
+                                                updatable=False,
                                                 disposition='patch_mode'
                                             )
                                         )
                                     ),
                                     win_rm=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='win_rm',
                                         options=dict(
                                             listeners=dict(
                                                 type='list',
+                                                updatable=False,
                                                 disposition='listeners',
                                                 elements='dict',
                                                 options=dict(
                                                     protocol=dict(
                                                         type='sealed-choice',
+                                                        updatable=False,
                                                         disposition='protocol'
                                                     ),
                                                     certificate_url=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='certificate_url'
                                                     )
                                                 )
@@ -5004,27 +5191,33 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             linux_configuration=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='linux_configuration',
                                 options=dict(
                                     disable_password_authentication=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='disable_password_authentication'
                                     ),
                                     ssh=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='ssh',
                                         options=dict(
                                             public_keys=dict(
                                                 type='list',
+                                                updatable=False,
                                                 disposition='public_keys',
                                                 elements='dict',
                                                 options=dict(
                                                     path=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='path'
                                                     ),
                                                     key_data=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='key_data'
                                                     )
                                                 )
@@ -5033,36 +5226,43 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                     ),
                                     provision_vm_agent=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='provision_vm_agent'
                                     )
                                 )
                             ),
                             secrets=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='secrets',
                                 elements='dict',
                                 options=dict(
                                     source_vault=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='source_vault',
                                         options=dict(
                                             id=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='id'
                                             )
                                         )
                                     ),
                                     vault_certificates=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='vault_certificates',
                                         elements='dict',
                                         options=dict(
                                             certificate_url=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='certificate_url'
                                             ),
                                             certificate_store=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='certificate_store'
                                             )
                                         )
@@ -5071,35 +5271,42 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                             ),
                             allow_extension_operations=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='allow_extension_operations'
                             ),
                             require_guest_provision_signal=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='require_guest_provision_signal'
                             )
                         )
                     ),
                     security_profile=dict(
                         type='dict',
+                        updatable=False,
                         disposition='security_profile',
                         options=dict(
                             encryption_at_host=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='encryption_at_host'
                             )
                         )
                     ),
                     network_profile=dict(
                         type='dict',
+                        updatable=False,
                         disposition='network_profile',
                         options=dict(
                             network_interfaces=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='network_interfaces',
                                 elements='dict',
                                 options=dict(
                                     primary=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='primary'
                                     )
                                 )
@@ -5108,42 +5315,51 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                     ),
                     network_profile_configuration=dict(
                         type='dict',
+                        updatable=False,
                         disposition='network_profile_configuration',
                         options=dict(
                             network_interface_configurations=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='network_interface_configurations',
                                 elements='dict',
                                 options=dict(
                                     name=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='name',
                                         required=True
                                     ),
                                     primary=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='primary'
                                     ),
                                     enable_accelerated_networking=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='enable_accelerated_networking'
                                     ),
                                     network_security_group=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='network_security_group',
                                         options=dict(
                                             id=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='id'
                                             )
                                         )
                                     ),
                                     dns_settings=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='dns_settings',
                                         options=dict(
                                             dns_servers=dict(
                                                 type='list',
+                                                updatable=False,
                                                 disposition='dns_servers',
                                                 elements='str'
                                             )
@@ -5151,47 +5367,57 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                     ),
                                     ip_configurations=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='ip_configurations',
                                         elements='dict',
                                         options=dict(
                                             name=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='name',
                                                 required=True
                                             ),
                                             subnet=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='subnet',
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
                                             ),
                                             primary=dict(
                                                 type='bool',
+                                                updatable=False,
                                                 disposition='primary'
                                             ),
                                             public_ip_address_configuration=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='public_ip_address_configuration',
                                                 options=dict(
                                                     name=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='name',
                                                         required=True
                                                     ),
                                                     idle_timeout_in_minutes=dict(
                                                         type='integer',
+                                                        updatable=False,
                                                         disposition='idle_timeout_in_minutes'
                                                     ),
                                                     dns_settings=dict(
                                                         type='dict',
+                                                        updatable=False,
                                                         disposition='dns_settings',
                                                         options=dict(
                                                             domain_name_label=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='domain_name_label',
                                                                 required=True
                                                             )
@@ -5199,79 +5425,94 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                                     ),
                                                     ip_tags=dict(
                                                         type='list',
+                                                        updatable=False,
                                                         disposition='ip_tags',
                                                         elements='dict',
                                                         options=dict(
                                                             ip_tag_type=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='ip_tag_type'
                                                             ),
                                                             tag=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='tag'
                                                             )
                                                         )
                                                     ),
                                                     public_ip_prefix=dict(
                                                         type='dict',
+                                                        updatable=False,
                                                         disposition='public_ip_prefix',
                                                         options=dict(
                                                             id=dict(
                                                                 type='str',
+                                                                updatable=False,
                                                                 disposition='id'
                                                             )
                                                         )
                                                     ),
                                                     public_ip_address_version=dict(
                                                         type='choice',
+                                                        updatable=False,
                                                         disposition='public_ip_address_version'
                                                     )
                                                 )
                                             ),
                                             private_ip_address_version=dict(
                                                 type='choice',
+                                                updatable=False,
                                                 disposition='private_ip_address_version'
                                             ),
                                             application_gateway_backend_address_pools=dict(
                                                 type='list',
+                                                updatable=False,
                                                 disposition='application_gateway_backend_address_pools',
                                                 elements='dict',
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
                                             ),
                                             application_security_groups=dict(
                                                 type='list',
+                                                updatable=False,
                                                 disposition='application_security_groups',
                                                 elements='dict',
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
                                             ),
                                             load_balancer_backend_address_pools=dict(
                                                 type='list',
+                                                updatable=False,
                                                 disposition='load_balancer_backend_address_pools',
                                                 elements='dict',
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
                                             ),
                                             load_balancer_inbound_nat_pools=dict(
                                                 type='list',
+                                                updatable=False,
                                                 disposition='load_balancer_inbound_nat_pools',
                                                 elements='dict',
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
@@ -5280,6 +5521,7 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                                     ),
                                     enable_ip_forwarding=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='enable_ip_forwarding'
                                     )
                                 )
@@ -5288,18 +5530,22 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                     ),
                     diagnostics_profile=dict(
                         type='dict',
+                        updatable=False,
                         disposition='diagnostics_profile',
                         options=dict(
                             boot_diagnostics=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='boot_diagnostics',
                                 options=dict(
                                     enabled=dict(
                                         type='bool',
+                                        updatable=False,
                                         disposition='enabled'
                                     ),
                                     storage_uri=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='storage_uri'
                                     )
                                 )
@@ -5308,10 +5554,12 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                     ),
                     availability_set=dict(
                         type='dict',
+                        updatable=False,
                         disposition='availability_set',
                         options=dict(
                             id=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='id'
                             )
                         )
@@ -5323,6 +5571,7 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                     ),
                     license_type=dict(
                         type='str',
+                        updatable=False,
                         disposition='license_type'
                     ),
                     model_definition_applied=dict(
@@ -5332,14 +5581,17 @@ class AzureRMVirtualMachineScaleSetVM(AzureRMModuleBaseExt):
                     ),
                     protection_policy=dict(
                         type='dict',
+                        updatable=False,
                         disposition='protection_policy',
                         options=dict(
                             protect_from_scale_in=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='protect_from_scale_in'
                             ),
                             protect_from_scale_set_actions=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='protect_from_scale_set_actions'
                             )
                         )

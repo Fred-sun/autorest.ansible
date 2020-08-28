@@ -494,10 +494,12 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     proximity_placement_group_type=dict(
                         type='choice',
+                        updatable=False,
                         disposition='proximity_placement_group_type'
                     ),
                     virtual_machines=dict(
@@ -508,26 +510,32 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
                         options=dict(
                             colocation_status=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='colocation_status',
                                 options=dict(
                                     code=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='code'
                                     ),
                                     level=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='level'
                                     ),
                                     display_status=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='display_status'
                                     ),
                                     message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='message'
                                     ),
                                     time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time'
                                     )
                                 )
@@ -542,26 +550,32 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
                         options=dict(
                             colocation_status=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='colocation_status',
                                 options=dict(
                                     code=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='code'
                                     ),
                                     level=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='level'
                                     ),
                                     display_status=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='display_status'
                                     ),
                                     message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='message'
                                     ),
                                     time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time'
                                     )
                                 )
@@ -576,26 +590,32 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
                         options=dict(
                             colocation_status=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='colocation_status',
                                 options=dict(
                                     code=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='code'
                                     ),
                                     level=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='level'
                                     ),
                                     display_status=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='display_status'
                                     ),
                                     message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='message'
                                     ),
                                     time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time'
                                     )
                                 )
@@ -604,26 +624,32 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
                     ),
                     colocation_status=dict(
                         type='dict',
+                        updatable=False,
                         disposition='colocation_status',
                         options=dict(
                             code=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='code'
                             ),
                             level=dict(
                                 type='sealed-choice',
+                                updatable=False,
                                 disposition='level'
                             ),
                             display_status=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='display_status'
                             ),
                             message=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='message'
                             ),
                             time=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='time'
                             )
                         )

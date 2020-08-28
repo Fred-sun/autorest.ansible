@@ -269,15 +269,18 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     zones=dict(
                         type='list',
+                        updatable=False,
                         disposition='zones',
                         elements='str'
                     ),
                     platform_fault_domain_count=dict(
                         type='integer',
+                        updatable=False,
                         disposition='platform_fault_domain_count'
                     ),
                     hosts=dict(
@@ -300,6 +303,7 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
                         options=dict(
                             hosts=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='hosts',
                                 elements='dict',
                                 options=dict(
@@ -314,6 +318,7 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
                     ),
                     support_automatic_placement=dict(
                         type='bool',
+                        updatable=False,
                         disposition='support_automatic_placement'
                     )
                 )

@@ -309,6 +309,7 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
             ),
             disk_access=dict(
                 type='dict',
+                updatable=False,
                 disposition='/disk_access',
                 options=dict(
                     private_endpoint_connections=dict(
@@ -334,6 +335,7 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
                             ),
                             private_endpoint=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='private_endpoint',
                                 options=dict(
                                     id=dict(
@@ -345,18 +347,22 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
                             ),
                             private_link_service_connection_state=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='private_link_service_connection_state',
                                 options=dict(
                                     status=dict(
                                         type='choice',
+                                        updatable=False,
                                         disposition='status'
                                     ),
                                     description=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='description'
                                     ),
                                     actions_required=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='actions_required'
                                     )
                                 )

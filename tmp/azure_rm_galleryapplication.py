@@ -266,30 +266,37 @@ class AzureRMGalleryApplication(AzureRMModuleBaseExt):
             ),
             gallery_application=dict(
                 type='dict',
+                updatable=False,
                 disposition='/gallery_application',
                 options=dict(
                     description=dict(
                         type='str',
+                        updatable=False,
                         disposition='description'
                     ),
                     eula=dict(
                         type='str',
+                        updatable=False,
                         disposition='eula'
                     ),
                     privacy_statement_uri=dict(
                         type='str',
+                        updatable=False,
                         disposition='privacy_statement_uri'
                     ),
                     release_note_uri=dict(
                         type='str',
+                        updatable=False,
                         disposition='release_note_uri'
                     ),
                     end_of_life_date=dict(
                         type='str',
+                        updatable=False,
                         disposition='end_of_life_date'
                     ),
                     supported_os_type=dict(
                         type='sealed-choice',
+                        updatable=False,
                         disposition='supported_os_type'
                     )
                 )

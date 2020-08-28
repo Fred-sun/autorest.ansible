@@ -502,56 +502,69 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
             ),
             gallery_image=dict(
                 type='dict',
+                updatable=False,
                 disposition='/gallery_image',
                 options=dict(
                     description=dict(
                         type='str',
+                        updatable=False,
                         disposition='description'
                     ),
                     eula=dict(
                         type='str',
+                        updatable=False,
                         disposition='eula'
                     ),
                     privacy_statement_uri=dict(
                         type='str',
+                        updatable=False,
                         disposition='privacy_statement_uri'
                     ),
                     release_note_uri=dict(
                         type='str',
+                        updatable=False,
                         disposition='release_note_uri'
                     ),
                     os_type=dict(
                         type='sealed-choice',
+                        updatable=False,
                         disposition='os_type'
                     ),
                     os_state=dict(
                         type='sealed-choice',
+                        updatable=False,
                         disposition='os_state'
                     ),
                     hyper_vgeneration=dict(
                         type='choice',
+                        updatable=False,
                         disposition='hyper_vgeneration'
                     ),
                     end_of_life_date=dict(
                         type='str',
+                        updatable=False,
                         disposition='end_of_life_date'
                     ),
                     identifier=dict(
                         type='dict',
+                        updatable=False,
                         disposition='identifier',
                         options=dict(
                             publisher=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='publisher',
                                 required=True
                             ),
                             offer=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='offer',
                                 required=True
                             ),
                             sku=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='sku',
                                 required=True
                             )
@@ -559,32 +572,39 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
                     ),
                     recommended=dict(
                         type='dict',
+                        updatable=False,
                         disposition='recommended',
                         options=dict(
                             v_cp_us=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='v_cp_us',
                                 options=dict(
                                     min=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='min'
                                     ),
                                     max=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='max'
                                     )
                                 )
                             ),
                             memory=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='memory',
                                 options=dict(
                                     min=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='min'
                                     ),
                                     max=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='max'
                                     )
                                 )
@@ -593,10 +613,12 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
                     ),
                     disallowed=dict(
                         type='dict',
+                        updatable=False,
                         disposition='disallowed',
                         options=dict(
                             disk_types=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='disk_types',
                                 elements='str'
                             )
@@ -604,18 +626,22 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
                     ),
                     purchase_plan=dict(
                         type='dict',
+                        updatable=False,
                         disposition='purchase_plan',
                         options=dict(
                             name=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='name'
                             ),
                             publisher=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='publisher'
                             ),
                             product=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='product'
                             )
                         )

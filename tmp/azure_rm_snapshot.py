@@ -729,6 +729,7 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
             ),
             snapshot=dict(
                 type='dict',
+                updatable=False,
                 disposition='/snapshot',
                 options=dict(
                     managed_by=dict(
@@ -738,10 +739,12 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                     ),
                     sku=dict(
                         type='dict',
+                        updatable=False,
                         disposition='sku',
                         options=dict(
                             name=dict(
                                 type='choice',
+                                updatable=False,
                                 disposition='name'
                             ),
                             tier=dict(
@@ -758,61 +761,74 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                     ),
                     os_type=dict(
                         type='sealed-choice',
+                        updatable=False,
                         disposition='os_type'
                     ),
                     hyper_vgeneration=dict(
                         type='choice',
+                        updatable=False,
                         disposition='hyper_vgeneration'
                     ),
                     creation_data=dict(
                         type='dict',
+                        updatable=False,
                         disposition='creation_data',
                         options=dict(
                             create_option=dict(
                                 type='choice',
+                                updatable=False,
                                 disposition='create_option',
                                 required=True
                             ),
                             storage_account_id=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='storage_account_id'
                             ),
                             image_reference=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='image_reference',
                                 options=dict(
                                     id=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='id',
                                         required=True
                                     ),
                                     lun=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='lun'
                                     )
                                 )
                             ),
                             gallery_image_reference=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='gallery_image_reference',
                                 options=dict(
                                     id=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='id',
                                         required=True
                                     ),
                                     lun=dict(
                                         type='integer',
+                                        updatable=False,
                                         disposition='lun'
                                     )
                                 )
                             ),
                             source_uri=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='source_uri'
                             ),
                             source_resource_id=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='source_resource_id'
                             ),
                             source_unique_id=dict(
@@ -822,12 +838,14 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                             ),
                             upload_size_bytes=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='upload_size_bytes'
                             )
                         )
                     ),
                     disk_size_gb=dict(
                         type='integer',
+                        updatable=False,
                         disposition='disk_size_gb'
                     ),
                     disk_size_bytes=dict(
@@ -842,35 +860,42 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                     ),
                     encryption_settings_collection=dict(
                         type='dict',
+                        updatable=False,
                         disposition='encryption_settings_collection',
                         options=dict(
                             enabled=dict(
                                 type='bool',
+                                updatable=False,
                                 disposition='enabled',
                                 required=True
                             ),
                             encryption_settings=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='encryption_settings',
                                 elements='dict',
                                 options=dict(
                                     disk_encryption_key=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='disk_encryption_key',
                                         options=dict(
                                             source_vault=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='source_vault',
                                                 required=True,
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
                                             ),
                                             secret_url=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='secret_url',
                                                 required=True
                                             )
@@ -878,21 +903,25 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                                     ),
                                     key_encryption_key=dict(
                                         type='dict',
+                                        updatable=False,
                                         disposition='key_encryption_key',
                                         options=dict(
                                             source_vault=dict(
                                                 type='dict',
+                                                updatable=False,
                                                 disposition='source_vault',
                                                 required=True,
                                                 options=dict(
                                                     id=dict(
                                                         type='str',
+                                                        updatable=False,
                                                         disposition='id'
                                                     )
                                                 )
                                             ),
                                             key_url=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='key_url',
                                                 required=True
                                             )
@@ -902,6 +931,7 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                             ),
                             encryption_settings_version=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='encryption_settings_version'
                             )
                         )
@@ -913,28 +943,34 @@ class AzureRMSnapshot(AzureRMModuleBaseExt):
                     ),
                     incremental=dict(
                         type='bool',
+                        updatable=False,
                         disposition='incremental'
                     ),
                     encryption=dict(
                         type='dict',
+                        updatable=False,
                         disposition='encryption',
                         options=dict(
                             disk_encryption_set_id=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='disk_encryption_set_id'
                             ),
                             type=dict(
                                 type='choice',
+                                updatable=False,
                                 disposition='type'
                             )
                         )
                     ),
                     network_access_policy=dict(
                         type='choice',
+                        updatable=False,
                         disposition='network_access_policy'
                     ),
                     disk_access_id=dict(
                         type='str',
+                        updatable=False,
                         disposition='disk_access_id'
                     )
                 )

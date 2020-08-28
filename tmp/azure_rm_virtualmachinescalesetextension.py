@@ -267,10 +267,12 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
             ),
             extension_parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/extension_parameters',
                 options=dict(
                     name=dict(
                         type='str',
+                        updatable=False,
                         disposition='name'
                     ),
                     type=dict(
@@ -280,34 +282,42 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
                     ),
                     force_update_tag=dict(
                         type='str',
+                        updatable=False,
                         disposition='force_update_tag'
                     ),
                     publisher=dict(
                         type='str',
+                        updatable=False,
                         disposition='publisher'
                     ),
                     type_properties_type=dict(
                         type='str',
+                        updatable=False,
                         disposition='type_properties_type'
                     ),
                     type_handler_version=dict(
                         type='str',
+                        updatable=False,
                         disposition='type_handler_version'
                     ),
                     auto_upgrade_minor_version=dict(
                         type='bool',
+                        updatable=False,
                         disposition='auto_upgrade_minor_version'
                     ),
                     enable_automatic_upgrade=dict(
                         type='bool',
+                        updatable=False,
                         disposition='enable_automatic_upgrade'
                     ),
                     settings=dict(
                         type='any',
+                        updatable=False,
                         disposition='settings'
                     ),
                     protected_settings=dict(
                         type='any',
+                        updatable=False,
                         disposition='protected_settings'
                     ),
                     provisioning_state=dict(
@@ -317,6 +327,7 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
                     ),
                     provision_after_extensions=dict(
                         type='list',
+                        updatable=False,
                         disposition='provision_after_extensions',
                         elements='str'
                     )

@@ -330,51 +330,62 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     sku=dict(
                         type='dict',
+                        updatable=False,
                         disposition='sku',
                         options=dict(
                             name=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='name'
                             ),
                             tier=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='tier'
                             ),
                             capacity=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='capacity'
                             )
                         )
                     ),
                     platform_update_domain_count=dict(
                         type='integer',
+                        updatable=False,
                         disposition='platform_update_domain_count'
                     ),
                     platform_fault_domain_count=dict(
                         type='integer',
+                        updatable=False,
                         disposition='platform_fault_domain_count'
                     ),
                     virtual_machines=dict(
                         type='list',
+                        updatable=False,
                         disposition='virtual_machines',
                         elements='dict',
                         options=dict(
                             id=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='id'
                             )
                         )
                     ),
                     proximity_placement_group=dict(
                         type='dict',
+                        updatable=False,
                         disposition='proximity_placement_group',
                         options=dict(
                             id=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='id'
                             )
                         )
@@ -387,22 +398,27 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
                         options=dict(
                             code=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='code'
                             ),
                             level=dict(
                                 type='sealed-choice',
+                                updatable=False,
                                 disposition='level'
                             ),
                             display_status=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='display_status'
                             ),
                             message=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='message'
                             ),
                             time=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='time'
                             )
                         )

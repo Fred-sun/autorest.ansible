@@ -468,33 +468,40 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
             ),
             parameters=dict(
                 type='dict',
+                updatable=False,
                 disposition='/parameters',
                 options=dict(
                     sku=dict(
                         type='dict',
+                        updatable=False,
                         disposition='sku',
                         required=True,
                         options=dict(
                             name=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='name'
                             ),
                             tier=dict(
                                 type='str',
+                                updatable=False,
                                 disposition='tier'
                             ),
                             capacity=dict(
                                 type='integer',
+                                updatable=False,
                                 disposition='capacity'
                             )
                         )
                     ),
                     platform_fault_domain=dict(
                         type='integer',
+                        updatable=False,
                         disposition='platform_fault_domain'
                     ),
                     auto_replace_on_failure=dict(
                         type='bool',
+                        updatable=False,
                         disposition='auto_replace_on_failure'
                     ),
                     host_id=dict(
@@ -517,6 +524,7 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
                     ),
                     license_type=dict(
                         type='sealed-choice',
+                        updatable=False,
                         disposition='license_type'
                     ),
                     provisioning_time=dict(
@@ -541,19 +549,23 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
                             ),
                             available_capacity=dict(
                                 type='dict',
+                                updatable=False,
                                 disposition='available_capacity',
                                 options=dict(
                                     allocatable_vms=dict(
                                         type='list',
+                                        updatable=False,
                                         disposition='allocatable_vms',
                                         elements='dict',
                                         options=dict(
                                             vm_size=dict(
                                                 type='str',
+                                                updatable=False,
                                                 disposition='vm_size'
                                             ),
                                             count=dict(
                                                 type='number',
+                                                updatable=False,
                                                 disposition='count'
                                             )
                                         )
@@ -562,27 +574,33 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
                             ),
                             statuses=dict(
                                 type='list',
+                                updatable=False,
                                 disposition='statuses',
                                 elements='dict',
                                 options=dict(
                                     code=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='code'
                                     ),
                                     level=dict(
                                         type='sealed-choice',
+                                        updatable=False,
                                         disposition='level'
                                     ),
                                     display_status=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='display_status'
                                     ),
                                     message=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='message'
                                     ),
                                     time=dict(
                                         type='str',
+                                        updatable=False,
                                         disposition='time'
                                     )
                                 )
