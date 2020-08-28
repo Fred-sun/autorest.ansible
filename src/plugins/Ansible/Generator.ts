@@ -101,7 +101,7 @@ export async function processRequest(host: Host) {
         for (let f in files) {
            WriteFile(f, files[f]);
         }
-        // host.WriteFile("model4.yaml",serialize(session.model));
+        host.WriteFile("model4.yaml",serialize(session.model));
         // let str : string[] = [];
         // let codeModel = session.model;
         // for (let module of codeModel.operationGroups){
