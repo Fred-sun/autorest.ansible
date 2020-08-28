@@ -15,16 +15,39 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: azure_rm_usage
+module: azure_rm_table
 version_added: '2.9'
-short_description: Manage Azure Usage instance.
+short_description: Manage Azure Table instance.
 description:
-  - 'Create, update and delete instance of Azure Usage.'
+  - 'Create, update and delete instance of Azure Table.'
 options:
+  resource_group_name:
+    description:
+      - >-
+        The name of the resource group within the user's subscription. The name
+        is case insensitive.
+    required: true
+    type: str
+  account_name:
+    description:
+      - >-
+        The name of the storage account within the specified resource group.
+        Storage account names must be between 3 and 24 characters in length and
+        use numbers and lower-case letters only.
+    required: true
+    type: str
+  table_name:
+    description:
+      - >-
+        A table name must be unique within a storage account and must be between
+        3 and 63 characters.The name must comprise of only alphanumeric
+        characters and it cannot begin with a numeric character.
+    required: true
+    type: str
   state:
     description:
-      - Assert the state of the Usage.
-      - Use C(present) to create or update an Usage and C(absent) to delete it.
+      - Assert the state of the Table.
+      - Use C(present) to create or update an Table and C(absent) to delete it.
     default: present
     choices:
       - absent
@@ -37,10 +60,58 @@ author:
 '''
 
 EXAMPLES = '''
+    - name: TableOperationPut
+      azure_rm_table: 
+        account_name: sto328
+        resource_group_name: res3376
+        table_name: table6185
+        
+
+    - name: TableOperationPatch
+      azure_rm_table: 
+        account_name: sto328
+        resource_group_name: res3376
+        table_name: table6185
+        
+
+    - name: TableOperationDelete
+      azure_rm_table: 
+        account_name: sto328
+        resource_group_name: res3376
+        table_name: table6185
+        
+
 '''
 
 RETURN = '''
-{}
+id:
+  description:
+    - >-
+      Fully qualified resource Id for the resource. Ex -
+      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+  returned: always
+  type: str
+  sample: null
+name:
+  description:
+    - The name of the resource
+  returned: always
+  type: str
+  sample: null
+type:
+  description:
+    - >-
+      The type of the resource. Ex- Microsoft.Compute/virtualMachines or
+      Microsoft.Storage/storageAccounts.
+  returned: always
+  type: str
+  sample: null
+table_name:
+  description:
+    - Table name under the specified account
+  returned: always
+  type: str
+  sample: null
 
 '''
 
@@ -63,10 +134,21 @@ class Actions:
     NoAction, Create, Update, Delete = range(4)
 
 
-class AzureRMUsage(AzureRMModuleBaseExt):
+class AzureRMTable(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
-            undefined,
+            resource_group_name=dict(
+                type='str',
+                required=True
+            ),
+            account_name=dict(
+                type='str',
+                required=True
+            ),
+            table_name=dict(
+                type='str',
+                required=True
+            ),
             state=dict(
                 type='str',
                 default='present',
@@ -74,6 +156,9 @@ class AzureRMUsage(AzureRMModuleBaseExt):
             )
         )
 
+        self.resource_group_name = None
+        self.account_name = None
+        self.table_name = None
         self.body = {}
 
         self.results = dict(changed=False)
@@ -81,7 +166,7 @@ class AzureRMUsage(AzureRMModuleBaseExt):
         self.state = None
         self.to_do = Actions.NoAction
 
-        super(AzureRMUsage, self).__init__(derived_arg_spec=self.module_arg_spec,
+        super(AzureRMTable, self).__init__(derived_arg_spec=self.module_arg_spec,
                                            supports_check_mode=True,
                                            supports_tags=True)
 
@@ -136,35 +221,43 @@ class AzureRMUsage(AzureRMModuleBaseExt):
     def create_update_resource(self):
         try:
             if self.to_do == Actions.Create:
-                response = self.mgmt_client.usages.create()
+                response = self.mgmt_client.table.create(resource_group_name=self.resource_group_name,
+                                                         account_name=self.account_name,
+                                                         table_name=self.table_name)
             else:
-                response = self.mgmt_client.usages.update()
+                response = self.mgmt_client.table.update(resource_group_name=self.resource_group_name,
+                                                         account_name=self.account_name,
+                                                         table_name=self.table_name)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
-            self.log('Error attempting to create the Usage instance.')
-            self.fail('Error creating the Usage instance: {0}'.format(str(exc)))
+            self.log('Error attempting to create the Table instance.')
+            self.fail('Error creating the Table instance: {0}'.format(str(exc)))
         return response.as_dict()
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.usages.delete()
+            response = self.mgmt_client.table.delete(resource_group_name=self.resource_group_name,
+                                                     account_name=self.account_name,
+                                                     table_name=self.table_name)
         except CloudError as e:
-            self.log('Error attempting to delete the Usage instance.')
-            self.fail('Error deleting the Usage instance: {0}'.format(str(e)))
+            self.log('Error attempting to delete the Table instance.')
+            self.fail('Error deleting the Table instance: {0}'.format(str(e)))
 
         return True
 
     def get_resource(self):
         try:
-            response = self.mgmt_client.usages.get()
+            response = self.mgmt_client.table.get(resource_group_name=self.resource_group_name,
+                                                  account_name=self.account_name,
+                                                  table_name=self.table_name)
         except CloudError as e:
             return False
         return response.as_dict()
 
 
 def main():
-    AzureRMUsage()
+    AzureRMTable()
 
 
 if __name__ == '__main__':

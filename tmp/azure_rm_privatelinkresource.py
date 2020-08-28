@@ -15,16 +15,18 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: azure_rm_usage
+module: azure_rm_privatelinkresource
 version_added: '2.9'
-short_description: Manage Azure Usage instance.
+short_description: Manage Azure PrivateLinkResource instance.
 description:
-  - 'Create, update and delete instance of Azure Usage.'
+  - 'Create, update and delete instance of Azure PrivateLinkResource.'
 options:
   state:
     description:
-      - Assert the state of the Usage.
-      - Use C(present) to create or update an Usage and C(absent) to delete it.
+      - Assert the state of the PrivateLinkResource.
+      - >-
+        Use C(present) to create or update an PrivateLinkResource and C(absent)
+        to delete it.
     default: present
     choices:
       - absent
@@ -63,7 +65,7 @@ class Actions:
     NoAction, Create, Update, Delete = range(4)
 
 
-class AzureRMUsage(AzureRMModuleBaseExt):
+class AzureRMPrivateLinkResource(AzureRMModuleBaseExt):
     def __init__(self):
         self.module_arg_spec = dict(
             undefined,
@@ -81,9 +83,9 @@ class AzureRMUsage(AzureRMModuleBaseExt):
         self.state = None
         self.to_do = Actions.NoAction
 
-        super(AzureRMUsage, self).__init__(derived_arg_spec=self.module_arg_spec,
-                                           supports_check_mode=True,
-                                           supports_tags=True)
+        super(AzureRMPrivateLinkResource, self).__init__(derived_arg_spec=self.module_arg_spec,
+                                                         supports_check_mode=True,
+                                                         supports_tags=True)
 
     def exec_module(self, **kwargs):
         for key in list(self.module_arg_spec.keys()):
@@ -136,35 +138,35 @@ class AzureRMUsage(AzureRMModuleBaseExt):
     def create_update_resource(self):
         try:
             if self.to_do == Actions.Create:
-                response = self.mgmt_client.usages.create()
+                response = self.mgmt_client.private_link_resources.create()
             else:
-                response = self.mgmt_client.usages.update()
+                response = self.mgmt_client.private_link_resources.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
-            self.log('Error attempting to create the Usage instance.')
-            self.fail('Error creating the Usage instance: {0}'.format(str(exc)))
+            self.log('Error attempting to create the PrivateLinkResource instance.')
+            self.fail('Error creating the PrivateLinkResource instance: {0}'.format(str(exc)))
         return response.as_dict()
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.usages.delete()
+            response = self.mgmt_client.private_link_resources.delete()
         except CloudError as e:
-            self.log('Error attempting to delete the Usage instance.')
-            self.fail('Error deleting the Usage instance: {0}'.format(str(e)))
+            self.log('Error attempting to delete the PrivateLinkResource instance.')
+            self.fail('Error deleting the PrivateLinkResource instance: {0}'.format(str(e)))
 
         return True
 
     def get_resource(self):
         try:
-            response = self.mgmt_client.usages.get()
+            response = self.mgmt_client.private_link_resources.get()
         except CloudError as e:
             return False
         return response.as_dict()
 
 
 def main():
-    AzureRMUsage()
+    AzureRMPrivateLinkResource()
 
 
 if __name__ == '__main__':

@@ -15,15 +15,25 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: azure_rm_usage_info
+module: azure_rm_privatelinkresource_info
 version_added: '2.9'
-short_description: Get Usage info.
+short_description: Get PrivateLinkResource info.
 description:
-  - Get info of Usage.
+  - Get info of PrivateLinkResource.
 options:
-  location:
+  resource_group_name:
     description:
-      - The location of the Azure Storage resource.
+      - >-
+        The name of the resource group within the user's subscription. The name
+        is case insensitive.
+    required: true
+    type: str
+  account_name:
+    description:
+      - >-
+        The name of the storage account within the specified resource group.
+        Storage account names must be between 3 and 24 characters in length and
+        use numbers and lower-case letters only.
     required: true
     type: str
 extends_documentation_fragment:
@@ -34,69 +44,47 @@ author:
 '''
 
 EXAMPLES = '''
-    - name: UsageList
-      azure_rm_usage_info: 
-        location: eastus2(stage)
+    - name: StorageAccountListPrivateLinkResources
+      azure_rm_privatelinkresource_info: 
+        account_name: sto2527
+        resource_group_name: res6977
         
 
 '''
 
 RETURN = '''
-usages:
+private_link_resources:
   description: >-
-    A list of dict results where the key is the name of the Usage and the values
-    are the facts for that Usage.
+    A list of dict results where the key is the name of the PrivateLinkResource
+    and the values are the facts for that PrivateLinkResource.
   returned: always
   type: complex
   contains:
     value:
       description:
-        - Gets or sets the list of Storage Resource Usages.
+        - Array of private link resources
       returned: always
       type: list
       sample: null
       contains:
-        unit:
+        group_id:
           description:
-            - Gets the unit of measurement.
+            - The private link resource group id.
           returned: always
-          type: sealed-choice
+          type: str
           sample: null
-        current_value:
+        required_members:
           description:
-            - >-
-              Gets the current count of the allocated resources in the
-              subscription.
+            - The private link resource required member names.
           returned: always
-          type: integer
+          type: list
           sample: null
-        limit:
+        required_zone_names:
           description:
-            - >-
-              Gets the maximum count of the resources that can be allocated in
-              the subscription.
+            - The private link resource Private link DNS zone name.
           returned: always
-          type: integer
+          type: list
           sample: null
-        name:
-          description:
-            - Gets the name of the type of usage.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            value:
-              description:
-                - Gets a string describing the resource name.
-              returned: always
-              type: str
-              sample: null
-            localized_value:
-              description:
-                - Gets a localized string describing the resource name.
-              returned: always
-              type: str
-              sample: null
 
 '''
 
@@ -114,16 +102,21 @@ except ImportError:
     pass
 
 
-class AzureRMUsageInfo(AzureRMModuleBase):
+class AzureRMPrivateLinkResourceInfo(AzureRMModuleBase):
     def __init__(self):
         self.module_arg_spec = dict(
-            location=dict(
+            resource_group_name=dict(
+                type='str',
+                required=True
+            ),
+            account_name=dict(
                 type='str',
                 required=True
             )
         )
 
-        self.location = None
+        self.resource_group_name = None
+        self.account_name = None
 
         self.results = dict(changed=False)
         self.mgmt_client = None
@@ -137,7 +130,7 @@ class AzureRMUsageInfo(AzureRMModuleBase):
         self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
         self.mgmt_client = None
-        super(AzureRMUsageInfo, self).__init__(self.module_arg_spec, supports_tags=True)
+        super(AzureRMPrivateLinkResourceInfo, self).__init__(self.module_arg_spec, supports_tags=True)
 
     def exec_module(self, **kwargs):
 
@@ -148,15 +141,17 @@ class AzureRMUsageInfo(AzureRMModuleBase):
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
                                                     api_version='2019-06-01')
 
-        if (self.location is not None):
-            self.results['usages'] = self.format_item(self.listbylocation())
+        if (self.resource_group_name is not None and
+            self.account_name is not None):
+            self.results['private_link_resources'] = self.format_item(self.listbystorageaccount())
         return self.results
 
-    def listbylocation(self):
+    def listbystorageaccount(self):
         response = None
 
         try:
-            response = self.mgmt_client.usages.list_by_location(location=self.location)
+            response = self.mgmt_client.private_link_resources.list_by_storage_account(resource_group_name=self.resource_group_name,
+                                                                                       account_name=self.account_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
@@ -174,7 +169,7 @@ class AzureRMUsageInfo(AzureRMModuleBase):
 
 
 def main():
-    AzureRMUsageInfo()
+    AzureRMPrivateLinkResourceInfo()
 
 
 if __name__ == '__main__':
