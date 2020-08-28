@@ -1929,12 +1929,12 @@ EXAMPLES = '''
               computer_name: myVM
             storage_profile:
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 image:
                   uri: >-
                     http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/{existing-generalized-os-image-blob-name}.vhd
+                name: myVMosdisk
                 os_type: Windows
                 vhd:
                   uri: >-
@@ -1957,12 +1957,12 @@ EXAMPLES = '''
             computer_name: myVM
           storage_profile:
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               image:
                 uri: >-
                   http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/{existing-generalized-os-image-blob-name}.vhd
+              name: myVMosdisk
               os_type: Windows
               vhd:
                 uri: >-
@@ -2006,9 +2006,9 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
+                name: myVMosdisk
                 vhd:
                   uri: >-
                     http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk.vhd
@@ -2048,9 +2048,9 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
+              name: myVMosdisk
               vhd:
                 uri: >-
                   http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk.vhd
@@ -2078,11 +2078,11 @@ EXAMPLES = '''
                 id: >-
                   /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2104,11 +2104,11 @@ EXAMPLES = '''
               id: >-
                 /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm in an availability set.
@@ -2138,11 +2138,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2169,11 +2169,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with DiskEncryptionSet resource id in the os disk and data disk.
@@ -2219,7 +2219,6 @@ EXAMPLES = '''
                 id: >-
                   /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
@@ -2227,6 +2226,7 @@ EXAMPLES = '''
                     id: >-
                       /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2269,7 +2269,6 @@ EXAMPLES = '''
               id: >-
                 /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
@@ -2277,6 +2276,7 @@ EXAMPLES = '''
                   id: >-
                     /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with Host Encryption using encryptionAtHost property.
@@ -2309,11 +2309,11 @@ EXAMPLES = '''
                 sku: windows2016
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadOnly
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2343,11 +2343,11 @@ EXAMPLES = '''
               sku: windows2016
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadOnly
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with a marketplace image plan.
@@ -2378,11 +2378,11 @@ EXAMPLES = '''
                 sku: windows2016
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2410,11 +2410,11 @@ EXAMPLES = '''
               sku: windows2016
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with a patch setting patchMode of AutomaticByOS.
@@ -2446,11 +2446,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Premium_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2479,11 +2479,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Premium_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with a patch setting patchMode of AutomaticByPlatform.
@@ -2515,11 +2515,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Premium_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2548,11 +2548,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Premium_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with a patch setting patchMode of Manual.
@@ -2584,11 +2584,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Premium_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2617,11 +2617,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Premium_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with an extensions time budget.
@@ -2653,11 +2653,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2686,11 +2686,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with boot diagnostics.
@@ -2721,11 +2721,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2753,11 +2753,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with empty data disks.
@@ -2791,11 +2791,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2826,11 +2826,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with ephemeral os disk provisioning in Cache disk using placement property.
@@ -2861,7 +2861,6 @@ EXAMPLES = '''
                 sku: windows2016
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadOnly
                 create_option: FromImage
                 diff_disk_settings:
@@ -2869,6 +2868,7 @@ EXAMPLES = '''
                   placement: CacheDisk
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2896,7 +2896,6 @@ EXAMPLES = '''
               sku: windows2016
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadOnly
               create_option: FromImage
               diff_disk_settings:
@@ -2904,6 +2903,7 @@ EXAMPLES = '''
                 placement: CacheDisk
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with ephemeral os disk provisioning in Resource disk using placement property.
@@ -2934,7 +2934,6 @@ EXAMPLES = '''
                 sku: windows2016
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadOnly
                 create_option: FromImage
                 diff_disk_settings:
@@ -2942,6 +2941,7 @@ EXAMPLES = '''
                   placement: ResourceDisk
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -2969,7 +2969,6 @@ EXAMPLES = '''
               sku: windows2016
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadOnly
               create_option: FromImage
               diff_disk_settings:
@@ -2977,6 +2976,7 @@ EXAMPLES = '''
                 placement: ResourceDisk
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with ephemeral os disk.
@@ -3007,13 +3007,13 @@ EXAMPLES = '''
                 sku: windows2016
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadOnly
                 create_option: FromImage
                 diff_disk_settings:
                   option: Local
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -3041,13 +3041,13 @@ EXAMPLES = '''
               sku: windows2016
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadOnly
               create_option: FromImage
               diff_disk_settings:
                 option: Local
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with managed boot diagnostics.
@@ -3077,11 +3077,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -3108,11 +3108,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with password authentication.
@@ -3139,11 +3139,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -3167,11 +3167,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with premium storage.
@@ -3198,11 +3198,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Premium_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -3226,11 +3226,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Premium_LRS
+              name: myVMosdisk
         
 
     - name: Create a vm with ssh authentication.
@@ -3253,10 +3253,10 @@ EXAMPLES = '''
                 disable_password_authentication: true
                 ssh:
                   public_keys:
-                    - path: '/home/{your-username}/.ssh/authorized_keys'
-                      key_data: >-
+                    - key_data: >-
                         ssh-rsa
                         AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1
+                      path: '/home/{your-username}/.ssh/authorized_keys'
             storage_profile:
               image_reference:
                 offer: '{image_offer}'
@@ -3264,11 +3264,11 @@ EXAMPLES = '''
                 sku: '{image_sku}'
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         location: westus
@@ -3288,10 +3288,10 @@ EXAMPLES = '''
               disable_password_authentication: true
               ssh:
                 public_keys:
-                  - path: '/home/{your-username}/.ssh/authorized_keys'
-                    key_data: >-
+                  - key_data: >-
                       ssh-rsa
                       AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1
+                    path: '/home/{your-username}/.ssh/authorized_keys'
           storage_profile:
             image_reference:
               offer: '{image_offer}'
@@ -3299,11 +3299,11 @@ EXAMPLES = '''
               sku: '{image_sku}'
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
     - name: Update a VM by detaching data disk
@@ -3338,11 +3338,11 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: myVMosdisk
                 caching: ReadWrite
                 create_option: FromImage
                 managed_disk:
                   storage_account_type: Standard_LRS
+                name: myVMosdisk
         resource_group_name: myResourceGroup
         vm_name: myVM
         properties:
@@ -3374,11 +3374,11 @@ EXAMPLES = '''
               sku: 2016-Datacenter
               version: latest
             os_disk:
-              name: myVMosdisk
               caching: ReadWrite
               create_option: FromImage
               managed_disk:
                 storage_account_type: Standard_LRS
+              name: myVMosdisk
         
 
 '''

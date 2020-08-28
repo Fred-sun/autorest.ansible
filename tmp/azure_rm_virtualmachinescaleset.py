@@ -1463,15 +1463,15 @@ EXAMPLES = '''
                 computer_name_prefix: '{vmss-name}'
               storage_profile:
                 os_disk:
-                  name: osDisk
                   caching: ReadWrite
                   create_option: FromImage
                   image:
                     uri: >-
                       http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/{existing-generalized-os-image-blob-name}.vhd
+                  name: osDisk
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -1499,15 +1499,15 @@ EXAMPLES = '''
               computer_name_prefix: '{vmss-name}'
             storage_profile:
               os_disk:
-                name: osDisk
                 caching: ReadWrite
                 create_option: FromImage
                 image:
                   uri: >-
                     http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/{existing-generalized-os-image-blob-name}.vhd
+                name: osDisk
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -1543,9 +1543,9 @@ EXAMPLES = '''
                   sku: 2016-Datacenter
                   version: latest
                 os_disk:
-                  name: osDisk
                   caching: ReadWrite
                   create_option: FromImage
+                  name: osDisk
                   vhd_containers:
                     - >-
                       http://{existing-storage-account-name-0}.blob.core.windows.net/vhdContainer
@@ -1558,8 +1558,8 @@ EXAMPLES = '''
                     - >-
                       http://{existing-storage-account-name-4}.blob.core.windows.net/vhdContainer
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -1592,9 +1592,9 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
-                name: osDisk
                 caching: ReadWrite
                 create_option: FromImage
+                name: osDisk
                 vhd_containers:
                   - >-
                     http://{existing-storage-account-name-0}.blob.core.windows.net/vhdContainer
@@ -1607,8 +1607,8 @@ EXAMPLES = '''
                   - >-
                     http://{existing-storage-account-name-4}.blob.core.windows.net/vhdContainer
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -1647,8 +1647,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -1684,8 +1684,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -1737,8 +1737,8 @@ EXAMPLES = '''
                         /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_DS1_v2
             capacity: 3
+            name: Standard_DS1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -1787,8 +1787,8 @@ EXAMPLES = '''
                       /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_DS1_v2
           capacity: 3
+          name: Standard_DS1_v2
           tier: Standard
         
 
@@ -1835,8 +1835,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_DS1_v2
             capacity: 3
+            name: Standard_DS1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -1880,8 +1880,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_DS1_v2
           capacity: 3
+          name: Standard_DS1_v2
           tier: Standard
         
 
@@ -1926,8 +1926,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -1969,8 +1969,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2014,8 +2014,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2056,8 +2056,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2108,8 +2108,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2157,8 +2157,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2202,8 +2202,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2244,8 +2244,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2290,8 +2290,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2333,8 +2333,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2383,8 +2383,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D2_v2
             capacity: 3
+            name: Standard_D2_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2430,8 +2430,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D2_v2
           capacity: 3
+          name: Standard_D2_v2
           tier: Standard
         
 
@@ -2479,8 +2479,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_DS1_v2
             capacity: 3
+            name: Standard_DS1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2525,8 +2525,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_DS1_v2
           capacity: 3
+          name: Standard_DS1_v2
           tier: Standard
         
 
@@ -2573,8 +2573,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_DS1_v2
             capacity: 3
+            name: Standard_DS1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2618,8 +2618,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_DS1_v2
           capacity: 3
+          name: Standard_DS1_v2
           tier: Standard
         
 
@@ -2637,15 +2637,15 @@ EXAMPLES = '''
                   enabled: true
                   storage_uri: 'http://{existing-storage-account-name}.blob.core.windows.net'
               extension_profile:
-                extensions_time_budget: PT1H20M
                 extensions:
                   - name: '{extension-name}'
                     properties:
-                      type: '{extension-Type}'
                       auto_upgrade_minor_version: false
                       publisher: '{extension-Publisher}'
                       settings: {}
+                      type: '{extension-Type}'
                       type_handler_version: '{handler-version}'
+                extensions_time_budget: PT1H20M
               network_profile:
                 network_interface_configurations:
                   - name: '{vmss-name}'
@@ -2674,8 +2674,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2690,15 +2690,15 @@ EXAMPLES = '''
                 enabled: true
                 storage_uri: 'http://{existing-storage-account-name}.blob.core.windows.net'
             extension_profile:
-              extensions_time_budget: PT1H20M
               extensions:
                 - name: '{extension-name}'
                   properties:
-                    type: '{extension-Type}'
                     auto_upgrade_minor_version: false
                     publisher: '{extension-Publisher}'
                     settings: {}
+                    type: '{extension-Type}'
                     type_handler_version: '{handler-version}'
+              extensions_time_budget: PT1H20M
             network_profile:
               network_interface_configurations:
                 - name: '{vmss-name}'
@@ -2727,8 +2727,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2772,8 +2772,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2814,8 +2814,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2856,8 +2856,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2895,8 +2895,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -2937,8 +2937,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Premium_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -2976,8 +2976,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Premium_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -3009,10 +3009,10 @@ EXAMPLES = '''
                   disable_password_authentication: true
                   ssh:
                     public_keys:
-                      - path: '/home/{your-username}/.ssh/authorized_keys'
-                        key_data: >-
+                      - key_data: >-
                           ssh-rsa
                           AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1
+                        path: '/home/{your-username}/.ssh/authorized_keys'
               storage_profile:
                 image_reference:
                   offer: WindowsServer
@@ -3025,8 +3025,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -3055,10 +3055,10 @@ EXAMPLES = '''
                 disable_password_authentication: true
                 ssh:
                   public_keys:
-                    - path: '/home/{your-username}/.ssh/authorized_keys'
-                      key_data: >-
+                    - key_data: >-
                         ssh-rsa
                         AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1
+                      path: '/home/{your-username}/.ssh/authorized_keys'
             storage_profile:
               image_reference:
                 offer: WindowsServer
@@ -3071,8 +3071,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -3117,8 +3117,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_D1_v2
             capacity: 3
+            name: Standard_D1_v2
             tier: Standard
         resource_group_name: myResourceGroup
         vm_scale_set_name: '{vmss-name}'
@@ -3160,8 +3160,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_D1_v2
           capacity: 3
+          name: Standard_D1_v2
           tier: Standard
         
 
@@ -3210,8 +3210,8 @@ EXAMPLES = '''
                   managed_disk:
                     storage_account_type: Standard_LRS
           sku:
-            name: Standard_A1_v2
             capacity: 2
+            name: Standard_A1_v2
             tier: Standard
           zones:
             - '1'
@@ -3260,8 +3260,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          name: Standard_A1_v2
           capacity: 2
+          name: Standard_A1_v2
           tier: Standard
         zones:
           - '1'

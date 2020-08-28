@@ -197,11 +197,11 @@ EXAMPLES = '''
         extension_parameters:
           location: westus
           properties:
-            type: extType
             auto_upgrade_minor_version: true
             publisher: extPublisher
             settings:
               user_name: xyz@microsoft.com
+            type: extType
             type_handler_version: '1.2'
         instance_id: '0'
         resource_group_name: myResourceGroup
@@ -213,11 +213,11 @@ EXAMPLES = '''
       azure_rm_virtualmachinescalesetvmextension: 
         extension_parameters:
           properties:
-            type: extType
             auto_upgrade_minor_version: true
             publisher: extPublisher
             settings:
               user_name: xyz@microsoft.com
+            type: extType
             type_handler_version: '1.2'
         instance_id: '0'
         resource_group_name: myResourceGroup

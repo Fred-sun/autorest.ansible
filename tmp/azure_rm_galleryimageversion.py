@@ -289,8 +289,7 @@ EXAMPLES = '''
           properties:
             publishing_profile:
               target_regions:
-                - name: West US
-                  encryption:
+                - encryption:
                     data_disk_images:
                       - disk_encryption_set_id: >-
                           /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet
@@ -301,6 +300,7 @@ EXAMPLES = '''
                     os_disk_image:
                       disk_encryption_set_id: >-
                         /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet
+                  name: West US
                   regional_replica_count: 1
                 - name: East US
                   regional_replica_count: 2
@@ -322,8 +322,7 @@ EXAMPLES = '''
           properties:
             publishing_profile:
               target_regions:
-                - name: West US
-                  encryption:
+                - encryption:
                     data_disk_images:
                       - disk_encryption_set_id: >-
                           /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet
@@ -331,6 +330,7 @@ EXAMPLES = '''
                     os_disk_image:
                       disk_encryption_set_id: >-
                         /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet
+                  name: West US
                   regional_replica_count: 1
                 - name: East US
                   regional_replica_count: 2
