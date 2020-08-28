@@ -91,7 +91,7 @@ export async function processRequest(host: Host) {
     const debug = await host.GetValue('debug') || false;
     function WriteFile(path: string, rows: string[])
     {
-        host.WriteFile(path, rows.join('\r\n'));
+        host.WriteFile(path, rows.join("\r\n"));
     }
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
