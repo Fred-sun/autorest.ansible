@@ -49,7 +49,7 @@ export async function processRequest(host: Host) {
         if (debug) {
             console.error(`${__filename} - FAILURE  ${JSON.stringify(E)} ${E.stack}`);
         }
-        // throw E;
+        throw E;
     }
 
 }
