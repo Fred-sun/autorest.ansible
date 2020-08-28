@@ -18,7 +18,7 @@ export function GenerateAll(model:AnsibleCodeModel, type:ArtifactType) {
     let files = [];
     let path = "";
     for (let module of modules){
-        console.log(module.ModuleName);
+        // console.log(module.ModuleName);
         if (module.IsInfoModule){
             if (type == ArtifactType.ArtifactTypeAnsibleRest){
                 files[path+module.ModuleName+".py"] = GenerateModuleRestInfo(module, false);

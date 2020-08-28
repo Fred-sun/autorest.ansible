@@ -37,6 +37,8 @@ export class ModuleMethod {
             if (this.IsAnsibleIgnoredOption(option.Name)){
                 continue;
             }
+            if (option.ReadOnly)
+                continue;
             this.Options.push(option);
             if (option.Required){
                 this.RequiredOptions.push(option);

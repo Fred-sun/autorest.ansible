@@ -35,7 +35,9 @@ scope-ansible/emitter:
         - some-file-generated-by-ansible
 
 modelerfour:
-    additional-checks: false
+    lenient-model-deduplication: true
+    flatten-models: true
+    flatten-payloads: true
 
 ```
 
