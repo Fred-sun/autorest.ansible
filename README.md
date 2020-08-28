@@ -33,7 +33,7 @@ scope-ansible/emitter:
     is-object: false
     output-artifact:
         - some-file-generated-by-ansible
-    output-folder: $(az-output-folder)
+    output-folder: $(ansible-output-folder)
 
 modelerfour:
     lenient-model-deduplication: true
