@@ -5,11 +5,7 @@ import {EOL} from "os";
 
 export type LogCallback = (message: string) => void;
 export type FileCallback = (path: string, rows: string[]) => void;
-export  enum ArtifactType {
-    ArtifactTypeAnsibleSdk,
-    ArtifactTypeAnsibleRest,
-    ArtifactTypeAnsibleCollection
-}
+
 
 
 // export async function main() {
