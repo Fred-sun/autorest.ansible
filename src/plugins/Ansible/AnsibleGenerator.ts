@@ -15,7 +15,7 @@ export  enum ArtifactType {
 
 export function GenerateAll(model:AnsibleCodeModel, type:ArtifactType) {
     let modules = model.Modules;
-    let files = [];
+    let files = {};
     let path = "";
     for (let module of modules){
         // console.log(module.ModuleName);

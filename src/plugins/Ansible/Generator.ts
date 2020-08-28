@@ -91,7 +91,7 @@ export async function processRequest(host: Host) {
     const debug = await host.GetValue('debug') || false;
     function WriteFile(path: string, rows: string[])
     {
-        if (rows != undefined){
+        if (rows instanceof Array){
             host.WriteFile(path, rows.join("\r\n"));
         }
 
@@ -111,7 +111,7 @@ export async function processRequest(host: Host) {
         for (let f in files) {
             Info(f);
             Info(typeof files[f]);
-            // WriteFile(f, files[f]);
+            WriteFile(f, files[f]);
            // host.WriteFile(f, files[f]);
         }
         // host.WriteFile("model4.yaml",serialize(session.model));
