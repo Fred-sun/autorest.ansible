@@ -96,12 +96,13 @@ export async function processRequest(host: Host) {
     try {
         const session = await startSession<CodeModel>(host, {}, codeModelSchema);
         let codeModel = new AnsibleCodeModel(session.model);
-        let files = [];
-        files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleSdk);
-        for (let f in files) {
-           WriteFile(f, files[f]);
-        }
-        host.WriteFile("model4.yaml",serialize(session.model));
+        host.WriteFile("test.yaml",yaml.dump(codeModel));
+        // let files = {};
+        // files = GenerateAll(codeModel, ArtifactType.ArtifactTypeAnsibleSdk);
+        // for (let f in files) {
+        //    WriteFile(f, files[f]);
+        // }
+        // host.WriteFile("model4.yaml",serialize(session.model));
         // let str : string[] = [];
         // let codeModel = session.model;
         // for (let module of codeModel.operationGroups){
