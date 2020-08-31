@@ -128,25 +128,15 @@ encryption_scopes:
       returned: always
       type: str
       sample: null
-    key_vault_properties:
+    key_uri:
       description:
         - >-
-          The key vault properties for the encryption scope. This is a required
-          field if encryption scope 'source' attribute is set to
-          'Microsoft.KeyVault'.
+          The object identifier for a key vault key object. When applied, the
+          encryption scope will use the key referenced by the identifier to
+          enable customer-managed key support on this encryption scope.
       returned: always
-      type: dict
+      type: str
       sample: null
-      contains:
-        key_uri:
-          description:
-            - >-
-              The object identifier for a key vault key object. When applied,
-              the encryption scope will use the key referenced by the identifier
-              to enable customer-managed key support on this encryption scope.
-          returned: always
-          type: str
-          sample: null
     value:
       description:
         - List of encryption scopes requested.
@@ -184,26 +174,15 @@ encryption_scopes:
           returned: always
           type: str
           sample: null
-        key_vault_properties:
+        key_uri:
           description:
             - >-
-              The key vault properties for the encryption scope. This is a
-              required field if encryption scope 'source' attribute is set to
-              'Microsoft.KeyVault'.
+              The object identifier for a key vault key object. When applied,
+              the encryption scope will use the key referenced by the identifier
+              to enable customer-managed key support on this encryption scope.
           returned: always
-          type: dict
+          type: str
           sample: null
-          contains:
-            key_uri:
-              description:
-                - >-
-                  The object identifier for a key vault key object. When
-                  applied, the encryption scope will use the key referenced by
-                  the identifier to enable customer-managed key support on this
-                  encryption scope.
-              returned: always
-              type: str
-              sample: null
     next_link:
       description:
         - >-
