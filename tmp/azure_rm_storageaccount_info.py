@@ -2113,20 +2113,20 @@ class AzureRMStorageAccountInfo(AzureRMModuleBase):
 
         if (self.resource_group_name is not None and
             self.account_name is not None):
-            self.results['storage_accounts'] = self.format_item(self.getproperties())
+            self.results['storage_accounts'] = self.format_item(self.getproperty())
         elif (self.resource_group_name is not None):
             self.results['storage_accounts'] = self.format_item(self.listbyresourcegroup())
         else:
             self.results['storage_accounts'] = self.format_item(self.list())
         return self.results
 
-    def getproperties(self):
+    def getproperty(self):
         response = None
 
         try:
-            response = self.mgmt_client.storage_accounts.get_properties(resource_group_name=self.resource_group_name,
-                                                                        account_name=self.account_name,
-                                                                        expand=self.expand)
+            response = self.mgmt_client.storage_accounts.get_property(resource_group_name=self.resource_group_name,
+                                                                      account_name=self.account_name,
+                                                                      expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

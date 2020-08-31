@@ -51,7 +51,7 @@ from ansible.module_utils.azure_rm_common_ext import AzureRMModuleBaseExt
 from copy import deepcopy
 try:
     from msrestazure.azure_exceptions import CloudError
-    from azure.mgmt.compute import ComputeManagementClient
+    from azure.mgmt.storage import StorageManagementClient
     from msrestazure.azure_operation import AzureOperationPoller
     from msrest.polling import LROPoller
 except ImportError:
@@ -97,9 +97,9 @@ class AzureRMUsage(AzureRMModuleBaseExt):
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
+        self.mgmt_client = self.get_mgmt_svc_client(StorageManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    api_version='2019-06-01')
 
         old_response = self.get_resource()
 
@@ -136,9 +136,9 @@ class AzureRMUsage(AzureRMModuleBaseExt):
     def create_update_resource(self):
         try:
             if self.to_do == Actions.Create:
-                response = self.mgmt_client.usage.create()
+                response = self.mgmt_client.usages.create()
             else:
-                response = self.mgmt_client.usage.update()
+                response = self.mgmt_client.usages.update()
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
@@ -148,7 +148,7 @@ class AzureRMUsage(AzureRMModuleBaseExt):
 
     def delete_resource(self):
         try:
-            response = self.mgmt_client.usage.delete()
+            response = self.mgmt_client.usages.delete()
         except CloudError as e:
             self.log('Error attempting to delete the Usage instance.')
             self.fail('Error deleting the Usage instance: {0}'.format(str(e)))
@@ -157,7 +157,7 @@ class AzureRMUsage(AzureRMModuleBaseExt):
 
     def get_resource(self):
         try:
-            response = self.mgmt_client.usage.get()
+            response = self.mgmt_client.usages.get()
         except CloudError as e:
             return False
         return response.as_dict()

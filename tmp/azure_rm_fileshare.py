@@ -45,75 +45,34 @@ options:
         must be immediately preceded and followed by a letter or number.
     required: true
     type: str
-  file_share:
+  metadata:
     description:
-      - Properties of the file share to create.
-      - Properties to update for the file share.
-    type: dict
-    suboptions:
-      last_modified_time:
-        description:
-          - Returns the date and time the share was last modified.
-        type: str
-      metadata:
-        description:
-          - A name-value pair to associate with the share as metadata.
-        type: dictionary
-      share_quota:
-        description:
-          - >-
-            The maximum size of the share, in gigabytes. Must be greater than 0,
-            and less than or equal to 5TB (5120). For Large File Shares, the
-            maximum size is 102400.
-        type: integer
-      enabled_protocols:
-        description:
-          - >-
-            The authentication protocol that is used for the file share. Can
-            only be specified when creating a share.
-        type: choice
-      root_squash:
-        description:
-          - The property is for NFS share only. The default is NoRootSquash.
-        type: choice
-      version:
-        description:
-          - The version of the share.
-        type: str
-      deleted:
-        description:
-          - Indicates whether the share was deleted.
-        type: bool
-      deleted_time:
-        description:
-          - The deleted time if the share was deleted.
-        type: str
-      remaining_retention_days:
-        description:
-          - Remaining retention days for share that was soft deleted.
-        type: integer
-      access_tier:
-        description:
-          - >-
-            Access tier for specific share. GpV2 account can choose between
-            TransactionOptimized (default), Hot, and Cool. FileStorage account
-            can choose Premium.
-        type: choice
-      access_tier_change_time:
-        description:
-          - Indicates the last modification time for share access tier.
-        type: str
-      access_tier_status:
-        description:
-          - Indicates if there is a pending transition for access tier.
-        type: str
-      share_usage_bytes:
-        description:
-          - >-
-            The approximate size of the data stored on the share. Note that this
-            value may not include all recently created or recently resized
-            files.
-        type: integer
+      - A name-value pair to associate with the share as metadata.
+    type: dictionary
+  share_quota:
+    description:
+      - >-
+        The maximum size of the share, in gigabytes. Must be greater than 0, and
+        less than or equal to 5TB (5120). For Large File Shares, the maximum
+        size is 102400.
+    type: integer
+  enabled_protocols:
+    description:
+      - >-
+        The authentication protocol that is used for the file share. Can only be
+        specified when creating a share.
+    type: choice
+  root_squash:
+    description:
+      - The property is for NFS share only. The default is NoRootSquash.
+    type: choice
+  access_tier:
+    description:
+      - >-
+        Access tier for specific share. GpV2 account can choose between
+        TransactionOptimized (default), Hot, and Cool. FileStorage account can
+        choose Premium.
+    type: choice
   expand:
     description:
       - 'Optional, used to expand the properties within share''s properties.'
@@ -139,9 +98,6 @@ EXAMPLES = '''
     - name: Create NFS Shares
       azure_rm_fileshare: 
         account_name: sto666
-        file_share:
-          properties:
-            enabled_protocols: NFS
         resource_group_name: res346
         share_name: share1235
         
@@ -149,7 +105,6 @@ EXAMPLES = '''
     - name: PutShares
       azure_rm_fileshare: 
         account_name: sto328
-        file_share: {}
         resource_group_name: res3376
         share_name: share6185
         
@@ -157,9 +112,6 @@ EXAMPLES = '''
     - name: PutShares with Access Tier
       azure_rm_fileshare: 
         account_name: sto666
-        file_share:
-          properties:
-            access_tier: Hot
         resource_group_name: res346
         share_name: share1235
         
@@ -167,10 +119,6 @@ EXAMPLES = '''
     - name: UpdateShares
       azure_rm_fileshare: 
         account_name: sto328
-        file_share:
-          properties:
-            metadata:
-              type: image
         resource_group_name: res3376
         share_name: share6185
         
@@ -316,71 +264,25 @@ class AzureRMFileShare(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            file_share=dict(
-                type='dict',
-                disposition='/file_share',
-                options=dict(
-                    last_modified_time=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='last_modified_time'
-                    ),
-                    metadata=dict(
-                        type='dictionary',
-                        disposition='metadata'
-                    ),
-                    share_quota=dict(
-                        type='integer',
-                        disposition='share_quota'
-                    ),
-                    enabled_protocols=dict(
-                        type='choice',
-                        disposition='enabled_protocols'
-                    ),
-                    root_squash=dict(
-                        type='choice',
-                        disposition='root_squash'
-                    ),
-                    version=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='version'
-                    ),
-                    deleted=dict(
-                        type='bool',
-                        updatable=False,
-                        disposition='deleted'
-                    ),
-                    deleted_time=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='deleted_time'
-                    ),
-                    remaining_retention_days=dict(
-                        type='integer',
-                        updatable=False,
-                        disposition='remaining_retention_days'
-                    ),
-                    access_tier=dict(
-                        type='choice',
-                        disposition='access_tier'
-                    ),
-                    access_tier_change_time=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='access_tier_change_time'
-                    ),
-                    access_tier_status=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='access_tier_status'
-                    ),
-                    share_usage_bytes=dict(
-                        type='integer',
-                        updatable=False,
-                        disposition='share_usage_bytes'
-                    )
-                )
+            metadata=dict(
+                type='dictionary',
+                disposition='/metadata'
+            ),
+            share_quota=dict(
+                type='integer',
+                disposition='/share_quota'
+            ),
+            enabled_protocols=dict(
+                type='choice',
+                disposition='/enabled_protocols'
+            ),
+            root_squash=dict(
+                type='choice',
+                disposition='/root_squash'
+            ),
+            access_tier=dict(
+                type='choice',
+                disposition='/access_tier'
             ),
             expand=dict(
                 type='constant'
@@ -461,12 +363,12 @@ class AzureRMFileShare(AzureRMModuleBaseExt):
                 response = self.mgmt_client.file_shares.create(resource_group_name=self.resource_group_name,
                                                                account_name=self.account_name,
                                                                share_name=self.share_name,
-                                                               parameters=self.body)
+                                                               file_share=self.body)
             else:
                 response = self.mgmt_client.file_shares.update(resource_group_name=self.resource_group_name,
                                                                account_name=self.account_name,
                                                                share_name=self.share_name,
-                                                               parameters=self.body)
+                                                               file_share=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

@@ -87,70 +87,6 @@ file_services:
           type: dict
           sample: null
           contains:
-            cors:
-              description:
-                - >-
-                  Specifies CORS rules for the File service. You can include up
-                  to five CorsRule elements in the request. If no CorsRule
-                  elements are included in the request body, all CORS rules will
-                  be deleted, and CORS will be disabled for the File service.
-              returned: always
-              type: dict
-              sample: null
-              contains:
-                cors_rules:
-                  description:
-                    - >-
-                      The List of CORS rules. You can include up to five
-                      CorsRule elements in the request.
-                  returned: always
-                  type: list
-                  sample: null
-                  contains:
-                    allowed_origins:
-                      description:
-                        - >-
-                          Required if CorsRule element is present. A list of
-                          origin domains that will be allowed via CORS, or "*"
-                          to allow all domains
-                      returned: always
-                      type: list
-                      sample: null
-                    allowed_methods:
-                      description:
-                        - >-
-                          Required if CorsRule element is present. A list of
-                          HTTP methods that are allowed to be executed by the
-                          origin.
-                      returned: always
-                      type: list
-                      sample: null
-                    max_age_in_seconds:
-                      description:
-                        - >-
-                          Required if CorsRule element is present. The number of
-                          seconds that the client/browser should cache a
-                          preflight response.
-                      returned: always
-                      type: integer
-                      sample: null
-                    exposed_headers:
-                      description:
-                        - >-
-                          Required if CorsRule element is present. A list of
-                          response headers to expose to CORS clients.
-                      returned: always
-                      type: list
-                      sample: null
-                    allowed_headers:
-                      description:
-                        - >-
-                          Required if CorsRule element is present. A list of
-                          headers allowed to be part of the cross-origin
-                          request.
-                      returned: always
-                      type: list
-                      sample: null
             share_delete_retention_policy:
               description:
                 - The file service properties for share soft delete.
@@ -172,6 +108,57 @@ file_services:
                       maximum value can be 365.
                   returned: always
                   type: integer
+                  sample: null
+            cors_rules:
+              description:
+                - >-
+                  The List of CORS rules. You can include up to five CorsRule
+                  elements in the request.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                allowed_origins:
+                  description:
+                    - >-
+                      Required if CorsRule element is present. A list of origin
+                      domains that will be allowed via CORS, or "*" to allow all
+                      domains
+                  returned: always
+                  type: list
+                  sample: null
+                allowed_methods:
+                  description:
+                    - >-
+                      Required if CorsRule element is present. A list of HTTP
+                      methods that are allowed to be executed by the origin.
+                  returned: always
+                  type: list
+                  sample: null
+                max_age_in_seconds:
+                  description:
+                    - >-
+                      Required if CorsRule element is present. The number of
+                      seconds that the client/browser should cache a preflight
+                      response.
+                  returned: always
+                  type: integer
+                  sample: null
+                exposed_headers:
+                  description:
+                    - >-
+                      Required if CorsRule element is present. A list of
+                      response headers to expose to CORS clients.
+                  returned: always
+                  type: list
+                  sample: null
+                allowed_headers:
+                  description:
+                    - >-
+                      Required if CorsRule element is present. A list of headers
+                      allowed to be part of the cross-origin request.
+                  returned: always
+                  type: list
                   sample: null
         sku:
           description:
@@ -224,68 +211,6 @@ file_services:
       type: dict
       sample: null
       contains:
-        cors:
-          description:
-            - >-
-              Specifies CORS rules for the File service. You can include up to
-              five CorsRule elements in the request. If no CorsRule elements are
-              included in the request body, all CORS rules will be deleted, and
-              CORS will be disabled for the File service.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            cors_rules:
-              description:
-                - >-
-                  The List of CORS rules. You can include up to five CorsRule
-                  elements in the request.
-              returned: always
-              type: list
-              sample: null
-              contains:
-                allowed_origins:
-                  description:
-                    - >-
-                      Required if CorsRule element is present. A list of origin
-                      domains that will be allowed via CORS, or "*" to allow all
-                      domains
-                  returned: always
-                  type: list
-                  sample: null
-                allowed_methods:
-                  description:
-                    - >-
-                      Required if CorsRule element is present. A list of HTTP
-                      methods that are allowed to be executed by the origin.
-                  returned: always
-                  type: list
-                  sample: null
-                max_age_in_seconds:
-                  description:
-                    - >-
-                      Required if CorsRule element is present. The number of
-                      seconds that the client/browser should cache a preflight
-                      response.
-                  returned: always
-                  type: integer
-                  sample: null
-                exposed_headers:
-                  description:
-                    - >-
-                      Required if CorsRule element is present. A list of
-                      response headers to expose to CORS clients.
-                  returned: always
-                  type: list
-                  sample: null
-                allowed_headers:
-                  description:
-                    - >-
-                      Required if CorsRule element is present. A list of headers
-                      allowed to be part of the cross-origin request.
-                  returned: always
-                  type: list
-                  sample: null
         share_delete_retention_policy:
           description:
             - The file service properties for share soft delete.
@@ -307,6 +232,56 @@ file_services:
                   value can be 365.
               returned: always
               type: integer
+              sample: null
+        cors_rules:
+          description:
+            - >-
+              The List of CORS rules. You can include up to five CorsRule
+              elements in the request.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            allowed_origins:
+              description:
+                - >-
+                  Required if CorsRule element is present. A list of origin
+                  domains that will be allowed via CORS, or "*" to allow all
+                  domains
+              returned: always
+              type: list
+              sample: null
+            allowed_methods:
+              description:
+                - >-
+                  Required if CorsRule element is present. A list of HTTP
+                  methods that are allowed to be executed by the origin.
+              returned: always
+              type: list
+              sample: null
+            max_age_in_seconds:
+              description:
+                - >-
+                  Required if CorsRule element is present. The number of seconds
+                  that the client/browser should cache a preflight response.
+              returned: always
+              type: integer
+              sample: null
+            exposed_headers:
+              description:
+                - >-
+                  Required if CorsRule element is present. A list of response
+                  headers to expose to CORS clients.
+              returned: always
+              type: list
+              sample: null
+            allowed_headers:
+              description:
+                - >-
+                  Required if CorsRule element is present. A list of headers
+                  allowed to be part of the cross-origin request.
+              returned: always
+              type: list
               sample: null
     sku:
       description:
@@ -392,19 +367,19 @@ class AzureRMFileServiceInfo(AzureRMModuleBase):
         if (self.resource_group_name is not None and
             self.account_name is not None and
             self.file_services_name is not None):
-            self.results['file_services'] = self.format_item(self.getserviceproperties())
+            self.results['file_services'] = self.format_item(self.getserviceproperty())
         elif (self.resource_group_name is not None and
               self.account_name is not None):
             self.results['file_services'] = self.format_item(self.list())
         return self.results
 
-    def getserviceproperties(self):
+    def getserviceproperty(self):
         response = None
 
         try:
-            response = self.mgmt_client.file_services.get_service_properties(resource_group_name=self.resource_group_name,
-                                                                             account_name=self.account_name,
-                                                                             file_services_name=self.file_services_name)
+            response = self.mgmt_client.file_services.get_service_property(resource_group_name=self.resource_group_name,
+                                                                           account_name=self.account_name,
+                                                                           file_services_name=self.file_services_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
