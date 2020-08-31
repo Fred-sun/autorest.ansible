@@ -38,10 +38,6 @@ options:
     description:
       - Resource location
     type: str
-  zones:
-    description:
-      - The Logical zone list for Disk.
-    type: list
   os_type:
     description:
       - The Operating System type.
@@ -863,11 +859,6 @@ class AzureRMDisk(AzureRMModuleBaseExt):
             location=dict(
                 type='str',
                 disposition='/location'
-            ),
-            zones=dict(
-                type='list',
-                disposition='/zones',
-                elements='str'
             ),
             os_type=dict(
                 type='sealed-choice',

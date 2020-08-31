@@ -35,14 +35,6 @@ options:
     description:
       - Resource location
     type: str
-  zones:
-    description:
-      - >-
-        Availability Zone to use for this host group. Only single zone is
-        supported. The zone can be assigned only during creation. If not
-        provided, the group supports all zones in the region. If provided,
-        enforces each host in the group to be in the same zone.
-    type: list
   platform_fault_domain_count:
     description:
       - Number of fault domains that the host group can span.
@@ -230,11 +222,6 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
             location=dict(
                 type='str',
                 disposition='/location'
-            ),
-            zones=dict(
-                type='list',
-                disposition='/zones',
-                elements='str'
             ),
             platform_fault_domain_count=dict(
                 type='integer',

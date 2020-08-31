@@ -30,7 +30,7 @@ export class ModuleMethod {
 
     private LoadOption(parameters: any){
         for (let parameter of parameters){
-            let option = new ModuleOption(parameter, null);
+            let option = new ModuleOption(parameter, null, false);
             if (option.Name.charAt(0) == '_' && option.Kind == ModuleOptionKind.MODULE_OPTION_BODY){
                 this.ParameterName = option.Name.substr(1);
             }
@@ -48,7 +48,7 @@ export class ModuleMethod {
 
     private LoadResponseOption(parameters: any){
         for (let parameter of parameters){
-            let option = new ModuleOption(parameter, null);
+            let option = new ModuleOption(parameter, null, true);
             this.ResponseOptions.push(option);
         }
     }

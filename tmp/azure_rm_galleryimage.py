@@ -124,15 +124,6 @@ options:
           - The name of the gallery Image Definition SKU.
         required: true
         type: str
-  disallowed:
-    description:
-      - Describes the disallowed disk types.
-    type: dict
-    suboptions:
-      disk_types:
-        description:
-          - A list of disk types.
-        type: list
   purchase_plan:
     description:
       - >-
@@ -510,17 +501,6 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
                         type='str',
                         disposition='sku',
                         required=True
-                    )
-                )
-            ),
-            disallowed=dict(
-                type='dict',
-                disposition='/disallowed',
-                options=dict(
-                    disk_types=dict(
-                        type='list',
-                        disposition='disk_types',
-                        elements='str'
                     )
                 )
             ),

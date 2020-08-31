@@ -89,12 +89,6 @@ options:
         description:
           - The promotion code.
         type: str
-  zones:
-    description:
-      - >-
-        The virtual machine scale set zones. NOTE: Availability zones can only
-        be set when you create the scale set
-    type: list
   type:
     description:
       - >-
@@ -1318,36 +1312,6 @@ options:
             added to a virtual machine or virtual machine scale set only if this
             property is enabled.
         type: bool
-  scale_in_policy:
-    description:
-      - >-
-        Specifies the scale-in policy that decides which virtual machines are
-        chosen for removal when a Virtual Machine Scale Set is scaled-in.
-    type: dict
-    suboptions:
-      rules:
-        description:
-          - >-
-            The rules to be followed when scaling-in a virtual machine scale
-            set. :code:`<br>`:code:`<br>` Possible values are:
-            :code:`<br>`:code:`<br>` **Default** When a virtual machine scale
-            set is scaled in, the scale set will first be balanced across zones
-            if it is a zonal scale set. Then, it will be balanced across Fault
-            Domains as far as possible. Within each Fault Domain, the virtual
-            machines chosen for removal will be the newest ones that are not
-            protected from scale-in. :code:`<br>`:code:`<br>` **OldestVM** When
-            a virtual machine scale set is being scaled-in, the oldest virtual
-            machines that are not protected from scale-in will be chosen for
-            removal. For zonal virtual machine scale sets, the scale set will
-            first be balanced across zones. Within each zone, the oldest virtual
-            machines that are not protected will be chosen for removal.
-            :code:`<br>`:code:`<br>` **NewestVM** When a virtual machine scale
-            set is being scaled-in, the newest virtual machines that are not
-            protected from scale-in will be chosen for removal. For zonal
-            virtual machine scale sets, the scale set will first be balanced
-            across zones. Within each zone, the newest virtual machines that are
-            not protected will be chosen for removal. :code:`<br>`:code:`<br>`
-        type: list
   id:
     description:
       - Resource Id
@@ -2249,15 +2213,15 @@ EXAMPLES = '''
               computer_name_prefix: '{vmss-name}'
             storage_profile:
               os_disk:
+                name: osDisk
                 caching: ReadWrite
                 create_option: FromImage
                 image:
                   uri: >-
                     http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/{existing-generalized-os-image-blob-name}.vhd
-                name: osDisk
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2294,9 +2258,9 @@ EXAMPLES = '''
                 sku: 2016-Datacenter
                 version: latest
               os_disk:
+                name: osDisk
                 caching: ReadWrite
                 create_option: FromImage
-                name: osDisk
                 vhd_containers:
                   - >-
                     http://{existing-storage-account-name-0}.blob.core.windows.net/vhdContainer
@@ -2309,8 +2273,8 @@ EXAMPLES = '''
                   - >-
                     http://{existing-storage-account-name-4}.blob.core.windows.net/vhdContainer
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2350,8 +2314,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2404,8 +2368,8 @@ EXAMPLES = '''
                       /subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_DS1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2453,8 +2417,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_DS1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2500,8 +2464,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2546,8 +2510,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2599,8 +2563,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2645,8 +2609,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2692,8 +2656,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2743,8 +2707,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D2_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2793,8 +2757,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_DS1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2842,8 +2806,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_DS1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2862,15 +2826,15 @@ EXAMPLES = '''
                 enabled: true
                 storage_uri: 'http://{existing-storage-account-name}.blob.core.windows.net'
             extension_profile:
+              extensions_time_budget: PT1H20M
               extensions:
                 - name: '{extension-name}'
                   properties:
+                    type: '{extension-Type}'
                     auto_upgrade_minor_version: false
                     publisher: '{extension-Publisher}'
                     settings: {}
-                    type: '{extension-Type}'
                     type_handler_version: '{handler-version}'
-              extensions_time_budget: PT1H20M
             network_profile:
               network_interface_configurations:
                 - name: '{vmss-name}'
@@ -2899,8 +2863,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2945,8 +2909,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -2988,8 +2952,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -3031,8 +2995,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Premium_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -3065,10 +3029,10 @@ EXAMPLES = '''
                 disable_password_authentication: true
                 ssh:
                   public_keys:
-                    - key_data: >-
+                    - path: '/home/{your-username}/.ssh/authorized_keys'
+                      key_data: >-
                         ssh-rsa
                         AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1
-                      path: '/home/{your-username}/.ssh/authorized_keys'
             storage_profile:
               image_reference:
                 offer: WindowsServer
@@ -3081,8 +3045,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -3128,8 +3092,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 3
           name: Standard_D1_v2
+          capacity: 3
           tier: Standard
         
 
@@ -3179,8 +3143,8 @@ EXAMPLES = '''
                 managed_disk:
                   storage_account_type: Standard_LRS
         sku:
-          capacity: 2
           name: Standard_A1_v2
+          capacity: 2
           tier: Standard
         zones:
           - '1'
@@ -4960,11 +4924,6 @@ class AzureRMVirtualMachineScaleSet(AzureRMModuleBaseExt):
                     )
                 )
             ),
-            zones=dict(
-                type='list',
-                disposition='/zones',
-                elements='str'
-            ),
             type=dict(
                 type='sealed-choice',
                 disposition='/type'
@@ -5751,17 +5710,6 @@ class AzureRMVirtualMachineScaleSet(AzureRMModuleBaseExt):
                     ultra_ssd_enabled=dict(
                         type='bool',
                         disposition='ultra_ssd_enabled'
-                    )
-                )
-            ),
-            scale_in_policy=dict(
-                type='dict',
-                disposition='/scale_in_policy',
-                options=dict(
-                    rules=dict(
-                        type='list',
-                        disposition='rules',
-                        elements='choice'
                     )
                 )
             ),

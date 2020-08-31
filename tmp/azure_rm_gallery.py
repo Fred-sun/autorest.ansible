@@ -45,17 +45,6 @@ options:
         The description of this Shared Image Gallery resource. This property is
         updatable.
     type: str
-  identifier:
-    description:
-      - Describes the gallery unique name.
-    type: dict
-    suboptions:
-      unique_name:
-        description:
-          - >-
-            The unique name of the Shared Image Gallery. This name is generated
-            automatically by Azure.
-        type: str
   state:
     description:
       - Assert the state of the Gallery.
@@ -199,17 +188,6 @@ class AzureRMGallery(AzureRMModuleBaseExt):
             description=dict(
                 type='str',
                 disposition='/description'
-            ),
-            identifier=dict(
-                type='dict',
-                disposition='/identifier',
-                options=dict(
-                    unique_name=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='unique_name'
-                    )
-                )
             ),
             state=dict(
                 type='str',

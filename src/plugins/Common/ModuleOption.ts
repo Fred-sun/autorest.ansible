@@ -24,9 +24,10 @@ export class ModuleOption {
     //     this.IncludeInDocumentation = true;
     //     this.IncludeInArgSpec = true;
     // }
-    constructor(swaggerOption:any, parent: ModuleOption) {
+    constructor(swaggerOption:any, parent: ModuleOption, isResponse : boolean) {
         this.SwaggerOption = swaggerOption;
         this.Parent = parent;
+        this.IsResponse = isResponse;
         this.Init(swaggerOption);
     }
     private Init(swaggerOption:any){
@@ -38,28 +39,39 @@ export class ModuleOption {
         this.IncludeInDocumentation = true;
         this.IncludeInArgSpec = true;
         this.ReadOnly = swaggerOption.readOnly == undefined ? false: swaggerOption.readOnly;
-         this.Updatable = swaggerOption.readOnly == undefined ? true: !swaggerOption.readOnly;
+        // This needs to be changed, I don't find a field which determines updatable
+        this.Updatable = !this.ReadOnly;
         this.LoadSchema(swaggerOption.schema);
         this.LoadProtocal(swaggerOption.protocol);
     }
     private LoadSchema(schema:any){
         this.Type = ParseType(schema.type);
+
         if (schema.properties != undefined){
+            let readOnly = true;
             for (let subParameter of schema.properties){
-                let subOption = new ModuleOption(subParameter,this);
+                let subOption = new ModuleOption(subParameter,this, this.IsResponse);
+                if (!subOption.ReadOnly)
+                    readOnly = false;
                 this.SubOptions.push(subOption);
             }
+            this.ReadOnly = readOnly;
         }
 
         if (schema.type == SwaggerModelType.SWAGGER_MODEL_ARRAY){
+            let readOnly = true;
             this.ElementType = ParseType(schema.elementType.type);
             if (schema.elementType.type == SwaggerModelType.SWAGGER_MODEL_OBJECT){
                 for (let subParameter of schema.elementType.properties){
-                    let subOption = new ModuleOption(subParameter,this);
+                    let subOption = new ModuleOption(subParameter,this, this.IsResponse);
+                    if (!subOption.ReadOnly)
+                        readOnly = false;
                     this.SubOptions.push(subOption);
                 }
             }
+            this.ReadOnly = readOnly;
         }
+
     }
 
     private LoadProtocal(protocol:any){
@@ -143,5 +155,6 @@ export class ModuleOption {
     public ElementType: string = null;
     public SwaggerOption: any;
     public Parent: ModuleOption;
+    public IsResponse: boolean;
 
 }

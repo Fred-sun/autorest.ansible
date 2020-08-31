@@ -90,12 +90,6 @@ options:
         The extension can contain either protectedSettings or
         protectedSettingsFromKeyVault or no protected settings at all.
     type: any
-  provision_after_extensions:
-    description:
-      - >-
-        Collection of extension names after which this extension needs to be
-        provisioned.
-    type: list
   expand:
     description:
       - The expand expression to apply on the operation.
@@ -286,11 +280,6 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
             protected_settings=dict(
                 type='any',
                 disposition='/protected_settings'
-            ),
-            provision_after_extensions=dict(
-                type='list',
-                disposition='/provision_after_extensions',
-                elements='str'
             ),
             expand=dict(
                 type='str'
