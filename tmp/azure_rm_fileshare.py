@@ -61,18 +61,30 @@ options:
       - >-
         The authentication protocol that is used for the file share. Can only be
         specified when creating a share.
-    type: choice
+    type: str
+    choices:
+      - SMB
+      - NFS
   root_squash:
     description:
       - The property is for NFS share only. The default is NoRootSquash.
-    type: choice
+    type: str
+    choices:
+      - NoRootSquash
+      - RootSquash
+      - AllSquash
   access_tier:
     description:
       - >-
         Access tier for specific share. GpV2 account can choose between
         TransactionOptimized (default), Hot, and Cool. FileStorage account can
         choose Premium.
-    type: choice
+    type: str
+    choices:
+      - TransactionOptimized
+      - Hot
+      - Cool
+      - Premium
   expand:
     description:
       - 'Optional, used to expand the properties within share''s properties.'
@@ -166,13 +178,13 @@ enabled_protocols:
       The authentication protocol that is used for the file share. Can only be
       specified when creating a share.
   returned: always
-  type: choice
+  type: str
   sample: null
 root_squash:
   description:
     - The property is for NFS share only. The default is NoRootSquash.
   returned: always
-  type: choice
+  type: str
   sample: null
 version:
   description:
@@ -205,7 +217,7 @@ access_tier:
       TransactionOptimized (default), Hot, and Cool. FileStorage account can
       choose Premium.
   returned: always
-  type: choice
+  type: str
   sample: null
 access_tier_change_time:
   description:
@@ -273,16 +285,25 @@ class AzureRMFileShare(AzureRMModuleBaseExt):
                 disposition='/share_quota'
             ),
             enabled_protocols=dict(
-                type='choice',
-                disposition='/enabled_protocols'
+                type='str',
+                disposition='/enabled_protocols',
+                choices=['SMB',
+                         'NFS']
             ),
             root_squash=dict(
-                type='choice',
-                disposition='/root_squash'
+                type='str',
+                disposition='/root_squash',
+                choices=['NoRootSquash',
+                         'RootSquash',
+                         'AllSquash']
             ),
             access_tier=dict(
-                type='choice',
-                disposition='/access_tier'
+                type='str',
+                disposition='/access_tier',
+                choices=['TransactionOptimized',
+                         'Hot',
+                         'Cool',
+                         'Premium']
             ),
             expand=dict(
                 type='constant'

@@ -42,7 +42,9 @@ options:
         The name of the Storage Account Management Policy. It should always be
         'default'
     required: true
-    type: choice
+    type: str
+    choices:
+      - default
   rules:
     description:
       - >-
@@ -65,7 +67,9 @@ options:
         description:
           - The valid value is Lifecycle
         required: true
-        type: choice
+        type: str
+        choices:
+          - Lifecycle
       definition:
         description:
           - An object that defines the Lifecycle rule.
@@ -209,7 +213,9 @@ EXAMPLES = '''
         properties:
           policy:
             rules:
-              - definition:
+              - name: olcmtest1
+                type: Lifecycle
+                definition:
                   actions:
                     base_blob:
                       delete:
@@ -227,9 +233,9 @@ EXAMPLES = '''
                     prefix_match:
                       - olcmtestcontainer1
                 enabled: true
-                name: olcmtest1
+              - name: olcmtest2
                 type: Lifecycle
-              - definition:
+                definition:
                   actions:
                     base_blob:
                       delete:
@@ -251,8 +257,6 @@ EXAMPLES = '''
                     prefix_match:
                       - olcmtestcontainer2
                 enabled: true
-                name: olcmtest2
-                type: Lifecycle
         
 
     - name: StorageAccountDeleteManagementPolicies
@@ -320,7 +324,7 @@ rules:
       description:
         - The valid value is Lifecycle
       returned: always
-      type: choice
+      type: str
       sample: null
     definition:
       description:
@@ -501,7 +505,8 @@ class AzureRMManagementPolicy(AzureRMModuleBaseExt):
                 required=True
             ),
             management_policy_name=dict(
-                type='choice',
+                type='str',
+                choices=['default'],
                 required=True
             ),
             rules=dict(
@@ -519,8 +524,9 @@ class AzureRMManagementPolicy(AzureRMModuleBaseExt):
                         required=True
                     ),
                     type=dict(
-                        type='choice',
+                        type='str',
                         disposition='type',
+                        choices=['Lifecycle'],
                         required=True
                     ),
                     definition=dict(

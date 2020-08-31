@@ -42,7 +42,9 @@ options:
         The name of the Storage Account Management Policy. It should always be
         'default'
     required: true
-    type: choice
+    type: str
+    choices:
+      - default
 extends_documentation_fragment:
   - azure
 author:
@@ -124,7 +126,7 @@ management_policies:
           description:
             - The valid value is Lifecycle
           returned: always
-          type: choice
+          type: str
           sample: null
         definition:
           description:
@@ -300,7 +302,8 @@ class AzureRMManagementPolicyInfo(AzureRMModuleBase):
                 required=True
             ),
             management_policy_name=dict(
-                type='choice',
+                type='str',
+                choices=['default'],
                 required=True
             )
         )

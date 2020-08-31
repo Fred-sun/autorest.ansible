@@ -12,9 +12,6 @@ use-extension:
   "@autorest/python": "5.1.0-preview.4"
   "@autorest/clicommon": "0.4.13"
 
-require:
-  - ./readme.python.md
-  - $(this-folder)/readme.ansible.common.md
 
 pipeline-model: v3
 

@@ -319,18 +319,4 @@ export enum SwaggerModelType {
 }
 
 
-export function ParseType(type: string) {
-    if (type == SwaggerModelType.SWAGGER_MODEL_STRING)
-        return 'str';
-    if (type == SwaggerModelType.SWAGGER_MODEL_ARRAY)
-        return 'list';
-    if (type == SwaggerModelType.SWAGGER_MODEL_BOOLEAN)
-        return 'bool';
-    if (type == SwaggerModelType.SWAGGER_MODEL_DATETIEM )
-        return 'str';
-    if (type == SwaggerModelType.SWAGGER_MODEL_INTEGER_32 || type == SwaggerModelType.SWAGGER_MODEL_INTEGER_64)
-        return 'int';
-    if (type == SwaggerModelType.SWAGGER_MODEL_OBJECT)
-        return 'dict';
-    return type;
-}
+

@@ -1,5 +1,5 @@
 
-import {ParseType, SwaggerModelType, ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
+import { SwaggerModelType, ToSnakeCase, TrimPackageName, Uncapitalize} from "../../utils/helper";
 import {pascalCase} from "@azure-tools/codegen";
 import {CodeModel, Info} from "@azure-tools/codemodel";
 import {Module} from "./Module";

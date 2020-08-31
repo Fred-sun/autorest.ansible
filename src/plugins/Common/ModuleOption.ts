@@ -1,5 +1,5 @@
 import {Dictionary} from "@azure-tools/linq";
-import {ParseType, SwaggerModelType, ToSnakeCase} from "../../utils/helper";
+import { SwaggerModelType, ToSnakeCase} from "../../utils/helper";
 
 export enum ModuleOptionKind{
     MODULE_OPTION_PATH,
@@ -45,7 +45,7 @@ export class ModuleOption {
         this.LoadProtocal(swaggerOption.protocol);
     }
     private LoadSchema(schema:any){
-        this.Type = ParseType(schema.type);
+        this.Type = this.ParseType(schema.type);
 
         if (schema.properties != undefined){
             let readOnly = true;
@@ -60,7 +60,7 @@ export class ModuleOption {
 
         if (schema.type == SwaggerModelType.SWAGGER_MODEL_ARRAY){
             let readOnly = true;
-            this.ElementType = ParseType(schema.elementType.type);
+            this.ElementType = this.ParseType(schema.elementType.type);
             if (schema.elementType.type == SwaggerModelType.SWAGGER_MODEL_OBJECT){
                 for (let subParameter of schema.elementType.properties){
                     let subOption = new ModuleOption(subParameter,this, this.IsResponse);
@@ -70,6 +70,12 @@ export class ModuleOption {
                 }
             }
             this.ReadOnly = readOnly;
+        }
+
+        if (schema.type == SwaggerModelType.SWAGGER_MODEL_ENUM){
+            for (let choice of schema.choices){
+                this.EnumValues.push(choice.value);
+            }
         }
 
     }
@@ -117,6 +123,25 @@ export class ModuleOption {
             this.DispositionRest =   this.NameSwagger;
         }
     }
+
+    private ParseType(type: string) {
+        if (type == SwaggerModelType.SWAGGER_MODEL_STRING)
+            return 'str';
+        if (type == SwaggerModelType.SWAGGER_MODEL_ARRAY)
+            return 'list';
+        if (type == SwaggerModelType.SWAGGER_MODEL_BOOLEAN)
+            return 'bool';
+        if (type == SwaggerModelType.SWAGGER_MODEL_DATETIEM )
+            return 'str';
+        if (type == SwaggerModelType.SWAGGER_MODEL_INTEGER_32 || type == SwaggerModelType.SWAGGER_MODEL_INTEGER_64)
+            return 'int';
+        if (type == SwaggerModelType.SWAGGER_MODEL_OBJECT)
+            return 'dict';
+        if (type == SwaggerModelType.SWAGGER_MODEL_ENUM)
+            return 'str';
+        return type;
+    }
+
     public NameSwagger: string = null;
     public Name: string = null;
 
@@ -144,7 +169,7 @@ export class ModuleOption {
     public ExampleValue: string = null;
     public Hidden: boolean;
     public DispositionSdk: string = null;
-    public EnumValues: Dictionary<any>[];
+    public EnumValues: string[] = [];
     public Comparison: string = null;
     public Updatable: boolean = true;
     public DispositionRest: string = null;

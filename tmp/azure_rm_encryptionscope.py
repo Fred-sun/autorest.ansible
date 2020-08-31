@@ -95,7 +95,7 @@ source:
       The provider for the encryption scope. Possible values
       (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
   returned: always
-  type: choice
+  type: str
   sample: null
 state:
   description:
@@ -103,7 +103,7 @@ state:
       The state of the encryption scope. Possible values (case-insensitive): 
       Enabled, Disabled.
   returned: always
-  type: choice
+  type: str
   sample: null
 creation_time:
   description:

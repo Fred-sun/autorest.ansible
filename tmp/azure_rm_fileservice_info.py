@@ -174,7 +174,7 @@ file_services:
                   update. Note that in older versions, SKU name was called
                   accountType.
               returned: always
-              type: choice
+              type: str
               sample: null
             tier:
               description:
@@ -296,7 +296,7 @@ file_services:
               The SKU name. Required for account creation; optional for update.
               Note that in older versions, SKU name was called accountType.
           returned: always
-          type: choice
+          type: str
           sample: null
         tier:
           description:

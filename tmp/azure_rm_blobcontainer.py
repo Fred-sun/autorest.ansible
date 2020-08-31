@@ -173,13 +173,13 @@ lease_status:
   description:
     - The lease status of the container.
   returned: always
-  type: choice
+  type: str
   sample: null
 lease_state:
   description:
     - Lease state of the container.
   returned: always
-  type: choice
+  type: str
   sample: null
 lease_duration:
   description:
@@ -187,7 +187,7 @@ lease_duration:
       Specifies whether the lease on a container is of infinite or fixed
       duration, only when the container is leased.
   returned: always
-  type: choice
+  type: str
   sample: null
 metadata:
   description:
@@ -221,7 +221,7 @@ immutability_policy:
               The ImmutabilityPolicy update type of a blob container, possible
               values include: put, lock and extend.
           returned: always
-          type: choice
+          type: str
           sample: null
         immutability_period_since_creation_in_days:
           description:
@@ -275,7 +275,7 @@ immutability_policy:
           The ImmutabilityPolicy state of a blob container, possible values
           include: Locked and Unlocked.
       returned: always
-      type: choice
+      type: str
       sample: null
     allow_protected_append_writes:
       description:

@@ -121,7 +121,7 @@ private_link_service_connection_state:
           Indicates whether the connection has been Approved/Rejected/Removed by
           the owner of the service.
       returned: always
-      type: choice
+      type: str
       sample: null
     description:
       description:
@@ -141,7 +141,7 @@ provisioning_state:
   description:
     - The provisioning state of the private endpoint connection resource.
   returned: always
-  type: choice
+  type: str
   sample: null
 
 '''

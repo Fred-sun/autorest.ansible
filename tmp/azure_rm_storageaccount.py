@@ -42,7 +42,13 @@ options:
       - >-
         Optional. Indicates the type of storage account. Currently only
         StorageV2 value supported by server.
-    type: choice
+    type: str
+    choices:
+      - Storage
+      - StorageV2
+      - BlobStorage
+      - FileStorage
+      - BlockBlobStorage
   location:
     description:
       - >-
@@ -138,7 +144,10 @@ options:
                     'Account' key type implies that an account-scoped encryption
                     key will be used. 'Service' key type implies that a default
                     service key is used.
-                type: choice
+                type: str
+                choices:
+                  - Service
+                  - Account
           file:
             description:
               - The encryption function of the file storage service.
@@ -165,7 +174,10 @@ options:
                     'Account' key type implies that an account-scoped encryption
                     key will be used. 'Service' key type implies that a default
                     service key is used.
-                type: choice
+                type: str
+                choices:
+                  - Service
+                  - Account
           table:
             description:
               - The encryption function of the table storage service.
@@ -192,7 +204,10 @@ options:
                     'Account' key type implies that an account-scoped encryption
                     key will be used. 'Service' key type implies that a default
                     service key is used.
-                type: choice
+                type: str
+                choices:
+                  - Service
+                  - Account
           queue:
             description:
               - The encryption function of the queue storage service.
@@ -219,14 +234,20 @@ options:
                     'Account' key type implies that an account-scoped encryption
                     key will be used. 'Service' key type implies that a default
                     service key is used.
-                type: choice
+                type: str
+                choices:
+                  - Service
+                  - Account
       key_source:
         description:
           - >-
             The encryption keySource (provider). Possible values
             (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault
         required: true
-        type: choice
+        type: str
+        choices:
+          - Microsoft.Storage
+          - Microsoft.Keyvault
       require_infrastructure_encryption:
         description:
           - >-
@@ -272,7 +293,12 @@ options:
             Logging/Metrics/AzureServices. Possible values are any combination
             of Logging|Metrics|AzureServices (For example, "Logging, Metrics"),
             or None to bypass none of those traffics.
-        type: choice
+        type: str
+        choices:
+          - None
+          - Logging
+          - Metrics
+          - AzureServices
       virtual_network_rules:
         description:
           - Sets the virtual network rules
@@ -331,7 +357,11 @@ options:
         description:
           - Indicates the directory service used.
         required: true
-        type: choice
+        type: str
+        choices:
+          - None
+          - AADDS
+          - AD
       active_directory_properties:
         description:
           - Required if choose AD.
@@ -384,7 +414,10 @@ options:
       - >-
         Allow large file shares if sets to Enabled. It cannot be disabled once
         it is enabled.
-    type: choice
+    type: str
+    choices:
+      - Disabled
+      - Enabled
   routing_preference:
     description:
       - >-
@@ -397,7 +430,10 @@ options:
           - >-
             Routing Choice defines the kind of network routing opted by the
             user.
-        type: choice
+        type: str
+        choices:
+          - MicrosoftRouting
+          - InternetRouting
       publish_microsoft_endpoints:
         description:
           - >-
@@ -421,13 +457,26 @@ options:
       - >-
         Set the minimum TLS version to be permitted on requests to storage. The
         default interpretation is TLS 1.0 for this property.
-    type: choice
+    type: str
+    choices:
+      - TLS1_0
+      - TLS1_1
+      - TLS1_2
   name:
     description:
       - >-
         The SKU name. Required for account creation; optional for update. Note
         that in older versions, SKU name was called accountType.
-    type: choice
+    type: str
+    choices:
+      - Standard_LRS
+      - Standard_GRS
+      - Standard_RAGRS
+      - Standard_ZRS
+      - Premium_LRS
+      - Premium_ZRS
+      - Standard_GZRS
+      - Standard_RAGZRS
   state:
     description:
       - Assert the state of the StorageAccount.
@@ -571,7 +620,7 @@ sku:
           The SKU name. Required for account creation; optional for update. Note
           that in older versions, SKU name was called accountType.
       returned: always
-      type: choice
+      type: str
       sample: null
     tier:
       description:
@@ -583,7 +632,7 @@ kind:
   description:
     - Gets the Kind.
   returned: always
-  type: choice
+  type: str
   sample: null
 identity:
   description:
@@ -977,7 +1026,7 @@ encryption:
                   key will be used. 'Service' key type implies that a default
                   service key is used.
               returned: always
-              type: choice
+              type: str
               sample: null
         file:
           description:
@@ -1012,7 +1061,7 @@ encryption:
                   key will be used. 'Service' key type implies that a default
                   service key is used.
               returned: always
-              type: choice
+              type: str
               sample: null
         table:
           description:
@@ -1047,7 +1096,7 @@ encryption:
                   key will be used. 'Service' key type implies that a default
                   service key is used.
               returned: always
-              type: choice
+              type: str
               sample: null
         queue:
           description:
@@ -1082,7 +1131,7 @@ encryption:
                   key will be used. 'Service' key type implies that a default
                   service key is used.
               returned: always
-              type: choice
+              type: str
               sample: null
     key_source:
       description:
@@ -1090,7 +1139,7 @@ encryption:
           The encryption keySource (provider). Possible values
           (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault
       returned: always
-      type: choice
+      type: str
       sample: null
     require_infrastructure_encryption:
       description:
@@ -1158,7 +1207,7 @@ azure_files_identity_based_authentication:
       description:
         - Indicates the directory service used.
       returned: always
-      type: choice
+      type: str
       sample: null
     active_directory_properties:
       description:
@@ -1226,7 +1275,7 @@ network_rule_set:
           Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or
           None to bypass none of those traffics.
       returned: always
-      type: choice
+      type: str
       sample: null
     virtual_network_rules:
       description:
@@ -1307,7 +1356,7 @@ geo_replication_stats:
           replication is first enabled. - Unavailable: Indicates that the
           secondary location is temporarily unavailable.
       returned: always
-      type: choice
+      type: str
       sample: null
     last_sync_time:
       description:
@@ -1342,7 +1391,7 @@ large_file_shares_state:
       Allow large file shares if sets to Enabled. It cannot be disabled once it
       is enabled.
   returned: always
-  type: choice
+  type: str
   sample: null
 private_endpoint_connections:
   description:
@@ -1381,7 +1430,7 @@ private_endpoint_connections:
               Indicates whether the connection has been
               Approved/Rejected/Removed by the owner of the service.
           returned: always
-          type: choice
+          type: str
           sample: null
         description:
           description:
@@ -1401,7 +1450,7 @@ private_endpoint_connections:
       description:
         - The provisioning state of the private endpoint connection resource.
       returned: always
-      type: choice
+      type: str
       sample: null
 routing_preference:
   description:
@@ -1416,7 +1465,7 @@ routing_preference:
       description:
         - Routing Choice defines the kind of network routing opted by the user.
       returned: always
-      type: choice
+      type: str
       sample: null
     publish_microsoft_endpoints:
       description:
@@ -1449,7 +1498,7 @@ blob_restore_status:
           Indicates that blob restore has been completed successfully. - Failed:
           Indicates that blob restore is failed.
       returned: always
-      type: choice
+      type: str
       sample: null
     failure_reason:
       description:
@@ -1511,7 +1560,7 @@ minimum_tls_version:
       Set the minimum TLS version to be permitted on requests to storage. The
       default interpretation is TLS 1.0 for this property.
   returned: always
-  type: choice
+  type: str
   sample: null
 
 '''
@@ -1547,8 +1596,13 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                 required=True
             ),
             kind=dict(
-                type='choice',
-                disposition='/kind'
+                type='str',
+                disposition='/kind',
+                choices=['Storage',
+                         'StorageV2',
+                         'BlobStorage',
+                         'FileStorage',
+                         'BlockBlobStorage']
             ),
             location=dict(
                 type='str',
@@ -1612,8 +1666,10 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                                         disposition='last_enabled_time'
                                     ),
                                     key_type=dict(
-                                        type='choice',
-                                        disposition='key_type'
+                                        type='str',
+                                        disposition='key_type',
+                                        choices=['Service',
+                                                 'Account']
                                     )
                                 )
                             ),
@@ -1631,8 +1687,10 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                                         disposition='last_enabled_time'
                                     ),
                                     key_type=dict(
-                                        type='choice',
-                                        disposition='key_type'
+                                        type='str',
+                                        disposition='key_type',
+                                        choices=['Service',
+                                                 'Account']
                                     )
                                 )
                             ),
@@ -1650,8 +1708,10 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                                         disposition='last_enabled_time'
                                     ),
                                     key_type=dict(
-                                        type='choice',
-                                        disposition='key_type'
+                                        type='str',
+                                        disposition='key_type',
+                                        choices=['Service',
+                                                 'Account']
                                     )
                                 )
                             ),
@@ -1669,16 +1729,20 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                                         disposition='last_enabled_time'
                                     ),
                                     key_type=dict(
-                                        type='choice',
-                                        disposition='key_type'
+                                        type='str',
+                                        disposition='key_type',
+                                        choices=['Service',
+                                                 'Account']
                                     )
                                 )
                             )
                         )
                     ),
                     key_source=dict(
-                        type='choice',
+                        type='str',
                         disposition='key_source',
+                        choices=['Microsoft.Storage',
+                                 'Microsoft.Keyvault'],
                         required=True
                     ),
                     require_infrastructure_encryption=dict(
@@ -1720,8 +1784,12 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                 disposition='/network_rule_set',
                 options=dict(
                     bypass=dict(
-                        type='choice',
-                        disposition='bypass'
+                        type='str',
+                        disposition='bypass',
+                        choices=['None',
+                                 'Logging',
+                                 'Metrics',
+                                 'AzureServices']
                     ),
                     virtual_network_rules=dict(
                         type='list',
@@ -1775,8 +1843,11 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                 disposition='/azure_files_identity_based_authentication',
                 options=dict(
                     directory_service_options=dict(
-                        type='choice',
+                        type='str',
                         disposition='directory_service_options',
+                        choices=['None',
+                                 'AADDS',
+                                 'AD'],
                         required=True
                     ),
                     active_directory_properties=dict(
@@ -1826,16 +1897,20 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                 disposition='/is_hns_enabled'
             ),
             large_file_shares_state=dict(
-                type='choice',
-                disposition='/large_file_shares_state'
+                type='str',
+                disposition='/large_file_shares_state',
+                choices=['Disabled',
+                         'Enabled']
             ),
             routing_preference=dict(
                 type='dict',
                 disposition='/routing_preference',
                 options=dict(
                     routing_choice=dict(
-                        type='choice',
-                        disposition='routing_choice'
+                        type='str',
+                        disposition='routing_choice',
+                        choices=['MicrosoftRouting',
+                                 'InternetRouting']
                     ),
                     publish_microsoft_endpoints=dict(
                         type='bool',
@@ -1852,12 +1927,23 @@ class AzureRMStorageAccount(AzureRMModuleBaseExt):
                 disposition='/allow_blob_public_access'
             ),
             minimum_tls_version=dict(
-                type='choice',
-                disposition='/minimum_tls_version'
+                type='str',
+                disposition='/minimum_tls_version',
+                choices=['TLS1_0',
+                         'TLS1_1',
+                         'TLS1_2']
             ),
             name=dict(
-                type='choice',
-                disposition='/name'
+                type='str',
+                disposition='/name',
+                choices=['Standard_LRS',
+                         'Standard_GRS',
+                         'Standard_RAGRS',
+                         'Standard_ZRS',
+                         'Premium_LRS',
+                         'Premium_ZRS',
+                         'Standard_GZRS',
+                         'Standard_RAGZRS']
             ),
             state=dict(
                 type='str',

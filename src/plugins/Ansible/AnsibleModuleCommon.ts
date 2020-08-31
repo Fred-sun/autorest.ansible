@@ -277,7 +277,9 @@ function GetHelpFromOptions(module: Module, options: ModuleOption[], padding: st
             //help.push(line);
         }
         */
-
+        if (option.EnumValues != null && option.EnumValues.length > 0){
+            option_doc['choices'] = option.EnumValues;
+        }
         if (haveSuboptions(option))
         {
             option_doc['suboptions'] = GetHelpFromOptions(module, option.SubOptions, padding + "        ");
@@ -408,7 +410,7 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
 
             for (var ci = 0; ci < option.EnumValues.length; ci++)
             {
-                choicesList += "'" + option.EnumValues[ci].Key + "'";
+                choicesList += "'" + option.EnumValues[ci]+ "'";
 
                 if (ci < option.EnumValues.length - 1)
                 {
@@ -421,6 +423,22 @@ function GetArgSpecFromOptions(module: Module, options: ModuleOption[], prefix: 
                 argSpec.push(prefix + choicesList);
                 choicesList = "             ";
             }
+            // I don't know why Zim chooses dictionary to store the choices, so I change it to string
+            // for (var ci = 0; ci < option.EnumValues.length; ci++)
+            // {
+            //     choicesList += "'" + option.EnumValues[ci].Key + "'";
+            //
+            //     if (ci < option.EnumValues.length - 1)
+            //     {
+            //         choicesList += ",";
+            //     }
+            //     else
+            //     {
+            //         choicesList += "]";
+            //     }
+            //     argSpec.push(prefix + choicesList);
+            //     choicesList = "             ";
+            // }
         }
 
         if (required)

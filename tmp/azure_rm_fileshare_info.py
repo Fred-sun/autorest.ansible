@@ -139,13 +139,13 @@ file_shares:
               The authentication protocol that is used for the file share. Can
               only be specified when creating a share.
           returned: always
-          type: choice
+          type: str
           sample: null
         root_squash:
           description:
             - The property is for NFS share only. The default is NoRootSquash.
           returned: always
-          type: choice
+          type: str
           sample: null
         version:
           description:
@@ -178,7 +178,7 @@ file_shares:
               TransactionOptimized (default), Hot, and Cool. FileStorage account
               can choose Premium.
           returned: always
-          type: choice
+          type: str
           sample: null
         access_tier_change_time:
           description:
@@ -242,13 +242,13 @@ file_shares:
           The authentication protocol that is used for the file share. Can only
           be specified when creating a share.
       returned: always
-      type: choice
+      type: str
       sample: null
     root_squash:
       description:
         - The property is for NFS share only. The default is NoRootSquash.
       returned: always
-      type: choice
+      type: str
       sample: null
     version:
       description:
@@ -281,7 +281,7 @@ file_shares:
           TransactionOptimized (default), Hot, and Cool. FileStorage account can
           choose Premium.
       returned: always
-      type: choice
+      type: str
       sample: null
     access_tier_change_time:
       description:

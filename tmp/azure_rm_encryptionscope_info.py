@@ -104,7 +104,7 @@ encryption_scopes:
           The provider for the encryption scope. Possible values
           (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
       returned: always
-      type: choice
+      type: str
       sample: null
     state:
       description:
@@ -112,7 +112,7 @@ encryption_scopes:
           The state of the encryption scope. Possible values
           (case-insensitive):  Enabled, Disabled.
       returned: always
-      type: choice
+      type: str
       sample: null
     creation_time:
       description:
@@ -150,7 +150,7 @@ encryption_scopes:
               The provider for the encryption scope. Possible values
               (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
           returned: always
-          type: choice
+          type: str
           sample: null
         state:
           description:
@@ -158,7 +158,7 @@ encryption_scopes:
               The state of the encryption scope. Possible values
               (case-insensitive):  Enabled, Disabled.
           returned: always
-          type: choice
+          type: str
           sample: null
         creation_time:
           description:
