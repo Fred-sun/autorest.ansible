@@ -53,9 +53,7 @@ options:
       - >-
         Optional, used to include the properties for soft deleted blob
         containers.
-    type: str
-    choices:
-      - deleted
+    type: choice
   container_name:
     description:
       - >-
@@ -186,13 +184,13 @@ blob_containers:
           description:
             - The lease status of the container.
           returned: always
-          type: str
+          type: choice
           sample: null
         lease_state:
           description:
             - Lease state of the container.
           returned: always
-          type: str
+          type: choice
           sample: null
         lease_duration:
           description:
@@ -200,7 +198,7 @@ blob_containers:
               Specifies whether the lease on a container is of infinite or fixed
               duration, only when the container is leased.
           returned: always
-          type: str
+          type: choice
           sample: null
         metadata:
           description:
@@ -234,7 +232,7 @@ blob_containers:
                       The ImmutabilityPolicy update type of a blob container,
                       possible values include: put, lock and extend.
                   returned: always
-                  type: str
+                  type: choice
                   sample: null
                 immutability_period_since_creation_in_days:
                   description:
@@ -290,7 +288,7 @@ blob_containers:
                   The ImmutabilityPolicy state of a blob container, possible
                   values include: Locked and Unlocked.
               returned: always
-              type: str
+              type: choice
               sample: null
             allow_protected_append_writes:
               description:
@@ -455,13 +453,13 @@ blob_containers:
       description:
         - The lease status of the container.
       returned: always
-      type: str
+      type: choice
       sample: null
     lease_state:
       description:
         - Lease state of the container.
       returned: always
-      type: str
+      type: choice
       sample: null
     lease_duration:
       description:
@@ -469,7 +467,7 @@ blob_containers:
           Specifies whether the lease on a container is of infinite or fixed
           duration, only when the container is leased.
       returned: always
-      type: str
+      type: choice
       sample: null
     metadata:
       description:
@@ -503,7 +501,7 @@ blob_containers:
                   The ImmutabilityPolicy update type of a blob container,
                   possible values include: put, lock and extend.
               returned: always
-              type: str
+              type: choice
               sample: null
             immutability_period_since_creation_in_days:
               description:
@@ -557,7 +555,7 @@ blob_containers:
               The ImmutabilityPolicy state of a blob container, possible values
               include: Locked and Unlocked.
           returned: always
-          type: str
+          type: choice
           sample: null
         allow_protected_append_writes:
           description:
@@ -663,7 +661,7 @@ blob_containers:
           The ImmutabilityPolicy state of a blob container, possible values
           include: Locked and Unlocked.
       returned: always
-      type: str
+      type: choice
       sample: null
     allow_protected_append_writes:
       description:
@@ -712,8 +710,7 @@ class AzureRMBlobContainerInfo(AzureRMModuleBase):
                 type='str'
             ),
             include=dict(
-                type='str',
-                choices=['deleted']
+                type='choice'
             ),
             container_name=dict(
                 type='str'

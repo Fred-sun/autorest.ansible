@@ -86,6 +86,110 @@ queue_services:
           type: dict
           sample: null
           contains:
+            cors:
+              description:
+                - >-
+                  Specifies CORS rules for the Queue service. You can include up
+                  to five CorsRule elements in the request. If no CorsRule
+                  elements are included in the request body, all CORS rules will
+                  be deleted, and CORS will be disabled for the Queue service.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                cors_rules:
+                  description:
+                    - >-
+                      The List of CORS rules. You can include up to five
+                      CorsRule elements in the request.
+                  returned: always
+                  type: list
+                  sample: null
+                  contains:
+                    allowed_origins:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          origin domains that will be allowed via CORS, or "*"
+                          to allow all domains
+                      returned: always
+                      type: list
+                      sample: null
+                    allowed_methods:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          HTTP methods that are allowed to be executed by the
+                          origin.
+                      returned: always
+                      type: list
+                      sample: null
+                    max_age_in_seconds:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. The number of
+                          seconds that the client/browser should cache a
+                          preflight response.
+                      returned: always
+                      type: integer
+                      sample: null
+                    exposed_headers:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          response headers to expose to CORS clients.
+                      returned: always
+                      type: list
+                      sample: null
+                    allowed_headers:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          headers allowed to be part of the cross-origin
+                          request.
+                      returned: always
+                      type: list
+                      sample: null
+    id:
+      description:
+        - >-
+          Fully qualified resource Id for the resource. Ex -
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The name of the resource
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - >-
+          The type of the resource. Ex- Microsoft.Compute/virtualMachines or
+          Microsoft.Storage/storageAccounts.
+      returned: always
+      type: str
+      sample: null
+    queue_service_properties:
+      description:
+        - The properties of a storage account’s Queue service.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        cors:
+          description:
+            - >-
+              Specifies CORS rules for the Queue service. You can include up to
+              five CorsRule elements in the request. If no CorsRule elements are
+              included in the request body, all CORS rules will be deleted, and
+              CORS will be disabled for the Queue service.
+          returned: always
+          type: dict
+          sample: null
+          contains:
             cors_rules:
               description:
                 - >-
@@ -137,85 +241,6 @@ queue_services:
                   returned: always
                   type: list
                   sample: null
-    id:
-      description:
-        - >-
-          Fully qualified resource Id for the resource. Ex -
-          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-      returned: always
-      type: str
-      sample: null
-    name:
-      description:
-        - The name of the resource
-      returned: always
-      type: str
-      sample: null
-    type:
-      description:
-        - >-
-          The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-          Microsoft.Storage/storageAccounts.
-      returned: always
-      type: str
-      sample: null
-    queue_service_properties:
-      description:
-        - The properties of a storage account’s Queue service.
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        cors_rules:
-          description:
-            - >-
-              The List of CORS rules. You can include up to five CorsRule
-              elements in the request.
-          returned: always
-          type: list
-          sample: null
-          contains:
-            allowed_origins:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of origin
-                  domains that will be allowed via CORS, or "*" to allow all
-                  domains
-              returned: always
-              type: list
-              sample: null
-            allowed_methods:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of HTTP
-                  methods that are allowed to be executed by the origin.
-              returned: always
-              type: list
-              sample: null
-            max_age_in_seconds:
-              description:
-                - >-
-                  Required if CorsRule element is present. The number of seconds
-                  that the client/browser should cache a preflight response.
-              returned: always
-              type: integer
-              sample: null
-            exposed_headers:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of response
-                  headers to expose to CORS clients.
-              returned: always
-              type: list
-              sample: null
-            allowed_headers:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of headers
-                  allowed to be part of the cross-origin request.
-              returned: always
-              type: list
-              sample: null
 
 '''
 
@@ -279,19 +304,19 @@ class AzureRMQueueServiceInfo(AzureRMModuleBase):
         if (self.resource_group_name is not None and
             self.account_name is not None and
             self.queue_service_name is not None):
-            self.results['queue_services'] = self.format_item(self.getserviceproperty())
+            self.results['queue_services'] = self.format_item(self.getserviceproperties())
         elif (self.resource_group_name is not None and
               self.account_name is not None):
             self.results['queue_services'] = self.format_item(self.list())
         return self.results
 
-    def getserviceproperty(self):
+    def getserviceproperties(self):
         response = None
 
         try:
-            response = self.mgmt_client.queue_services.get_service_property(resource_group_name=self.resource_group_name,
-                                                                            account_name=self.account_name,
-                                                                            queue_service_name=self.queue_service_name)
+            response = self.mgmt_client.queue_services.get_service_properties(resource_group_name=self.resource_group_name,
+                                                                              account_name=self.account_name,
+                                                                              queue_service_name=self.queue_service_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

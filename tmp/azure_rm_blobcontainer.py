@@ -46,24 +46,169 @@ options:
         number.
     required: true
     type: str
-  default_encryption_scope:
+  blob_container:
     description:
-      - Default the container to use specified encryption scope for all writes.
-    type: str
-  deny_encryption_scope_override:
-    description:
-      - Block override of encryption scope from the container default.
-    type: bool
-  public_access:
-    description:
-      - >-
-        Specifies whether data in the container may be accessed publicly and the
-        level of access.
-    type: sealed-choice
-  metadata:
-    description:
-      - A name-value pair to associate with the container as metadata.
-    type: dictionary
+      - Properties of the blob container to create.
+      - Properties to update for the blob container.
+    type: dict
+    suboptions:
+      version:
+        description:
+          - The version of the deleted blob container.
+        type: str
+      deleted:
+        description:
+          - Indicates whether the blob container was deleted.
+        type: bool
+      deleted_time:
+        description:
+          - Blob container deletion time.
+        type: str
+      remaining_retention_days:
+        description:
+          - Remaining retention days for soft deleted blob container.
+        type: integer
+      default_encryption_scope:
+        description:
+          - >-
+            Default the container to use specified encryption scope for all
+            writes.
+        type: str
+      deny_encryption_scope_override:
+        description:
+          - Block override of encryption scope from the container default.
+        type: bool
+      public_access:
+        description:
+          - >-
+            Specifies whether data in the container may be accessed publicly and
+            the level of access.
+        type: sealed-choice
+      last_modified_time:
+        description:
+          - Returns the date and time the container was last modified.
+        type: str
+      lease_status:
+        description:
+          - The lease status of the container.
+        type: choice
+      lease_state:
+        description:
+          - Lease state of the container.
+        type: choice
+      lease_duration:
+        description:
+          - >-
+            Specifies whether the lease on a container is of infinite or fixed
+            duration, only when the container is leased.
+        type: choice
+      metadata:
+        description:
+          - A name-value pair to associate with the container as metadata.
+        type: dictionary
+      immutability_policy:
+        description:
+          - The ImmutabilityPolicy property of the container.
+        type: dict
+        suboptions:
+          etag:
+            description:
+              - ImmutabilityPolicy Etag.
+            type: str
+          update_history:
+            description:
+              - The ImmutabilityPolicy update history of the blob container.
+            type: list
+            suboptions:
+              update:
+                description:
+                  - >-
+                    The ImmutabilityPolicy update type of a blob container,
+                    possible values include: put, lock and extend.
+                type: choice
+              immutability_period_since_creation_in_days:
+                description:
+                  - >-
+                    The immutability period for the blobs in the container since
+                    the policy creation, in days.
+                type: integer
+              timestamp:
+                description:
+                  - >-
+                    Returns the date and time the ImmutabilityPolicy was
+                    updated.
+                type: str
+              object_identifier:
+                description:
+                  - >-
+                    Returns the Object ID of the user who updated the
+                    ImmutabilityPolicy.
+                type: str
+              tenant_id:
+                description:
+                  - >-
+                    Returns the Tenant ID that issued the token for the user who
+                    updated the ImmutabilityPolicy.
+                type: str
+              upn:
+                description:
+                  - >-
+                    Returns the User Principal Name of the user who updated the
+                    ImmutabilityPolicy.
+                type: str
+          immutability_period_since_creation_in_days:
+            description:
+              - >-
+                The immutability period for the blobs in the container since the
+                policy creation, in days.
+            type: integer
+          state:
+            description:
+              - >-
+                The ImmutabilityPolicy state of a blob container, possible
+                values include: Locked and Unlocked.
+            type: choice
+          allow_protected_append_writes:
+            description:
+              - >-
+                This property can only be changed for unlocked time-based
+                retention policies. When enabled, new blocks can be written to
+                an append blob while maintaining immutability protection and
+                compliance. Only new blocks can be added and any existing blocks
+                cannot be modified or deleted. This property cannot be changed
+                with ExtendImmutabilityPolicy API
+            type: bool
+      legal_hold:
+        description:
+          - The LegalHold property of the container.
+        type: dict
+        suboptions:
+          has_legal_hold:
+            description:
+              - >-
+                The hasLegalHold public property is set to true by SRP if there
+                are at least one existing tag. The hasLegalHold public property
+                is set to false by SRP if all existing legal hold tags are
+                cleared out. There can be a maximum of 1000 blob containers with
+                hasLegalHold=true for a given account.
+            type: bool
+      has_legal_hold:
+        description:
+          - >-
+            The hasLegalHold public property is set to true by SRP if there are
+            at least one existing tag. The hasLegalHold public property is set
+            to false by SRP if all existing legal hold tags are cleared out.
+            There can be a maximum of 1000 blob containers with
+            hasLegalHold=true for a given account.
+        type: bool
+      has_immutability_policy:
+        description:
+          - >-
+            The hasImmutabilityPolicy public property is set to true by SRP if
+            ImmutabilityPolicy has been created for this container. The
+            hasImmutabilityPolicy public property is set to false by SRP if
+            ImmutabilityPolicy has not been created for this container.
+        type: bool
   state:
     description:
       - Assert the state of the BlobContainer.
@@ -85,6 +230,10 @@ EXAMPLES = '''
     - name: PutContainerWithDefaultEncryptionScope
       azure_rm_blobcontainer: 
         account_name: sto328
+        blob_container:
+          properties:
+            default_encryption_scope: encryptionscope185
+            deny_encryption_scope_override: true
         container_name: container6185
         resource_group_name: res3376
         
@@ -92,6 +241,7 @@ EXAMPLES = '''
     - name: PutContainers
       azure_rm_blobcontainer: 
         account_name: sto328
+        blob_container: {}
         container_name: container6185
         resource_group_name: res3376
         
@@ -99,6 +249,11 @@ EXAMPLES = '''
     - name: UpdateContainers
       azure_rm_blobcontainer: 
         account_name: sto328
+        blob_container:
+          properties:
+            metadata:
+              metadata: 'true'
+            public_access: Container
         container_name: container6185
         resource_group_name: res3376
         
@@ -173,13 +328,13 @@ lease_status:
   description:
     - The lease status of the container.
   returned: always
-  type: str
+  type: choice
   sample: null
 lease_state:
   description:
     - Lease state of the container.
   returned: always
-  type: str
+  type: choice
   sample: null
 lease_duration:
   description:
@@ -187,7 +342,7 @@ lease_duration:
       Specifies whether the lease on a container is of infinite or fixed
       duration, only when the container is leased.
   returned: always
-  type: str
+  type: choice
   sample: null
 metadata:
   description:
@@ -221,7 +376,7 @@ immutability_policy:
               The ImmutabilityPolicy update type of a blob container, possible
               values include: put, lock and extend.
           returned: always
-          type: str
+          type: choice
           sample: null
         immutability_period_since_creation_in_days:
           description:
@@ -275,7 +430,7 @@ immutability_policy:
           The ImmutabilityPolicy state of a blob container, possible values
           include: Locked and Unlocked.
       returned: always
-      type: str
+      type: choice
       sample: null
     allow_protected_append_writes:
       description:
@@ -404,21 +559,152 @@ class AzureRMBlobContainer(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            default_encryption_scope=dict(
-                type='str',
-                disposition='/default_encryption_scope'
-            ),
-            deny_encryption_scope_override=dict(
-                type='bool',
-                disposition='/deny_encryption_scope_override'
-            ),
-            public_access=dict(
-                type='sealed-choice',
-                disposition='/public_access'
-            ),
-            metadata=dict(
-                type='dictionary',
-                disposition='/metadata'
+            blob_container=dict(
+                type='dict',
+                disposition='/blob_container',
+                options=dict(
+                    version=dict(
+                        type='str',
+                        updatable=False,
+                        disposition='version'
+                    ),
+                    deleted=dict(
+                        type='bool',
+                        updatable=False,
+                        disposition='deleted'
+                    ),
+                    deleted_time=dict(
+                        type='str',
+                        updatable=False,
+                        disposition='deleted_time'
+                    ),
+                    remaining_retention_days=dict(
+                        type='integer',
+                        updatable=False,
+                        disposition='remaining_retention_days'
+                    ),
+                    default_encryption_scope=dict(
+                        type='str',
+                        disposition='default_encryption_scope'
+                    ),
+                    deny_encryption_scope_override=dict(
+                        type='bool',
+                        disposition='deny_encryption_scope_override'
+                    ),
+                    public_access=dict(
+                        type='sealed-choice',
+                        disposition='public_access'
+                    ),
+                    last_modified_time=dict(
+                        type='str',
+                        updatable=False,
+                        disposition='last_modified_time'
+                    ),
+                    lease_status=dict(
+                        type='choice',
+                        updatable=False,
+                        disposition='lease_status'
+                    ),
+                    lease_state=dict(
+                        type='choice',
+                        updatable=False,
+                        disposition='lease_state'
+                    ),
+                    lease_duration=dict(
+                        type='choice',
+                        updatable=False,
+                        disposition='lease_duration'
+                    ),
+                    metadata=dict(
+                        type='dictionary',
+                        disposition='metadata'
+                    ),
+                    immutability_policy=dict(
+                        type='dict',
+                        updatable=False,
+                        disposition='immutability_policy',
+                        options=dict(
+                            etag=dict(
+                                type='str',
+                                updatable=False,
+                                disposition='etag'
+                            ),
+                            update_history=dict(
+                                type='list',
+                                updatable=False,
+                                disposition='update_history',
+                                elements='dict',
+                                options=dict(
+                                    update=dict(
+                                        type='choice',
+                                        updatable=False,
+                                        disposition='update'
+                                    ),
+                                    immutability_period_since_creation_in_days=dict(
+                                        type='integer',
+                                        updatable=False,
+                                        disposition='immutability_period_since_creation_in_days'
+                                    ),
+                                    timestamp=dict(
+                                        type='str',
+                                        updatable=False,
+                                        disposition='timestamp'
+                                    ),
+                                    object_identifier=dict(
+                                        type='str',
+                                        updatable=False,
+                                        disposition='object_identifier'
+                                    ),
+                                    tenant_id=dict(
+                                        type='str',
+                                        updatable=False,
+                                        disposition='tenant_id'
+                                    ),
+                                    upn=dict(
+                                        type='str',
+                                        updatable=False,
+                                        disposition='upn'
+                                    )
+                                )
+                            ),
+                            immutability_period_since_creation_in_days=dict(
+                                type='integer',
+                                disposition='immutability_period_since_creation_in_days'
+                            ),
+                            state=dict(
+                                type='choice',
+                                updatable=False,
+                                disposition='state'
+                            ),
+                            allow_protected_append_writes=dict(
+                                type='bool',
+                                disposition='allow_protected_append_writes'
+                            )
+                        )
+                    ),
+                    legal_hold=dict(
+                        type='dict',
+                        updatable=False,
+                        disposition='legal_hold',
+                        options=dict(
+                            has_legal_hold=dict(
+                                type='bool',
+                                updatable=False,
+                                disposition='has_legal_hold'
+                            )
+                        )
+                    ),
+                    has_legal_hold=dict(
+                        type='bool',
+                        updatable=False,
+                        disposition='has_legal_hold'
+                    ),
+                    has_immutability_policy=dict(
+                        type='bool',
+                        updatable=False,
+                        disposition='has_immutability_policy'
+                    )
+                )
             ),
             state=dict(
                 type='str',
@@ -495,12 +781,12 @@ class AzureRMBlobContainer(AzureRMModuleBaseExt):
                 response = self.mgmt_client.blob_containers.create(resource_group_name=self.resource_group_name,
                                                                    account_name=self.account_name,
                                                                    container_name=self.container_name,
-                                                                   blob_container=self.body)
+                                                                   parameters=self.body)
             else:
                 response = self.mgmt_client.blob_containers.update(resource_group_name=self.resource_group_name,
                                                                    account_name=self.account_name,
                                                                    container_name=self.container_name,
-                                                                   blob_container=self.body)
+                                                                   parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

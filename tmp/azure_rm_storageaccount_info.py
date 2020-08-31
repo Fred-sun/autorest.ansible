@@ -106,7 +106,7 @@ storage_accounts:
               The SKU name. Required for account creation; optional for update.
               Note that in older versions, SKU name was called accountType.
           returned: always
-          type: str
+          type: choice
           sample: null
         tier:
           description:
@@ -118,7 +118,7 @@ storage_accounts:
       description:
         - Gets the Kind.
       returned: always
-      type: str
+      type: choice
       sample: null
     identity:
       description:
@@ -514,7 +514,7 @@ storage_accounts:
                       encryption key will be used. 'Service' key type implies
                       that a default service key is used.
                   returned: always
-                  type: str
+                  type: choice
                   sample: null
             file:
               description:
@@ -550,7 +550,7 @@ storage_accounts:
                       encryption key will be used. 'Service' key type implies
                       that a default service key is used.
                   returned: always
-                  type: str
+                  type: choice
                   sample: null
             table:
               description:
@@ -586,7 +586,7 @@ storage_accounts:
                       encryption key will be used. 'Service' key type implies
                       that a default service key is used.
                   returned: always
-                  type: str
+                  type: choice
                   sample: null
             queue:
               description:
@@ -622,7 +622,7 @@ storage_accounts:
                       encryption key will be used. 'Service' key type implies
                       that a default service key is used.
                   returned: always
-                  type: str
+                  type: choice
                   sample: null
         key_source:
           description:
@@ -630,7 +630,7 @@ storage_accounts:
               The encryption keySource (provider). Possible values
               (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault
           returned: always
-          type: str
+          type: choice
           sample: null
         require_infrastructure_encryption:
           description:
@@ -699,7 +699,7 @@ storage_accounts:
           description:
             - Indicates the directory service used.
           returned: always
-          type: str
+          type: choice
           sample: null
         active_directory_properties:
           description:
@@ -767,7 +767,7 @@ storage_accounts:
               of Logging|Metrics|AzureServices (For example, "Logging,
               Metrics"), or None to bypass none of those traffics.
           returned: always
-          type: str
+          type: choice
           sample: null
         virtual_network_rules:
           description:
@@ -848,7 +848,7 @@ storage_accounts:
               occurs when replication is first enabled. - Unavailable: Indicates
               that the secondary location is temporarily unavailable.
           returned: always
-          type: str
+          type: choice
           sample: null
         last_sync_time:
           description:
@@ -884,7 +884,7 @@ storage_accounts:
           Allow large file shares if sets to Enabled. It cannot be disabled once
           it is enabled.
       returned: always
-      type: str
+      type: choice
       sample: null
     private_endpoint_connections:
       description:
@@ -923,7 +923,7 @@ storage_accounts:
                   Indicates whether the connection has been
                   Approved/Rejected/Removed by the owner of the service.
               returned: always
-              type: str
+              type: choice
               sample: null
             description:
               description:
@@ -945,7 +945,7 @@ storage_accounts:
               The provisioning state of the private endpoint connection
               resource.
           returned: always
-          type: str
+          type: choice
           sample: null
     routing_preference:
       description:
@@ -962,7 +962,7 @@ storage_accounts:
               Routing Choice defines the kind of network routing opted by the
               user.
           returned: always
-          type: str
+          type: choice
           sample: null
         publish_microsoft_endpoints:
           description:
@@ -995,7 +995,7 @@ storage_accounts:
               Indicates that blob restore has been completed successfully. -
               Failed: Indicates that blob restore is failed.
           returned: always
-          type: str
+          type: choice
           sample: null
         failure_reason:
           description:
@@ -1059,7 +1059,7 @@ storage_accounts:
           Set the minimum TLS version to be permitted on requests to storage.
           The default interpretation is TLS 1.0 for this property.
       returned: always
-      type: str
+      type: choice
       sample: null
     value:
       description:
@@ -1082,7 +1082,7 @@ storage_accounts:
                   update. Note that in older versions, SKU name was called
                   accountType.
               returned: always
-              type: str
+              type: choice
               sample: null
             tier:
               description:
@@ -1094,7 +1094,7 @@ storage_accounts:
           description:
             - Gets the Kind.
           returned: always
-          type: str
+          type: choice
           sample: null
         identity:
           description:
@@ -1493,7 +1493,7 @@ storage_accounts:
                           account-scoped encryption key will be used. 'Service'
                           key type implies that a default service key is used.
                       returned: always
-                      type: str
+                      type: choice
                       sample: null
                 file:
                   description:
@@ -1529,7 +1529,7 @@ storage_accounts:
                           account-scoped encryption key will be used. 'Service'
                           key type implies that a default service key is used.
                       returned: always
-                      type: str
+                      type: choice
                       sample: null
                 table:
                   description:
@@ -1565,7 +1565,7 @@ storage_accounts:
                           account-scoped encryption key will be used. 'Service'
                           key type implies that a default service key is used.
                       returned: always
-                      type: str
+                      type: choice
                       sample: null
                 queue:
                   description:
@@ -1601,7 +1601,7 @@ storage_accounts:
                           account-scoped encryption key will be used. 'Service'
                           key type implies that a default service key is used.
                       returned: always
-                      type: str
+                      type: choice
                       sample: null
             key_source:
               description:
@@ -1609,7 +1609,7 @@ storage_accounts:
                   The encryption keySource (provider). Possible values
                   (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault
               returned: always
-              type: str
+              type: choice
               sample: null
             require_infrastructure_encryption:
               description:
@@ -1680,7 +1680,7 @@ storage_accounts:
               description:
                 - Indicates the directory service used.
               returned: always
-              type: str
+              type: choice
               sample: null
             active_directory_properties:
               description:
@@ -1748,7 +1748,7 @@ storage_accounts:
                   combination of Logging|Metrics|AzureServices (For example,
                   "Logging, Metrics"), or None to bypass none of those traffics.
               returned: always
-              type: str
+              type: choice
               sample: null
             virtual_network_rules:
               description:
@@ -1830,7 +1830,7 @@ storage_accounts:
                   enabled. - Unavailable: Indicates that the secondary location
                   is temporarily unavailable.
               returned: always
-              type: str
+              type: choice
               sample: null
             last_sync_time:
               description:
@@ -1866,7 +1866,7 @@ storage_accounts:
               Allow large file shares if sets to Enabled. It cannot be disabled
               once it is enabled.
           returned: always
-          type: str
+          type: choice
           sample: null
         private_endpoint_connections:
           description:
@@ -1905,7 +1905,7 @@ storage_accounts:
                       Indicates whether the connection has been
                       Approved/Rejected/Removed by the owner of the service.
                   returned: always
-                  type: str
+                  type: choice
                   sample: null
                 description:
                   description:
@@ -1927,7 +1927,7 @@ storage_accounts:
                   The provisioning state of the private endpoint connection
                   resource.
               returned: always
-              type: str
+              type: choice
               sample: null
         routing_preference:
           description:
@@ -1944,7 +1944,7 @@ storage_accounts:
                   Routing Choice defines the kind of network routing opted by
                   the user.
               returned: always
-              type: str
+              type: choice
               sample: null
             publish_microsoft_endpoints:
               description:
@@ -1977,7 +1977,7 @@ storage_accounts:
                   Complete: Indicates that blob restore has been completed
                   successfully. - Failed: Indicates that blob restore is failed.
               returned: always
-              type: str
+              type: choice
               sample: null
             failure_reason:
               description:
@@ -2042,7 +2042,7 @@ storage_accounts:
               Set the minimum TLS version to be permitted on requests to
               storage. The default interpretation is TLS 1.0 for this property.
           returned: always
-          type: str
+          type: choice
           sample: null
     next_link:
       description:
@@ -2113,20 +2113,20 @@ class AzureRMStorageAccountInfo(AzureRMModuleBase):
 
         if (self.resource_group_name is not None and
             self.account_name is not None):
-            self.results['storage_accounts'] = self.format_item(self.getproperty())
+            self.results['storage_accounts'] = self.format_item(self.getproperties())
         elif (self.resource_group_name is not None):
             self.results['storage_accounts'] = self.format_item(self.listbyresourcegroup())
         else:
             self.results['storage_accounts'] = self.format_item(self.list())
         return self.results
 
-    def getproperty(self):
+    def getproperties(self):
         response = None
 
         try:
-            response = self.mgmt_client.storage_accounts.get_property(resource_group_name=self.resource_group_name,
-                                                                      account_name=self.account_name,
-                                                                      expand=self.expand)
+            response = self.mgmt_client.storage_accounts.get_properties(resource_group_name=self.resource_group_name,
+                                                                        account_name=self.account_name,
+                                                                        expand=self.expand)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

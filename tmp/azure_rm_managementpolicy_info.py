@@ -42,9 +42,7 @@ options:
         The name of the Storage Account Management Policy. It should always be
         'default'
     required: true
-    type: str
-    choices:
-      - default
+    type: choice
 extends_documentation_fragment:
   - azure
 author:
@@ -98,181 +96,193 @@ management_policies:
       returned: always
       type: str
       sample: null
-    rules:
+    policy:
       description:
         - >-
-          The Storage Account ManagementPolicies Rules. See more details in:
+          The Storage Account ManagementPolicy, in JSON format. See more details
+          in:
           https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
       returned: always
-      type: list
+      type: dict
       sample: null
       contains:
-        enabled:
-          description:
-            - Rule is enabled if set to true.
-          returned: always
-          type: bool
-          sample: null
-        name:
+        rules:
           description:
             - >-
-              A rule name can contain any combination of alpha numeric
-              characters. Rule name is case-sensitive. It must be unique within
-              a policy.
+              The Storage Account ManagementPolicies Rules. See more details in:
+              https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
           returned: always
-          type: str
-          sample: null
-        type:
-          description:
-            - The valid value is Lifecycle
-          returned: always
-          type: str
-          sample: null
-        definition:
-          description:
-            - An object that defines the Lifecycle rule.
-          returned: always
-          type: dict
+          type: list
           sample: null
           contains:
-            actions:
+            enabled:
               description:
-                - An object that defines the action set.
+                - Rule is enabled if set to true.
+              returned: always
+              type: bool
+              sample: null
+            name:
+              description:
+                - >-
+                  A rule name can contain any combination of alpha numeric
+                  characters. Rule name is case-sensitive. It must be unique
+                  within a policy.
+              returned: always
+              type: str
+              sample: null
+            type:
+              description:
+                - The valid value is Lifecycle
+              returned: always
+              type: choice
+              sample: null
+            definition:
+              description:
+                - An object that defines the Lifecycle rule.
               returned: always
               type: dict
               sample: null
               contains:
-                base_blob:
+                actions:
                   description:
-                    - The management policy action for base blob
+                    - An object that defines the action set.
                   returned: always
                   type: dict
                   sample: null
                   contains:
-                    tier_to_cool:
+                    base_blob:
                       description:
-                        - >-
-                          The function to tier blobs to cool storage. Support
-                          blobs currently at Hot tier
+                        - The management policy action for base blob
                       returned: always
                       type: dict
                       sample: null
                       contains:
-                        days_after_modification_greater_than:
+                        tier_to_cool:
                           description:
                             - >-
-                              Value indicating the age in days after last
-                              modification
+                              The function to tier blobs to cool storage.
+                              Support blobs currently at Hot tier
                           returned: always
-                          type: number
+                          type: dict
                           sample: null
-                    tier_to_archive:
+                          contains:
+                            days_after_modification_greater_than:
+                              description:
+                                - >-
+                                  Value indicating the age in days after last
+                                  modification
+                              returned: always
+                              type: number
+                              sample: null
+                        tier_to_archive:
+                          description:
+                            - >-
+                              The function to tier blobs to archive storage.
+                              Support blobs currently at Hot or Cool tier
+                          returned: always
+                          type: dict
+                          sample: null
+                          contains:
+                            days_after_modification_greater_than:
+                              description:
+                                - >-
+                                  Value indicating the age in days after last
+                                  modification
+                              returned: always
+                              type: number
+                              sample: null
+                        delete:
+                          description:
+                            - The function to delete the blob
+                          returned: always
+                          type: dict
+                          sample: null
+                          contains:
+                            days_after_modification_greater_than:
+                              description:
+                                - >-
+                                  Value indicating the age in days after last
+                                  modification
+                              returned: always
+                              type: number
+                              sample: null
+                    snapshot:
                       description:
-                        - >-
-                          The function to tier blobs to archive storage. Support
-                          blobs currently at Hot or Cool tier
+                        - The management policy action for snapshot
                       returned: always
                       type: dict
                       sample: null
                       contains:
-                        days_after_modification_greater_than:
+                        delete:
                           description:
-                            - >-
-                              Value indicating the age in days after last
-                              modification
+                            - The function to delete the blob snapshot
                           returned: always
-                          type: number
+                          type: dict
                           sample: null
-                    delete:
-                      description:
-                        - The function to delete the blob
-                      returned: always
-                      type: dict
-                      sample: null
-                      contains:
-                        days_after_modification_greater_than:
-                          description:
-                            - >-
-                              Value indicating the age in days after last
-                              modification
-                          returned: always
-                          type: number
-                          sample: null
-                snapshot:
+                          contains:
+                            days_after_creation_greater_than:
+                              description:
+                                - >-
+                                  Value indicating the age in days after
+                                  creation
+                              returned: always
+                              type: number
+                              sample: null
+                filters:
                   description:
-                    - The management policy action for snapshot
+                    - An object that defines the filter set.
                   returned: always
                   type: dict
                   sample: null
                   contains:
-                    delete:
+                    prefix_match:
                       description:
-                        - The function to delete the blob snapshot
+                        - An array of strings for prefixes to be match.
                       returned: always
-                      type: dict
+                      type: list
+                      sample: null
+                    blob_types:
+                      description:
+                        - >-
+                          An array of predefined enum values. Only blockBlob is
+                          supported.
+                      returned: always
+                      type: list
+                      sample: null
+                    blob_index_match:
+                      description:
+                        - >-
+                          An array of blob index tag based filters, there can be
+                          at most 10 tag filters
+                      returned: always
+                      type: list
                       sample: null
                       contains:
-                        days_after_creation_greater_than:
+                        name:
                           description:
-                            - Value indicating the age in days after creation
+                            - >-
+                              This is the filter tag name, it can have 1 - 128
+                              characters
                           returned: always
-                          type: number
+                          type: str
                           sample: null
-            filters:
-              description:
-                - An object that defines the filter set.
-              returned: always
-              type: dict
-              sample: null
-              contains:
-                prefix_match:
-                  description:
-                    - An array of strings for prefixes to be match.
-                  returned: always
-                  type: list
-                  sample: null
-                blob_types:
-                  description:
-                    - >-
-                      An array of predefined enum values. Only blockBlob is
-                      supported.
-                  returned: always
-                  type: list
-                  sample: null
-                blob_index_match:
-                  description:
-                    - >-
-                      An array of blob index tag based filters, there can be at
-                      most 10 tag filters
-                  returned: always
-                  type: list
-                  sample: null
-                  contains:
-                    name:
-                      description:
-                        - >-
-                          This is the filter tag name, it can have 1 - 128
-                          characters
-                      returned: always
-                      type: str
-                      sample: null
-                    op:
-                      description:
-                        - >-
-                          This is the comparison operator which is used for
-                          object comparison and filtering. Only == (equality
-                          operator) is currently supported
-                      returned: always
-                      type: str
-                      sample: null
-                    value:
-                      description:
-                        - >-
-                          This is the filter tag value field used for tag based
-                          filtering, it can have 0 - 256 characters
-                      returned: always
-                      type: str
-                      sample: null
+                        op:
+                          description:
+                            - >-
+                              This is the comparison operator which is used for
+                              object comparison and filtering. Only == (equality
+                              operator) is currently supported
+                          returned: always
+                          type: str
+                          sample: null
+                        value:
+                          description:
+                            - >-
+                              This is the filter tag value field used for tag
+                              based filtering, it can have 0 - 256 characters
+                          returned: always
+                          type: str
+                          sample: null
 
 '''
 
@@ -302,8 +312,7 @@ class AzureRMManagementPolicyInfo(AzureRMModuleBase):
                 required=True
             ),
             management_policy_name=dict(
-                type='str',
-                choices=['default'],
+                type='choice',
                 required=True
             )
         )

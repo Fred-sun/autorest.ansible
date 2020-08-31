@@ -45,10 +45,22 @@ options:
         character and it cannot have two consecutive dash(-) characters.
     required: true
     type: str
-  metadata:
+  queue:
     description:
-      - A name-value pair that represents queue metadata.
-    type: dictionary
+      - Queue properties and metadata to be created with
+    type: dict
+    suboptions:
+      metadata:
+        description:
+          - A name-value pair that represents queue metadata.
+        type: dictionary
+      approximate_message_count:
+        description:
+          - >-
+            Integer indicating an approximate number of messages in the queue.
+            This number is not lower than the actual number of messages in the
+            queue, but could be higher.
+        type: integer
   state:
     description:
       - Assert the state of the Queue.
@@ -68,6 +80,7 @@ EXAMPLES = '''
     - name: QueueOperationPut
       azure_rm_queue: 
         account_name: sto328
+        queue: {}
         queue_name: queue6185
         resource_group_name: res3376
         
@@ -75,17 +88,19 @@ EXAMPLES = '''
     - name: QueueOperationPutWithMetadata
       azure_rm_queue: 
         account_name: sto328
+        queue:
+          properties:
+            metadata:
+              sample1: meta1
+              sample2: meta2
         queue_name: queue6185
         resource_group_name: res3376
-        properties:
-          metadata:
-            sample1: meta1
-            sample2: meta2
         
 
     - name: QueueOperationPatch
       azure_rm_queue: 
         account_name: sto328
+        queue: {}
         queue_name: queue6185
         resource_group_name: res3376
         
@@ -174,9 +189,20 @@ class AzureRMQueue(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            metadata=dict(
-                type='dictionary',
-                disposition='/metadata'
+            queue=dict(
+                type='dict',
+                disposition='/queue',
+                options=dict(
+                    metadata=dict(
+                        type='dictionary',
+                        disposition='metadata'
+                    ),
+                    approximate_message_count=dict(
+                        type='integer',
+                        updatable=False,
+                        disposition='approximate_message_count'
+                    )
+                )
             ),
             state=dict(
                 type='str',
@@ -253,12 +279,12 @@ class AzureRMQueue(AzureRMModuleBaseExt):
                 response = self.mgmt_client.queue.create(resource_group_name=self.resource_group_name,
                                                          account_name=self.account_name,
                                                          queue_name=self.queue_name,
-                                                         queue=self.body)
+                                                         parameters=self.body)
             else:
                 response = self.mgmt_client.queue.update(resource_group_name=self.resource_group_name,
                                                          account_name=self.account_name,
                                                          queue_name=self.queue_name,
-                                                         queue=self.body)
+                                                         parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

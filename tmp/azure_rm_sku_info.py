@@ -57,7 +57,7 @@ skus:
               The SKU name. Required for account creation; optional for update.
               Note that in older versions, SKU name was called accountType.
           returned: always
-          type: str
+          type: choice
           sample: null
         tier:
           description:
@@ -75,7 +75,7 @@ skus:
           description:
             - Indicates the type of storage account.
           returned: always
-          type: str
+          type: choice
           sample: null
         locations:
           description:
@@ -147,7 +147,7 @@ skus:
                   does not belong to that quota. The
                   "NotAvailableForSubscription" is related to capacity at DC.
               returned: always
-              type: str
+              type: choice
               sample: null
 
 '''

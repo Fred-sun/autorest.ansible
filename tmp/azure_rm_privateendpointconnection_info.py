@@ -109,7 +109,7 @@ private_endpoint_connections:
                   Indicates whether the connection has been
                   Approved/Rejected/Removed by the owner of the service.
               returned: always
-              type: str
+              type: choice
               sample: null
             description:
               description:
@@ -131,7 +131,7 @@ private_endpoint_connections:
               The provisioning state of the private endpoint connection
               resource.
           returned: always
-          type: str
+          type: choice
           sample: null
     id:
       description:
@@ -183,7 +183,7 @@ private_endpoint_connections:
               Indicates whether the connection has been
               Approved/Rejected/Removed by the owner of the service.
           returned: always
-          type: str
+          type: choice
           sample: null
         description:
           description:
@@ -203,7 +203,7 @@ private_endpoint_connections:
       description:
         - The provisioning state of the private endpoint connection resource.
       returned: always
-      type: str
+      type: choice
       sample: null
 
 '''

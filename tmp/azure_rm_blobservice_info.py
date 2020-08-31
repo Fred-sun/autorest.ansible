@@ -87,6 +87,70 @@ blob_services:
           type: dict
           sample: null
           contains:
+            cors:
+              description:
+                - >-
+                  Specifies CORS rules for the Blob service. You can include up
+                  to five CorsRule elements in the request. If no CorsRule
+                  elements are included in the request body, all CORS rules will
+                  be deleted, and CORS will be disabled for the Blob service.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                cors_rules:
+                  description:
+                    - >-
+                      The List of CORS rules. You can include up to five
+                      CorsRule elements in the request.
+                  returned: always
+                  type: list
+                  sample: null
+                  contains:
+                    allowed_origins:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          origin domains that will be allowed via CORS, or "*"
+                          to allow all domains
+                      returned: always
+                      type: list
+                      sample: null
+                    allowed_methods:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          HTTP methods that are allowed to be executed by the
+                          origin.
+                      returned: always
+                      type: list
+                      sample: null
+                    max_age_in_seconds:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. The number of
+                          seconds that the client/browser should cache a
+                          preflight response.
+                      returned: always
+                      type: integer
+                      sample: null
+                    exposed_headers:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          response headers to expose to CORS clients.
+                      returned: always
+                      type: list
+                      sample: null
+                    allowed_headers:
+                      description:
+                        - >-
+                          Required if CorsRule element is present. A list of
+                          headers allowed to be part of the cross-origin
+                          request.
+                      returned: always
+                      type: list
+                      sample: null
             default_service_version:
               description:
                 - >-
@@ -131,6 +195,21 @@ blob_services:
               returned: always
               type: bool
               sample: null
+            change_feed:
+              description:
+                - The blob service properties for change feed events.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                enabled:
+                  description:
+                    - >-
+                      Indicates whether change feed event logging is enabled for
+                      the Blob service.
+                  returned: always
+                  type: bool
+                  sample: null
             restore_policy:
               description:
                 - The blob service properties for blob restore policy.
@@ -188,14 +267,68 @@ blob_services:
                   returned: always
                   type: integer
                   sample: null
-            enabled:
+        sku:
+          description:
+            - Sku name and tier.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            name:
               description:
                 - >-
-                  Indicates whether change feed event logging is enabled for the
-                  Blob service.
+                  The SKU name. Required for account creation; optional for
+                  update. Note that in older versions, SKU name was called
+                  accountType.
               returned: always
-              type: bool
+              type: choice
               sample: null
+            tier:
+              description:
+                - The SKU tier. This is based on the SKU name.
+              returned: always
+              type: sealed-choice
+              sample: null
+    id:
+      description:
+        - >-
+          Fully qualified resource Id for the resource. Ex -
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+      returned: always
+      type: str
+      sample: null
+    name:
+      description:
+        - The name of the resource
+      returned: always
+      type: str
+      sample: null
+    type:
+      description:
+        - >-
+          The type of the resource. Ex- Microsoft.Compute/virtualMachines or
+          Microsoft.Storage/storageAccounts.
+      returned: always
+      type: str
+      sample: null
+    blob_service_properties:
+      description:
+        - The properties of a storage account’s Blob service.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        cors:
+          description:
+            - >-
+              Specifies CORS rules for the Blob service. You can include up to
+              five CorsRule elements in the request. If no CorsRule elements are
+              included in the request body, all CORS rules will be deleted, and
+              CORS will be disabled for the Blob service.
+          returned: always
+          type: dict
+          sample: null
+          contains:
             cors_rules:
               description:
                 - >-
@@ -247,57 +380,6 @@ blob_services:
                   returned: always
                   type: list
                   sample: null
-        sku:
-          description:
-            - Sku name and tier.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            name:
-              description:
-                - >-
-                  The SKU name. Required for account creation; optional for
-                  update. Note that in older versions, SKU name was called
-                  accountType.
-              returned: always
-              type: str
-              sample: null
-            tier:
-              description:
-                - The SKU tier. This is based on the SKU name.
-              returned: always
-              type: sealed-choice
-              sample: null
-    id:
-      description:
-        - >-
-          Fully qualified resource Id for the resource. Ex -
-          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-      returned: always
-      type: str
-      sample: null
-    name:
-      description:
-        - The name of the resource
-      returned: always
-      type: str
-      sample: null
-    type:
-      description:
-        - >-
-          The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-          Microsoft.Storage/storageAccounts.
-      returned: always
-      type: str
-      sample: null
-    blob_service_properties:
-      description:
-        - The properties of a storage account’s Blob service.
-      returned: always
-      type: dict
-      sample: null
-      contains:
         default_service_version:
           description:
             - >-
@@ -342,6 +424,21 @@ blob_services:
           returned: always
           type: bool
           sample: null
+        change_feed:
+          description:
+            - The blob service properties for change feed events.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            enabled:
+              description:
+                - >-
+                  Indicates whether change feed event logging is enabled for the
+                  Blob service.
+              returned: always
+              type: bool
+              sample: null
         restore_policy:
           description:
             - The blob service properties for blob restore policy.
@@ -399,64 +496,6 @@ blob_services:
               returned: always
               type: integer
               sample: null
-        enabled:
-          description:
-            - >-
-              Indicates whether change feed event logging is enabled for the
-              Blob service.
-          returned: always
-          type: bool
-          sample: null
-        cors_rules:
-          description:
-            - >-
-              The List of CORS rules. You can include up to five CorsRule
-              elements in the request.
-          returned: always
-          type: list
-          sample: null
-          contains:
-            allowed_origins:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of origin
-                  domains that will be allowed via CORS, or "*" to allow all
-                  domains
-              returned: always
-              type: list
-              sample: null
-            allowed_methods:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of HTTP
-                  methods that are allowed to be executed by the origin.
-              returned: always
-              type: list
-              sample: null
-            max_age_in_seconds:
-              description:
-                - >-
-                  Required if CorsRule element is present. The number of seconds
-                  that the client/browser should cache a preflight response.
-              returned: always
-              type: integer
-              sample: null
-            exposed_headers:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of response
-                  headers to expose to CORS clients.
-              returned: always
-              type: list
-              sample: null
-            allowed_headers:
-              description:
-                - >-
-                  Required if CorsRule element is present. A list of headers
-                  allowed to be part of the cross-origin request.
-              returned: always
-              type: list
-              sample: null
     sku:
       description:
         - Sku name and tier.
@@ -470,7 +509,7 @@ blob_services:
               The SKU name. Required for account creation; optional for update.
               Note that in older versions, SKU name was called accountType.
           returned: always
-          type: str
+          type: choice
           sample: null
         tier:
           description:
@@ -541,19 +580,19 @@ class AzureRMBlobServiceInfo(AzureRMModuleBase):
         if (self.resource_group_name is not None and
             self.account_name is not None and
             self.blob_services_name is not None):
-            self.results['blob_services'] = self.format_item(self.getserviceproperty())
+            self.results['blob_services'] = self.format_item(self.getserviceproperties())
         elif (self.resource_group_name is not None and
               self.account_name is not None):
             self.results['blob_services'] = self.format_item(self.list())
         return self.results
 
-    def getserviceproperty(self):
+    def getserviceproperties(self):
         response = None
 
         try:
-            response = self.mgmt_client.blob_services.get_service_property(resource_group_name=self.resource_group_name,
-                                                                           account_name=self.account_name,
-                                                                           blob_services_name=self.blob_services_name)
+            response = self.mgmt_client.blob_services.get_service_properties(resource_group_name=self.resource_group_name,
+                                                                             account_name=self.account_name,
+                                                                             blob_services_name=self.blob_services_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

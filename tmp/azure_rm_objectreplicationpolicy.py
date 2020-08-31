@@ -43,53 +43,68 @@ options:
         unknown.
     required: true
     type: str
-  source_account:
+  properties:
     description:
-      - Required. Source account name.
-    type: str
-  destination_account:
-    description:
-      - Required. Destination account name.
-    type: str
-  rules:
-    description:
-      - The storage account object replication rules.
-    type: list
+      - >-
+        The object replication policy set to a storage account. A unique policy
+        ID will be created if absent.
+    type: dict
     suboptions:
-      rule_id:
+      policy_id:
         description:
-          - >-
-            Rule Id is auto-generated for each new rule on destination account.
-            It is required for put policy on source account.
+          - A unique id for object replication policy.
         type: str
-      source_container:
+      enabled_time:
         description:
-          - Required. Source container name.
-        required: true
+          - Indicates when the policy is enabled on the source account.
         type: str
-      destination_container:
+      source_account:
         description:
-          - Required. Destination container name.
-        required: true
+          - Required. Source account name.
         type: str
-      filters:
+      destination_account:
         description:
-          - Optional. An object that defines the filter set.
-        type: dict
+          - Required. Destination account name.
+        type: str
+      rules:
+        description:
+          - The storage account object replication rules.
+        type: list
         suboptions:
-          prefix_match:
+          rule_id:
             description:
               - >-
-                Optional. Filters the results to replicate only blobs whose
-                names begin with the specified prefix.
-            type: list
-          min_creation_time:
-            description:
-              - >-
-                Blobs created after the time will be replicated to the
-                destination. It must be in datetime format
-                'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z
+                Rule Id is auto-generated for each new rule on destination
+                account. It is required for put policy on source account.
             type: str
+          source_container:
+            description:
+              - Required. Source container name.
+            required: true
+            type: str
+          destination_container:
+            description:
+              - Required. Destination container name.
+            required: true
+            type: str
+          filters:
+            description:
+              - Optional. An object that defines the filter set.
+            type: dict
+            suboptions:
+              prefix_match:
+                description:
+                  - >-
+                    Optional. Filters the results to replicate only blobs whose
+                    names begin with the specified prefix.
+                type: list
+              min_creation_time:
+                description:
+                  - >-
+                    Blobs created after the time will be replicated to the
+                    destination. It must be in datetime format
+                    'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z
+                type: str
   state:
     description:
       - Assert the state of the ObjectReplicationPolicy.
@@ -112,77 +127,81 @@ EXAMPLES = '''
       azure_rm_objectreplicationpolicy: 
         account_name: dst112
         object_replication_policy_id: default
-        resource_group_name: res7687
         properties:
-          destination_account: dst112
-          rules:
-            - destination_container: dcont139
-              filters:
-                prefix_match:
-                  - blobA
-                  - blobB
-              source_container: scont139
-          source_account: src1122
+          properties:
+            destination_account: dst112
+            rules:
+              - destination_container: dcont139
+                filters:
+                  prefix_match:
+                    - blobA
+                    - blobB
+                source_container: scont139
+            source_account: src1122
+        resource_group_name: res7687
         
 
     - name: StorageAccountCreateObjectReplicationPolicyOnSource
       azure_rm_objectreplicationpolicy: 
         account_name: src1122
         object_replication_policy_id: 2a20bb73-5717-4635-985a-5d4cf777438f
-        resource_group_name: res7687
         properties:
-          destination_account: dst112
-          rules:
-            - destination_container: dcont139
-              filters:
-                min_creation_time: '2020-02-19T16:05:00Z'
-                prefix_match:
-                  - blobA
-                  - blobB
-              rule_id: d5d18a48-8801-4554-aeaa-74faf65f5ef9
-              source_container: scont139
-          source_account: src1122
+          properties:
+            destination_account: dst112
+            rules:
+              - destination_container: dcont139
+                filters:
+                  min_creation_time: '2020-02-19T16:05:00Z'
+                  prefix_match:
+                    - blobA
+                    - blobB
+                rule_id: d5d18a48-8801-4554-aeaa-74faf65f5ef9
+                source_container: scont139
+            source_account: src1122
+        resource_group_name: res7687
         
 
     - name: StorageAccountUpdateObjectReplicationPolicyOnDestination
       azure_rm_objectreplicationpolicy: 
         account_name: dst112
         object_replication_policy_id: 2a20bb73-5717-4635-985a-5d4cf777438f
-        resource_group_name: res7687
         properties:
-          destination_account: dst112
-          rules:
-            - destination_container: dcont139
-              filters:
-                prefix_match:
-                  - blobA
-                  - blobB
-              rule_id: d5d18a48-8801-4554-aeaa-74faf65f5ef9
-              source_container: scont139
-            - destination_container: dcont179
-              source_container: scont179
-          source_account: src1122
+          properties:
+            destination_account: dst112
+            rules:
+              - destination_container: dcont139
+                filters:
+                  prefix_match:
+                    - blobA
+                    - blobB
+                rule_id: d5d18a48-8801-4554-aeaa-74faf65f5ef9
+                source_container: scont139
+              - destination_container: dcont179
+                source_container: scont179
+            source_account: src1122
+        resource_group_name: res7687
         
 
     - name: StorageAccountUpdateObjectReplicationPolicyOnSource
       azure_rm_objectreplicationpolicy: 
         account_name: src1122
         object_replication_policy_id: 2a20bb73-5717-4635-985a-5d4cf777438f
-        resource_group_name: res7687
         properties:
-          destination_account: dst112
-          rules:
-            - destination_container: dcont139
-              filters:
-                prefix_match:
-                  - blobA
-                  - blobB
-              rule_id: d5d18a48-8801-4554-aeaa-74faf65f5ef9
-              source_container: scont139
-            - destination_container: dcont179
-              rule_id: cfbb4bc2-8b60-429f-b05a-d1e0942b33b2
-              source_container: scont179
-          source_account: src1122
+          properties:
+            destination_account: dst112
+            rules:
+              - destination_container: dcont139
+                filters:
+                  prefix_match:
+                    - blobA
+                    - blobB
+                rule_id: d5d18a48-8801-4554-aeaa-74faf65f5ef9
+                source_container: scont139
+              - destination_container: dcont179
+                rule_id: cfbb4bc2-8b60-429f-b05a-d1e0942b33b2
+                source_container: scont179
+            source_account: src1122
+        resource_group_name: res7687
         
 
     - name: StorageAccountDeleteObjectReplicationPolicies
@@ -329,45 +348,61 @@ class AzureRMObjectReplicationPolicy(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            source_account=dict(
-                type='str',
-                disposition='/source_account'
-            ),
-            destination_account=dict(
-                type='str',
-                disposition='/destination_account'
-            ),
-            rules=dict(
-                type='list',
-                disposition='/rules',
-                elements='dict',
+            properties=dict(
+                type='dict',
+                disposition='/properties',
                 options=dict(
-                    rule_id=dict(
+                    policy_id=dict(
                         type='str',
-                        disposition='rule_id'
+                        updatable=False,
+                        disposition='policy_id'
                     ),
-                    source_container=dict(
+                    enabled_time=dict(
                         type='str',
-                        disposition='source_container',
-                        required=True
+                        updatable=False,
+                        disposition='enabled_time'
                     ),
-                    destination_container=dict(
+                    source_account=dict(
                         type='str',
-                        disposition='destination_container',
-                        required=True
+                        disposition='source_account'
                     ),
-                    filters=dict(
-                        type='dict',
-                        disposition='filters',
+                    destination_account=dict(
+                        type='str',
+                        disposition='destination_account'
+                    ),
+                    rules=dict(
+                        type='list',
+                        disposition='rules',
+                        elements='dict',
                         options=dict(
-                            prefix_match=dict(
-                                type='list',
-                                disposition='prefix_match',
-                                elements='str'
-                            ),
-                            min_creation_time=dict(
+                            rule_id=dict(
                                 type='str',
-                                disposition='min_creation_time'
+                                disposition='rule_id'
+                            ),
+                            source_container=dict(
+                                type='str',
+                                disposition='source_container',
+                                required=True
+                            ),
+                            destination_container=dict(
+                                type='str',
+                                disposition='destination_container',
+                                required=True
+                            ),
+                            filters=dict(
+                                type='dict',
+                                disposition='filters',
+                                options=dict(
+                                    prefix_match=dict(
+                                        type='list',
+                                        disposition='prefix_match',
+                                        elements='str'
+                                    ),
+                                    min_creation_time=dict(
+                                        type='str',
+                                        disposition='min_creation_time'
+                                    )
+                                )
                             )
                         )
                     )
@@ -447,7 +482,7 @@ class AzureRMObjectReplicationPolicy(AzureRMModuleBaseExt):
             response = self.mgmt_client.object_replication_policies.create_or_update(resource_group_name=self.resource_group_name,
                                                                                      account_name=self.account_name,
                                                                                      object_replication_policy_id=self.object_replication_policy_id,
-                                                                                     properties=self.body)
+                                                                                     parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:
