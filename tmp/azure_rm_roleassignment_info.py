@@ -136,7 +136,7 @@ role_assignments:
           description:
             - The principal type of the assigned principal ID.
           returned: always
-          type: choice
+          type: str
           sample: null
         can_delegate:
           description:
@@ -214,7 +214,7 @@ role_assignments:
       description:
         - The principal type of the assigned principal ID.
       returned: always
-      type: choice
+      type: str
       sample: null
     can_delegate:
       description:

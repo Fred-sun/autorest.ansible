@@ -56,7 +56,18 @@ options:
   principal_type:
     description:
       - The principal type of the assigned principal ID.
-    type: choice
+    type: str
+    choices:
+      - User
+      - Group
+      - ServicePrincipal
+      - Unknown
+      - DirectoryRoleTemplate
+      - ForeignGroup
+      - Application
+      - MSI
+      - DirectoryObjectOrGroup
+      - Everyone
   can_delegate:
     description:
       - The delegation flag used for creating a role assignment
@@ -140,7 +151,7 @@ principal_type:
   description:
     - The principal type of the assigned principal ID.
   returned: always
-  type: choice
+  type: str
   sample: null
 can_delegate:
   description:
@@ -212,8 +223,18 @@ class AzureRMRoleAssignment(AzureRMModuleBaseExt):
                 disposition='/principal_id'
             ),
             principal_type=dict(
-                type='choice',
-                disposition='/principal_type'
+                type='str',
+                disposition='/principal_type',
+                choices=['User',
+                         'Group',
+                         'ServicePrincipal',
+                         'Unknown',
+                         'DirectoryRoleTemplate',
+                         'ForeignGroup',
+                         'Application',
+                         'MSI',
+                         'DirectoryObjectOrGroup',
+                         'Everyone']
             ),
             can_delegate=dict(
                 type='bool',
