@@ -53,7 +53,7 @@ from ansible.module_utils.azure_rm_common_ext import AzureRMModuleBaseExt
 from copy import deepcopy
 try:
     from msrestazure.azure_exceptions import CloudError
-    from azure.mgmt.compute import ComputeManagementClient
+    from azure.mgmt.storage import StorageManagementClient
     from msrestazure.azure_operation import AzureOperationPoller
     from msrest.polling import LROPoller
 except ImportError:
@@ -99,9 +99,9 @@ class AzureRMOperation(AzureRMModuleBaseExt):
         old_response = None
         response = None
 
-        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
+        self.mgmt_client = self.get_mgmt_svc_client(StorageManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    api_version='2019-06-01')
 
         old_response = self.get_resource()
 

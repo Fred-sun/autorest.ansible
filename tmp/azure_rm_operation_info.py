@@ -29,6 +29,11 @@ author:
 '''
 
 EXAMPLES = '''
+    - name: OperationsList
+      azure_rm_operation_info: 
+        {}
+        
+
 '''
 
 RETURN = '''
@@ -41,47 +46,137 @@ operations:
   contains:
     value:
       description:
-        - The list of compute operations
+        - List of Storage operations supported by the Storage resource provider.
       returned: always
       type: list
       sample: null
       contains:
-        origin:
-          description:
-            - The origin of the compute operation.
-          returned: always
-          type: str
-          sample: null
         name:
           description:
-            - The name of the compute operation.
+            - 'Operation name: {provider}/{resource}/{operation}'
           returned: always
           type: str
           sample: null
-        operation:
+        display:
           description:
-            - The display name of the compute operation.
+            - Display metadata associated with the operation.
           returned: always
-          type: str
+          type: dict
           sample: null
-        resource:
+          contains:
+            provider:
+              description:
+                - 'Service provider: Microsoft Storage.'
+              returned: always
+              type: str
+              sample: null
+            resource:
+              description:
+                - Resource on which the operation is performed etc.
+              returned: always
+              type: str
+              sample: null
+            operation:
+              description:
+                - 'Type of operation: get, read, delete, etc.'
+              returned: always
+              type: str
+              sample: null
+            description:
+              description:
+                - Description of the operation.
+              returned: always
+              type: str
+              sample: null
+        origin:
           description:
-            - The display name of the resource the operation applies to.
+            - The origin of operations.
           returned: always
           type: str
           sample: null
-        description:
+        service_specification:
           description:
-            - The description of the operation.
+            - 'One property of operation, include metric specifications.'
           returned: always
-          type: str
+          type: dict
           sample: null
-        provider:
-          description:
-            - The resource provider for the operation.
-          returned: always
-          type: str
-          sample: null
+          contains:
+            metric_specifications:
+              description:
+                - Metric specifications of operation.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                name:
+                  description:
+                    - Name of metric specification.
+                  returned: always
+                  type: str
+                  sample: null
+                display_name:
+                  description:
+                    - Display name of metric specification.
+                  returned: always
+                  type: str
+                  sample: null
+                display_description:
+                  description:
+                    - Display description of metric specification.
+                  returned: always
+                  type: str
+                  sample: null
+                unit:
+                  description:
+                    - Unit could be Bytes or Count.
+                  returned: always
+                  type: str
+                  sample: null
+                dimensions:
+                  description:
+                    - 'Dimensions of blobs, including blob type and access tier.'
+                  returned: always
+                  type: list
+                  sample: null
+                  contains:
+                    name:
+                      description:
+                        - Display name of dimension.
+                      returned: always
+                      type: str
+                      sample: null
+                    display_name:
+                      description:
+                        - Display name of dimension.
+                      returned: always
+                      type: str
+                      sample: null
+                aggregation_type:
+                  description:
+                    - Aggregation type could be Average.
+                  returned: always
+                  type: str
+                  sample: null
+                fill_gap_with_zero:
+                  description:
+                    - The property to decide fill gap with zero or not.
+                  returned: always
+                  type: bool
+                  sample: null
+                category:
+                  description:
+                    - >-
+                      The category this metric specification belong to, could be
+                      Capacity.
+                  returned: always
+                  type: str
+                  sample: null
+                resource_id_dimension_name_override:
+                  description:
+                    - Account Resource Id.
+                  returned: always
+                  type: str
+                  sample: null
 
 '''
 
@@ -91,7 +186,7 @@ from ansible.module_utils.azure_rm_common import AzureRMModuleBase
 from copy import deepcopy
 try:
     from msrestazure.azure_exceptions import CloudError
-    from azure.mgmt.compute import ComputeManagementClient
+    from azure.mgmt.storage import StorageManagementClient
     from msrestazure.azure_operation import AzureOperationPoller
     from msrest.polling import LROPoller
 except ImportError:
@@ -112,7 +207,7 @@ class AzureRMOperationInfo(AzureRMModuleBase):
         self.status_code = [200]
 
         self.query_parameters = {}
-        self.query_parameters['api-version'] = '2020-06-01'
+        self.query_parameters['api-version'] = '2019-06-01'
         self.header_parameters = {}
         self.header_parameters['Content-Type'] = 'application/json; charset=utf-8'
 
@@ -124,9 +219,9 @@ class AzureRMOperationInfo(AzureRMModuleBase):
         for key in self.module_arg_spec:
             setattr(self, key, kwargs[key])
 
-        self.mgmt_client = self.get_mgmt_svc_client(ComputeManagementClient,
+        self.mgmt_client = self.get_mgmt_svc_client(StorageManagementClient,
                                                     base_url=self._cloud_environment.endpoints.resource_manager,
-                                                    api_version='2020-06-01')
+                                                    api_version='2019-06-01')
 
         else:
             self.results['operations'] = self.format_item(self.list())
