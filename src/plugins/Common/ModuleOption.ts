@@ -68,6 +68,8 @@ export class ModuleOption {
                         readOnly = false;
                     this.SubOptions.push(subOption);
                 }
+            }else {
+                readOnly = false;
             }
             this.ReadOnly = readOnly;
         }

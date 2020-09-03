@@ -44,6 +44,31 @@ options:
     description:
       - The role type.
     type: str
+  permissions:
+    description:
+      - Role definition permissions.
+    type: list
+    suboptions:
+      actions:
+        description:
+          - Allowed actions.
+        type: list
+      not_actions:
+        description:
+          - Denied actions.
+        type: list
+      data_actions:
+        description:
+          - Allowed Data actions.
+        type: list
+      not_data_actions:
+        description:
+          - Denied Data actions.
+        type: list
+  assignable_scopes:
+    description:
+      - Role definition assignable scopes.
+    type: list
   state:
     description:
       - Assert the state of the RoleDefinition.
@@ -188,6 +213,38 @@ class AzureRMRoleDefinition(AzureRMModuleBaseExt):
             role_type=dict(
                 type='str',
                 disposition='/role_type'
+            ),
+            permissions=dict(
+                type='list',
+                disposition='/permissions',
+                elements='dict',
+                options=dict(
+                    actions=dict(
+                        type='list',
+                        disposition='actions',
+                        elements='str'
+                    ),
+                    not_actions=dict(
+                        type='list',
+                        disposition='not_actions',
+                        elements='str'
+                    ),
+                    data_actions=dict(
+                        type='list',
+                        disposition='data_actions',
+                        elements='str'
+                    ),
+                    not_data_actions=dict(
+                        type='list',
+                        disposition='not_data_actions',
+                        elements='str'
+                    )
+                )
+            ),
+            assignable_scopes=dict(
+                type='list',
+                disposition='/assignable_scopes',
+                elements='str'
             ),
             state=dict(
                 type='str',
