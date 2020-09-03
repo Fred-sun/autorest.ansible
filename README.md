@@ -36,10 +36,7 @@ scope-ansible/emitter:
     output-folder: $(ansible-output-folder)
 
 modelerfour:
-    lenient-model-deduplication: true
-    group-parameters: true
-    flatten-models: true
-    flatten-payloads: true
+    additional-checks: false
 
 ```
 
