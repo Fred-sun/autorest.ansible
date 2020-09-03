@@ -33,229 +33,220 @@ options:
         resource group.
     required: true
     type: str
-  parameters:
+  location:
     description:
-      - >-
-        Parameters supplied to the Create or Update a Container Service
-        operation.
+      - Resource location
+    type: str
+  orchestrator_profile:
+    description:
+      - Properties of the orchestrator.
     type: dict
     suboptions:
-      provisioning_state:
+      orchestrator_type:
         description:
           - >-
-            the current deployment or provisioning state, which only appears in
-            the response.
+            The orchestrator to use to manage container service cluster
+            resources. Valid values are Swarm, DCOS, and Custom.
+        required: true
+        type: sealed-choice
+  custom_profile:
+    description:
+      - Properties for custom clusters.
+    type: dict
+    suboptions:
+      orchestrator:
+        description:
+          - The name of the custom orchestrator to use.
+        required: true
         type: str
-      orchestrator_profile:
+  service_principal_profile:
+    description:
+      - Properties for cluster service principals.
+    type: dict
+    suboptions:
+      client_id:
         description:
-          - Properties of the orchestrator.
+          - The ID for the service principal.
+        required: true
+        type: str
+      secret:
+        description:
+          - The secret password associated with the service principal.
+        required: true
+        type: str
+  master_profile:
+    description:
+      - Properties of master agents.
+    type: dict
+    suboptions:
+      count:
+        description:
+          - >-
+            Number of masters (VMs) in the container service cluster. Allowed
+            values are 1, 3, and 5. The default value is 1.
+        type: str
+        choices:
+          - 1
+          - 3
+          - 5
+      dns_prefix:
+        description:
+          - DNS prefix to be used to create the FQDN for master.
+        required: true
+        type: str
+      fqdn:
+        description:
+          - FQDN for the master.
+        type: str
+  agent_pool_profiles:
+    description:
+      - Properties of the agent pool.
+    type: list
+    suboptions:
+      name:
+        description:
+          - >-
+            Unique name of the agent pool profile in the context of the
+            subscription and resource group.
+        required: true
+        type: str
+      count:
+        description:
+          - >-
+            Number of agents (VMs) to host docker containers. Allowed values
+            must be in the range of 1 to 100 (inclusive). The default value is
+            1.
+        required: true
+        type: integer
+      vm_size:
+        description:
+          - Size of agent VMs.
+        required: true
+        type: str
+        choices:
+          - Standard_A0
+          - Standard_A1
+          - Standard_A2
+          - Standard_A3
+          - Standard_A4
+          - Standard_A5
+          - Standard_A6
+          - Standard_A7
+          - Standard_A8
+          - Standard_A9
+          - Standard_A10
+          - Standard_A11
+          - Standard_D1
+          - Standard_D2
+          - Standard_D3
+          - Standard_D4
+          - Standard_D11
+          - Standard_D12
+          - Standard_D13
+          - Standard_D14
+          - Standard_D1_v2
+          - Standard_D2_v2
+          - Standard_D3_v2
+          - Standard_D4_v2
+          - Standard_D5_v2
+          - Standard_D11_v2
+          - Standard_D12_v2
+          - Standard_D13_v2
+          - Standard_D14_v2
+          - Standard_G1
+          - Standard_G2
+          - Standard_G3
+          - Standard_G4
+          - Standard_G5
+          - Standard_DS1
+          - Standard_DS2
+          - Standard_DS3
+          - Standard_DS4
+          - Standard_DS11
+          - Standard_DS12
+          - Standard_DS13
+          - Standard_DS14
+          - Standard_GS1
+          - Standard_GS2
+          - Standard_GS3
+          - Standard_GS4
+          - Standard_GS5
+      dns_prefix:
+        description:
+          - DNS prefix to be used to create the FQDN for the agent pool.
+        required: true
+        type: str
+      fqdn:
+        description:
+          - FQDN for the agent pool.
+        type: str
+  windows_profile:
+    description:
+      - Properties of Windows VMs.
+    type: dict
+    suboptions:
+      admin_username:
+        description:
+          - The administrator username to use for Windows VMs.
+        required: true
+        type: str
+      admin_password:
+        description:
+          - The administrator password to use for Windows VMs.
+        required: true
+        type: str
+  linux_profile:
+    description:
+      - Properties of Linux VMs.
+    type: dict
+    suboptions:
+      admin_username:
+        description:
+          - The administrator username to use for Linux VMs.
+        required: true
+        type: str
+      ssh:
+        description:
+          - The ssh key configuration for Linux VMs.
+        required: true
         type: dict
         suboptions:
-          orchestrator_type:
+          public_keys:
             description:
               - >-
-                The orchestrator to use to manage container service cluster
-                resources. Valid values are Swarm, DCOS, and Custom.
+                the list of SSH public keys used to authenticate with
+                Linux-based VMs.
             required: true
-            type: sealed-choice
-      custom_profile:
-        description:
-          - Properties for custom clusters.
-        type: dict
-        suboptions:
-          orchestrator:
-            description:
-              - The name of the custom orchestrator to use.
-            required: true
-            type: str
-      service_principal_profile:
-        description:
-          - Properties for cluster service principals.
-        type: dict
-        suboptions:
-          client_id:
-            description:
-              - The ID for the service principal.
-            required: true
-            type: str
-          secret:
-            description:
-              - The secret password associated with the service principal.
-            required: true
-            type: str
-      master_profile:
-        description:
-          - Properties of master agents.
-        type: dict
-        suboptions:
-          count:
-            description:
-              - >-
-                Number of masters (VMs) in the container service cluster.
-                Allowed values are 1, 3, and 5. The default value is 1.
-            type: str
-            choices:
-              - 1
-              - 3
-              - 5
-          dns_prefix:
-            description:
-              - DNS prefix to be used to create the FQDN for master.
-            required: true
-            type: str
-          fqdn:
-            description:
-              - FQDN for the master.
-            type: str
-      agent_pool_profiles:
-        description:
-          - Properties of the agent pool.
-        type: list
-        suboptions:
-          name:
-            description:
-              - >-
-                Unique name of the agent pool profile in the context of the
-                subscription and resource group.
-            required: true
-            type: str
-          count:
-            description:
-              - >-
-                Number of agents (VMs) to host docker containers. Allowed values
-                must be in the range of 1 to 100 (inclusive). The default value
-                is 1.
-            required: true
-            type: integer
-          vm_size:
-            description:
-              - Size of agent VMs.
-            required: true
-            type: str
-            choices:
-              - Standard_A0
-              - Standard_A1
-              - Standard_A2
-              - Standard_A3
-              - Standard_A4
-              - Standard_A5
-              - Standard_A6
-              - Standard_A7
-              - Standard_A8
-              - Standard_A9
-              - Standard_A10
-              - Standard_A11
-              - Standard_D1
-              - Standard_D2
-              - Standard_D3
-              - Standard_D4
-              - Standard_D11
-              - Standard_D12
-              - Standard_D13
-              - Standard_D14
-              - Standard_D1_v2
-              - Standard_D2_v2
-              - Standard_D3_v2
-              - Standard_D4_v2
-              - Standard_D5_v2
-              - Standard_D11_v2
-              - Standard_D12_v2
-              - Standard_D13_v2
-              - Standard_D14_v2
-              - Standard_G1
-              - Standard_G2
-              - Standard_G3
-              - Standard_G4
-              - Standard_G5
-              - Standard_DS1
-              - Standard_DS2
-              - Standard_DS3
-              - Standard_DS4
-              - Standard_DS11
-              - Standard_DS12
-              - Standard_DS13
-              - Standard_DS14
-              - Standard_GS1
-              - Standard_GS2
-              - Standard_GS3
-              - Standard_GS4
-              - Standard_GS5
-          dns_prefix:
-            description:
-              - DNS prefix to be used to create the FQDN for the agent pool.
-            required: true
-            type: str
-          fqdn:
-            description:
-              - FQDN for the agent pool.
-            type: str
-      windows_profile:
-        description:
-          - Properties of Windows VMs.
-        type: dict
-        suboptions:
-          admin_username:
-            description:
-              - The administrator username to use for Windows VMs.
-            required: true
-            type: str
-          admin_password:
-            description:
-              - The administrator password to use for Windows VMs.
-            required: true
-            type: str
-      linux_profile:
-        description:
-          - Properties of Linux VMs.
-        type: dict
-        suboptions:
-          admin_username:
-            description:
-              - The administrator username to use for Linux VMs.
-            required: true
-            type: str
-          ssh:
-            description:
-              - The ssh key configuration for Linux VMs.
-            required: true
-            type: dict
+            type: list
             suboptions:
-              public_keys:
+              key_data:
                 description:
                   - >-
-                    the list of SSH public keys used to authenticate with
-                    Linux-based VMs.
+                    Certificate public key used to authenticate with VMs through
+                    SSH. The certificate must be in PEM format with or without
+                    headers.
                 required: true
-                type: list
-                suboptions:
-                  key_data:
-                    description:
-                      - >-
-                        Certificate public key used to authenticate with VMs
-                        through SSH. The certificate must be in PEM format with
-                        or without headers.
-                    required: true
-                    type: str
-      diagnostics_profile:
+                type: str
+  diagnostics_profile:
+    description:
+      - Properties of the diagnostic agent.
+    type: dict
+    suboptions:
+      vm_diagnostics:
         description:
-          - Properties of the diagnostic agent.
+          - Profile for the container service VM diagnostic agent.
+        required: true
         type: dict
         suboptions:
-          vm_diagnostics:
+          enabled:
             description:
-              - Profile for the container service VM diagnostic agent.
+              - Whether the VM diagnostic agent is provisioned on the VM.
             required: true
-            type: dict
-            suboptions:
-              enabled:
-                description:
-                  - Whether the VM diagnostic agent is provisioned on the VM.
-                required: true
-                type: bool
-              storage_uri:
-                description:
-                  - The URI of the storage account where diagnostics are stored.
-                type: str
+            type: bool
+          storage_uri:
+            description:
+              - The URI of the storage account where diagnostics are stored.
+            type: str
   state:
     description:
       - Assert the state of the ContainerService.
@@ -277,8 +268,6 @@ EXAMPLES = '''
     - name: Create/Update Container Service
       azure_rm_containerservice: 
         container_service_name: acs1
-        parameters:
-          location: location1
         resource_group_name: rg1
         location: location1
         
@@ -561,222 +550,215 @@ class AzureRMContainerService(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            parameters=dict(
+            location=dict(
+                type='str',
+                disposition='/location'
+            ),
+            orchestrator_profile=dict(
                 type='dict',
-                disposition='/parameters',
+                disposition='/orchestrator_profile',
                 options=dict(
-                    provisioning_state=dict(
+                    orchestrator_type=dict(
+                        type='sealed-choice',
+                        disposition='orchestrator_type',
+                        required=True
+                    )
+                )
+            ),
+            custom_profile=dict(
+                type='dict',
+                disposition='/custom_profile',
+                options=dict(
+                    orchestrator=dict(
+                        type='str',
+                        disposition='orchestrator',
+                        required=True
+                    )
+                )
+            ),
+            service_principal_profile=dict(
+                type='dict',
+                disposition='/service_principal_profile',
+                options=dict(
+                    client_id=dict(
+                        type='str',
+                        disposition='client_id',
+                        required=True
+                    ),
+                    secret=dict(
+                        type='str',
+                        disposition='secret',
+                        required=True
+                    )
+                )
+            ),
+            master_profile=dict(
+                type='dict',
+                disposition='/master_profile',
+                options=dict(
+                    count=dict(
+                        type='str',
+                        disposition='count',
+                        choices=['1',
+                                 '3',
+                                 '5']
+                    ),
+                    dns_prefix=dict(
+                        type='str',
+                        disposition='dns_prefix',
+                        required=True
+                    ),
+                    fqdn=dict(
                         type='str',
                         updatable=False,
-                        disposition='provisioning_state'
+                        disposition='fqdn'
+                    )
+                )
+            ),
+            agent_pool_profiles=dict(
+                type='list',
+                disposition='/agent_pool_profiles',
+                elements='dict',
+                options=dict(
+                    name=dict(
+                        type='str',
+                        disposition='name',
+                        required=True
                     ),
-                    orchestrator_profile=dict(
+                    count=dict(
+                        type='integer',
+                        disposition='count',
+                        required=True
+                    ),
+                    vm_size=dict(
+                        type='str',
+                        disposition='vm_size',
+                        choices=['Standard_A0',
+                                 'Standard_A1',
+                                 'Standard_A2',
+                                 'Standard_A3',
+                                 'Standard_A4',
+                                 'Standard_A5',
+                                 'Standard_A6',
+                                 'Standard_A7',
+                                 'Standard_A8',
+                                 'Standard_A9',
+                                 'Standard_A10',
+                                 'Standard_A11',
+                                 'Standard_D1',
+                                 'Standard_D2',
+                                 'Standard_D3',
+                                 'Standard_D4',
+                                 'Standard_D11',
+                                 'Standard_D12',
+                                 'Standard_D13',
+                                 'Standard_D14',
+                                 'Standard_D1_v2',
+                                 'Standard_D2_v2',
+                                 'Standard_D3_v2',
+                                 'Standard_D4_v2',
+                                 'Standard_D5_v2',
+                                 'Standard_D11_v2',
+                                 'Standard_D12_v2',
+                                 'Standard_D13_v2',
+                                 'Standard_D14_v2',
+                                 'Standard_G1',
+                                 'Standard_G2',
+                                 'Standard_G3',
+                                 'Standard_G4',
+                                 'Standard_G5',
+                                 'Standard_DS1',
+                                 'Standard_DS2',
+                                 'Standard_DS3',
+                                 'Standard_DS4',
+                                 'Standard_DS11',
+                                 'Standard_DS12',
+                                 'Standard_DS13',
+                                 'Standard_DS14',
+                                 'Standard_GS1',
+                                 'Standard_GS2',
+                                 'Standard_GS3',
+                                 'Standard_GS4',
+                                 'Standard_GS5'],
+                        required=True
+                    ),
+                    dns_prefix=dict(
+                        type='str',
+                        disposition='dns_prefix',
+                        required=True
+                    ),
+                    fqdn=dict(
+                        type='str',
+                        updatable=False,
+                        disposition='fqdn'
+                    )
+                )
+            ),
+            windows_profile=dict(
+                type='dict',
+                disposition='/windows_profile',
+                options=dict(
+                    admin_username=dict(
+                        type='str',
+                        disposition='admin_username',
+                        required=True
+                    ),
+                    admin_password=dict(
+                        type='str',
+                        disposition='admin_password',
+                        required=True
+                    )
+                )
+            ),
+            linux_profile=dict(
+                type='dict',
+                disposition='/linux_profile',
+                options=dict(
+                    admin_username=dict(
+                        type='str',
+                        disposition='admin_username',
+                        required=True
+                    ),
+                    ssh=dict(
                         type='dict',
-                        disposition='orchestrator_profile',
+                        disposition='ssh',
+                        required=True,
                         options=dict(
-                            orchestrator_type=dict(
-                                type='sealed-choice',
-                                disposition='orchestrator_type',
-                                required=True
-                            )
-                        )
-                    ),
-                    custom_profile=dict(
-                        type='dict',
-                        disposition='custom_profile',
-                        options=dict(
-                            orchestrator=dict(
-                                type='str',
-                                disposition='orchestrator',
-                                required=True
-                            )
-                        )
-                    ),
-                    service_principal_profile=dict(
-                        type='dict',
-                        disposition='service_principal_profile',
-                        options=dict(
-                            client_id=dict(
-                                type='str',
-                                disposition='client_id',
-                                required=True
-                            ),
-                            secret=dict(
-                                type='str',
-                                disposition='secret',
-                                required=True
-                            )
-                        )
-                    ),
-                    master_profile=dict(
-                        type='dict',
-                        disposition='master_profile',
-                        options=dict(
-                            count=dict(
-                                type='str',
-                                disposition='count',
-                                choices=['1',
-                                         '3',
-                                         '5']
-                            ),
-                            dns_prefix=dict(
-                                type='str',
-                                disposition='dns_prefix',
-                                required=True
-                            ),
-                            fqdn=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='fqdn'
-                            )
-                        )
-                    ),
-                    agent_pool_profiles=dict(
-                        type='list',
-                        disposition='agent_pool_profiles',
-                        elements='dict',
-                        options=dict(
-                            name=dict(
-                                type='str',
-                                disposition='name',
-                                required=True
-                            ),
-                            count=dict(
-                                type='integer',
-                                disposition='count',
-                                required=True
-                            ),
-                            vm_size=dict(
-                                type='str',
-                                disposition='vm_size',
-                                choices=['Standard_A0',
-                                         'Standard_A1',
-                                         'Standard_A2',
-                                         'Standard_A3',
-                                         'Standard_A4',
-                                         'Standard_A5',
-                                         'Standard_A6',
-                                         'Standard_A7',
-                                         'Standard_A8',
-                                         'Standard_A9',
-                                         'Standard_A10',
-                                         'Standard_A11',
-                                         'Standard_D1',
-                                         'Standard_D2',
-                                         'Standard_D3',
-                                         'Standard_D4',
-                                         'Standard_D11',
-                                         'Standard_D12',
-                                         'Standard_D13',
-                                         'Standard_D14',
-                                         'Standard_D1_v2',
-                                         'Standard_D2_v2',
-                                         'Standard_D3_v2',
-                                         'Standard_D4_v2',
-                                         'Standard_D5_v2',
-                                         'Standard_D11_v2',
-                                         'Standard_D12_v2',
-                                         'Standard_D13_v2',
-                                         'Standard_D14_v2',
-                                         'Standard_G1',
-                                         'Standard_G2',
-                                         'Standard_G3',
-                                         'Standard_G4',
-                                         'Standard_G5',
-                                         'Standard_DS1',
-                                         'Standard_DS2',
-                                         'Standard_DS3',
-                                         'Standard_DS4',
-                                         'Standard_DS11',
-                                         'Standard_DS12',
-                                         'Standard_DS13',
-                                         'Standard_DS14',
-                                         'Standard_GS1',
-                                         'Standard_GS2',
-                                         'Standard_GS3',
-                                         'Standard_GS4',
-                                         'Standard_GS5'],
-                                required=True
-                            ),
-                            dns_prefix=dict(
-                                type='str',
-                                disposition='dns_prefix',
-                                required=True
-                            ),
-                            fqdn=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='fqdn'
-                            )
-                        )
-                    ),
-                    windows_profile=dict(
-                        type='dict',
-                        disposition='windows_profile',
-                        options=dict(
-                            admin_username=dict(
-                                type='str',
-                                disposition='admin_username',
-                                required=True
-                            ),
-                            admin_password=dict(
-                                type='str',
-                                disposition='admin_password',
-                                required=True
-                            )
-                        )
-                    ),
-                    linux_profile=dict(
-                        type='dict',
-                        disposition='linux_profile',
-                        options=dict(
-                            admin_username=dict(
-                                type='str',
-                                disposition='admin_username',
-                                required=True
-                            ),
-                            ssh=dict(
-                                type='dict',
-                                disposition='ssh',
+                            public_keys=dict(
+                                type='list',
+                                disposition='public_keys',
                                 required=True,
+                                elements='dict',
                                 options=dict(
-                                    public_keys=dict(
-                                        type='list',
-                                        disposition='public_keys',
-                                        required=True,
-                                        elements='dict',
-                                        options=dict(
-                                            key_data=dict(
-                                                type='str',
-                                                disposition='key_data',
-                                                required=True
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    diagnostics_profile=dict(
-                        type='dict',
-                        disposition='diagnostics_profile',
-                        options=dict(
-                            vm_diagnostics=dict(
-                                type='dict',
-                                disposition='vm_diagnostics',
-                                required=True,
-                                options=dict(
-                                    enabled=dict(
-                                        type='bool',
-                                        disposition='enabled',
-                                        required=True
-                                    ),
-                                    storage_uri=dict(
+                                    key_data=dict(
                                         type='str',
-                                        updatable=False,
-                                        disposition='storage_uri'
+                                        disposition='key_data',
+                                        required=True
                                     )
                                 )
+                            )
+                        )
+                    )
+                )
+            ),
+            diagnostics_profile=dict(
+                type='dict',
+                disposition='/diagnostics_profile',
+                options=dict(
+                    vm_diagnostics=dict(
+                        type='dict',
+                        disposition='vm_diagnostics',
+                        required=True,
+                        options=dict(
+                            enabled=dict(
+                                type='bool',
+                                disposition='enabled',
+                                required=True
+                            ),
+                            storage_uri=dict(
+                                type='str',
+                                updatable=False,
+                                disposition='storage_uri'
                             )
                         )
                     )

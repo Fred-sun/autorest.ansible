@@ -31,22 +31,19 @@ options:
       - The name of the SSH public key.
     required: true
     type: str
-  parameters:
+  location:
     description:
-      - Parameters supplied to create the SSH public key.
-      - Parameters supplied to update the SSH public key.
-    type: dict
-    suboptions:
-      public_key:
-        description:
-          - >-
-            SSH public key used to authenticate to a virtual machine through
-            ssh. If this property is not initially provided when the resource is
-            created, the publicKey property will be populated when
-            generateKeyPair is called. If the public key is provided upon
-            resource creation, the provided public key needs to be at least
-            2048-bit and in ssh-rsa format.
-        type: str
+      - Resource location
+    type: str
+  public_key:
+    description:
+      - >-
+        SSH public key used to authenticate to a virtual machine through ssh. If
+        this property is not initially provided when the resource is created,
+        the publicKey property will be populated when generateKeyPair is called.
+        If the public key is provided upon resource creation, the provided
+        public key needs to be at least 2048-bit and in ssh-rsa format.
+    type: str
   state:
     description:
       - Assert the state of the SshPublicKey.
@@ -67,10 +64,6 @@ author:
 EXAMPLES = '''
     - name: Create a new SSH public key resource.
       azure_rm_sshpublickey: 
-        parameters:
-          location: westus
-          properties:
-            public_key: '{ssh-rsa public key}'
         resource_group_name: myResourceGroup
         ssh_public_key_name: mySshPublicKeyName
         location: westus
@@ -155,15 +148,13 @@ class AzureRMSshPublicKey(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            parameters=dict(
-                type='dict',
-                disposition='/parameters',
-                options=dict(
-                    public_key=dict(
-                        type='str',
-                        disposition='public_key'
-                    )
-                )
+            location=dict(
+                type='str',
+                disposition='/location'
+            ),
+            public_key=dict(
+                type='str',
+                disposition='/public_key'
             ),
             state=dict(
                 type='str',

@@ -62,104 +62,126 @@ options:
       - The name of the gallery Application Version to be deleted.
     required: true
     type: str
-  gallery_application_version:
+  location:
+    description:
+      - Resource location
+    type: str
+  target_regions:
     description:
       - >-
-        Parameters supplied to the create or update gallery Application Version
-        operation.
-      - Parameters supplied to the update gallery Application Version operation.
-    type: dict
+        The target regions where the Image Version is going to be replicated to.
+        This property is updatable.
+    type: list
     suboptions:
-      publishing_profile:
+      name:
         description:
-          - The publishing profile of a gallery Image Version.
-        type: dict
-        suboptions:
-          source:
-            description:
-              - >-
-                The source image from which the Image Version is going to be
-                created.
-            required: true
-            type: dict
-            suboptions:
-              file_name:
-                description:
-                  - Required. The fileName of the artifact.
-                required: true
-                type: str
-              media_link:
-                description:
-                  - >-
-                    Required. The mediaLink of the artifact, must be a readable
-                    storage blob.
-                required: true
-                type: str
-          content_type:
-            description:
-              - >-
-                Optional. May be used to help process this file. The type of
-                file contained in the source, e.g. zip, json, etc.
-            type: str
-          enable_health_check:
-            description:
-              - Optional. Whether or not this application reports health.
-            type: bool
-      provisioning_state:
+          - The name of the region.
+        required: true
+        type: str
+      regional_replica_count:
         description:
-          - 'The provisioning state, which only appears in the response.'
+          - >-
+            The number of replicas of the Image Version to be created per
+            region. This property is updatable.
+        type: integer
+      storage_account_type:
+        description:
+          - >-
+            Specifies the storage account type to be used to store the image.
+            This property is not updatable.
         type: str
         choices:
-          - Creating
-          - Updating
-          - Failed
-          - Succeeded
-          - Deleting
-          - Migrating
-      replication_status:
+          - Standard_LRS
+          - Standard_ZRS
+          - Premium_LRS
+      encryption:
         description:
-          - This is the replication status of the gallery Image Version.
+          - >-
+            Optional. Allows users to provide customer managed keys for
+            encrypting the OS and data disks in the gallery artifact.
         type: dict
         suboptions:
-          aggregated_state:
+          os_disk_image:
             description:
-              - >-
-                This is the aggregated replication status based on all the
-                regional replication status flags.
-            type: str
-            choices:
-              - Unknown
-              - InProgress
-              - Completed
-              - Failed
-          summary:
-            description:
-              - This is a summary of replication status for each region.
-            type: list
+              - This is the disk image encryption base class.
+            type: dict
             suboptions:
-              region:
+              disk_encryption_set_id:
                 description:
                   - >-
-                    The region to which the gallery Image Version is being
-                    replicated to.
+                    A relative URI containing the resource ID of the disk
+                    encryption set.
                 type: str
-              state:
+          data_disk_images:
+            description:
+              - A list of encryption specifications for data disk images.
+            type: list
+            suboptions:
+              lun:
                 description:
-                  - This is the regional replication state.
-                type: str
-                choices:
-                  - Unknown
-                  - Replicating
-                  - Completed
-                  - Failed
-              details:
-                description:
-                  - The details of the replication status.
-                type: str
-              progress:
-                description:
-                  - It indicates progress of the replication job.
+                  - >-
+                    This property specifies the logical unit number of the data
+                    disk. This value is used to identify data disks within the
+                    Virtual Machine and therefore must be unique for each data
+                    disk attached to the Virtual Machine.
+                required: true
                 type: integer
+  replica_count:
+    description:
+      - >-
+        The number of replicas of the Image Version to be created per region.
+        This property would take effect for a region when regionalReplicaCount
+        is not specified. This property is updatable.
+    type: integer
+  exclude_from_latest:
+    description:
+      - >-
+        If set to true, Virtual Machines deployed from the latest version of the
+        Image Definition won't use this Image Version.
+    type: bool
+  end_of_life_date:
+    description:
+      - >-
+        The end of life date of the gallery Image Version. This property can be
+        used for decommissioning purposes. This property is updatable.
+    type: str
+  storage_account_type:
+    description:
+      - >-
+        Specifies the storage account type to be used to store the image. This
+        property is not updatable.
+    type: str
+    choices:
+      - Standard_LRS
+      - Standard_ZRS
+      - Premium_LRS
+  source:
+    description:
+      - The source image from which the Image Version is going to be created.
+    type: dict
+    suboptions:
+      file_name:
+        description:
+          - Required. The fileName of the artifact.
+        required: true
+        type: str
+      media_link:
+        description:
+          - >-
+            Required. The mediaLink of the artifact, must be a readable storage
+            blob.
+        required: true
+        type: str
+  content_type:
+    description:
+      - >-
+        Optional. May be used to help process this file. The type of file
+        contained in the source, e.g. zip, json, etc.
+    type: str
+  enable_health_check:
+    description:
+      - Optional. Whether or not this application reports health.
+    type: bool
   expand:
     description:
       - The expand expression to apply on the operation.
@@ -187,21 +209,6 @@ EXAMPLES = '''
     - name: Create or update a simple gallery Application Version.
       azure_rm_galleryapplicationversion: 
         gallery_application_name: myGalleryApplicationName
-        gallery_application_version:
-          location: West US
-          properties:
-            publishing_profile:
-              end_of_life_date: '2019-07-01T07:00:00Z'
-              replica_count: 1
-              source:
-                file_name: package.zip
-                media_link: >-
-                  https://mystorageaccount.blob.core.windows.net/mycontainer/package.zip?{sasKey}
-              storage_account_type: Standard_LRS
-              target_regions:
-                - name: West US
-                  regional_replica_count: 1
-                  storage_account_type: Standard_LRS
         gallery_application_version_name: 1.0.0
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
@@ -210,20 +217,6 @@ EXAMPLES = '''
     - name: Update a simple gallery Application Version.
       azure_rm_galleryapplicationversion: 
         gallery_application_name: myGalleryApplicationName
-        gallery_application_version:
-          properties:
-            publishing_profile:
-              end_of_life_date: '2019-07-01T07:00:00Z'
-              replica_count: 1
-              source:
-                file_name: package.zip
-                media_link: >-
-                  https://mystorageaccount.blob.core.windows.net/mycontainer/package.zip?{sasKey}
-              storage_account_type: Standard_LRS
-              target_regions:
-                - name: West US
-                  regional_replica_count: 1
-                  storage_account_type: Standard_LRS
         gallery_application_version_name: 1.0.0
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
@@ -270,48 +263,6 @@ tags:
   returned: always
   type: dictionary
   sample: null
-publishing_profile:
-  description:
-    - The publishing profile of a gallery Image Version.
-  returned: always
-  type: dict
-  sample: null
-  contains:
-    source:
-      description:
-        - The source image from which the Image Version is going to be created.
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        file_name:
-          description:
-            - Required. The fileName of the artifact.
-          returned: always
-          type: str
-          sample: null
-        media_link:
-          description:
-            - >-
-              Required. The mediaLink of the artifact, must be a readable
-              storage blob.
-          returned: always
-          type: str
-          sample: null
-    content_type:
-      description:
-        - >-
-          Optional. May be used to help process this file. The type of file
-          contained in the source, e.g. zip, json, etc.
-      returned: always
-      type: str
-      sample: null
-    enable_health_check:
-      description:
-        - Optional. Whether or not this application reports health.
-      returned: always
-      type: bool
-      sample: null
 provisioning_state:
   description:
     - 'The provisioning state, which only appears in the response.'
@@ -366,6 +317,152 @@ replication_status:
           returned: always
           type: integer
           sample: null
+target_regions:
+  description:
+    - >-
+      The target regions where the Image Version is going to be replicated to.
+      This property is updatable.
+  returned: always
+  type: list
+  sample: null
+  contains:
+    name:
+      description:
+        - The name of the region.
+      returned: always
+      type: str
+      sample: null
+    regional_replica_count:
+      description:
+        - >-
+          The number of replicas of the Image Version to be created per region.
+          This property is updatable.
+      returned: always
+      type: integer
+      sample: null
+    storage_account_type:
+      description:
+        - >-
+          Specifies the storage account type to be used to store the image. This
+          property is not updatable.
+      returned: always
+      type: str
+      sample: null
+    encryption:
+      description:
+        - >-
+          Optional. Allows users to provide customer managed keys for encrypting
+          the OS and data disks in the gallery artifact.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        os_disk_image:
+          description:
+            - This is the disk image encryption base class.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            disk_encryption_set_id:
+              description:
+                - >-
+                  A relative URI containing the resource ID of the disk
+                  encryption set.
+              returned: always
+              type: str
+              sample: null
+        data_disk_images:
+          description:
+            - A list of encryption specifications for data disk images.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            lun:
+              description:
+                - >-
+                  This property specifies the logical unit number of the data
+                  disk. This value is used to identify data disks within the
+                  Virtual Machine and therefore must be unique for each data
+                  disk attached to the Virtual Machine.
+              returned: always
+              type: integer
+              sample: null
+replica_count:
+  description:
+    - >-
+      The number of replicas of the Image Version to be created per region. This
+      property would take effect for a region when regionalReplicaCount is not
+      specified. This property is updatable.
+  returned: always
+  type: integer
+  sample: null
+exclude_from_latest:
+  description:
+    - >-
+      If set to true, Virtual Machines deployed from the latest version of the
+      Image Definition won't use this Image Version.
+  returned: always
+  type: bool
+  sample: null
+published_date:
+  description:
+    - The timestamp for when the gallery Image Version is published.
+  returned: always
+  type: str
+  sample: null
+end_of_life_date:
+  description:
+    - >-
+      The end of life date of the gallery Image Version. This property can be
+      used for decommissioning purposes. This property is updatable.
+  returned: always
+  type: str
+  sample: null
+storage_account_type:
+  description:
+    - >-
+      Specifies the storage account type to be used to store the image. This
+      property is not updatable.
+  returned: always
+  type: str
+  sample: null
+source:
+  description:
+    - The source image from which the Image Version is going to be created.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    file_name:
+      description:
+        - Required. The fileName of the artifact.
+      returned: always
+      type: str
+      sample: null
+    media_link:
+      description:
+        - >-
+          Required. The mediaLink of the artifact, must be a readable storage
+          blob.
+      returned: always
+      type: str
+      sample: null
+content_type:
+  description:
+    - >-
+      Optional. May be used to help process this file. The type of file
+      contained in the source, e.g. zip, json, etc.
+  returned: always
+  type: str
+  sample: null
+enable_health_check:
+  description:
+    - Optional. Whether or not this application reports health.
+  returned: always
+  type: bool
+  sample: null
 
 '''
 
@@ -407,101 +504,103 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            gallery_application_version=dict(
-                type='dict',
-                disposition='/gallery_application_version',
+            location=dict(
+                type='str',
+                disposition='/location'
+            ),
+            target_regions=dict(
+                type='list',
+                disposition='/target_regions',
+                elements='dict',
                 options=dict(
-                    publishing_profile=dict(
+                    name=dict(
+                        type='str',
+                        disposition='name',
+                        required=True
+                    ),
+                    regional_replica_count=dict(
+                        type='integer',
+                        disposition='regional_replica_count'
+                    ),
+                    storage_account_type=dict(
+                        type='str',
+                        disposition='storage_account_type',
+                        choices=['Standard_LRS',
+                                 'Standard_ZRS',
+                                 'Premium_LRS']
+                    ),
+                    encryption=dict(
                         type='dict',
-                        disposition='publishing_profile',
+                        disposition='encryption',
                         options=dict(
-                            source=dict(
+                            os_disk_image=dict(
                                 type='dict',
-                                disposition='source',
-                                required=True,
+                                disposition='os_disk_image',
                                 options=dict(
-                                    file_name=dict(
+                                    disk_encryption_set_id=dict(
                                         type='str',
-                                        disposition='file_name',
-                                        required=True
-                                    ),
-                                    media_link=dict(
-                                        type='str',
-                                        disposition='media_link',
-                                        required=True
+                                        disposition='disk_encryption_set_id'
                                     )
                                 )
                             ),
-                            content_type=dict(
-                                type='str',
-                                disposition='content_type'
-                            ),
-                            enable_health_check=dict(
-                                type='bool',
-                                disposition='enable_health_check'
-                            )
-                        )
-                    ),
-                    provisioning_state=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='provisioning_state',
-                        choices=['Creating',
-                                 'Updating',
-                                 'Failed',
-                                 'Succeeded',
-                                 'Deleting',
-                                 'Migrating']
-                    ),
-                    replication_status=dict(
-                        type='dict',
-                        updatable=False,
-                        disposition='replication_status',
-                        options=dict(
-                            aggregated_state=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='aggregated_state',
-                                choices=['Unknown',
-                                         'InProgress',
-                                         'Completed',
-                                         'Failed']
-                            ),
-                            summary=dict(
+                            data_disk_images=dict(
                                 type='list',
-                                updatable=False,
-                                disposition='summary',
+                                disposition='data_disk_images',
                                 elements='dict',
                                 options=dict(
-                                    region=dict(
-                                        type='str',
-                                        updatable=False,
-                                        disposition='region'
-                                    ),
-                                    state=dict(
-                                        type='str',
-                                        updatable=False,
-                                        disposition='state',
-                                        choices=['Unknown',
-                                                 'Replicating',
-                                                 'Completed',
-                                                 'Failed']
-                                    ),
-                                    details=dict(
-                                        type='str',
-                                        updatable=False,
-                                        disposition='details'
-                                    ),
-                                    progress=dict(
+                                    lun=dict(
                                         type='integer',
-                                        updatable=False,
-                                        disposition='progress'
+                                        disposition='lun',
+                                        required=True
                                     )
                                 )
                             )
                         )
                     )
                 )
+            ),
+            replica_count=dict(
+                type='integer',
+                disposition='/replica_count'
+            ),
+            exclude_from_latest=dict(
+                type='bool',
+                disposition='/exclude_from_latest'
+            ),
+            end_of_life_date=dict(
+                type='str',
+                disposition='/end_of_life_date'
+            ),
+            storage_account_type=dict(
+                type='str',
+                disposition='/storage_account_type',
+                choices=['Standard_LRS',
+                         'Standard_ZRS',
+                         'Premium_LRS']
+            ),
+            source=dict(
+                type='dict',
+                disposition='/source',
+                options=dict(
+                    file_name=dict(
+                        type='str',
+                        disposition='file_name',
+                        required=True
+                    ),
+                    media_link=dict(
+                        type='str',
+                        disposition='media_link',
+                        required=True
+                    )
+                )
+            ),
+            content_type=dict(
+                type='str',
+                disposition='/content_type'
+            ),
+            enable_health_check=dict(
+                type='bool',
+                disposition='/enable_health_check'
             ),
             expand=dict(
                 type='str',
@@ -584,7 +683,7 @@ class AzureRMGalleryApplicationVersion(AzureRMModuleBaseExt):
                                                                                       gallery_name=self.gallery_name,
                                                                                       gallery_application_name=self.gallery_application_name,
                                                                                       gallery_application_version_name=self.gallery_application_version_name,
-                                                                                      parameters=self.body)
+                                                                                      gallery_application_version=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

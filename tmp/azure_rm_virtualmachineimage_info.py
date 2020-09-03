@@ -279,12 +279,12 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
         elif (self.location is not None and
               self.publisher_name is not None and
               self.offer is not None):
-            self.results['virtual_machine_images'] = self.format_item(self.listskus())
+            self.results['virtual_machine_images'] = self.format_item(self.listsku())
         elif (self.location is not None and
               self.publisher_name is not None):
-            self.results['virtual_machine_images'] = self.format_item(self.listoffers())
+            self.results['virtual_machine_images'] = self.format_item(self.listoffer())
         elif (self.location is not None):
-            self.results['virtual_machine_images'] = self.format_item(self.listpublishers())
+            self.results['virtual_machine_images'] = self.format_item(self.listpublisher())
         return self.results
 
     def get(self):
@@ -317,34 +317,34 @@ class AzureRMVirtualMachineImageInfo(AzureRMModuleBase):
 
         return response
 
-    def listskus(self):
+    def listsku(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_images.list_skus(location=self.location,
-                                                                         publisher_name=self.publisher_name,
-                                                                         offer=self.offer)
+            response = self.mgmt_client.virtual_machine_images.list_sku(location=self.location,
+                                                                        publisher_name=self.publisher_name,
+                                                                        offer=self.offer)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return response
 
-    def listoffers(self):
+    def listoffer(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_images.list_offers(location=self.location,
-                                                                           publisher_name=self.publisher_name)
+            response = self.mgmt_client.virtual_machine_images.list_offer(location=self.location,
+                                                                          publisher_name=self.publisher_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return response
 
-    def listpublishers(self):
+    def listpublisher(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_images.list_publishers(location=self.location)
+            response = self.mgmt_client.virtual_machine_images.list_publisher(location=self.location)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

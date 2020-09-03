@@ -35,42 +35,16 @@ options:
       - The name of the Shared Image Gallery to be deleted.
     required: true
     type: str
-  gallery:
+  location:
+    description:
+      - Resource location
+    type: str
+  description:
     description:
       - >-
-        Parameters supplied to the create or update Shared Image Gallery
-        operation.
-      - Parameters supplied to the update Shared Image Gallery operation.
-    type: dict
-    suboptions:
-      description:
-        description:
-          - >-
-            The description of this Shared Image Gallery resource. This property
-            is updatable.
-        type: str
-      identifier:
-        description:
-          - Describes the gallery unique name.
-        type: dict
-        suboptions:
-          unique_name:
-            description:
-              - >-
-                The unique name of the Shared Image Gallery. This name is
-                generated automatically by Azure.
-            type: str
-      provisioning_state:
-        description:
-          - 'The provisioning state, which only appears in the response.'
-        type: str
-        choices:
-          - Creating
-          - Updating
-          - Failed
-          - Succeeded
-          - Deleting
-          - Migrating
+        The description of this Shared Image Gallery resource. This property is
+        updatable.
+    type: str
   state:
     description:
       - Assert the state of the Gallery.
@@ -91,21 +65,19 @@ author:
 EXAMPLES = '''
     - name: Create or update a simple gallery.
       azure_rm_gallery: 
-        gallery:
-          location: West US
-          properties:
-            description: This is the gallery description.
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
+        location: West US
+        properties:
+          description: This is the gallery description.
         
 
     - name: Update a simple gallery.
       azure_rm_gallery: 
-        gallery:
-          properties:
-            description: This is the gallery description.
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
+        properties:
+          description: This is the gallery description.
         
 
     - name: Delete a gallery.
@@ -209,37 +181,13 @@ class AzureRMGallery(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            gallery=dict(
-                type='dict',
-                disposition='/gallery',
-                options=dict(
-                    description=dict(
-                        type='str',
-                        disposition='description'
-                    ),
-                    identifier=dict(
-                        type='dict',
-                        disposition='identifier',
-                        options=dict(
-                            unique_name=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='unique_name'
-                            )
-                        )
-                    ),
-                    provisioning_state=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='provisioning_state',
-                        choices=['Creating',
-                                 'Updating',
-                                 'Failed',
-                                 'Succeeded',
-                                 'Deleting',
-                                 'Migrating']
-                    )
-                )
+            location=dict(
+                type='str',
+                disposition='/location'
+            ),
+            description=dict(
+                type='str',
+                disposition='/description'
             ),
             state=dict(
                 type='str',
@@ -313,7 +261,7 @@ class AzureRMGallery(AzureRMModuleBaseExt):
         try:
             response = self.mgmt_client.galleries.create_or_update(resource_group_name=self.resource_group_name,
                                                                    gallery_name=self.gallery_name,
-                                                                   parameters=self.body)
+                                                                   gallery=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

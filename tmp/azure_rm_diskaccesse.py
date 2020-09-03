@@ -35,90 +35,10 @@ options:
         is 80 characters.
     required: true
     type: str
-  disk_access:
+  location:
     description:
-      - >-
-        disk access object supplied in the body of the Put disk access
-        operation.
-      - >-
-        disk access object supplied in the body of the Patch disk access
-        operation.
-    type: dict
-    suboptions:
-      private_endpoint_connections:
-        description:
-          - >-
-            A readonly collection of private endpoint connections created on the
-            disk. Currently only one endpoint connection is supported.
-        type: list
-        suboptions:
-          id:
-            description:
-              - private endpoint connection Id
-            type: str
-          name:
-            description:
-              - private endpoint connection name
-            type: str
-          type:
-            description:
-              - private endpoint connection type
-            type: str
-          private_endpoint:
-            description:
-              - The resource of private end point.
-            type: dict
-            suboptions:
-              id:
-                description:
-                  - The ARM identifier for Private Endpoint
-                type: str
-          private_link_service_connection_state:
-            description:
-              - >-
-                A collection of information about the state of the connection
-                between DiskAccess and Virtual Network.
-            type: dict
-            suboptions:
-              status:
-                description:
-                  - >-
-                    Indicates whether the connection has been
-                    Approved/Rejected/Removed by the owner of the service.
-                type: str
-                choices:
-                  - Pending
-                  - Approved
-                  - Rejected
-              description:
-                description:
-                  - The reason for approval/rejection of the connection.
-                type: str
-              actions_required:
-                description:
-                  - >-
-                    A message indicating if changes on the service provider
-                    require any updates on the consumer.
-                type: str
-          provisioning_state:
-            description:
-              - >-
-                The provisioning state of the private endpoint connection
-                resource.
-            type: str
-            choices:
-              - Succeeded
-              - Creating
-              - Deleting
-              - Failed
-      provisioning_state:
-        description:
-          - The disk access resource provisioning state.
-        type: str
-      time_created:
-        description:
-          - The time when the disk access was created.
-        type: str
+      - Resource location
+    type: str
   state:
     description:
       - Assert the state of the DiskAccesse.
@@ -139,18 +59,12 @@ author:
 EXAMPLES = '''
     - name: Create a disk access resource.
       azure_rm_diskaccesse: 
-        disk_access:
-          location: West US
         disk_access_name: myDiskAccess
         resource_group_name: myResourceGroup
         
 
     - name: Update a disk access resource.
       azure_rm_diskaccesse: 
-        disk_access:
-          tags:
-            department: Development
-            project: PrivateEndpoints
         disk_access_name: myDiskAccess
         resource_group_name: myResourceGroup
         
@@ -316,85 +230,9 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            disk_access=dict(
-                type='dict',
-                disposition='/disk_access',
-                options=dict(
-                    private_endpoint_connections=dict(
-                        type='list',
-                        updatable=False,
-                        disposition='private_endpoint_connections',
-                        elements='dict',
-                        options=dict(
-                            id=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='id'
-                            ),
-                            name=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='name'
-                            ),
-                            type=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='type'
-                            ),
-                            private_endpoint=dict(
-                                type='dict',
-                                disposition='private_endpoint',
-                                options=dict(
-                                    id=dict(
-                                        type='str',
-                                        updatable=False,
-                                        disposition='id'
-                                    )
-                                )
-                            ),
-                            private_link_service_connection_state=dict(
-                                type='dict',
-                                disposition='private_link_service_connection_state',
-                                options=dict(
-                                    status=dict(
-                                        type='str',
-                                        disposition='status',
-                                        choices=['Pending',
-                                                 'Approved',
-                                                 'Rejected']
-                                    ),
-                                    description=dict(
-                                        type='str',
-                                        disposition='description'
-                                    ),
-                                    actions_required=dict(
-                                        type='str',
-                                        disposition='actions_required'
-                                    )
-                                )
-                            ),
-                            provisioning_state=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='provisioning_state',
-                                choices=['Succeeded',
-                                         'Creating',
-                                         'Deleting',
-                                         'Failed']
-                            )
-                        )
-                    ),
-                    provisioning_state=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='provisioning_state'
-                    ),
-                    time_created=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='time_created'
-                    )
-                )
+            location=dict(
+                type='str',
+                disposition='/location'
             ),
             state=dict(
                 type='str',
@@ -468,7 +306,7 @@ class AzureRMDiskAccesse(AzureRMModuleBaseExt):
         try:
             response = self.mgmt_client.disk_accesses.create_or_update(resource_group_name=self.resource_group_name,
                                                                        disk_access_name=self.disk_access_name,
-                                                                       parameters=self.body)
+                                                                       disk_access=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

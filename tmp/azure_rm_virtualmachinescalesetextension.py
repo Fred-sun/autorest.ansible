@@ -41,75 +41,55 @@ options:
       - The name of the VM scale set extension.
     required: true
     type: str
-  extension_parameters:
+  name:
     description:
-      - Parameters supplied to the Create VM scale set Extension operation.
-      - Parameters supplied to the Update VM scale set Extension operation.
-    type: dict
-    suboptions:
-      name:
-        description:
-          - The name of the extension.
-        type: str
-      type:
-        description:
-          - Resource type
-        type: str
-      force_update_tag:
-        description:
-          - >-
-            If a value is provided and is different from the previous value, the
-            extension handler will be forced to update even if the extension
-            configuration has not changed.
-        type: str
-      publisher:
-        description:
-          - The name of the extension handler publisher.
-        type: str
-      type_properties_type:
-        description:
-          - >-
-            Specifies the type of the extension; an example is
-            "CustomScriptExtension".
-        type: str
-      type_handler_version:
-        description:
-          - Specifies the version of the script handler.
-        type: str
-      auto_upgrade_minor_version:
-        description:
-          - >-
-            Indicates whether the extension should use a newer minor version if
-            one is available at deployment time. Once deployed, however, the
-            extension will not upgrade minor versions unless redeployed, even
-            with this property set to true.
-        type: bool
-      enable_automatic_upgrade:
-        description:
-          - >-
-            Indicates whether the extension should be automatically upgraded by
-            the platform if there is a newer version of the extension available.
-        type: bool
-      settings:
-        description:
-          - Json formatted public settings for the extension.
-        type: any
-      protected_settings:
-        description:
-          - >-
-            The extension can contain either protectedSettings or
-            protectedSettingsFromKeyVault or no protected settings at all.
-        type: any
-      provisioning_state:
-        description:
-          - 'The provisioning state, which only appears in the response.'
-        type: str
-      provision_after_extensions:
-        description:
-          - >-
-            Collection of extension names after which this extension needs to be
-            provisioned.
-        type: list
+      - The name of the extension.
+    type: str
+  force_update_tag:
+    description:
+      - >-
+        If a value is provided and is different from the previous value, the
+        extension handler will be forced to update even if the extension
+        configuration has not changed.
+    type: str
+  publisher:
+    description:
+      - The name of the extension handler publisher.
+    type: str
+  type:
+    description:
+      - >-
+        Specifies the type of the extension; an example is
+        "CustomScriptExtension".
+    type: str
+  type_handler_version:
+    description:
+      - Specifies the version of the script handler.
+    type: str
+  auto_upgrade_minor_version:
+    description:
+      - >-
+        Indicates whether the extension should use a newer minor version if one
+        is available at deployment time. Once deployed, however, the extension
+        will not upgrade minor versions unless redeployed, even with this
+        property set to true.
+    type: bool
+  enable_automatic_upgrade:
+    description:
+      - >-
+        Indicates whether the extension should be automatically upgraded by the
+        platform if there is a newer version of the extension available.
+    type: bool
+  settings:
+    description:
+      - Json formatted public settings for the extension.
+    type: any
+  protected_settings:
+    description:
+      - >-
+        The extension can contain either protectedSettings or
+        protectedSettingsFromKeyVault or no protected settings at all.
+    type: any
   expand:
     description:
       - The expand expression to apply on the operation.
@@ -265,62 +245,41 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            extension_parameters=dict(
-                type='dict',
-                disposition='/extension_parameters',
-                options=dict(
-                    name=dict(
-                        type='str',
-                        disposition='name'
-                    ),
-                    type=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='type'
-                    ),
-                    force_update_tag=dict(
-                        type='str',
-                        disposition='force_update_tag'
-                    ),
-                    publisher=dict(
-                        type='str',
-                        disposition='publisher'
-                    ),
-                    type_properties_type=dict(
-                        type='str',
-                        disposition='type_properties_type'
-                    ),
-                    type_handler_version=dict(
-                        type='str',
-                        disposition='type_handler_version'
-                    ),
-                    auto_upgrade_minor_version=dict(
-                        type='bool',
-                        disposition='auto_upgrade_minor_version'
-                    ),
-                    enable_automatic_upgrade=dict(
-                        type='bool',
-                        disposition='enable_automatic_upgrade'
-                    ),
-                    settings=dict(
-                        type='any',
-                        disposition='settings'
-                    ),
-                    protected_settings=dict(
-                        type='any',
-                        disposition='protected_settings'
-                    ),
-                    provisioning_state=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='provisioning_state'
-                    ),
-                    provision_after_extensions=dict(
-                        type='list',
-                        disposition='provision_after_extensions',
-                        elements='str'
-                    )
-                )
+            name=dict(
+                type='str',
+                disposition='/name'
+            ),
+            force_update_tag=dict(
+                type='str',
+                disposition='/force_update_tag'
+            ),
+            publisher=dict(
+                type='str',
+                disposition='/publisher'
+            ),
+            type=dict(
+                type='str',
+                disposition='/type'
+            ),
+            type_handler_version=dict(
+                type='str',
+                disposition='/type_handler_version'
+            ),
+            auto_upgrade_minor_version=dict(
+                type='bool',
+                disposition='/auto_upgrade_minor_version'
+            ),
+            enable_automatic_upgrade=dict(
+                type='bool',
+                disposition='/enable_automatic_upgrade'
+            ),
+            settings=dict(
+                type='any',
+                disposition='/settings'
+            ),
+            protected_settings=dict(
+                type='any',
+                disposition='/protected_settings'
             ),
             expand=dict(
                 type='str'
@@ -400,7 +359,7 @@ class AzureRMVirtualMachineScaleSetExtension(AzureRMModuleBaseExt):
             response = self.mgmt_client.virtual_machine_scale_set_extensions.create_or_update(resource_group_name=self.resource_group_name,
                                                                                               vm_scale_set_name=self.vm_scale_set_name,
                                                                                               vmss_extension_name=self.vmss_extension_name,
-                                                                                              parameters=self.body)
+                                                                                              extension_parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

@@ -97,26 +97,104 @@ images:
       returned: always
       type: dictionary
       sample: null
-    source_virtual_machine:
+    provisioning_state:
       description:
-        - The source virtual machine from which Image is created.
+        - The provisioning state.
+      returned: always
+      type: str
+      sample: null
+    hyper_vgeneration:
+      description:
+        - >-
+          Gets the HyperVGenerationType of the VirtualMachine created from the
+          image
+      returned: always
+      type: str
+      sample: null
+    os_disk:
+      description:
+        - >-
+          Specifies information about the operating system disk used by the
+          virtual machine. :code:`<br>`:code:`<br>` For more information about
+          disks, see `About disks and VHDs for Azure virtual machines
+          <https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json>`_.
       returned: always
       type: dict
       sample: null
       contains:
-        id:
+        os_type:
           description:
-            - Resource Id
+            - >-
+              This property allows you to specify the type of the OS that is
+              included in the disk if creating a VM from a custom image.
+              :code:`<br>`:code:`<br>` Possible values are:
+              :code:`<br>`:code:`<br>` **Windows** :code:`<br>`:code:`<br>`
+              **Linux**
+          returned: always
+          type: sealed-choice
+          sample: null
+        os_state:
+          description:
+            - The OS State.
+          returned: always
+          type: sealed-choice
+          sample: null
+    data_disks:
+      description:
+        - >-
+          Specifies the parameters that are used to add a data disk to a virtual
+          machine. :code:`<br>`:code:`<br>` For more information about disks,
+          see `About disks and VHDs for Azure virtual machines
+          <https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json>`_.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        lun:
+          description:
+            - >-
+              Specifies the logical unit number of the data disk. This value is
+              used to identify data disks within the VM and therefore must be
+              unique for each data disk attached to a VM.
+          returned: always
+          type: integer
+          sample: null
+    zone_resilient:
+      description:
+        - >-
+          Specifies whether an image is zone resilient or not. Default is false.
+          Zone resilient images can be created only in regions that provide Zone
+          Redundant Storage (ZRS).
+      returned: always
+      type: bool
+      sample: null
+    id_properties_source_virtual_machine_id:
+      description:
+        - Resource Id
+      returned: always
+      type: str
+      sample: null
+    value:
+      description:
+        - The list of Images.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        provisioning_state:
+          description:
+            - The provisioning state.
           returned: always
           type: str
           sample: null
-    storage_profile:
-      description:
-        - Specifies the storage settings for the virtual machine disks.
-      returned: always
-      type: dict
-      sample: null
-      contains:
+        hyper_vgeneration:
+          description:
+            - >-
+              Gets the HyperVGenerationType of the VirtualMachine created from
+              the image
+          returned: always
+          type: str
+          sample: null
         os_disk:
           description:
             - >-
@@ -174,118 +252,9 @@ images:
           returned: always
           type: bool
           sample: null
-    provisioning_state:
-      description:
-        - The provisioning state.
-      returned: always
-      type: str
-      sample: null
-    hyper_vgeneration:
-      description:
-        - >-
-          Gets the HyperVGenerationType of the VirtualMachine created from the
-          image
-      returned: always
-      type: str
-      sample: null
-    value:
-      description:
-        - The list of Images.
-      returned: always
-      type: list
-      sample: null
-      contains:
-        source_virtual_machine:
+        id_properties_source_virtual_machine_id:
           description:
-            - The source virtual machine from which Image is created.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            id:
-              description:
-                - Resource Id
-              returned: always
-              type: str
-              sample: null
-        storage_profile:
-          description:
-            - Specifies the storage settings for the virtual machine disks.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            os_disk:
-              description:
-                - >-
-                  Specifies information about the operating system disk used by
-                  the virtual machine. :code:`<br>`:code:`<br>` For more
-                  information about disks, see `About disks and VHDs for Azure
-                  virtual machines
-                  <https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json>`_.
-              returned: always
-              type: dict
-              sample: null
-              contains:
-                os_type:
-                  description:
-                    - >-
-                      This property allows you to specify the type of the OS
-                      that is included in the disk if creating a VM from a
-                      custom image. :code:`<br>`:code:`<br>` Possible values
-                      are: :code:`<br>`:code:`<br>` **Windows**
-                      :code:`<br>`:code:`<br>` **Linux**
-                  returned: always
-                  type: sealed-choice
-                  sample: null
-                os_state:
-                  description:
-                    - The OS State.
-                  returned: always
-                  type: sealed-choice
-                  sample: null
-            data_disks:
-              description:
-                - >-
-                  Specifies the parameters that are used to add a data disk to a
-                  virtual machine. :code:`<br>`:code:`<br>` For more information
-                  about disks, see `About disks and VHDs for Azure virtual
-                  machines
-                  <https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json>`_.
-              returned: always
-              type: list
-              sample: null
-              contains:
-                lun:
-                  description:
-                    - >-
-                      Specifies the logical unit number of the data disk. This
-                      value is used to identify data disks within the VM and
-                      therefore must be unique for each data disk attached to a
-                      VM.
-                  returned: always
-                  type: integer
-                  sample: null
-            zone_resilient:
-              description:
-                - >-
-                  Specifies whether an image is zone resilient or not. Default
-                  is false. Zone resilient images can be created only in regions
-                  that provide Zone Redundant Storage (ZRS).
-              returned: always
-              type: bool
-              sample: null
-        provisioning_state:
-          description:
-            - The provisioning state.
-          returned: always
-          type: str
-          sample: null
-        hyper_vgeneration:
-          description:
-            - >-
-              Gets the HyperVGenerationType of the VirtualMachine created from
-              the image
+            - Resource Id
           returned: always
           type: str
           sample: null

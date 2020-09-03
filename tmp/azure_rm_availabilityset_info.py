@@ -395,7 +395,7 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
             self.results['availability_sets'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.availability_set_name is not None):
-            self.results['availability_sets'] = self.format_item(self.listavailablesizes())
+            self.results['availability_sets'] = self.format_item(self.listavailablesize())
         elif (self.resource_group_name is not None):
             self.results['availability_sets'] = self.format_item(self.list())
         else:
@@ -413,12 +413,12 @@ class AzureRMAvailabilitySetInfo(AzureRMModuleBase):
 
         return response
 
-    def listavailablesizes(self):
+    def listavailablesize(self):
         response = None
 
         try:
-            response = self.mgmt_client.availability_sets.list_available_sizes(resource_group_name=self.resource_group_name,
-                                                                               availability_set_name=self.availability_set_name)
+            response = self.mgmt_client.availability_sets.list_available_size(resource_group_name=self.resource_group_name,
+                                                                              availability_set_name=self.availability_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

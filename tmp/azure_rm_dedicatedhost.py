@@ -37,144 +37,52 @@ options:
       - The name of the dedicated host.
     required: true
     type: str
-  parameters:
+  location:
     description:
-      - Parameters supplied to the Create Dedicated Host.
-      - Parameters supplied to the Update Dedicated Host operation.
+      - Resource location
+    type: str
+  sku:
+    description:
+      - >-
+        SKU of the dedicated host for Hardware Generation and VM family. Only
+        name is required to be set. List Microsoft.Compute SKUs for a list of
+        possible values.
     type: dict
     suboptions:
-      sku:
+      name:
+        description:
+          - The sku name.
+        type: str
+      tier:
         description:
           - >-
-            SKU of the dedicated host for Hardware Generation and VM family.
-            Only name is required to be set. List Microsoft.Compute SKUs for a
-            list of possible values.
-        required: true
-        type: dict
-        suboptions:
-          name:
-            description:
-              - The sku name.
-            type: str
-          tier:
-            description:
-              - >-
-                Specifies the tier of virtual machines in a scale set.:code:`<br
-                />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
-                **Standard**\ :code:`<br />`:code:`<br />` **Basic**
-            type: str
-          capacity:
-            description:
-              - Specifies the number of virtual machines in the scale set.
-            type: integer
-      platform_fault_domain:
+            Specifies the tier of virtual machines in a scale set.:code:`<br
+            />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
+            **Standard**\ :code:`<br />`:code:`<br />` **Basic**
+        type: str
+      capacity:
         description:
-          - Fault domain of the dedicated host within a dedicated host group.
+          - Specifies the number of virtual machines in the scale set.
         type: integer
-      auto_replace_on_failure:
-        description:
-          - >-
-            Specifies whether the dedicated host should be replaced
-            automatically in case of a failure. The value is defaulted to 'true'
-            when not provided.
-        type: bool
-      host_id:
-        description:
-          - >-
-            A unique id generated and assigned to the dedicated host by the
-            platform. :code:`<br>`:code:`<br>` Does not change throughout the
-            lifetime of the host.
-        type: str
-      virtual_machines:
-        description:
-          - A list of references to all virtual machines in the Dedicated Host.
-        type: list
-        suboptions:
-          id:
-            description:
-              - Resource Id
-            type: str
-      license_type:
-        description:
-          - >-
-            Specifies the software license type that will be applied to the VMs
-            deployed on the dedicated host. :code:`<br>`:code:`<br>` Possible
-            values are: :code:`<br>`:code:`<br>` **None**
-            :code:`<br>`:code:`<br>` **Windows_Server_Hybrid**
-            :code:`<br>`:code:`<br>` **Windows_Server_Perpetual**
-            :code:`<br>`:code:`<br>` Default: **None**
-        type: sealed-choice
-      provisioning_time:
-        description:
-          - The date when the host was first provisioned.
-        type: str
-      provisioning_state:
-        description:
-          - 'The provisioning state, which only appears in the response.'
-        type: str
-      instance_view:
-        description:
-          - The dedicated host instance view.
-        type: dict
-        suboptions:
-          asset_id:
-            description:
-              - >-
-                Specifies the unique id of the dedicated physical machine on
-                which the dedicated host resides.
-            type: str
-          available_capacity:
-            description:
-              - Unutilized capacity of the dedicated host.
-            type: dict
-            suboptions:
-              allocatable_vms:
-                description:
-                  - >-
-                    The unutilized capacity of the dedicated host represented in
-                    terms of each VM size that is allowed to be deployed to the
-                    dedicated host.
-                type: list
-                suboptions:
-                  vm_size:
-                    description:
-                      - >-
-                        VM size in terms of which the unutilized capacity is
-                        represented.
-                    type: str
-                  count:
-                    description:
-                      - >-
-                        Maximum number of VMs of size vmSize that can fit in the
-                        dedicated host's remaining capacity.
-                    type: number
-          statuses:
-            description:
-              - The resource status information.
-            type: list
-            suboptions:
-              code:
-                description:
-                  - The status code.
-                type: str
-              level:
-                description:
-                  - The level code.
-                type: sealed-choice
-              display_status:
-                description:
-                  - The short localizable label for the status.
-                type: str
-              message:
-                description:
-                  - >-
-                    The detailed status message, including for alerts and error
-                    messages.
-                type: str
-              time:
-                description:
-                  - The time of the status.
-                type: str
+  platform_fault_domain:
+    description:
+      - Fault domain of the dedicated host within a dedicated host group.
+    type: integer
+  auto_replace_on_failure:
+    description:
+      - >-
+        Specifies whether the dedicated host should be replaced automatically in
+        case of a failure. The value is defaulted to 'true' when not provided.
+    type: bool
+  license_type:
+    description:
+      - >-
+        Specifies the software license type that will be applied to the VMs
+        deployed on the dedicated host. :code:`<br>`:code:`<br>` Possible values
+        are: :code:`<br>`:code:`<br>` **None** :code:`<br>`:code:`<br>`
+        **Windows_Server_Hybrid** :code:`<br>`:code:`<br>`
+        **Windows_Server_Perpetual** :code:`<br>`:code:`<br>` Default: **None**
+    type: sealed-choice
   expand:
     description:
       - The expand expression to apply on the operation.
@@ -201,14 +109,6 @@ EXAMPLES = '''
       azure_rm_dedicatedhost: 
         host_group_name: myDedicatedHostGroup
         host_name: myDedicatedHost
-        parameters:
-          location: westus
-          properties:
-            platform_fault_domain: 1
-          sku:
-            name: DSv3-Type1
-          tags:
-            department: HR
         resource_group_name: myResourceGroup
         location: westus
         properties:
@@ -466,130 +366,39 @@ class AzureRMDedicatedHost(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            parameters=dict(
+            location=dict(
+                type='str',
+                disposition='/location'
+            ),
+            sku=dict(
                 type='dict',
-                disposition='/parameters',
+                disposition='/sku',
                 options=dict(
-                    sku=dict(
-                        type='dict',
-                        disposition='sku',
-                        required=True,
-                        options=dict(
-                            name=dict(
-                                type='str',
-                                disposition='name'
-                            ),
-                            tier=dict(
-                                type='str',
-                                disposition='tier'
-                            ),
-                            capacity=dict(
-                                type='integer',
-                                disposition='capacity'
-                            )
-                        )
+                    name=dict(
+                        type='str',
+                        disposition='name'
                     ),
-                    platform_fault_domain=dict(
+                    tier=dict(
+                        type='str',
+                        disposition='tier'
+                    ),
+                    capacity=dict(
                         type='integer',
-                        disposition='platform_fault_domain'
-                    ),
-                    auto_replace_on_failure=dict(
-                        type='bool',
-                        disposition='auto_replace_on_failure'
-                    ),
-                    host_id=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='host_id'
-                    ),
-                    virtual_machines=dict(
-                        type='list',
-                        updatable=False,
-                        disposition='virtual_machines',
-                        elements='dict',
-                        options=dict(
-                            id=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='id'
-                            )
-                        )
-                    ),
-                    license_type=dict(
-                        type='sealed-choice',
-                        disposition='license_type'
-                    ),
-                    provisioning_time=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='provisioning_time'
-                    ),
-                    provisioning_state=dict(
-                        type='str',
-                        updatable=False,
-                        disposition='provisioning_state'
-                    ),
-                    instance_view=dict(
-                        type='dict',
-                        updatable=False,
-                        disposition='instance_view',
-                        options=dict(
-                            asset_id=dict(
-                                type='str',
-                                updatable=False,
-                                disposition='asset_id'
-                            ),
-                            available_capacity=dict(
-                                type='dict',
-                                disposition='available_capacity',
-                                options=dict(
-                                    allocatable_vms=dict(
-                                        type='list',
-                                        disposition='allocatable_vms',
-                                        elements='dict',
-                                        options=dict(
-                                            vm_size=dict(
-                                                type='str',
-                                                disposition='vm_size'
-                                            ),
-                                            count=dict(
-                                                type='number',
-                                                disposition='count'
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            statuses=dict(
-                                type='list',
-                                disposition='statuses',
-                                elements='dict',
-                                options=dict(
-                                    code=dict(
-                                        type='str',
-                                        disposition='code'
-                                    ),
-                                    level=dict(
-                                        type='sealed-choice',
-                                        disposition='level'
-                                    ),
-                                    display_status=dict(
-                                        type='str',
-                                        disposition='display_status'
-                                    ),
-                                    message=dict(
-                                        type='str',
-                                        disposition='message'
-                                    ),
-                                    time=dict(
-                                        type='str',
-                                        disposition='time'
-                                    )
-                                )
-                            )
-                        )
+                        disposition='capacity'
                     )
                 )
+            ),
+            platform_fault_domain=dict(
+                type='integer',
+                disposition='/platform_fault_domain'
+            ),
+            auto_replace_on_failure=dict(
+                type='bool',
+                disposition='/auto_replace_on_failure'
+            ),
+            license_type=dict(
+                type='sealed-choice',
+                disposition='/license_type'
             ),
             expand=dict(
                 type='constant'

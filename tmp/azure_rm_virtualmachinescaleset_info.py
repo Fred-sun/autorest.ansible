@@ -152,50 +152,6 @@ virtual_machine_scale_sets:
           returned: always
           type: str
           sample: null
-    identity:
-      description:
-        - 'The identity of the virtual machine scale set, if configured.'
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        principal_id:
-          description:
-            - >-
-              The principal id of virtual machine scale set identity. This
-              property will only be provided for a system assigned identity.
-          returned: always
-          type: str
-          sample: null
-        tenant_id:
-          description:
-            - >-
-              The tenant id associated with the virtual machine scale set. This
-              property will only be provided for a system assigned identity.
-          returned: always
-          type: str
-          sample: null
-        type:
-          description:
-            - >-
-              The type of identity used for the virtual machine scale set. The
-              type 'SystemAssigned, UserAssigned' includes both an implicitly
-              created identity and a set of user assigned identities. The type
-              'None' will remove any identities from the virtual machine scale
-              set.
-          returned: always
-          type: sealed-choice
-          sample: null
-        user_assigned_identities:
-          description:
-            - >-
-              The list of user identities associated with the virtual machine
-              scale set. The user identity dictionary key references will be ARM
-              resource ids in the form:
-              '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-          returned: always
-          type: dictionary
-          sample: null
     zones:
       description:
         - >-
@@ -203,6 +159,42 @@ virtual_machine_scale_sets:
           be set when you create the scale set
       returned: always
       type: list
+      sample: null
+    principal_id:
+      description:
+        - >-
+          The principal id of virtual machine scale set identity. This property
+          will only be provided for a system assigned identity.
+      returned: always
+      type: str
+      sample: null
+    tenant_id:
+      description:
+        - >-
+          The tenant id associated with the virtual machine scale set. This
+          property will only be provided for a system assigned identity.
+      returned: always
+      type: str
+      sample: null
+    type_identity_type:
+      description:
+        - >-
+          The type of identity used for the virtual machine scale set. The type
+          'SystemAssigned, UserAssigned' includes both an implicitly created
+          identity and a set of user assigned identities. The type 'None' will
+          remove any identities from the virtual machine scale set.
+      returned: always
+      type: sealed-choice
+      sample: null
+    user_assigned_identities:
+      description:
+        - >-
+          The list of user identities associated with the virtual machine scale
+          set. The user identity dictionary key references will be ARM resource
+          ids in the form:
+          '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+      returned: always
+      type: dictionary
       sample: null
     upgrade_policy:
       description:
@@ -1985,51 +1977,6 @@ virtual_machine_scale_sets:
               returned: always
               type: str
               sample: null
-        identity:
-          description:
-            - 'The identity of the virtual machine scale set, if configured.'
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            principal_id:
-              description:
-                - >-
-                  The principal id of virtual machine scale set identity. This
-                  property will only be provided for a system assigned identity.
-              returned: always
-              type: str
-              sample: null
-            tenant_id:
-              description:
-                - >-
-                  The tenant id associated with the virtual machine scale set.
-                  This property will only be provided for a system assigned
-                  identity.
-              returned: always
-              type: str
-              sample: null
-            type:
-              description:
-                - >-
-                  The type of identity used for the virtual machine scale set.
-                  The type 'SystemAssigned, UserAssigned' includes both an
-                  implicitly created identity and a set of user assigned
-                  identities. The type 'None' will remove any identities from
-                  the virtual machine scale set.
-              returned: always
-              type: sealed-choice
-              sample: null
-            user_assigned_identities:
-              description:
-                - >-
-                  The list of user identities associated with the virtual
-                  machine scale set. The user identity dictionary key references
-                  will be ARM resource ids in the form:
-                  '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-              returned: always
-              type: dictionary
-              sample: null
         zones:
           description:
             - >-
@@ -2037,6 +1984,43 @@ virtual_machine_scale_sets:
               only be set when you create the scale set
           returned: always
           type: list
+          sample: null
+        principal_id:
+          description:
+            - >-
+              The principal id of virtual machine scale set identity. This
+              property will only be provided for a system assigned identity.
+          returned: always
+          type: str
+          sample: null
+        tenant_id:
+          description:
+            - >-
+              The tenant id associated with the virtual machine scale set. This
+              property will only be provided for a system assigned identity.
+          returned: always
+          type: str
+          sample: null
+        type_identity_type:
+          description:
+            - >-
+              The type of identity used for the virtual machine scale set. The
+              type 'SystemAssigned, UserAssigned' includes both an implicitly
+              created identity and a set of user assigned identities. The type
+              'None' will remove any identities from the virtual machine scale
+              set.
+          returned: always
+          type: sealed-choice
+          sample: null
+        user_assigned_identities:
+          description:
+            - >-
+              The list of user identities associated with the virtual machine
+              scale set. The user identity dictionary key references will be ARM
+              resource ids in the form:
+              '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+          returned: always
+          type: dictionary
           sample: null
         upgrade_policy:
           description:
@@ -3745,7 +3729,7 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
             self.results['virtual_machine_scale_sets'] = self.format_item(self.getinstanceview())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
-            self.results['virtual_machine_scale_sets'] = self.format_item(self.listskus())
+            self.results['virtual_machine_scale_sets'] = self.format_item(self.listsku())
         elif (self.resource_group_name is not None and
               self.vm_scale_set_name is not None):
             self.results['virtual_machine_scale_sets'] = self.format_item(self.getosupgradehistory())
@@ -3777,12 +3761,12 @@ class AzureRMVirtualMachineScaleSetInfo(AzureRMModuleBase):
 
         return response
 
-    def listskus(self):
+    def listsku(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_scale_sets.list_skus(resource_group_name=self.resource_group_name,
-                                                                             vm_scale_set_name=self.vm_scale_set_name)
+            response = self.mgmt_client.virtual_machine_scale_sets.list_sku(resource_group_name=self.resource_group_name,
+                                                                            vm_scale_set_name=self.vm_scale_set_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

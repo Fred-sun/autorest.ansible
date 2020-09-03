@@ -102,27 +102,6 @@ snapshots:
       returned: always
       type: str
       sample: null
-    sku:
-      description:
-        - >-
-          The snapshots sku name. Can be Standard_LRS, Premium_LRS, or
-          Standard_ZRS.
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        name:
-          description:
-            - The sku name.
-          returned: always
-          type: str
-          sample: null
-        tier:
-          description:
-            - The sku tier.
-          returned: always
-          type: str
-          sample: null
     time_created:
       description:
         - The time when the snapshot was created.
@@ -338,22 +317,15 @@ snapshots:
               type: dict
               sample: null
               contains:
-                source_vault:
-                  description:
-                    - Resource id of the KeyVault containing the key or secret
-                  returned: always
-                  type: dict
-                  sample: null
-                  contains:
-                    id:
-                      description:
-                        - Resource Id
-                      returned: always
-                      type: str
-                      sample: null
                 key_url:
                   description:
                     - Url pointing to a key or secret in KeyVault
+                  returned: always
+                  type: str
+                  sample: null
+                id:
+                  description:
+                    - Resource Id
                   returned: always
                   type: str
                   sample: null
@@ -418,6 +390,18 @@ snapshots:
       returned: always
       type: str
       sample: null
+    name_sku_name:
+      description:
+        - The sku name.
+      returned: always
+      type: str
+      sample: null
+    tier:
+      description:
+        - The sku tier.
+      returned: always
+      type: str
+      sample: null
     value:
       description:
         - A list of snapshots.
@@ -431,27 +415,6 @@ snapshots:
           returned: always
           type: str
           sample: null
-        sku:
-          description:
-            - >-
-              The snapshots sku name. Can be Standard_LRS, Premium_LRS, or
-              Standard_ZRS.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            name:
-              description:
-                - The sku name.
-              returned: always
-              type: str
-              sample: null
-            tier:
-              description:
-                - The sku tier.
-              returned: always
-              type: str
-              sample: null
         time_created:
           description:
             - The time when the snapshot was created.
@@ -671,24 +634,15 @@ snapshots:
                   type: dict
                   sample: null
                   contains:
-                    source_vault:
-                      description:
-                        - >-
-                          Resource id of the KeyVault containing the key or
-                          secret
-                      returned: always
-                      type: dict
-                      sample: null
-                      contains:
-                        id:
-                          description:
-                            - Resource Id
-                          returned: always
-                          type: str
-                          sample: null
                     key_url:
                       description:
                         - Url pointing to a key or secret in KeyVault
+                      returned: always
+                      type: str
+                      sample: null
+                    id:
+                      description:
+                        - Resource Id
                       returned: always
                       type: str
                       sample: null
@@ -750,6 +704,18 @@ snapshots:
             - >-
               ARM id of the DiskAccess resource for using private endpoints on
               disks.
+          returned: always
+          type: str
+          sample: null
+        name_sku_name:
+          description:
+            - The sku name.
+          returned: always
+          type: str
+          sample: null
+        tier:
+          description:
+            - The sku tier.
           returned: always
           type: str
           sample: null
