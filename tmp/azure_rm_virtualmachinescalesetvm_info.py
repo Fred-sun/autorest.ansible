@@ -217,7 +217,7 @@ virtual_machine_scale_set_vms:
           returned: always
           type: str
           sample: null
-        type_handler_version_properties_type_handler_version:
+        type_handler_version:
           description:
             - Specifies the version of the script handler.
           returned: always
@@ -262,104 +262,111 @@ virtual_machine_scale_set_vms:
           returned: always
           type: str
           sample: null
-        name_properties_instance_view_name:
+        instance_view:
           description:
-            - The virtual machine extension name.
+            - The virtual machine extension instance view.
           returned: always
-          type: str
-          sample: null
-        type_properties_instance_view_type:
-          description:
-            - >-
-              Specifies the type of the extension; an example is
-              "CustomScriptExtension".
-          returned: always
-          type: str
-          sample: null
-        type_handler_version_properties_instance_view_type_handler_version:
-          description:
-            - Specifies the version of the script handler.
-          returned: always
-          type: str
-          sample: null
-        substatuses:
-          description:
-            - The resource status information.
-          returned: always
-          type: list
+          type: dict
           sample: null
           contains:
-            code:
+            name:
               description:
-                - The status code.
+                - The virtual machine extension name.
               returned: always
               type: str
               sample: null
-            level:
-              description:
-                - The level code.
-              returned: always
-              type: sealed-choice
-              sample: null
-            display_status:
-              description:
-                - The short localizable label for the status.
-              returned: always
-              type: str
-              sample: null
-            message:
+            type:
               description:
                 - >-
-                  The detailed status message, including for alerts and error
-                  messages.
+                  Specifies the type of the extension; an example is
+                  "CustomScriptExtension".
               returned: always
               type: str
               sample: null
-            time:
+            type_handler_version:
               description:
-                - The time of the status.
+                - Specifies the version of the script handler.
               returned: always
               type: str
               sample: null
-        statuses:
-          description:
-            - The resource status information.
-          returned: always
-          type: list
-          sample: null
-          contains:
-            code:
+            substatuses:
               description:
-                - The status code.
+                - The resource status information.
               returned: always
-              type: str
+              type: list
               sample: null
-            level:
+              contains:
+                code:
+                  description:
+                    - The status code.
+                  returned: always
+                  type: str
+                  sample: null
+                level:
+                  description:
+                    - The level code.
+                  returned: always
+                  type: sealed-choice
+                  sample: null
+                display_status:
+                  description:
+                    - The short localizable label for the status.
+                  returned: always
+                  type: str
+                  sample: null
+                message:
+                  description:
+                    - >-
+                      The detailed status message, including for alerts and
+                      error messages.
+                  returned: always
+                  type: str
+                  sample: null
+                time:
+                  description:
+                    - The time of the status.
+                  returned: always
+                  type: str
+                  sample: null
+            statuses:
               description:
-                - The level code.
+                - The resource status information.
               returned: always
-              type: sealed-choice
+              type: list
               sample: null
-            display_status:
-              description:
-                - The short localizable label for the status.
-              returned: always
-              type: str
-              sample: null
-            message:
-              description:
-                - >-
-                  The detailed status message, including for alerts and error
-                  messages.
-              returned: always
-              type: str
-              sample: null
-            time:
-              description:
-                - The time of the status.
-              returned: always
-              type: str
-              sample: null
+              contains:
+                code:
+                  description:
+                    - The status code.
+                  returned: always
+                  type: str
+                  sample: null
+                level:
+                  description:
+                    - The level code.
+                  returned: always
+                  type: sealed-choice
+                  sample: null
+                display_status:
+                  description:
+                    - The short localizable label for the status.
+                  returned: always
+                  type: str
+                  sample: null
+                message:
+                  description:
+                    - >-
+                      The detailed status message, including for alerts and
+                      error messages.
+                  returned: always
+                  type: str
+                  sample: null
+                time:
+                  description:
+                    - The time of the status.
+                  returned: always
+                  type: str
+                  sample: null
     zones:
       description:
         - The virtual machine zones.
@@ -3023,7 +3030,7 @@ virtual_machine_scale_set_vms:
               returned: always
               type: str
               sample: null
-            type_handler_version_properties_type_handler_version:
+            type_handler_version:
               description:
                 - Specifies the version of the script handler.
               returned: always
@@ -3068,104 +3075,111 @@ virtual_machine_scale_set_vms:
               returned: always
               type: str
               sample: null
-            name_properties_instance_view_name:
+            instance_view:
               description:
-                - The virtual machine extension name.
+                - The virtual machine extension instance view.
               returned: always
-              type: str
-              sample: null
-            type_properties_instance_view_type:
-              description:
-                - >-
-                  Specifies the type of the extension; an example is
-                  "CustomScriptExtension".
-              returned: always
-              type: str
-              sample: null
-            type_handler_version_properties_instance_view_type_handler_version:
-              description:
-                - Specifies the version of the script handler.
-              returned: always
-              type: str
-              sample: null
-            substatuses:
-              description:
-                - The resource status information.
-              returned: always
-              type: list
+              type: dict
               sample: null
               contains:
-                code:
+                name:
                   description:
-                    - The status code.
+                    - The virtual machine extension name.
                   returned: always
                   type: str
                   sample: null
-                level:
-                  description:
-                    - The level code.
-                  returned: always
-                  type: sealed-choice
-                  sample: null
-                display_status:
-                  description:
-                    - The short localizable label for the status.
-                  returned: always
-                  type: str
-                  sample: null
-                message:
+                type:
                   description:
                     - >-
-                      The detailed status message, including for alerts and
-                      error messages.
+                      Specifies the type of the extension; an example is
+                      "CustomScriptExtension".
                   returned: always
                   type: str
                   sample: null
-                time:
+                type_handler_version:
                   description:
-                    - The time of the status.
+                    - Specifies the version of the script handler.
                   returned: always
                   type: str
                   sample: null
-            statuses:
-              description:
-                - The resource status information.
-              returned: always
-              type: list
-              sample: null
-              contains:
-                code:
+                substatuses:
                   description:
-                    - The status code.
+                    - The resource status information.
                   returned: always
-                  type: str
+                  type: list
                   sample: null
-                level:
+                  contains:
+                    code:
+                      description:
+                        - The status code.
+                      returned: always
+                      type: str
+                      sample: null
+                    level:
+                      description:
+                        - The level code.
+                      returned: always
+                      type: sealed-choice
+                      sample: null
+                    display_status:
+                      description:
+                        - The short localizable label for the status.
+                      returned: always
+                      type: str
+                      sample: null
+                    message:
+                      description:
+                        - >-
+                          The detailed status message, including for alerts and
+                          error messages.
+                      returned: always
+                      type: str
+                      sample: null
+                    time:
+                      description:
+                        - The time of the status.
+                      returned: always
+                      type: str
+                      sample: null
+                statuses:
                   description:
-                    - The level code.
+                    - The resource status information.
                   returned: always
-                  type: sealed-choice
+                  type: list
                   sample: null
-                display_status:
-                  description:
-                    - The short localizable label for the status.
-                  returned: always
-                  type: str
-                  sample: null
-                message:
-                  description:
-                    - >-
-                      The detailed status message, including for alerts and
-                      error messages.
-                  returned: always
-                  type: str
-                  sample: null
-                time:
-                  description:
-                    - The time of the status.
-                  returned: always
-                  type: str
-                  sample: null
+                  contains:
+                    code:
+                      description:
+                        - The status code.
+                      returned: always
+                      type: str
+                      sample: null
+                    level:
+                      description:
+                        - The level code.
+                      returned: always
+                      type: sealed-choice
+                      sample: null
+                    display_status:
+                      description:
+                        - The short localizable label for the status.
+                      returned: always
+                      type: str
+                      sample: null
+                    message:
+                      description:
+                        - >-
+                          The detailed status message, including for alerts and
+                          error messages.
+                      returned: always
+                      type: str
+                      sample: null
+                    time:
+                      description:
+                        - The time of the status.
+                      returned: always
+                      type: str
+                      sample: null
         zones:
           description:
             - The virtual machine zones.

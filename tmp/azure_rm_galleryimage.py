@@ -56,122 +56,154 @@ options:
       - The name of the gallery Image Definition to be deleted.
     required: true
     type: str
-  location:
+  gallery_image:
     description:
-      - Resource location
-    type: str
-  description:
-    description:
-      - >-
-        The description of this gallery Image Definition resource. This property
-        is updatable.
-    type: str
-  eula:
-    description:
-      - The Eula agreement for the gallery Image Definition.
-    type: str
-  privacy_statement_uri:
-    description:
-      - The privacy statement uri.
-    type: str
-  release_note_uri:
-    description:
-      - The release note uri.
-    type: str
-  os_type:
-    description:
-      - >-
-        This property allows you to specify the type of the OS that is included
-        in the disk when creating a VM from a managed image.
-        :code:`<br>`:code:`<br>` Possible values are: :code:`<br>`:code:`<br>`
-        **Windows** :code:`<br>`:code:`<br>` **Linux**
-    type: sealed-choice
-  os_state:
-    description:
-      - >-
-        This property allows the user to specify whether the virtual machines
-        created under this image are 'Generalized' or 'Specialized'.
-    type: sealed-choice
-  hyper_vgeneration:
-    description:
-      - >-
-        The hypervisor generation of the Virtual Machine. Applicable to OS disks
-        only.
-    type: str
-    choices:
-      - V1
-      - V2
-  end_of_life_date:
-    description:
-      - >-
-        The end of life date of the gallery Image Definition. This property can
-        be used for decommissioning purposes. This property is updatable.
-    type: str
-  identifier:
-    description:
-      - This is the gallery Image Definition identifier.
+      - Parameters supplied to the create or update gallery image operation.
+      - Parameters supplied to the update gallery image operation.
     type: dict
     suboptions:
-      publisher:
+      description:
         description:
-          - The name of the gallery Image Definition publisher.
-        required: true
+          - >-
+            The description of this gallery Image Definition resource. This
+            property is updatable.
         type: str
-      offer:
+      eula:
         description:
-          - The name of the gallery Image Definition offer.
-        required: true
+          - The Eula agreement for the gallery Image Definition.
         type: str
-      sku:
+      privacy_statement_uri:
         description:
-          - The name of the gallery Image Definition SKU.
-        required: true
+          - The privacy statement uri.
         type: str
-  purchase_plan:
-    description:
-      - >-
-        Describes the gallery Image Definition purchase plan. This is used by
-        marketplace images.
-    type: dict
-    suboptions:
-      name:
+      release_note_uri:
         description:
-          - The plan ID.
+          - The release note uri.
         type: str
-      publisher:
+      os_type:
         description:
-          - The publisher ID.
+          - >-
+            This property allows you to specify the type of the OS that is
+            included in the disk when creating a VM from a managed image.
+            :code:`<br>`:code:`<br>` Possible values are:
+            :code:`<br>`:code:`<br>` **Windows** :code:`<br>`:code:`<br>`
+            **Linux**
+        type: sealed-choice
+      os_state:
+        description:
+          - >-
+            This property allows the user to specify whether the virtual
+            machines created under this image are 'Generalized' or
+            'Specialized'.
+        type: sealed-choice
+      hyper_vgeneration:
+        description:
+          - >-
+            The hypervisor generation of the Virtual Machine. Applicable to OS
+            disks only.
         type: str
-      product:
+        choices:
+          - V1
+          - V2
+      end_of_life_date:
         description:
-          - The product ID.
+          - >-
+            The end of life date of the gallery Image Definition. This property
+            can be used for decommissioning purposes. This property is
+            updatable.
         type: str
-  v_cp_us:
-    description:
-      - Describes the resource range.
-    type: dict
-    suboptions:
-      min:
+      identifier:
         description:
-          - The minimum number of the resource.
-        type: integer
-      max:
+          - This is the gallery Image Definition identifier.
+        type: dict
+        suboptions:
+          publisher:
+            description:
+              - The name of the gallery Image Definition publisher.
+            required: true
+            type: str
+          offer:
+            description:
+              - The name of the gallery Image Definition offer.
+            required: true
+            type: str
+          sku:
+            description:
+              - The name of the gallery Image Definition SKU.
+            required: true
+            type: str
+      recommended:
         description:
-          - The maximum number of the resource.
-        type: integer
-  memory:
-    description:
-      - Describes the resource range.
-    type: dict
-    suboptions:
-      min:
+          - >-
+            The properties describe the recommended machine configuration for
+            this Image Definition. These properties are updatable.
+        type: dict
+        suboptions:
+          v_cp_us:
+            description:
+              - Describes the resource range.
+            type: dict
+            suboptions:
+              min:
+                description:
+                  - The minimum number of the resource.
+                type: integer
+              max:
+                description:
+                  - The maximum number of the resource.
+                type: integer
+          memory:
+            description:
+              - Describes the resource range.
+            type: dict
+            suboptions:
+              min:
+                description:
+                  - The minimum number of the resource.
+                type: integer
+              max:
+                description:
+                  - The maximum number of the resource.
+                type: integer
+      disallowed:
         description:
-          - The minimum number of the resource.
-        type: integer
-      max:
+          - Describes the disallowed disk types.
+        type: dict
+        suboptions:
+          disk_types:
+            description:
+              - A list of disk types.
+            type: list
+      purchase_plan:
         description:
-          - The maximum number of the resource.
-        type: integer
+          - >-
+            Describes the gallery Image Definition purchase plan. This is used
+            by marketplace images.
+        type: dict
+        suboptions:
+          name:
+            description:
+              - The plan ID.
+            type: str
+          publisher:
+            description:
+              - The publisher ID.
+            type: str
+          product:
+            description:
+              - The product ID.
+            type: str
+      provisioning_state:
+        description:
+          - 'The provisioning state, which only appears in the response.'
+        type: str
+        choices:
+          - Creating
+          - Updating
+          - Failed
+          - Succeeded
+          - Deleting
+          - Migrating
   state:
     description:
       - Assert the state of the GalleryImage.
@@ -192,6 +224,16 @@ author:
 EXAMPLES = '''
     - name: Create or update a simple gallery image.
       azure_rm_galleryimage: 
+        gallery_image:
+          location: West US
+          properties:
+            hyper_vgeneration: V1
+            identifier:
+              offer: myOfferName
+              publisher: myPublisherName
+              sku: mySkuName
+            os_state: Generalized
+            os_type: Windows
         gallery_image_name: myGalleryImageName
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
@@ -199,6 +241,15 @@ EXAMPLES = '''
 
     - name: Update a simple gallery image.
       azure_rm_galleryimage: 
+        gallery_image:
+          properties:
+            hyper_vgeneration: V1
+            identifier:
+              offer: myOfferName
+              publisher: myPublisherName
+              sku: mySkuName
+            os_state: Generalized
+            os_type: Windows
         gallery_image_name: myGalleryImageName
         gallery_name: myGalleryName
         resource_group_name: myResourceGroup
@@ -329,6 +380,53 @@ identifier:
       returned: always
       type: str
       sample: null
+recommended:
+  description:
+    - >-
+      The properties describe the recommended machine configuration for this
+      Image Definition. These properties are updatable.
+  returned: always
+  type: dict
+  sample: null
+  contains:
+    v_cp_us:
+      description:
+        - Describes the resource range.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        min:
+          description:
+            - The minimum number of the resource.
+          returned: always
+          type: integer
+          sample: null
+        max:
+          description:
+            - The maximum number of the resource.
+          returned: always
+          type: integer
+          sample: null
+    memory:
+      description:
+        - Describes the resource range.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        min:
+          description:
+            - The minimum number of the resource.
+          returned: always
+          type: integer
+          sample: null
+        max:
+          description:
+            - The maximum number of the resource.
+          returned: always
+          type: integer
+          sample: null
 disallowed:
   description:
     - Describes the disallowed disk types.
@@ -375,44 +473,6 @@ provisioning_state:
   returned: always
   type: str
   sample: null
-v_cp_us:
-  description:
-    - Describes the resource range.
-  returned: always
-  type: dict
-  sample: null
-  contains:
-    min:
-      description:
-        - The minimum number of the resource.
-      returned: always
-      type: integer
-      sample: null
-    max:
-      description:
-        - The maximum number of the resource.
-      returned: always
-      type: integer
-      sample: null
-memory:
-  description:
-    - Describes the resource range.
-  returned: always
-  type: dict
-  sample: null
-  contains:
-    min:
-      description:
-        - The minimum number of the resource.
-      returned: always
-      type: integer
-      sample: null
-    max:
-      description:
-        - The maximum number of the resource.
-      returned: always
-      type: integer
-      sample: null
 
 '''
 
@@ -450,108 +510,138 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            location=dict(
-                type='str',
-                disposition='/location'
-            ),
-            description=dict(
-                type='str',
-                disposition='/description'
-            ),
-            eula=dict(
-                type='str',
-                disposition='/eula'
-            ),
-            privacy_statement_uri=dict(
-                type='str',
-                disposition='/privacy_statement_uri'
-            ),
-            release_note_uri=dict(
-                type='str',
-                disposition='/release_note_uri'
-            ),
-            os_type=dict(
-                type='sealed-choice',
-                disposition='/os_type'
-            ),
-            os_state=dict(
-                type='sealed-choice',
-                disposition='/os_state'
-            ),
-            hyper_vgeneration=dict(
-                type='str',
-                disposition='/hyper_vgeneration',
-                choices=['V1',
-                         'V2']
-            ),
-            end_of_life_date=dict(
-                type='str',
-                disposition='/end_of_life_date'
-            ),
-            identifier=dict(
+            gallery_image=dict(
                 type='dict',
-                disposition='/identifier',
+                disposition='/gallery_image',
                 options=dict(
-                    publisher=dict(
+                    description=dict(
                         type='str',
-                        disposition='publisher',
-                        required=True
+                        disposition='description'
                     ),
-                    offer=dict(
+                    eula=dict(
                         type='str',
-                        disposition='offer',
-                        required=True
+                        disposition='eula'
                     ),
-                    sku=dict(
+                    privacy_statement_uri=dict(
                         type='str',
-                        disposition='sku',
-                        required=True
-                    )
-                )
-            ),
-            purchase_plan=dict(
-                type='dict',
-                disposition='/purchase_plan',
-                options=dict(
-                    name=dict(
+                        disposition='privacy_statement_uri'
+                    ),
+                    release_note_uri=dict(
                         type='str',
-                        disposition='name'
+                        disposition='release_note_uri'
                     ),
-                    publisher=dict(
+                    os_type=dict(
+                        type='sealed-choice',
+                        disposition='os_type'
+                    ),
+                    os_state=dict(
+                        type='sealed-choice',
+                        disposition='os_state'
+                    ),
+                    hyper_vgeneration=dict(
                         type='str',
-                        disposition='publisher'
+                        disposition='hyper_vgeneration',
+                        choices=['V1',
+                                 'V2']
                     ),
-                    product=dict(
+                    end_of_life_date=dict(
                         type='str',
-                        disposition='product'
-                    )
-                )
-            ),
-            v_cp_us=dict(
-                type='dict',
-                disposition='/v_cp_us',
-                options=dict(
-                    min=dict(
-                        type='integer',
-                        disposition='min'
+                        disposition='end_of_life_date'
                     ),
-                    max=dict(
-                        type='integer',
-                        disposition='max'
-                    )
-                )
-            ),
-            memory=dict(
-                type='dict',
-                disposition='/memory',
-                options=dict(
-                    min=dict(
-                        type='integer',
-                        disposition='min'
+                    identifier=dict(
+                        type='dict',
+                        disposition='identifier',
+                        options=dict(
+                            publisher=dict(
+                                type='str',
+                                disposition='publisher',
+                                required=True
+                            ),
+                            offer=dict(
+                                type='str',
+                                disposition='offer',
+                                required=True
+                            ),
+                            sku=dict(
+                                type='str',
+                                disposition='sku',
+                                required=True
+                            )
+                        )
                     ),
-                    max=dict(
-                        type='integer',
-                        disposition='max'
+                    recommended=dict(
+                        type='dict',
+                        disposition='recommended',
+                        options=dict(
+                            v_cp_us=dict(
+                                type='dict',
+                                disposition='v_cp_us',
+                                options=dict(
+                                    min=dict(
+                                        type='integer',
+                                        disposition='min'
+                                    ),
+                                    max=dict(
+                                        type='integer',
+                                        disposition='max'
+                                    )
+                                )
+                            ),
+                            memory=dict(
+                                type='dict',
+                                disposition='memory',
+                                options=dict(
+                                    min=dict(
+                                        type='integer',
+                                        disposition='min'
+                                    ),
+                                    max=dict(
+                                        type='integer',
+                                        disposition='max'
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    disallowed=dict(
+                        type='dict',
+                        disposition='disallowed',
+                        options=dict(
+                            disk_types=dict(
+                                type='list',
+                                disposition='disk_types',
+                                elements='str'
+                            )
+                        )
+                    ),
+                    purchase_plan=dict(
+                        type='dict',
+                        disposition='purchase_plan',
+                        options=dict(
+                            name=dict(
+                                type='str',
+                                disposition='name'
+                            ),
+                            publisher=dict(
+                                type='str',
+                                disposition='publisher'
+                            ),
+                            product=dict(
+                                type='str',
+                                disposition='product'
+                            )
+                        )
+                    ),
+                    provisioning_state=dict(
+                        type='str',
+                        updatable=False,
+                        disposition='provisioning_state',
+                        choices=['Creating',
+                                 'Updating',
+                                 'Failed',
+                                 'Succeeded',
+                                 'Deleting',
+                                 'Migrating']
                     )
                 )
             ),
@@ -629,7 +719,7 @@ class AzureRMGalleryImage(AzureRMModuleBaseExt):
             response = self.mgmt_client.gallery_images.create_or_update(resource_group_name=self.resource_group_name,
                                                                         gallery_name=self.gallery_name,
                                                                         gallery_image_name=self.gallery_image_name,
-                                                                        gallery_image=self.body)
+                                                                        parameters=self.body)
             if isinstance(response, AzureOperationPoller) or isinstance(response, LROPoller):
                 response = self.get_poller_result(response)
         except CloudError as exc:

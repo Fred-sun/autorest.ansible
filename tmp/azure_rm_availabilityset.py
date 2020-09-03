@@ -31,63 +31,94 @@ options:
       - The name of the availability set.
     required: true
     type: str
-  location:
+  parameters:
     description:
-      - Resource location
-    type: str
-  sku:
-    description:
-      - >-
-        Sku of the availability set, only name is required to be set. See
-        AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for
-        virtual machines with managed disks and 'Classic' for virtual machines
-        with unmanaged disks. Default value is 'Classic'.
+      - Parameters supplied to the Create Availability Set operation.
+      - Parameters supplied to the Update Availability Set operation.
     type: dict
     suboptions:
-      name:
-        description:
-          - The sku name.
-        type: str
-      tier:
+      sku:
         description:
           - >-
-            Specifies the tier of virtual machines in a scale set.:code:`<br
-            />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
-            **Standard**\ :code:`<br />`:code:`<br />` **Basic**
-        type: str
-      capacity:
+            Sku of the availability set, only name is required to be set. See
+            AvailabilitySetSkuTypes for possible set of values. Use 'Aligned'
+            for virtual machines with managed disks and 'Classic' for virtual
+            machines with unmanaged disks. Default value is 'Classic'.
+        type: dict
+        suboptions:
+          name:
+            description:
+              - The sku name.
+            type: str
+          tier:
+            description:
+              - >-
+                Specifies the tier of virtual machines in a scale set.:code:`<br
+                />`:code:`<br />` Possible Values::code:`<br />`:code:`<br />`
+                **Standard**\ :code:`<br />`:code:`<br />` **Basic**
+            type: str
+          capacity:
+            description:
+              - Specifies the number of virtual machines in the scale set.
+            type: integer
+      platform_update_domain_count:
         description:
-          - Specifies the number of virtual machines in the scale set.
+          - Update Domain count.
         type: integer
-  platform_update_domain_count:
-    description:
-      - Update Domain count.
-    type: integer
-  platform_fault_domain_count:
-    description:
-      - Fault Domain count.
-    type: integer
-  virtual_machines:
-    description:
-      - A list of references to all virtual machines in the availability set.
-    type: list
-    suboptions:
-      id:
+      platform_fault_domain_count:
         description:
-          - Resource Id
-        type: str
-  proximity_placement_group:
-    description:
-      - >-
-        Specifies information about the proximity placement group that the
-        availability set should be assigned to. :code:`<br>`:code:`<br>`Minimum
-        api-version: 2018-04-01.
-    type: dict
-    suboptions:
-      id:
+          - Fault Domain count.
+        type: integer
+      virtual_machines:
         description:
-          - Resource Id
-        type: str
+          - >-
+            A list of references to all virtual machines in the availability
+            set.
+        type: list
+        suboptions:
+          id:
+            description:
+              - Resource Id
+            type: str
+      proximity_placement_group:
+        description:
+          - >-
+            Specifies information about the proximity placement group that the
+            availability set should be assigned to.
+            :code:`<br>`:code:`<br>`Minimum api-version: 2018-04-01.
+        type: dict
+        suboptions:
+          id:
+            description:
+              - Resource Id
+            type: str
+      statuses:
+        description:
+          - The resource status information.
+        type: list
+        suboptions:
+          code:
+            description:
+              - The status code.
+            type: str
+          level:
+            description:
+              - The level code.
+            type: sealed-choice
+          display_status:
+            description:
+              - The short localizable label for the status.
+            type: str
+          message:
+            description:
+              - >-
+                The detailed status message, including for alerts and error
+                messages.
+            type: str
+          time:
+            description:
+              - The time of the status.
+            type: str
   state:
     description:
       - Assert the state of the AvailabilitySet.
@@ -109,6 +140,11 @@ EXAMPLES = '''
     - name: Create an availability set.
       azure_rm_availabilityset: 
         availability_set_name: myAvailabilitySet
+        parameters:
+          location: westus
+          properties:
+            platform_fault_domain_count: 2
+            platform_update_domain_count: 20
         resource_group_name: myResourceGroup
         location: westus
         properties:
@@ -292,54 +328,84 @@ class AzureRMAvailabilitySet(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            location=dict(
-                type='str',
-                disposition='/location'
-            ),
-            sku=dict(
+            parameters=dict(
                 type='dict',
-                disposition='/sku',
+                disposition='/parameters',
                 options=dict(
-                    name=dict(
-                        type='str',
-                        disposition='name'
+                    sku=dict(
+                        type='dict',
+                        disposition='sku',
+                        options=dict(
+                            name=dict(
+                                type='str',
+                                disposition='name'
+                            ),
+                            tier=dict(
+                                type='str',
+                                disposition='tier'
+                            ),
+                            capacity=dict(
+                                type='integer',
+                                disposition='capacity'
+                            )
+                        )
                     ),
-                    tier=dict(
-                        type='str',
-                        disposition='tier'
-                    ),
-                    capacity=dict(
+                    platform_update_domain_count=dict(
                         type='integer',
-                        disposition='capacity'
-                    )
-                )
-            ),
-            platform_update_domain_count=dict(
-                type='integer',
-                disposition='/platform_update_domain_count'
-            ),
-            platform_fault_domain_count=dict(
-                type='integer',
-                disposition='/platform_fault_domain_count'
-            ),
-            virtual_machines=dict(
-                type='list',
-                disposition='/virtual_machines',
-                elements='dict',
-                options=dict(
-                    id=dict(
-                        type='str',
-                        disposition='id'
-                    )
-                )
-            ),
-            proximity_placement_group=dict(
-                type='dict',
-                disposition='/proximity_placement_group',
-                options=dict(
-                    id=dict(
-                        type='str',
-                        disposition='id'
+                        disposition='platform_update_domain_count'
+                    ),
+                    platform_fault_domain_count=dict(
+                        type='integer',
+                        disposition='platform_fault_domain_count'
+                    ),
+                    virtual_machines=dict(
+                        type='list',
+                        disposition='virtual_machines',
+                        elements='dict',
+                        options=dict(
+                            id=dict(
+                                type='str',
+                                disposition='id'
+                            )
+                        )
+                    ),
+                    proximity_placement_group=dict(
+                        type='dict',
+                        disposition='proximity_placement_group',
+                        options=dict(
+                            id=dict(
+                                type='str',
+                                disposition='id'
+                            )
+                        )
+                    ),
+                    statuses=dict(
+                        type='list',
+                        updatable=False,
+                        disposition='statuses',
+                        elements='dict',
+                        options=dict(
+                            code=dict(
+                                type='str',
+                                disposition='code'
+                            ),
+                            level=dict(
+                                type='sealed-choice',
+                                disposition='level'
+                            ),
+                            display_status=dict(
+                                type='str',
+                                disposition='display_status'
+                            ),
+                            message=dict(
+                                type='str',
+                                disposition='message'
+                            ),
+                            time=dict(
+                                type='str',
+                                disposition='time'
+                            )
+                        )
                     )
                 )
             ),

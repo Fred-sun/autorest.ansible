@@ -186,6 +186,53 @@ gallery_images:
           returned: always
           type: str
           sample: null
+    recommended:
+      description:
+        - >-
+          The properties describe the recommended machine configuration for this
+          Image Definition. These properties are updatable.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        v_cp_us:
+          description:
+            - Describes the resource range.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            min:
+              description:
+                - The minimum number of the resource.
+              returned: always
+              type: integer
+              sample: null
+            max:
+              description:
+                - The maximum number of the resource.
+              returned: always
+              type: integer
+              sample: null
+        memory:
+          description:
+            - Describes the resource range.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            min:
+              description:
+                - The minimum number of the resource.
+              returned: always
+              type: integer
+              sample: null
+            max:
+              description:
+                - The maximum number of the resource.
+              returned: always
+              type: integer
+              sample: null
     disallowed:
       description:
         - Describes the disallowed disk types.
@@ -232,44 +279,6 @@ gallery_images:
       returned: always
       type: str
       sample: null
-    v_cp_us:
-      description:
-        - Describes the resource range.
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        min:
-          description:
-            - The minimum number of the resource.
-          returned: always
-          type: integer
-          sample: null
-        max:
-          description:
-            - The maximum number of the resource.
-          returned: always
-          type: integer
-          sample: null
-    memory:
-      description:
-        - Describes the resource range.
-      returned: always
-      type: dict
-      sample: null
-      contains:
-        min:
-          description:
-            - The minimum number of the resource.
-          returned: always
-          type: integer
-          sample: null
-        max:
-          description:
-            - The maximum number of the resource.
-          returned: always
-          type: integer
-          sample: null
     value:
       description:
         - A list of Shared Image Gallery images.
@@ -365,6 +374,53 @@ gallery_images:
               returned: always
               type: str
               sample: null
+        recommended:
+          description:
+            - >-
+              The properties describe the recommended machine configuration for
+              this Image Definition. These properties are updatable.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            v_cp_us:
+              description:
+                - Describes the resource range.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                min:
+                  description:
+                    - The minimum number of the resource.
+                  returned: always
+                  type: integer
+                  sample: null
+                max:
+                  description:
+                    - The maximum number of the resource.
+                  returned: always
+                  type: integer
+                  sample: null
+            memory:
+              description:
+                - Describes the resource range.
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                min:
+                  description:
+                    - The minimum number of the resource.
+                  returned: always
+                  type: integer
+                  sample: null
+                max:
+                  description:
+                    - The maximum number of the resource.
+                  returned: always
+                  type: integer
+                  sample: null
         disallowed:
           description:
             - Describes the disallowed disk types.
@@ -411,44 +467,6 @@ gallery_images:
           returned: always
           type: str
           sample: null
-        v_cp_us:
-          description:
-            - Describes the resource range.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            min:
-              description:
-                - The minimum number of the resource.
-              returned: always
-              type: integer
-              sample: null
-            max:
-              description:
-                - The maximum number of the resource.
-              returned: always
-              type: integer
-              sample: null
-        memory:
-          description:
-            - Describes the resource range.
-          returned: always
-          type: dict
-          sample: null
-          contains:
-            min:
-              description:
-                - The minimum number of the resource.
-              returned: always
-              type: integer
-              sample: null
-            max:
-              description:
-                - The maximum number of the resource.
-              returned: always
-              type: integer
-              sample: null
     next_link:
       description:
         - >-

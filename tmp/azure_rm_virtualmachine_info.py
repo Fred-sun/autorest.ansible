@@ -176,7 +176,7 @@ virtual_machines:
               returned: always
               type: str
               sample: null
-            type_handler_version_properties_type_handler_version:
+            type_handler_version:
               description:
                 - Specifies the version of the script handler.
               returned: always
@@ -221,145 +221,160 @@ virtual_machines:
               returned: always
               type: str
               sample: null
-            name_properties_instance_view_name:
+            instance_view:
               description:
-                - The virtual machine extension name.
+                - The virtual machine extension instance view.
               returned: always
-              type: str
+              type: dict
               sample: null
-            type_properties_instance_view_type:
+              contains:
+                name:
+                  description:
+                    - The virtual machine extension name.
+                  returned: always
+                  type: str
+                  sample: null
+                type:
+                  description:
+                    - >-
+                      Specifies the type of the extension; an example is
+                      "CustomScriptExtension".
+                  returned: always
+                  type: str
+                  sample: null
+                type_handler_version:
+                  description:
+                    - Specifies the version of the script handler.
+                  returned: always
+                  type: str
+                  sample: null
+                substatuses:
+                  description:
+                    - The resource status information.
+                  returned: always
+                  type: list
+                  sample: null
+                  contains:
+                    code:
+                      description:
+                        - The status code.
+                      returned: always
+                      type: str
+                      sample: null
+                    level:
+                      description:
+                        - The level code.
+                      returned: always
+                      type: sealed-choice
+                      sample: null
+                    display_status:
+                      description:
+                        - The short localizable label for the status.
+                      returned: always
+                      type: str
+                      sample: null
+                    message:
+                      description:
+                        - >-
+                          The detailed status message, including for alerts and
+                          error messages.
+                      returned: always
+                      type: str
+                      sample: null
+                    time:
+                      description:
+                        - The time of the status.
+                      returned: always
+                      type: str
+                      sample: null
+                statuses:
+                  description:
+                    - The resource status information.
+                  returned: always
+                  type: list
+                  sample: null
+                  contains:
+                    code:
+                      description:
+                        - The status code.
+                      returned: always
+                      type: str
+                      sample: null
+                    level:
+                      description:
+                        - The level code.
+                      returned: always
+                      type: sealed-choice
+                      sample: null
+                    display_status:
+                      description:
+                        - The short localizable label for the status.
+                      returned: always
+                      type: str
+                      sample: null
+                    message:
+                      description:
+                        - >-
+                          The detailed status message, including for alerts and
+                          error messages.
+                      returned: always
+                      type: str
+                      sample: null
+                    time:
+                      description:
+                        - The time of the status.
+                      returned: always
+                      type: str
+                      sample: null
+        identity:
+          description:
+            - 'The identity of the virtual machine, if configured.'
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            principal_id:
               description:
                 - >-
-                  Specifies the type of the extension; an example is
-                  "CustomScriptExtension".
+                  The principal id of virtual machine identity. This property
+                  will only be provided for a system assigned identity.
               returned: always
               type: str
               sample: null
-            type_handler_version_properties_instance_view_type_handler_version:
+            tenant_id:
               description:
-                - Specifies the version of the script handler.
+                - >-
+                  The tenant id associated with the virtual machine. This
+                  property will only be provided for a system assigned identity.
               returned: always
               type: str
               sample: null
-            substatuses:
+            type:
               description:
-                - The resource status information.
+                - >-
+                  The type of identity used for the virtual machine. The type
+                  'SystemAssigned, UserAssigned' includes both an implicitly
+                  created identity and a set of user assigned identities. The
+                  type 'None' will remove any identities from the virtual
+                  machine.
               returned: always
-              type: list
+              type: sealed-choice
               sample: null
-              contains:
-                code:
-                  description:
-                    - The status code.
-                  returned: always
-                  type: str
-                  sample: null
-                level:
-                  description:
-                    - The level code.
-                  returned: always
-                  type: sealed-choice
-                  sample: null
-                display_status:
-                  description:
-                    - The short localizable label for the status.
-                  returned: always
-                  type: str
-                  sample: null
-                message:
-                  description:
-                    - >-
-                      The detailed status message, including for alerts and
-                      error messages.
-                  returned: always
-                  type: str
-                  sample: null
-                time:
-                  description:
-                    - The time of the status.
-                  returned: always
-                  type: str
-                  sample: null
-            statuses:
+            user_assigned_identities:
               description:
-                - The resource status information.
+                - >-
+                  The list of user identities associated with the Virtual
+                  Machine. The user identity dictionary key references will be
+                  ARM resource ids in the form:
+                  '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
               returned: always
-              type: list
+              type: dictionary
               sample: null
-              contains:
-                code:
-                  description:
-                    - The status code.
-                  returned: always
-                  type: str
-                  sample: null
-                level:
-                  description:
-                    - The level code.
-                  returned: always
-                  type: sealed-choice
-                  sample: null
-                display_status:
-                  description:
-                    - The short localizable label for the status.
-                  returned: always
-                  type: str
-                  sample: null
-                message:
-                  description:
-                    - >-
-                      The detailed status message, including for alerts and
-                      error messages.
-                  returned: always
-                  type: str
-                  sample: null
-                time:
-                  description:
-                    - The time of the status.
-                  returned: always
-                  type: str
-                  sample: null
         zones:
           description:
             - The virtual machine zones.
           returned: always
           type: list
-          sample: null
-        principal_id:
-          description:
-            - >-
-              The principal id of virtual machine identity. This property will
-              only be provided for a system assigned identity.
-          returned: always
-          type: str
-          sample: null
-        tenant_id:
-          description:
-            - >-
-              The tenant id associated with the virtual machine. This property
-              will only be provided for a system assigned identity.
-          returned: always
-          type: str
-          sample: null
-        type_identity_type:
-          description:
-            - >-
-              The type of identity used for the virtual machine. The type
-              'SystemAssigned, UserAssigned' includes both an implicitly created
-              identity and a set of user assigned identities. The type 'None'
-              will remove any identities from the virtual machine.
-          returned: always
-          type: sealed-choice
-          sample: null
-        user_assigned_identities:
-          description:
-            - >-
-              The list of user identities associated with the Virtual Machine.
-              The user identity dictionary key references will be ARM resource
-              ids in the form:
-              '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-          returned: always
-          type: dictionary
           sample: null
         hardware_profile:
           description:
@@ -2644,7 +2659,7 @@ virtual_machines:
           returned: always
           type: str
           sample: null
-        type_handler_version_properties_type_handler_version:
+        type_handler_version:
           description:
             - Specifies the version of the script handler.
           returned: always
@@ -2689,145 +2704,159 @@ virtual_machines:
           returned: always
           type: str
           sample: null
-        name_properties_instance_view_name:
+        instance_view:
           description:
-            - The virtual machine extension name.
+            - The virtual machine extension instance view.
           returned: always
-          type: str
+          type: dict
           sample: null
-        type_properties_instance_view_type:
+          contains:
+            name:
+              description:
+                - The virtual machine extension name.
+              returned: always
+              type: str
+              sample: null
+            type:
+              description:
+                - >-
+                  Specifies the type of the extension; an example is
+                  "CustomScriptExtension".
+              returned: always
+              type: str
+              sample: null
+            type_handler_version:
+              description:
+                - Specifies the version of the script handler.
+              returned: always
+              type: str
+              sample: null
+            substatuses:
+              description:
+                - The resource status information.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                code:
+                  description:
+                    - The status code.
+                  returned: always
+                  type: str
+                  sample: null
+                level:
+                  description:
+                    - The level code.
+                  returned: always
+                  type: sealed-choice
+                  sample: null
+                display_status:
+                  description:
+                    - The short localizable label for the status.
+                  returned: always
+                  type: str
+                  sample: null
+                message:
+                  description:
+                    - >-
+                      The detailed status message, including for alerts and
+                      error messages.
+                  returned: always
+                  type: str
+                  sample: null
+                time:
+                  description:
+                    - The time of the status.
+                  returned: always
+                  type: str
+                  sample: null
+            statuses:
+              description:
+                - The resource status information.
+              returned: always
+              type: list
+              sample: null
+              contains:
+                code:
+                  description:
+                    - The status code.
+                  returned: always
+                  type: str
+                  sample: null
+                level:
+                  description:
+                    - The level code.
+                  returned: always
+                  type: sealed-choice
+                  sample: null
+                display_status:
+                  description:
+                    - The short localizable label for the status.
+                  returned: always
+                  type: str
+                  sample: null
+                message:
+                  description:
+                    - >-
+                      The detailed status message, including for alerts and
+                      error messages.
+                  returned: always
+                  type: str
+                  sample: null
+                time:
+                  description:
+                    - The time of the status.
+                  returned: always
+                  type: str
+                  sample: null
+    identity:
+      description:
+        - 'The identity of the virtual machine, if configured.'
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        principal_id:
           description:
             - >-
-              Specifies the type of the extension; an example is
-              "CustomScriptExtension".
+              The principal id of virtual machine identity. This property will
+              only be provided for a system assigned identity.
           returned: always
           type: str
           sample: null
-        type_handler_version_properties_instance_view_type_handler_version:
+        tenant_id:
           description:
-            - Specifies the version of the script handler.
+            - >-
+              The tenant id associated with the virtual machine. This property
+              will only be provided for a system assigned identity.
           returned: always
           type: str
           sample: null
-        substatuses:
+        type:
           description:
-            - The resource status information.
+            - >-
+              The type of identity used for the virtual machine. The type
+              'SystemAssigned, UserAssigned' includes both an implicitly created
+              identity and a set of user assigned identities. The type 'None'
+              will remove any identities from the virtual machine.
           returned: always
-          type: list
+          type: sealed-choice
           sample: null
-          contains:
-            code:
-              description:
-                - The status code.
-              returned: always
-              type: str
-              sample: null
-            level:
-              description:
-                - The level code.
-              returned: always
-              type: sealed-choice
-              sample: null
-            display_status:
-              description:
-                - The short localizable label for the status.
-              returned: always
-              type: str
-              sample: null
-            message:
-              description:
-                - >-
-                  The detailed status message, including for alerts and error
-                  messages.
-              returned: always
-              type: str
-              sample: null
-            time:
-              description:
-                - The time of the status.
-              returned: always
-              type: str
-              sample: null
-        statuses:
+        user_assigned_identities:
           description:
-            - The resource status information.
+            - >-
+              The list of user identities associated with the Virtual Machine.
+              The user identity dictionary key references will be ARM resource
+              ids in the form:
+              '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
           returned: always
-          type: list
+          type: dictionary
           sample: null
-          contains:
-            code:
-              description:
-                - The status code.
-              returned: always
-              type: str
-              sample: null
-            level:
-              description:
-                - The level code.
-              returned: always
-              type: sealed-choice
-              sample: null
-            display_status:
-              description:
-                - The short localizable label for the status.
-              returned: always
-              type: str
-              sample: null
-            message:
-              description:
-                - >-
-                  The detailed status message, including for alerts and error
-                  messages.
-              returned: always
-              type: str
-              sample: null
-            time:
-              description:
-                - The time of the status.
-              returned: always
-              type: str
-              sample: null
     zones:
       description:
         - The virtual machine zones.
       returned: always
       type: list
-      sample: null
-    principal_id:
-      description:
-        - >-
-          The principal id of virtual machine identity. This property will only
-          be provided for a system assigned identity.
-      returned: always
-      type: str
-      sample: null
-    tenant_id:
-      description:
-        - >-
-          The tenant id associated with the virtual machine. This property will
-          only be provided for a system assigned identity.
-      returned: always
-      type: str
-      sample: null
-    type_identity_type:
-      description:
-        - >-
-          The type of identity used for the virtual machine. The type
-          'SystemAssigned, UserAssigned' includes both an implicitly created
-          identity and a set of user assigned identities. The type 'None' will
-          remove any identities from the virtual machine.
-      returned: always
-      type: sealed-choice
-      sample: null
-    user_assigned_identities:
-      description:
-        - >-
-          The list of user identities associated with the Virtual Machine. The
-          user identity dictionary key references will be ARM resource ids in
-          the form:
-          '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-      returned: always
-      type: dictionary
       sample: null
     hardware_profile:
       description:
@@ -5950,7 +5979,7 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
             self.results['virtual_machines'] = self.format_item(self.instanceview())
         elif (self.resource_group_name is not None and
               self.vm_name is not None):
-            self.results['virtual_machines'] = self.format_item(self.listavailablesize())
+            self.results['virtual_machines'] = self.format_item(self.listavailablesizes())
         elif (self.location is not None):
             self.results['virtual_machines'] = self.format_item(self.listbylocation())
         elif (self.resource_group_name is not None):
@@ -5982,12 +6011,12 @@ class AzureRMVirtualMachineInfo(AzureRMModuleBase):
 
         return response
 
-    def listavailablesize(self):
+    def listavailablesizes(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machines.list_available_size(resource_group_name=self.resource_group_name,
-                                                                             vm_name=self.vm_name)
+            response = self.mgmt_client.virtual_machines.list_available_sizes(resource_group_name=self.resource_group_name,
+                                                                              vm_name=self.vm_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

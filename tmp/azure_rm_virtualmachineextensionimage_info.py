@@ -220,10 +220,10 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
         elif (self.location is not None and
               self.publisher_name is not None and
               self.type is not None):
-            self.results['virtual_machine_extension_images'] = self.format_item(self.listversion())
+            self.results['virtual_machine_extension_images'] = self.format_item(self.listversions())
         elif (self.location is not None and
               self.publisher_name is not None):
-            self.results['virtual_machine_extension_images'] = self.format_item(self.listtype())
+            self.results['virtual_machine_extension_images'] = self.format_item(self.listtypes())
         return self.results
 
     def get(self):
@@ -239,27 +239,27 @@ class AzureRMVirtualMachineExtensionImageInfo(AzureRMModuleBase):
 
         return response
 
-    def listversion(self):
+    def listversions(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_extension_images.list_version(location=self.location,
-                                                                                      publisher_name=self.publisher_name,
-                                                                                      type=self.type,
-                                                                                      filter=self.filter,
-                                                                                      top=self.top,
-                                                                                      orderby=self.orderby)
+            response = self.mgmt_client.virtual_machine_extension_images.list_versions(location=self.location,
+                                                                                       publisher_name=self.publisher_name,
+                                                                                       type=self.type,
+                                                                                       filter=self.filter,
+                                                                                       top=self.top,
+                                                                                       orderby=self.orderby)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 
         return response
 
-    def listtype(self):
+    def listtypes(self):
         response = None
 
         try:
-            response = self.mgmt_client.virtual_machine_extension_images.list_type(location=self.location,
-                                                                                   publisher_name=self.publisher_name)
+            response = self.mgmt_client.virtual_machine_extension_images.list_types(location=self.location,
+                                                                                    publisher_name=self.publisher_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

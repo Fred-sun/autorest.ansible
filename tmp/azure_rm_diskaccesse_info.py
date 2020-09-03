@@ -367,7 +367,7 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
             self.results['disk_accesses'] = self.format_item(self.get())
         elif (self.resource_group_name is not None and
               self.disk_access_name is not None):
-            self.results['disk_accesses'] = self.format_item(self.getprivatelinkresource())
+            self.results['disk_accesses'] = self.format_item(self.getprivatelinkresources())
         elif (self.resource_group_name is not None):
             self.results['disk_accesses'] = self.format_item(self.listbyresourcegroup())
         else:
@@ -385,12 +385,12 @@ class AzureRMDiskAccesseInfo(AzureRMModuleBase):
 
         return response
 
-    def getprivatelinkresource(self):
+    def getprivatelinkresources(self):
         response = None
 
         try:
-            response = self.mgmt_client.disk_accesses.get_private_link_resource(resource_group_name=self.resource_group_name,
-                                                                                disk_access_name=self.disk_access_name)
+            response = self.mgmt_client.disk_accesses.get_private_link_resources(resource_group_name=self.resource_group_name,
+                                                                                 disk_access_name=self.disk_access_name)
         except CloudError as e:
             self.log('Could not get info for @(Model.ModuleOperationNameUpper).')
 

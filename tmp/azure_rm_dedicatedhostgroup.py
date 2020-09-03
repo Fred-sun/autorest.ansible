@@ -31,24 +31,63 @@ options:
       - The name of the dedicated host group.
     required: true
     type: str
-  location:
+  parameters:
     description:
-      - Resource location
-    type: str
-  platform_fault_domain_count:
-    description:
-      - Number of fault domains that the host group can span.
-    type: integer
-  support_automatic_placement:
-    description:
-      - >-
-        Specifies whether virtual machines or virtual machine scale sets can be
-        placed automatically on the dedicated host group. Automatic placement
-        means resources are allocated on dedicated hosts, that are chosen by
-        Azure, under the dedicated host group. The value is defaulted to 'true'
-        when not provided. :code:`<br>`:code:`<br>`Minimum api-version:
-        2020-06-01.
-    type: bool
+      - Parameters supplied to the Create Dedicated Host Group.
+      - Parameters supplied to the Update Dedicated Host Group operation.
+    type: dict
+    suboptions:
+      zones:
+        description:
+          - >-
+            Availability Zone to use for this host group. Only single zone is
+            supported. The zone can be assigned only during creation. If not
+            provided, the group supports all zones in the region. If provided,
+            enforces each host in the group to be in the same zone.
+        type: list
+      platform_fault_domain_count:
+        description:
+          - Number of fault domains that the host group can span.
+        type: integer
+      hosts:
+        description:
+          - >-
+            A list of references to all dedicated hosts in the dedicated host
+            group.
+        type: list
+        suboptions:
+          id:
+            description:
+              - Resource Id
+            type: str
+      instance_view:
+        description:
+          - >-
+            The dedicated host group instance view, which has the list of
+            instance view of the dedicated hosts under the dedicated host group.
+        type: dict
+        suboptions:
+          hosts:
+            description:
+              - >-
+                List of instance view of the dedicated hosts under the dedicated
+                host group.
+            type: list
+            suboptions:
+              name:
+                description:
+                  - The name of the dedicated host.
+                type: str
+      support_automatic_placement:
+        description:
+          - >-
+            Specifies whether virtual machines or virtual machine scale sets can
+            be placed automatically on the dedicated host group. Automatic
+            placement means resources are allocated on dedicated hosts, that are
+            chosen by Azure, under the dedicated host group. The value is
+            defaulted to 'true' when not provided.
+            :code:`<br>`:code:`<br>`Minimum api-version: 2020-06-01.
+        type: bool
   expand:
     description:
       - >-
@@ -77,6 +116,15 @@ EXAMPLES = '''
     - name: Create or update a dedicated host group.
       azure_rm_dedicatedhostgroup: 
         host_group_name: myDedicatedHostGroup
+        parameters:
+          location: westus
+          properties:
+            platform_fault_domain_count: 3
+            support_automatic_placement: true
+          tags:
+            department: finance
+          zones:
+            - '1'
         resource_group_name: myResourceGroup
         location: westus
         properties:
@@ -219,17 +267,56 @@ class AzureRMDedicatedHostGroup(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            location=dict(
-                type='str',
-                disposition='/location'
-            ),
-            platform_fault_domain_count=dict(
-                type='integer',
-                disposition='/platform_fault_domain_count'
-            ),
-            support_automatic_placement=dict(
-                type='bool',
-                disposition='/support_automatic_placement'
+            parameters=dict(
+                type='dict',
+                disposition='/parameters',
+                options=dict(
+                    zones=dict(
+                        type='list',
+                        disposition='zones',
+                        elements='str'
+                    ),
+                    platform_fault_domain_count=dict(
+                        type='integer',
+                        disposition='platform_fault_domain_count'
+                    ),
+                    hosts=dict(
+                        type='list',
+                        updatable=False,
+                        disposition='hosts',
+                        elements='dict',
+                        options=dict(
+                            id=dict(
+                                type='str',
+                                updatable=False,
+                                disposition='id'
+                            )
+                        )
+                    ),
+                    instance_view=dict(
+                        type='dict',
+                        updatable=False,
+                        disposition='instance_view',
+                        options=dict(
+                            hosts=dict(
+                                type='list',
+                                disposition='hosts',
+                                elements='dict',
+                                options=dict(
+                                    name=dict(
+                                        type='str',
+                                        updatable=False,
+                                        disposition='name'
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    support_automatic_placement=dict(
+                        type='bool',
+                        disposition='support_automatic_placement'
+                    )
+                )
             ),
             expand=dict(
                 type='constant'

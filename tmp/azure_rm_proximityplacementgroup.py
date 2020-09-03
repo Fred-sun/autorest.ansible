@@ -31,48 +31,159 @@ options:
       - The name of the proximity placement group.
     required: true
     type: str
-  location:
+  parameters:
     description:
-      - Resource location
-    type: str
-  proximity_placement_group_type:
-    description:
-      - >-
-        Specifies the type of the proximity placement group.
-        :code:`<br>`:code:`<br>` Possible values are: :code:`<br>`:code:`<br>`
-        **Standard** : Co-locate resources within an Azure region or
-        Availability Zone. :code:`<br>`:code:`<br>` **Ultra** : For future use.
-    type: str
-    choices:
-      - Standard
-      - Ultra
-  colocation_status:
-    description:
-      - Describes colocation status of the Proximity Placement Group.
+      - Parameters supplied to the Create Proximity Placement Group operation.
+      - Parameters supplied to the Update Proximity Placement Group operation.
     type: dict
     suboptions:
-      code:
-        description:
-          - The status code.
-        type: str
-      level:
-        description:
-          - The level code.
-        type: sealed-choice
-      display_status:
-        description:
-          - The short localizable label for the status.
-        type: str
-      message:
+      proximity_placement_group_type:
         description:
           - >-
-            The detailed status message, including for alerts and error
-            messages.
+            Specifies the type of the proximity placement group.
+            :code:`<br>`:code:`<br>` Possible values are:
+            :code:`<br>`:code:`<br>` **Standard** : Co-locate resources within
+            an Azure region or Availability Zone. :code:`<br>`:code:`<br>`
+            **Ultra** : For future use.
         type: str
-      time:
+        choices:
+          - Standard
+          - Ultra
+      virtual_machines:
         description:
-          - The time of the status.
-        type: str
+          - >-
+            A list of references to all virtual machines in the proximity
+            placement group.
+        type: list
+        suboptions:
+          colocation_status:
+            description:
+              - >-
+                Describes colocation status of a resource in the Proximity
+                Placement Group.
+            type: dict
+            suboptions:
+              code:
+                description:
+                  - The status code.
+                type: str
+              level:
+                description:
+                  - The level code.
+                type: sealed-choice
+              display_status:
+                description:
+                  - The short localizable label for the status.
+                type: str
+              message:
+                description:
+                  - >-
+                    The detailed status message, including for alerts and error
+                    messages.
+                type: str
+              time:
+                description:
+                  - The time of the status.
+                type: str
+      virtual_machine_scale_sets:
+        description:
+          - >-
+            A list of references to all virtual machine scale sets in the
+            proximity placement group.
+        type: list
+        suboptions:
+          colocation_status:
+            description:
+              - >-
+                Describes colocation status of a resource in the Proximity
+                Placement Group.
+            type: dict
+            suboptions:
+              code:
+                description:
+                  - The status code.
+                type: str
+              level:
+                description:
+                  - The level code.
+                type: sealed-choice
+              display_status:
+                description:
+                  - The short localizable label for the status.
+                type: str
+              message:
+                description:
+                  - >-
+                    The detailed status message, including for alerts and error
+                    messages.
+                type: str
+              time:
+                description:
+                  - The time of the status.
+                type: str
+      availability_sets:
+        description:
+          - >-
+            A list of references to all availability sets in the proximity
+            placement group.
+        type: list
+        suboptions:
+          colocation_status:
+            description:
+              - >-
+                Describes colocation status of a resource in the Proximity
+                Placement Group.
+            type: dict
+            suboptions:
+              code:
+                description:
+                  - The status code.
+                type: str
+              level:
+                description:
+                  - The level code.
+                type: sealed-choice
+              display_status:
+                description:
+                  - The short localizable label for the status.
+                type: str
+              message:
+                description:
+                  - >-
+                    The detailed status message, including for alerts and error
+                    messages.
+                type: str
+              time:
+                description:
+                  - The time of the status.
+                type: str
+      colocation_status:
+        description:
+          - Describes colocation status of the Proximity Placement Group.
+        type: dict
+        suboptions:
+          code:
+            description:
+              - The status code.
+            type: str
+          level:
+            description:
+              - The level code.
+            type: sealed-choice
+          display_status:
+            description:
+              - The short localizable label for the status.
+            type: str
+          message:
+            description:
+              - >-
+                The detailed status message, including for alerts and error
+                messages.
+            type: str
+          time:
+            description:
+              - The time of the status.
+            type: str
   include_colocation_status:
     description:
       - >-
@@ -99,6 +210,10 @@ author:
 EXAMPLES = '''
     - name: Create or Update a proximity placement group.
       azure_rm_proximityplacementgroup: 
+        parameters:
+          location: westus
+          properties:
+            proximity_placement_group_type: Standard
         proximity_placement_group_name: myProximityPlacementGroup
         resource_group_name: myResourceGroup
         location: westus
@@ -108,6 +223,9 @@ EXAMPLES = '''
 
     - name: Create a proximity placement group.
       azure_rm_proximityplacementgroup: 
+        parameters:
+          tags:
+            additional_prop1: string
         proximity_placement_group_name: myProximityPlacementGroup
         resource_group_name: myResourceGroup
         tags:
@@ -377,39 +495,143 @@ class AzureRMProximityPlacementGroup(AzureRMModuleBaseExt):
                 type='str',
                 required=True
             ),
-            location=dict(
-                type='str',
-                disposition='/location'
-            ),
-            proximity_placement_group_type=dict(
-                type='str',
-                disposition='/proximity_placement_group_type',
-                choices=['Standard',
-                         'Ultra']
-            ),
-            colocation_status=dict(
+            parameters=dict(
                 type='dict',
-                disposition='/colocation_status',
+                disposition='/parameters',
                 options=dict(
-                    code=dict(
+                    proximity_placement_group_type=dict(
                         type='str',
-                        disposition='code'
+                        disposition='proximity_placement_group_type',
+                        choices=['Standard',
+                                 'Ultra']
                     ),
-                    level=dict(
-                        type='sealed-choice',
-                        disposition='level'
+                    virtual_machines=dict(
+                        type='list',
+                        updatable=False,
+                        disposition='virtual_machines',
+                        elements='dict',
+                        options=dict(
+                            colocation_status=dict(
+                                type='dict',
+                                disposition='colocation_status',
+                                options=dict(
+                                    code=dict(
+                                        type='str',
+                                        disposition='code'
+                                    ),
+                                    level=dict(
+                                        type='sealed-choice',
+                                        disposition='level'
+                                    ),
+                                    display_status=dict(
+                                        type='str',
+                                        disposition='display_status'
+                                    ),
+                                    message=dict(
+                                        type='str',
+                                        disposition='message'
+                                    ),
+                                    time=dict(
+                                        type='str',
+                                        disposition='time'
+                                    )
+                                )
+                            )
+                        )
                     ),
-                    display_status=dict(
-                        type='str',
-                        disposition='display_status'
+                    virtual_machine_scale_sets=dict(
+                        type='list',
+                        updatable=False,
+                        disposition='virtual_machine_scale_sets',
+                        elements='dict',
+                        options=dict(
+                            colocation_status=dict(
+                                type='dict',
+                                disposition='colocation_status',
+                                options=dict(
+                                    code=dict(
+                                        type='str',
+                                        disposition='code'
+                                    ),
+                                    level=dict(
+                                        type='sealed-choice',
+                                        disposition='level'
+                                    ),
+                                    display_status=dict(
+                                        type='str',
+                                        disposition='display_status'
+                                    ),
+                                    message=dict(
+                                        type='str',
+                                        disposition='message'
+                                    ),
+                                    time=dict(
+                                        type='str',
+                                        disposition='time'
+                                    )
+                                )
+                            )
+                        )
                     ),
-                    message=dict(
-                        type='str',
-                        disposition='message'
+                    availability_sets=dict(
+                        type='list',
+                        updatable=False,
+                        disposition='availability_sets',
+                        elements='dict',
+                        options=dict(
+                            colocation_status=dict(
+                                type='dict',
+                                disposition='colocation_status',
+                                options=dict(
+                                    code=dict(
+                                        type='str',
+                                        disposition='code'
+                                    ),
+                                    level=dict(
+                                        type='sealed-choice',
+                                        disposition='level'
+                                    ),
+                                    display_status=dict(
+                                        type='str',
+                                        disposition='display_status'
+                                    ),
+                                    message=dict(
+                                        type='str',
+                                        disposition='message'
+                                    ),
+                                    time=dict(
+                                        type='str',
+                                        disposition='time'
+                                    )
+                                )
+                            )
+                        )
                     ),
-                    time=dict(
-                        type='str',
-                        disposition='time'
+                    colocation_status=dict(
+                        type='dict',
+                        disposition='colocation_status',
+                        options=dict(
+                            code=dict(
+                                type='str',
+                                disposition='code'
+                            ),
+                            level=dict(
+                                type='sealed-choice',
+                                disposition='level'
+                            ),
+                            display_status=dict(
+                                type='str',
+                                disposition='display_status'
+                            ),
+                            message=dict(
+                                type='str',
+                                disposition='message'
+                            ),
+                            time=dict(
+                                type='str',
+                                disposition='time'
+                            )
+                        )
                     )
                 )
             ),

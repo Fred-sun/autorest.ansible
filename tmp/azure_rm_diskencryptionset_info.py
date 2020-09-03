@@ -97,132 +97,16 @@ disk_encryption_sets:
       returned: always
       type: dictionary
       sample: null
-    encryption_type:
-      description:
-        - The type of key used to encrypt the data of the disk.
-      returned: always
-      type: str
-      sample: null
-    previous_keys:
+    identity:
       description:
         - >-
-          A readonly collection of key vault keys previously used by this disk
-          encryption set while a key rotation is in progress. It will be empty
-          if there is no ongoing key rotation.
+          The managed identity for the disk encryption set. It should be given
+          permission on the key vault before it can be used to encrypt disks.
       returned: always
-      type: list
+      type: dict
       sample: null
       contains:
-        key_url:
-          description:
-            - Url pointing to a key or secret in KeyVault
-          returned: always
-          type: str
-          sample: null
-        id:
-          description:
-            - Resource Id
-          returned: always
-          type: str
-          sample: null
-    provisioning_state:
-      description:
-        - The disk encryption set provisioning state.
-      returned: always
-      type: str
-      sample: null
-    key_url:
-      description:
-        - Url pointing to a key or secret in KeyVault
-      returned: always
-      type: str
-      sample: null
-    id_properties_active_key_source_vault_id:
-      description:
-        - Resource Id
-      returned: always
-      type: str
-      sample: null
-    type_identity_type:
-      description:
-        - >-
-          The type of Managed Identity used by the DiskEncryptionSet. Only
-          SystemAssigned is supported.
-      returned: always
-      type: str
-      sample: null
-    principal_id:
-      description:
-        - >-
-          The object id of the Managed Identity Resource. This will be sent to
-          the RP from ARM via the x-ms-identity-principal-id header in the PUT
-          request if the resource has a systemAssigned(implicit) identity
-      returned: always
-      type: str
-      sample: null
-    tenant_id:
-      description:
-        - >-
-          The tenant id of the Managed Identity Resource. This will be sent to
-          the RP from ARM via the x-ms-client-tenant-id header in the PUT
-          request if the resource has a systemAssigned(implicit) identity
-      returned: always
-      type: str
-      sample: null
-    value:
-      description:
-        - A list of disk encryption sets.
-      returned: always
-      type: list
-      sample: null
-      contains:
-        encryption_type:
-          description:
-            - The type of key used to encrypt the data of the disk.
-          returned: always
-          type: str
-          sample: null
-        previous_keys:
-          description:
-            - >-
-              A readonly collection of key vault keys previously used by this
-              disk encryption set while a key rotation is in progress. It will
-              be empty if there is no ongoing key rotation.
-          returned: always
-          type: list
-          sample: null
-          contains:
-            key_url:
-              description:
-                - Url pointing to a key or secret in KeyVault
-              returned: always
-              type: str
-              sample: null
-            id:
-              description:
-                - Resource Id
-              returned: always
-              type: str
-              sample: null
-        provisioning_state:
-          description:
-            - The disk encryption set provisioning state.
-          returned: always
-          type: str
-          sample: null
-        key_url:
-          description:
-            - Url pointing to a key or secret in KeyVault
-          returned: always
-          type: str
-          sample: null
-        id_properties_active_key_source_vault_id:
-          description:
-            - Resource Id
-          returned: always
-          type: str
-          sample: null
-        type_identity_type:
+        type:
           description:
             - >-
               The type of Managed Identity used by the DiskEncryptionSet. Only
@@ -246,6 +130,187 @@ disk_encryption_sets:
               The tenant id of the Managed Identity Resource. This will be sent
               to the RP from ARM via the x-ms-client-tenant-id header in the PUT
               request if the resource has a systemAssigned(implicit) identity
+          returned: always
+          type: str
+          sample: null
+    encryption_type:
+      description:
+        - The type of key used to encrypt the data of the disk.
+      returned: always
+      type: str
+      sample: null
+    active_key:
+      description:
+        - The key vault key which is currently used by this disk encryption set.
+      returned: always
+      type: dict
+      sample: null
+      contains:
+        source_vault:
+          description:
+            - Resource id of the KeyVault containing the key or secret
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            id:
+              description:
+                - Resource Id
+              returned: always
+              type: str
+              sample: null
+        key_url:
+          description:
+            - Url pointing to a key or secret in KeyVault
+          returned: always
+          type: str
+          sample: null
+    previous_keys:
+      description:
+        - >-
+          A readonly collection of key vault keys previously used by this disk
+          encryption set while a key rotation is in progress. It will be empty
+          if there is no ongoing key rotation.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        source_vault:
+          description:
+            - Resource id of the KeyVault containing the key or secret
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            id:
+              description:
+                - Resource Id
+              returned: always
+              type: str
+              sample: null
+        key_url:
+          description:
+            - Url pointing to a key or secret in KeyVault
+          returned: always
+          type: str
+          sample: null
+    provisioning_state:
+      description:
+        - The disk encryption set provisioning state.
+      returned: always
+      type: str
+      sample: null
+    value:
+      description:
+        - A list of disk encryption sets.
+      returned: always
+      type: list
+      sample: null
+      contains:
+        identity:
+          description:
+            - >-
+              The managed identity for the disk encryption set. It should be
+              given permission on the key vault before it can be used to encrypt
+              disks.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            type:
+              description:
+                - >-
+                  The type of Managed Identity used by the DiskEncryptionSet.
+                  Only SystemAssigned is supported.
+              returned: always
+              type: str
+              sample: null
+            principal_id:
+              description:
+                - >-
+                  The object id of the Managed Identity Resource. This will be
+                  sent to the RP from ARM via the x-ms-identity-principal-id
+                  header in the PUT request if the resource has a
+                  systemAssigned(implicit) identity
+              returned: always
+              type: str
+              sample: null
+            tenant_id:
+              description:
+                - >-
+                  The tenant id of the Managed Identity Resource. This will be
+                  sent to the RP from ARM via the x-ms-client-tenant-id header
+                  in the PUT request if the resource has a
+                  systemAssigned(implicit) identity
+              returned: always
+              type: str
+              sample: null
+        encryption_type:
+          description:
+            - The type of key used to encrypt the data of the disk.
+          returned: always
+          type: str
+          sample: null
+        active_key:
+          description:
+            - >-
+              The key vault key which is currently used by this disk encryption
+              set.
+          returned: always
+          type: dict
+          sample: null
+          contains:
+            source_vault:
+              description:
+                - Resource id of the KeyVault containing the key or secret
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                id:
+                  description:
+                    - Resource Id
+                  returned: always
+                  type: str
+                  sample: null
+            key_url:
+              description:
+                - Url pointing to a key or secret in KeyVault
+              returned: always
+              type: str
+              sample: null
+        previous_keys:
+          description:
+            - >-
+              A readonly collection of key vault keys previously used by this
+              disk encryption set while a key rotation is in progress. It will
+              be empty if there is no ongoing key rotation.
+          returned: always
+          type: list
+          sample: null
+          contains:
+            source_vault:
+              description:
+                - Resource id of the KeyVault containing the key or secret
+              returned: always
+              type: dict
+              sample: null
+              contains:
+                id:
+                  description:
+                    - Resource Id
+                  returned: always
+                  type: str
+                  sample: null
+            key_url:
+              description:
+                - Url pointing to a key or secret in KeyVault
+              returned: always
+              type: str
+              sample: null
+        provisioning_state:
+          description:
+            - The disk encryption set provisioning state.
           returned: always
           type: str
           sample: null
