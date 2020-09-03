@@ -14,7 +14,7 @@ use-extension:
 
 require:
   - ./readme.python.md
-
+  - $(this-folder)/readme.ansible.common.md
 
 pipeline-model: v3
 
@@ -36,7 +36,10 @@ scope-ansible/emitter:
     output-folder: $(ansible-output-folder)
 
 modelerfour:
-    additional-checks: false
+    lenient-model-deduplication: true
+    group-parameters: true
+    flatten-models: true
+    flatten-payloads: true
 
 ```
 
