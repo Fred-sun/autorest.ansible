@@ -10,7 +10,7 @@ azure-arm: true
 
 use-extension:
   "@autorest/python": "5.1.0-preview.4"
-  "@autorest/clicommon": "0.4.13"
+  "@microsoft.azure/autorest.modeler": "2.3.44"
 
 require:
   - ./readme.python.md
