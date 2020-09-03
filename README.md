@@ -14,13 +14,12 @@ use-extension:
 
 require:
   - ./readme.python.md
-  - $(this-folder)/readme.ansible.common.md
 
 pipeline-model: v3
 
 pipeline:
     python/m2r:
-        input: clicommon/identity
+        input: openapi-document/identity
     ansible:
         input: python/namer
         output-artifact: some-file-generated-by-ansible
