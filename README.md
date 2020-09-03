@@ -10,16 +10,17 @@ azure-arm: true
 
 use-extension:
   "@autorest/python": "5.1.0-preview.4"
-  "@microsoft.azure/autorest.modeler": "2.3.44"
+  "@autorest/clicommon": "0.4.13"
 
 require:
   - ./readme.python.md
+  - $(this-folder)/readme.ansible.common.md
 
 pipeline-model: v3
 
 pipeline:
     python/m2r:
-        input: openapi-document/identity
+        input: clicommon/identity
     ansible:
         input: python/namer
         output-artifact: some-file-generated-by-ansible
@@ -35,7 +36,10 @@ scope-ansible/emitter:
     output-folder: $(ansible-output-folder)
 
 modelerfour:
-    additional-checks: false
+    lenient-model-deduplication: true
+    group-parameters: true
+    flatten-models: true
+    flatten-payloads: true
 
 ```
 
